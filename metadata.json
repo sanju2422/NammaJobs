@@ -1,0 +1,8 @@
+
+{
+  "name": "YoursJob - Job Alerts",
+  "description": "A bilingual (Kannada & English) job alert platform featuring AI-powered job search and career recommendations.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
