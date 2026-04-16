@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin – Namma Jobs</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--sf:#E8521A;--sfl:#FEF0E8;--sfd:#B53D0D;--gn:#1A6B3C;--gnl:#E8F5EE;--nv:#0D1B3E;--bg:#F7F7F4;--card:#fff;--border:#DDDDD6;--border2:#EEEEE9;--tx:#282820;--tx2:#585850;--tx3:#9A9A90;--fen:'DM Sans',sans-serif;--fkn:'Noto Sans Kannada',sans-serif;--r:10px;}
+[data-theme=dark]{
+  --bg:#0A1628;
+  --card:#0F2040;
+  --border:#1A3A5C;
+  --border2:#152E4A;
+  --tx:#E8F4F8;
+  --tx2:#8BB8CC;
+  --tx3:#4A7A90;
+  --nv:#050E1A;
+  --sfl:#0D2535;
+  --sfd:#00E5CC;
+  --sf:#00C9B1;
+  --gnl:#082018;
+}
+[data-theme=dark] body{background:#0A1628;color:#E8F4F8;}
+[data-theme=dark] .fpanel{background:#0F2040;border-color:#1A3A5C;}
+[data-theme=dark] .frm input,[data-theme=dark] .frm textarea,[data-theme=dark] .frm select{background:#0A1E35;border-color:#1A3A5C;color:#E8F4F8;}
+[data-theme=dark] .frm input:focus,[data-theme=dark] .frm textarea:focus,[data-theme=dark] .frm select:focus{border-color:#00C9B1;}
+[data-theme=dark] .rphdr{background:#0F2040;border-color:#1A3A5C;}
+[data-theme=dark] .rpbody{background:#0F2040;border-color:#1A3A5C;}
+[data-theme=dark] .jr{border-color:#1A3A5C;}
+[data-theme=dark] .jr:hover{background:#0A1E35;}
+[data-theme=dark] .jr.ed{background:#0D2535;border-left-color:#00C9B1;}
+[data-theme=dark] .jrttl{color:#E8F4F8;}
+[data-theme=dark] .rpttl{color:#E8F4F8;}
+[data-theme=dark] .rpsearch{background:#0A1E35;border-color:#1A3A5C;color:#E8F4F8;}
+[data-theme=dark] .rpsearch:focus{border-color:#00C9B1;}
+[data-theme=dark] .conf-box{background:#0F2040;}
+[data-theme=dark] .conf-ttl{color:#E8F4F8;}
+[data-theme=dark] .conf-can{background:#0A1E35;color:#8BB8CC;}
+[data-theme=dark] .to{background:#0A1E35;border-color:#1A3A5C;color:#8BB8CC;}
+[data-theme=dark] .to.on{background:#00C9B1;border-color:#00C9B1;color:#050E1A;}
+[data-theme=dark] .sto{background:#0A1E35;border-color:#1A3A5C;color:#8BB8CC;}
+[data-theme=dark] .fb-clr{background:#0A1E35;color:#8BB8CC;}
+[data-theme=dark] .hdr{background:#050E1A;}
+[data-theme=dark] .sf{background:#00C9B1;border-color:#00C9B1;color:#050E1A;}
+[data-theme=dark] .sf:hover{background:#00E5CC;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fen);background:var(--bg);color:var(--tx);transition:background .3s,color .3s;}
+.hdr{background:var(--nv);padding:0 22px;height:54px;display:flex;align-items:center;justify-content:space-between;}
+.hlogo{font-size:16px;font-weight:700;color:#fff;display:flex;align-items:center;gap:10px;}
+.hlogo span{color:var(--sf);}
+.hsub{font-size:11px;color:rgba(255,255,255,.45);background:rgba(255,255,255,.08);padding:2px 10px;border-radius:20px;}
+.hbtns{display:flex;gap:8px;}
+.hbtn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:6px 13px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fen);transition:.2s;}
+.hbtn:hover{color:#fff;background:rgba(255,255,255,.15);}
+.hbtn.primary{background:var(--sf);border-color:var(--sf);color:#fff;}
+.hbtn.primary:hover{background:var(--sfd);}
+.wrap{max-width:1280px;margin:0 auto;padding:20px 22px;display:grid;grid-template-columns:380px 1fr;gap:20px;}
+@media(max-width:900px){.wrap{grid-template-columns:1fr;}}
+
+/* FORM */
+.fpanel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;position:sticky;top:16px;max-height:calc(100vh - 80px);overflow-y:auto;transition:background .3s;}
+.fphdr{background:var(--nv);padding:13px 18px;}
+.fpttl{font-size:14px;font-weight:700;color:#fff;}
+.fpsub{font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;}
+.frm{padding:16px 18px;}
+label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--tx3);display:block;margin-bottom:5px;margin-top:14px;}
+label:first-child{margin-top:0;}
+input,textarea,select{width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:var(--fen);color:var(--tx);background:var(--card);outline:none;transition:.2s;}
+input:focus,textarea:focus,select:focus{border-color:var(--sf);}
+textarea{min-height:65px;resize:vertical;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fsec{font-size:11px;font-weight:700;color:var(--sf);padding:8px 0 4px;border-bottom:1px solid var(--sfl);margin:14px 0 4px;text-transform:uppercase;letter-spacing:.06em;}
+.tog{display:flex;gap:4px;margin-top:7px;flex-wrap:wrap;}
+.to{padding:6px 10px;border-radius:20px;font-size:11px;font-weight:700;border:1.5px solid var(--border);background:var(--card);color:var(--tx2);cursor:pointer;transition:.2s;font-family:var(--fen);}
+.to.on{background:var(--nv);border-color:var(--nv);color:#fff;}
+.sto{flex:1;padding:7px 6px;border-radius:6px;font-size:11px;font-weight:700;border:1.5px solid var(--border);background:var(--card);color:var(--tx2);cursor:pointer;text-align:center;transition:.2s;}
+.sto.on-open{background:var(--gnl);border-color:var(--gn);color:var(--gn);}
+.sto.on-closed{background:#FEE8E8;border-color:#A02010;color:#A02010;}
+.sto.on-soon{background:var(--sfl);border-color:#C49010;color:#8A6000;}
+.fbrow{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
+.fbtn{padding:9px 18px;border-radius:7px;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:.15s;font-family:var(--fen);}
+.fb-pub{background:var(--sf);color:#fff;flex:1;}.fb-pub:hover{background:var(--sfd);}
+.fb-upd{background:var(--gn);color:#fff;flex:1;}.fb-upd:hover{background:#0E4826;}
+.fb-clr{background:var(--border2);color:var(--tx2);}.fb-clr:hover{background:var(--border);}
+.url-hint{font-size:10px;color:var(--tx3);margin-top:4px;line-height:1.4;}
+.msg{padding:10px 13px;border-radius:7px;font-size:12px;font-weight:600;display:none;margin-top:10px;}
+.msg.show{display:block;}
+.msg-ok{background:var(--gnl);color:var(--gn);}
+.msg-err{background:#FEE8E8;color:#A02010;}
+
+/* JOB LIST */
+.rp{display:flex;flex-direction:column;}
+.rphdr{background:var(--card);border:1px solid var(--border);border-radius:var(--r) var(--r) 0 0;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;transition:background .3s;}
+.rpttl{font-size:15px;font-weight:700;color:var(--tx);}
+.rpstats{display:flex;gap:14px;flex-wrap:wrap;}
+.rst{font-size:12px;color:var(--tx2);}
+.rst strong{color:var(--sf);}
+.rpsearch{padding:7px 12px;border:1.5px solid var(--border);border-radius:24px;font-size:13px;font-family:var(--fen);outline:none;background:var(--bg);color:var(--tx);transition:.2s;width:190px;}
+.rpsearch:focus{border-color:var(--sf);}
+.rpbody{background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r) var(--r);overflow:hidden;transition:background .3s;}
+.jr{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:13px 18px;border-bottom:1px solid var(--border2);transition:.15s;}
+.jr:last-child{border-bottom:none;}
+.jr:hover{background:var(--bg);}
+.jr.ed{background:var(--sfl);border-left:3px solid var(--sf);}
+[data-theme=dark] .jr.ed{background:#1E1008;}
+.jric{font-size:20px;margin-right:4px;}
+.jrttl{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:2px;}
+.jrmeta{font-size:11px;color:var(--tx2);display:flex;gap:10px;flex-wrap:wrap;margin-top:3px;}
+.jbdg{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;font-family:var(--fen);}
+.jb-open{background:var(--gnl);color:var(--gn);}
+.jb-closed{background:#FEE8E8;color:#A02010;}
+.jb-soon{background:var(--sfl);color:#8A6000;}
+.jacts{display:flex;gap:6px;flex-shrink:0;}
+.ja{padding:6px 12px;border-radius:6px;font-size:11px;font-weight:700;border:none;cursor:pointer;transition:.15s;font-family:var(--fen);}
+.ja-e{background:var(--sfl);color:var(--sfd);}.ja-e:hover{background:#FCD9C8;}
+.ja-d{background:#FEE8E8;color:#A02010;}.ja-d:hover{background:#FCD0C8;}
+.empty-s{text-align:center;padding:50px;color:var(--tx3);}
+.spinner-sm{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--sf);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:5px;}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;padding:12px 18px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;transform:translateY(60px);opacity:0;transition:.3s;font-family:var(--fen);}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.ok{background:var(--gn);color:#fff;}
+.toast.err{background:#A02010;color:#fff;}
+
+/* CONFIRM */
+.cfbg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:center;justify-content:center;}
+.cfbg.open{display:flex;}
+.cfbox{background:var(--card);border-radius:12px;padding:24px;max-width:320px;width:100%;margin:16px;text-align:center;}
+.cfic{font-size:36px;margin-bottom:10px;}
+.cfttl{font-size:16px;font-weight:700;color:var(--tx);margin-bottom:5px;}
+.cfsub{font-size:13px;color:var(--tx2);margin-bottom:18px;}
+.cfbtns{display:flex;gap:8px;justify-content:center;}
+.cf-del{background:#A02010;color:#fff;border:none;border-radius:7px;padding:9px 22px;font-weight:700;cursor:pointer;font-family:var(--fen);}
+.cf-can{background:var(--border2);color:var(--tx2);border:none;border-radius:7px;padding:9px 18px;font-weight:600;cursor:pointer;font-family:var(--fen);}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hlogo">💼 Namma <span>Jobs</span> <span class="hsub">⚙️ Admin</span></div>
+  <div class="hbtns">
+    <button class="hbtn" id="dmbtn" onclick="toggleDark()">🌙 Dark</button>
+    <button class="hbtn primary" onclick="window.open('index.html','_blank')">🌐 View Site ↗</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- FORM PANEL -->
+  <div class="fpanel">
+    <div class="fphdr">
+      <div class="fpttl" id="fpttl">➕ Add New Job</div>
+      <div class="fpsub" id="fpsub">Fill details and publish to Supabase</div>
+    </div>
+    <div class="frm">
+      <label>Job Category</label>
+      <div class="tog" id="cattog">
+        <div class="to on" data-v="karnataka" onclick="setCat('karnataka',this)">🏛️ Karnataka</div>
+        <div class="to" data-v="central" onclick="setCat('central',this)">🇮🇳 Central</div>
+        <div class="to" data-v="railway" onclick="setCat('railway',this)">🚂 Railway</div>
+        <div class="to" data-v="bank" onclick="setCat('bank',this)">🏦 Bank</div>
+        <div class="to" data-v="police" onclick="setCat('police',this)">👮 Police</div>
+        <div class="to" data-v="teacher" onclick="setCat('teacher',this)">📚 Teacher</div>
+        <div class="to" data-v="private" onclick="setCat('private',this)">🏢 Private</div>
+      </div>
+
+      <label>Status</label>
+      <div style="display:flex;gap:4px;margin-top:7px;">
+        <div class="sto on-open" data-v="open" onclick="setStat('open',this)">● Open</div>
+        <div class="sto" data-v="soon" onclick="setStat('soon',this)">◐ Coming Soon</div>
+        <div class="sto" data-v="closed" onclick="setStat('closed',this)">○ Closed</div>
+      </div>
+
+      <div class="row2" style="margin-top:14px;">
+        <div>
+          <label style="margin-top:0">Title (English) *</label>
+          <input type="text" id="f-ten" placeholder="e.g. Junior Engineer">
+        </div>
+        <div>
+          <label style="margin-top:0">Title (ಕನ್ನಡ)</label>
+          <input type="text" id="f-tkn" placeholder="ಕಿರಿಯ ಎಂಜಿನಿಯರ್" style="font-family:var(--fkn)">
+        </div>
+      </div>
+
+      <div class="row2">
+        <div><label>Department *</label><input type="text" id="f-dept" placeholder="KPSC, PWD, SBI..."></div>
+        <div><label>Location</label><input type="text" id="f-loc" placeholder="Bangalore, All India"></div>
+      </div>
+
+      <div class="row2">
+        <div><label>Total Vacancies</label><input type="number" id="f-seats" placeholder="120" min="0"></div>
+        <div><label>Salary / Pay Scale</label><input type="text" id="f-sal" placeholder="₹35,400-1,12,400"></div>
+      </div>
+
+      <div class="row2">
+        <div><label>Age Limit</label><input type="text" id="f-age" placeholder="18-35 years"></div>
+        <div><label>Last Date</label><input type="date" id="f-ld"></div>
+      </div>
+      <div class="row2">
+        <div><label>Start Date (Apply From)</label><input type="date" id="f-sd"></div>
+        <div><label></label></div>
+      </div>
+
+      <div class="fsec">🌐 Official Apply Link (IMPORTANT)</div>
+      <input type="url" id="f-url" placeholder="https://kpsc.kar.nic.in">
+      <div class="url-hint">⚠️ Yeh URL "Apply Now" button pe click karne pe khulega. Sahi link daalna zaroori hai!</div>
+
+      <div class="fsec">Government Job Details</div>
+      <div class="row2">
+        <div><label>Notification No.</label><input type="text" id="f-notif" placeholder="KPSC/2025/JE/01"></div>
+        <div><label>Icon (Emoji)</label><input type="text" id="f-icon" placeholder="🏗️" maxlength="4"></div>
+      </div>
+      <label>Category-wise Vacancies</label>
+      <input type="text" id="f-cats" placeholder="SC-24, ST-12, OBC-32, Gen-52">
+      <label>Job Description</label>
+      <textarea id="f-desc" placeholder="Responsibilities, exam details..."></textarea>
+      <label>Qualifications / Skills</label>
+      <input type="text" id="f-skills" placeholder="B.E Civil, Kannada knowledge, 2yr experience">
+
+      <div class="fsec">📚 Syllabus (Optional)</div>
+      <textarea id="f-syllabus" style="min-height:80px;" placeholder="Exam subjects aur topics:&#10;General Knowledge, Reasoning, Mathematics, Kannada, English..."></textarea>
+      <label style="margin-top:6px;">Syllabus PDF Link (Official)</label>
+      <input type="url" id="f-syllabus-url" placeholder="https://official-site.gov.in/syllabus.pdf">
+
+      <div class="fsec">📝 How to Apply Steps (Job detail page pe dikhega)</div>
+      <textarea id="f-hta" style="min-height:100px;" placeholder="Har step alag line mein likho:&#10;Official website https://... pe jao&#10;New Registration karo&#10;Form bharo aur submit karo&#10;Fee payment karo&#10;Printout lo"></textarea>
+      <div class="url-hint">Har line ek step ban jaayega — visitors ko clearly samajh aayega</div>
+
+      <div class="fbrow">
+        <button class="fbtn fb-pub" id="pub-btn" onclick="saveJob()">
+          <span id="pub-sp" style="display:none" class="spinner-sm"></span>
+          ✓ Publish Job
+        </button>
+        <button class="fbtn fb-clr" onclick="clearForm()">✕ Clear</button>
+      </div>
+      <div class="msg msg-ok" id="msg-ok">✓ Job saved successfully! Public site pe live ho gaya.</div>
+      <div class="msg msg-err" id="msg-err"></div>
+    </div>
+  </div>
+
+  <!-- JOB LIST -->
+  <div class="rp">
+    <div class="rphdr">
+      <div>
+        <div class="rpttl">Published Jobs</div>
+        <div class="rpstats" id="rpstats"></div>
+      </div>
+      <input class="rpsearch" type="text" placeholder="🔍 Search..." oninput="renderList()">
+    </div>
+    <div class="rpbody" id="jlist">
+      <div class="empty-s"><div class="spinner-sm" style="width:24px;height:24px;border-width:3px;"></div><br>Loading jobs...</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CONFIRM DELETE -->
+<div class="cfbg" id="cfbg">
+  <div class="cfbox">
+    <div class="cfic">🗑️</div>
+    <div class="cfttl">Delete this job?</div>
+    <div class="cfsub" id="cfsub">This will be removed from public site too.</div>
+    <div class="cfbtns">
+      <button class="cf-can" onclick="document.getElementById('cfbg').classList.remove('open')">Cancel</button>
+      <button class="cf-del" id="cf-del">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== PASSWORD PROTECTION =====
+(function() {
+  const PASS = '90Br@thers';
+  const KEY = 'nj_admin_auth';
+  const stored = sessionStorage.getItem(KEY);
+  if (stored !== PASS) {
+    document.body.style.display = 'none';
+    const entered = prompt('🔐 Admin Panel\n\nPassword daalo / Enter Password:');
+    if (entered === PASS) {
+      sessionStorage.setItem(KEY, PASS);
+      document.body.style.display = '';
+    } else {
+      document.body.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#050E1A;font-family:sans-serif;color:#fff;gap:16px;">
+        <div style="font-size:48px;">🔒</div>
+        <div style="font-size:20px;font-weight:700;">Access Denied</div>
+        <div style="font-size:14px;color:#888;">Galat password / Wrong password</div>
+        <button onclick="window.location.reload()" style="background:#E8521A;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;">Try Again / Dobara Try Karo</button>
+        <a href="index.html" style="color:#888;font-size:13px;text-decoration:none;">← Back to Namma Jobs</a>
+      </div>`;
+      document.body.style.display = '';
+    }
+  }
+})();
+
+// ===== SUPABASE =====
+const SB_URL = 'https://akdfgycfigxshjboxwzp.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrZGZneWNmaWd4c2hqYm94d3pwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MTQ0MDYsImV4cCI6MjA5MTI5MDQwNn0.Yon2X_kTr4jSpBOLaGYRiQzxixLo8rsD9LB7IKliiu8';
+const H = { 'Content-Type':'application/json', 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY };
+
+const BGMAP = { karnataka:'bg-gov', central:'bg-central', railway:'bg-railway', bank:'bg-bank', police:'bg-police', teacher:'bg-teacher', private:'bg-private' };
+
+let selCat = 'karnataka', selStat = 'open', editId = null, allJobs = [];
+
+// API FUNCTIONS
+async function dbFetch() {
+  const r = await fetch(`${SB_URL}/rest/v1/jobs?order=created_at.desc`, {headers:H});
+  return await r.json();
+}
+async function dbInsert(job) {
+  const r = await fetch(`${SB_URL}/rest/v1/jobs`, {method:'POST', headers:{...H,'Prefer':'return=representation'}, body:JSON.stringify(job)});
+  if (!r.ok) throw new Error(await r.text());
+  return await r.json();
+}
+async function dbUpdate(id, job) {
+  const r = await fetch(`${SB_URL}/rest/v1/jobs?id=eq.${id}`, {method:'PATCH', headers:{...H,'Prefer':'return=representation'}, body:JSON.stringify(job)});
+  if (!r.ok) throw new Error(await r.text());
+  return await r.json();
+}
+async function dbDelete(id) {
+  const r = await fetch(`${SB_URL}/rest/v1/jobs?id=eq.${id}`, {method:'DELETE', headers:H});
+  if (!r.ok) throw new Error(await r.text());
+}
+
+// TOGGLE HELPERS
+function setCat(v, el) {
+  selCat = v;
+  document.querySelectorAll('.to').forEach(x => x.classList.remove('on'));
+  el.classList.add('on');
+}
+function setStat(v, el) {
+  selStat = v;
+  document.querySelectorAll('.sto').forEach(x => x.className = 'sto');
+  el.className = `sto on-${v}`;
+}
+
+// SAVE JOB — Fixed update bug
+async function saveJob() {
+  const ten = document.getElementById('f-ten').value.trim();
+  const dept = document.getElementById('f-dept').value.trim();
+  if (!ten || !dept) { showMsg('err', 'Title aur Department zaroori hai!'); return; }
+
+  const btn = document.getElementById('pub-btn');
+  const sp = document.getElementById('pub-sp');
+  btn.disabled = true; sp.style.display = 'inline-block';
+
+  const job = {
+    cat: selCat,
+    status: selStat,
+    title_en: ten,
+    title_kn: document.getElementById('f-tkn').value.trim() || null,
+    dept,
+    loc: document.getElementById('f-loc').value.trim() || null,
+    seats: parseInt(document.getElementById('f-seats').value) || 0,
+    salary: document.getElementById('f-sal').value.trim() || null,
+    age: document.getElementById('f-age').value.trim() || null,
+    last_date: document.getElementById('f-ld').value || null,
+    official_url: document.getElementById('f-url').value.trim() || null,
+    notif: document.getElementById('f-notif').value.trim() || null,
+    icon: document.getElementById('f-icon').value.trim() || '💼',
+    cats: document.getElementById('f-cats').value.trim() || null,
+    description: document.getElementById('f-desc').value.trim() || null,
+    skills: document.getElementById('f-skills').value.trim() || null,
+    start_date: document.getElementById('f-sd').value || null,
+    syllabus: document.getElementById('f-syllabus').value.trim() || null,
+    syllabus_url: document.getElementById('f-syllabus-url').value.trim() || null,
+    how_to_apply: document.getElementById('f-hta').value.trim() || null,
+    bg: BGMAP[selCat] || 'bg-gov',
+  };
+
+  try {
+    if (editId) {
+      // FIX: Don't send created_at in update — only send changed fields
+      const r = await fetch(`${SB_URL}/rest/v1/jobs?id=eq.${editId}`, {
+        method: 'PATCH',
+        headers: { ...H, 'Prefer': 'return=minimal' },
+        body: JSON.stringify(job)
+      });
+      if (!r.ok) { const err = await r.text(); throw new Error(err); }
+      toast('✓ Job updated!', 'ok');
+      showMsg('ok', 'Job update ho gaya! Public site pe live hai.');
+    } else {
+      const r = await fetch(`${SB_URL}/rest/v1/jobs`, {
+        method: 'POST',
+        headers: { ...H, 'Prefer': 'return=representation' },
+        body: JSON.stringify(job)
+      });
+      if (!r.ok) { const err = await r.text(); throw new Error(err); }
+      toast('✓ Job published live!', 'ok');
+      showMsg('ok', 'Job publish ho gaya! Visitors ko dikhai dega.');
+    }
+    allJobs = await dbFetch();
+    clearForm();
+    renderList();
+  } catch(e) {
+    showMsg('err', 'Error: ' + e.message);
+    toast('❌ Save failed — ' + e.message.substring(0,60), 'err');
+  }
+  btn.disabled = false; sp.style.display = 'none';
+}
+
+// EDIT JOB
+function editJob(id) {
+  const j = allJobs.find(x => x.id === id);
+  if (!j) return;
+  editId = id;
+
+  document.getElementById('f-ten').value = j.title_en || '';
+  document.getElementById('f-tkn').value = j.title_kn || '';
+  document.getElementById('f-dept').value = j.dept || '';
+  document.getElementById('f-loc').value = j.loc || '';
+  document.getElementById('f-seats').value = j.seats || '';
+  document.getElementById('f-sal').value = j.salary || '';
+  document.getElementById('f-age').value = j.age || '';
+  document.getElementById('f-ld').value = j.last_date || '';
+  document.getElementById('f-url').value = j.official_url || '';
+  document.getElementById('f-notif').value = j.notif || '';
+  document.getElementById('f-icon').value = j.icon || '';
+  document.getElementById('f-cats').value = j.cats || '';
+  document.getElementById('f-desc').value = j.description || '';
+  document.getElementById('f-skills').value = j.skills || '';
+  document.getElementById('f-hta').value = j.how_to_apply || '';
+  document.getElementById('f-sd').value = j.start_date || '';
+  document.getElementById('f-syllabus').value = j.syllabus || '';
+  document.getElementById('f-syllabus-url').value = j.syllabus_url || '';
+
+  const catEl = document.querySelector(`.to[data-v="${j.cat}"]`);
+  if (catEl) setCat(j.cat, catEl);
+  const stEl = document.querySelector(`.sto[data-v="${j.status}"]`);
+  if (stEl) setStat(j.status, stEl);
+
+  document.getElementById('fpttl').textContent = '✏️ Edit Job';
+  document.getElementById('fpsub').textContent = j.title_en;
+  const pubBtn = document.getElementById('pub-btn');
+  pubBtn.innerHTML = '<span id="pub-sp" style="display:none" class="spinner-sm"></span> ✓ Update Job';
+  pubBtn.className = 'fbtn fb-upd';
+  pubBtn.onclick = saveJob;
+  document.querySelector('.fpanel').scrollTop = 0;
+  window.scrollTo({top:0,behavior:'smooth'});
+  renderList();
+}
+
+// DELETE JOB
+function confirmDelete(id, title) {
+  document.getElementById('cfsub').textContent = `"${title}"`;
+  document.getElementById('cf-del').onclick = async () => {
+    try {
+      await dbDelete(id);
+      allJobs = allJobs.filter(j => j.id !== id);
+      document.getElementById('cfbg').classList.remove('open');
+      toast('✓ Job deleted', 'ok');
+      if (editId === id) clearForm();
+      renderList();
+    } catch(e) { toast('❌ Delete failed', 'err'); }
+  };
+  document.getElementById('cfbg').classList.add('open');
+}
+
+// CLEAR FORM
+function clearForm() {
+  editId = null;
+  ['f-ten','f-tkn','f-dept','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-url','f-notif','f-icon','f-cats','f-desc','f-skills','f-hta','f-syllabus','f-syllabus-url'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  setCat('karnataka', document.querySelector('.to[data-v="karnataka"]'));
+  setStat('open', document.querySelector('.sto[data-v="open"]'));
+  document.getElementById('fpttl').textContent = '➕ Add New Job';
+  document.getElementById('fpsub').textContent = 'Fill details and publish to Supabase';
+  document.getElementById('pub-btn').textContent = '✓ Publish Job';
+  document.getElementById('pub-btn').className = 'fbtn fb-pub';
+  ['msg-ok','msg-err'].forEach(id => document.getElementById(id).classList.remove('show'));
+}
+
+// RENDER LIST
+function renderList() {
+  const q = (document.querySelector('.rpsearch')?.value||'').toLowerCase();
+  const fil = q ? allJobs.filter(j => j.title_en.toLowerCase().includes(q)||j.dept.toLowerCase().includes(q)) : allJobs;
+
+  const tot = allJobs.length;
+  const opn = allJobs.filter(j=>j.status==='open').length;
+  const totS = allJobs.reduce((s,j)=>s+(parseInt(j.seats)||0),0);
+  document.getElementById('rpstats').innerHTML = `<span class="rst"><strong>${tot}</strong> total</span><span class="rst"><strong>${opn}</strong> open</span><span class="rst"><strong>${totS.toLocaleString('en-IN')}</strong> vacancies</span>`;
+
+  const box = document.getElementById('jlist');
+  if (!fil.length) {
+    box.innerHTML = `<div class="empty-s">${q ? 'No jobs match' : 'No jobs yet. Add your first job!'}</div>`;
+    return;
+  }
+  const sb = s => s==='open'?`<span class="jbdg jb-open">● Open</span>`:s==='closed'?`<span class="jbdg jb-closed">○ Closed</span>`:`<span class="jbdg jb-soon">◐ Soon</span>`;
+  box.innerHTML = fil.map(j => `
+    <div class="jr ${editId===j.id?'ed':''}">
+      <div>
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;">
+          <span class="jric">${j.icon||'💼'}</span>
+          <span class="jrttl">${j.title_en}</span>
+        </div>
+        ${j.title_kn?`<div style="font-size:12px;color:var(--tx2);margin-bottom:3px;font-family:var(--fkn);">${j.title_kn}</div>`:''}
+        <div class="jrmeta">
+          <span>${j.dept}</span>
+          ${j.seats?`<span>👥 ${j.seats} Posts</span>`:''}
+          ${j.last_date?`<span>📅 ${j.last_date}</span>`:''}
+          ${j.official_url?`<span style="color:var(--gn);">🌐 Link ✓</span>`:`<span style="color:#A02010;">⚠️ No URL</span>`}
+        </div>
+        <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;">${sb(j.status)}</div>
+      </div>
+      <div class="jacts">
+        ${j.official_url?`<button class="ja" style="background:#EEF2FF;color:#1A3A8F;" onclick="window.open('${j.official_url}','_blank')" title="Test URL">🌐</button>`:''}
+        <button class="ja ja-e" onclick="editJob('${j.id}')">✏️</button>
+        <button class="ja ja-d" onclick="confirmDelete('${j.id}','${(j.title_en||'').replace(/'/g,'')}')">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+// TOAST + MSG
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+function showMsg(type, msg) {
+  ['msg-ok','msg-err'].forEach(id => document.getElementById(id).classList.remove('show'));
+  const el = document.getElementById('msg-' + type);
+  el.textContent = (type==='ok'?'✓ ':'❌ ') + msg;
+  el.classList.add('show');
+}
+
+// DARK MODE
+function toggleDark() {
+  const on = document.documentElement.getAttribute('data-theme') === 'dark';
+  applyDark(!on);
+}
+function applyDark(on) {
+  document.documentElement.setAttribute('data-theme', on ? 'dark' : 'light');
+  document.getElementById('dmbtn').textContent = on ? '☀️ Light' : '🌙 Dark';
+  localStorage.setItem('nj_theme', on ? 'dark' : 'light');
+}
+
+window.onclick = e => { if (e.target === document.getElementById('cfbg')) document.getElementById('cfbg').classList.remove('open'); };
+
+// INIT
+async function init() {
+  const t = localStorage.getItem('nj_theme');
+  if (t === 'dark') applyDark(true);
+  try {
+    allJobs = await dbFetch();
+    renderList();
+  } catch(e) {
+    document.getElementById('jlist').innerHTML = `<div class="empty-s">⚠️ Could not connect to database.<br><small>${e.message}</small></div>`;
+  }
+}
+init();
+</script>
+</body>
+</html>

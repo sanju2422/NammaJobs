@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Tools | Namma Jobs</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--sf:#E8521A;--sfl:#FEF0E8;--sfd:#B53D0D;--gn:#1A6B3C;--gnl:#E8F5EE;--nv:#0D1B3E;--bg:#FFF8DC;--card:#FFFDF5;--border:#E8DFC0;--tx:#1A1A10;--tx2:#585850;--tx3:#9A9A90;--fen:'DM Sans',sans-serif;--r:10px;}
+[data-theme=dark]{--bg:#111;--card:#1C1C1C;--border:#2E2E2E;--tx:#EFEFEF;--tx2:#AAAAAA;--tx3:#666;--nv:#080D1A;--sfl:#1E1008;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fen);background:var(--bg);color:var(--tx);min-height:100vh;}
+.topbar{background:var(--nv);padding:7px 0;}
+.tbi{max-width:1000px;margin:0 auto;padding:0 18px;display:flex;justify-content:space-between;align-items:center;}
+.tlogo{display:flex;align-items:center;gap:8px;color:#fff;font-weight:700;font-size:15px;cursor:pointer;}
+.tlogo img{width:30px;height:30px;border-radius:6px;object-fit:cover;}
+.tlogo span{color:var(--sf);}
+.tbtn{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.6);cursor:pointer;transition:.2s;}
+.tbtn:hover{color:#fff;}
+
+.hero{background:linear-gradient(135deg,var(--nv),#1A2F5E);padding:36px 18px;text-align:center;}
+.hero h1{font-size:26px;font-weight:700;color:#fff;margin-bottom:6px;}
+.hero p{font-size:14px;color:rgba(255,255,255,.6);max-width:500px;margin:0 auto;}
+
+.wrap{max-width:1000px;margin:0 auto;padding:22px 18px;}
+
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:5px;margin-bottom:20px;flex-wrap:wrap;}
+.tab{flex:1;min-width:120px;padding:9px 14px;border-radius:7px;font-size:13px;font-weight:700;border:none;background:transparent;color:var(--tx2);cursor:pointer;transition:.2s;text-align:center;}
+.tab.on{background:var(--sf);color:#fff;}
+.tab:hover:not(.on){background:var(--border);}
+.tool-panel{display:none;}.tool-panel.on{display:block;}
+
+/* DROP ZONE */
+.drop-zone{border:2.5px dashed var(--border);border-radius:var(--r);padding:40px 20px;text-align:center;cursor:pointer;transition:.2s;background:var(--card);}
+.drop-zone:hover,.drop-zone.over{border-color:var(--sf);background:var(--sfl);}
+.drop-icon{font-size:40px;margin-bottom:10px;}
+.drop-ttl{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px;}
+.drop-sub{font-size:12px;color:var(--tx3);}
+.drop-btn{display:inline-block;background:var(--sf);color:#fff;border:none;border-radius:7px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;margin-top:12px;}
+input[type=file]{display:none;}
+
+/* CONTROLS */
+.ctrl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:16px 0;}
+.ctrl-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;}
+.ctrl-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--tx3);margin-bottom:7px;display:block;}
+.ctrl-inp{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;font-family:var(--fen);color:var(--tx);background:var(--card);outline:none;}
+.ctrl-inp:focus{border-color:var(--sf);}
+select.ctrl-inp{cursor:pointer;}
+.range-row{display:flex;align-items:center;gap:10px;}
+.range-row input[type=range]{flex:1;}
+.range-val{font-size:13px;font-weight:700;color:var(--sf);min-width:40px;text-align:right;}
+
+/* PREVIEW */
+.preview-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+@media(max-width:600px){.preview-wrap{grid-template-columns:1fr;}}
+.preview-box{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.preview-hdr{background:var(--nv);padding:8px 12px;font-size:12px;font-weight:700;color:#fff;display:flex;justify-content:space-between;}
+.preview-img-wrap{padding:12px;min-height:180px;display:flex;align-items:center;justify-content:center;background:#f0f0f0;}
+[data-theme=dark] .preview-img-wrap{background:#222;}
+.preview-img-wrap img{max-width:100%;max-height:220px;object-fit:contain;border-radius:4px;}
+.preview-info{padding:10px 12px;font-size:12px;color:var(--tx3);display:flex;gap:10px;flex-wrap:wrap;}
+.pi{display:flex;flex-direction:column;gap:1px;}
+.pi strong{font-size:13px;color:var(--tx);font-weight:700;}
+
+/* ACTION BUTTONS */
+.act-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.act-btn{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:.15s;font-family:var(--fen);display:flex;align-items:center;gap:6px;}
+.ab-primary{background:var(--sf);color:#fff;}.ab-primary:hover{background:var(--sfd);}
+.ab-green{background:var(--gn);color:#fff;}.ab-green:hover{background:#0E4826;}
+.ab-sec{background:var(--border);color:var(--tx);}.ab-sec:hover{background:var(--tx3);color:#fff;}
+.ab-primary:disabled,.ab-green:disabled{opacity:.5;cursor:not-allowed;}
+
+/* PROGRESS */
+.prog-bar{height:5px;background:var(--border);border-radius:3px;margin:10px 0;display:none;}
+.prog-fill{height:5px;background:var(--sf);border-radius:3px;width:0%;transition:width .3s;}
+.status-msg{font-size:13px;padding:10px 14px;border-radius:7px;margin:8px 0;display:none;}
+.sm-ok{background:var(--gnl);color:var(--gn);}
+.sm-err{background:#FEE8E8;color:#A02010;}
+
+/* PDF MERGE */
+.pdf-list{display:flex;flex-direction:column;gap:8px;margin:14px 0;}
+.pdf-item{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.pdf-ic{font-size:20px;}
+.pdf-name{flex:1;font-size:13px;font-weight:600;color:var(--tx);}
+.pdf-size{font-size:11px;color:var(--tx3);}
+.pdf-rm{background:none;border:none;color:#A02010;cursor:pointer;font-size:16px;padding:2px 6px;}
+
+/* COMPRESS INFO */
+.compress-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+.cs-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;}
+.cs-lbl{font-size:11px;color:var(--tx3);margin-bottom:4px;}
+.cs-val{font-size:18px;font-weight:700;color:var(--tx);}
+.cs-val.saved{color:var(--gn);}
+
+canvas{display:none;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tbi">
+    <div class="tlogo" onclick="window.location.href='index.html'">
+      <img src="NammaJobs.png" alt="">
+      Namma <span>Jobs</span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="tbtn" id="dmb" onclick="toggleDark()">🌙</button>
+      <button class="tbtn" onclick="window.location.href='index.html'">← Back</button>
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <h1>🛠️ File Tools</h1>
+  <p>Image resize, compress, convert — PDF merge/split — All free, runs in your browser</p>
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <button class="tab on" onclick="showTool('img-resize',this)">🖼️ Image Resize</button>
+    <button class="tab" onclick="showTool('img-compress',this)">📦 Compress</button>
+    <button class="tab" onclick="showTool('img-convert',this)">🔄 Convert</button>
+    <button class="tab" onclick="showTool('bg-remove-info',this)">✂️ BG Remove</button>
+  </div>
+
+  <!-- IMAGE RESIZE -->
+  <div class="tool-panel on" id="img-resize">
+    <div class="drop-zone" id="rz-drop" onclick="document.getElementById('rz-input').click()" ondragover="dzOver(event,'rz-drop')" ondragleave="dzLeave('rz-drop')" ondrop="dzDrop(event,'rz-input','resizePreview')">
+      <div class="drop-icon">🖼️</div>
+      <div class="drop-ttl">Drop image here / Click to upload</div>
+      <div class="drop-sub">JPG, PNG, WEBP, GIF supported</div>
+      <label class="drop-btn">Choose Image</label>
+      <input type="file" id="rz-input" accept="image/*" onchange="loadImgResize(this)">
+    </div>
+
+    <div id="rz-controls" style="display:none">
+      <div class="ctrl-grid">
+        <div class="ctrl-box">
+          <span class="ctrl-lbl">Width (px)</span>
+          <input class="ctrl-inp" type="number" id="rz-w" placeholder="Width" oninput="syncDimension('w')">
+        </div>
+        <div class="ctrl-box">
+          <span class="ctrl-lbl">Height (px)</span>
+          <input class="ctrl-inp" type="number" id="rz-h" placeholder="Height" oninput="syncDimension('h')">
+        </div>
+        <div class="ctrl-box">
+          <span class="ctrl-lbl">Output Format</span>
+          <select class="ctrl-inp" id="rz-fmt">
+            <option value="image/jpeg">JPG</option>
+            <option value="image/png">PNG</option>
+            <option value="image/webp">WEBP</option>
+          </select>
+        </div>
+        <div class="ctrl-box">
+          <span class="ctrl-lbl">Quality: <span id="rz-q-val">90</span>%</span>
+          <div class="range-row">
+            <input type="range" min="10" max="100" value="90" id="rz-q" oninput="document.getElementById('rz-q-val').textContent=this.value" style="flex:1">
+          </div>
+        </div>
+      </div>
+      <div style="margin:8px 0;display:flex;align-items:center;gap:8px;">
+        <input type="checkbox" id="rz-lock" checked style="width:16px;height:16px;accent-color:var(--sf)">
+        <label for="rz-lock" style="font-size:13px;font-weight:600;cursor:pointer;">Lock aspect ratio</label>
+      </div>
+
+      <div class="preview-wrap" id="rz-preview"></div>
+      <div class="prog-bar" id="rz-prog"><div class="prog-fill" id="rz-prog-fill"></div></div>
+      <div class="act-row">
+        <button class="act-btn ab-primary" onclick="doResize()">✓ Resize & Download</button>
+        <button class="act-btn ab-sec" onclick="resetTool('rz')">✕ Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPRESS -->
+  <div class="tool-panel" id="img-compress">
+    <div class="drop-zone" id="cp-drop" onclick="document.getElementById('cp-input').click()" ondragover="dzOver(event,'cp-drop')" ondragleave="dzLeave('cp-drop')" ondrop="dzDrop(event,'cp-input','compressPreview')">
+      <div class="drop-icon">📦</div>
+      <div class="drop-ttl">Drop image to compress</div>
+      <div class="drop-sub">Reduce file size without losing much quality</div>
+      <label class="drop-btn">Choose Image</label>
+      <input type="file" id="cp-input" accept="image/*" onchange="loadImgCompress(this)">
+    </div>
+    <div id="cp-controls" style="display:none">
+      <div class="ctrl-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="ctrl-box">
+          <span class="ctrl-lbl">Compression Quality: <span id="cp-q-val">75</span>%</span>
+          <div class="range-row">
+            <input type="range" min="5" max="95" value="75" id="cp-q" oninput="document.getElementById('cp-q-val').textContent=this.value;updateCompressPreview()">
+          </div>
+        </div>
+        <div class="ctrl-box">
+          <span class="ctrl-lbl">Output Format</span>
+          <select class="ctrl-inp" id="cp-fmt" onchange="updateCompressPreview()">
+            <option value="image/jpeg">JPG (smaller)</option>
+            <option value="image/webp">WEBP (best)</option>
+            <option value="image/png">PNG (lossless)</option>
+          </select>
+        </div>
+      </div>
+      <div class="compress-stats" id="cp-stats"></div>
+      <div class="act-row">
+        <button class="act-btn ab-green" onclick="doCompress()">📦 Compress & Download</button>
+        <button class="act-btn ab-sec" onclick="resetTool('cp')">✕ Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONVERT -->
+  <div class="tool-panel" id="img-convert">
+    <div class="drop-zone" id="cv-drop" onclick="document.getElementById('cv-input').click()" ondragover="dzOver(event,'cv-drop')" ondragleave="dzLeave('cv-drop')" ondrop="dzDrop(event,'cv-input','convertLoad')">
+      <div class="drop-icon">🔄</div>
+      <div class="drop-ttl">Convert image format</div>
+      <div class="drop-sub">PNG ↔ JPG ↔ WEBP ↔ GIF</div>
+      <label class="drop-btn">Choose Image</label>
+      <input type="file" id="cv-input" accept="image/*" onchange="loadConvert(this)">
+    </div>
+    <div id="cv-controls" style="display:none">
+      <div class="ctrl-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="ctrl-box">
+          <span class="ctrl-lbl">Convert To</span>
+          <select class="ctrl-inp" id="cv-fmt">
+            <option value="image/jpeg">JPG</option>
+            <option value="image/png">PNG</option>
+            <option value="image/webp">WEBP</option>
+          </select>
+        </div>
+        <div class="ctrl-box">
+          <span class="ctrl-lbl">Quality: <span id="cv-q-val">92</span>%</span>
+          <div class="range-row">
+            <input type="range" min="10" max="100" value="92" id="cv-q" oninput="document.getElementById('cv-q-val').textContent=this.value">
+          </div>
+        </div>
+        <div class="ctrl-box" id="cv-info-box"></div>
+      </div>
+      <div class="act-row">
+        <button class="act-btn ab-primary" onclick="doConvert()">🔄 Convert & Download</button>
+        <button class="act-btn ab-sec" onclick="resetTool('cv')">✕ Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PDF TOOLS -->
+  <div class="tool-panel" id="pdf-tool">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px;">
+      <div style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:5px;">📄 Images → PDF</div>
+      <div style="font-size:13px;color:var(--tx3);margin-bottom:14px;">Multiple images ko ek PDF mein convert karo</div>
+      <div class="drop-zone" id="pdf-drop" onclick="document.getElementById('pdf-input').click()" ondragover="dzOver(event,'pdf-drop')" ondragleave="dzLeave('pdf-drop')" ondrop="dzDrop(event,'pdf-input','addPdfImages')">
+        <div class="drop-icon">📄</div>
+        <div class="drop-ttl">Drop images here</div>
+        <div class="drop-sub">JPG, PNG files — multiple allowed</div>
+        <label class="drop-btn">Add Images</label>
+        <input type="file" id="pdf-input" accept="image/*" multiple onchange="addPdfImages(this)">
+      </div>
+      <div class="pdf-list" id="pdf-list"></div>
+      <div class="act-row" id="pdf-acts" style="display:none">
+        <button class="act-btn ab-primary" onclick="makePDF()">📄 Create PDF & Download</button>
+        <button class="act-btn ab-sec" onclick="document.getElementById('pdf-list').innerHTML='';document.getElementById('pdfFiles').length=0;document.getElementById('pdf-acts').style.display='none';pdfImgs=[]">🗑️ Clear All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BG REMOVE INFO -->
+  <div class="tool-panel" id="bg-remove-info">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:28px;text-align:center;">
+      <div style="font-size:48px;margin-bottom:12px;">✂️</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px;">Background Remove</div>
+      <div style="font-size:14px;color:var(--tx3);margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto;">Browser mein background remove karna bahut heavy process hai. In free tools ka use karo — bilkul free hain:</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button onclick="window.open('https://www.remove.bg','_blank')" style="background:var(--sf);color:#fff;border:none;border-radius:8px;padding:12px 22px;font-size:14px;font-weight:700;cursor:pointer;">remove.bg ↗</button>
+        <button onclick="window.open('https://www.canva.com/photo-enhancer/background-remover/','_blank')" style="background:var(--gn);color:#fff;border:none;border-radius:8px;padding:12px 22px;font-size:14px;font-weight:700;cursor:pointer;">Canva BG Remove ↗</button>
+        <button onclick="window.open('https://photoscissors.com','_blank')" style="background:var(--nv);color:#fff;border:none;border-radius:8px;padding:12px 22px;font-size:14px;font-weight:700;cursor:pointer;">PhotoScissors ↗</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<canvas id="main-canvas"></canvas>
+<footer style="background:var(--nv);color:rgba(255,255,255,.6);padding:16px;text-align:center;font-size:12px;font-family:var(--fen);margin-top:28px;">
+  © 2025 Namma Jobs Tools | All processing done locally in your browser — files never uploaded
+</footer>
+
+<script>
+// DARK MODE
+function toggleDark(){
+  const on=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',on?'light':'dark');
+  document.getElementById('dmb').textContent=on?'🌙':'☀️';
+  localStorage.setItem('nj_theme',on?'light':'dark');
+}
+(function(){if(localStorage.getItem('nj_theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('dmb').textContent='☀️';}})();
+
+// TABS
+function showTool(id,el){
+  document.querySelectorAll('.tool-panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  el.classList.add('on');
+}
+
+// DRAG DROP
+function dzOver(e,id){e.preventDefault();document.getElementById(id).classList.add('over');}
+function dzLeave(id){document.getElementById(id).classList.remove('over');}
+function dzDrop(e,inputId,fn){
+  e.preventDefault();
+  dzLeave(e.target.closest('.drop-zone')?.id||'');
+  const files=e.dataTransfer.files;
+  if(!files.length)return;
+  const inp=document.getElementById(inputId);
+  const dt=new DataTransfer();
+  Array.from(files).forEach(f=>dt.items.add(f));
+  inp.files=dt.files;
+  if(fn==='resizePreview')loadImgResize(inp);
+  else if(fn==='compressPreview')loadImgCompress(inp);
+  else if(fn==='convertLoad')loadConvert(inp);
+  else if(fn==='addPdfImages')addPdfImages(inp);
+}
+
+// FORMAT SIZE
+function fmtSz(b){if(b<1024)return b+'B';if(b<1048576)return (b/1024).toFixed(1)+'KB';return (b/1048576).toFixed(2)+'MB';}
+
+// ===== RESIZE =====
+let rzImg=null,rzNatW=0,rzNatH=0,rzFile=null;
+function loadImgResize(inp){
+  const f=inp.files[0];if(!f)return;
+  rzFile=f;
+  const url=URL.createObjectURL(f);
+  const img=new Image();
+  img.onload=()=>{
+    rzImg=img;rzNatW=img.naturalWidth;rzNatH=img.naturalHeight;
+    document.getElementById('rz-w').value=rzNatW;
+    document.getElementById('rz-h').value=rzNatH;
+    document.getElementById('rz-controls').style.display='block';
+    document.getElementById('rz-drop').style.display='none';
+    document.getElementById('rz-preview').innerHTML=`
+      <div class="preview-box"><div class="preview-hdr"><span>Original</span><span>${fmtSz(f.size)}</span></div>
+      <div class="preview-img-wrap"><img src="${url}" id="rz-orig-img"></div>
+      <div class="preview-info"><div class="pi"><strong>${rzNatW}×${rzNatH}</strong><span>Dimensions</span></div><div class="pi"><strong>${fmtSz(f.size)}</strong><span>Size</span></div></div></div>
+      <div class="preview-box"><div class="preview-hdr"><span>Preview</span><span id="rz-out-sz">—</span></div>
+      <div class="preview-img-wrap"><img src="${url}" id="rz-prev-img" style="max-width:100%;max-height:220px;"></div>
+      <div class="preview-info"><div class="pi"><strong id="rz-dim-out">${rzNatW}×${rzNatH}</strong><span>New size</span></div></div></div>`;
+  };img.src=url;
+}
+function syncDimension(changed){
+  if(!document.getElementById('rz-lock').checked)return;
+  const ratio=rzNatW/rzNatH;
+  if(changed==='w'){const w=parseInt(document.getElementById('rz-w').value)||0;document.getElementById('rz-h').value=Math.round(w/ratio);}
+  else{const h=parseInt(document.getElementById('rz-h').value)||0;document.getElementById('rz-w').value=Math.round(h*ratio);}
+  const w=parseInt(document.getElementById('rz-w').value)||rzNatW;
+  const h=parseInt(document.getElementById('rz-h').value)||rzNatH;
+  const el=document.getElementById('rz-dim-out');if(el)el.textContent=w+'×'+h;
+}
+function doResize(){
+  if(!rzImg)return;
+  const w=parseInt(document.getElementById('rz-w').value)||rzNatW;
+  const h=parseInt(document.getElementById('rz-h').value)||rzNatH;
+  const fmt=document.getElementById('rz-fmt').value;
+  const q=parseInt(document.getElementById('rz-q').value)/100;
+  const c=document.getElementById('main-canvas');
+  c.width=w;c.height=h;
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+  if(fmt==='image/png'||fmt==='image/webp'){ctx.fillStyle='transparent';}
+  ctx.drawImage(rzImg,0,0,w,h);
+  const ext=fmt.split('/')[1];
+  const fname=(rzFile?.name.replace(/\.[^.]+$/,'')||'image')+'_resized_'+w+'x'+h+'.'+ext;
+  c.toBlob(blob=>{
+    if(!blob)return;
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download=fname;a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    const sz=document.getElementById('rz-out-sz');if(sz)sz.textContent=fmtSz(blob.size);
+  },fmt,q);
+}
+
+// ===== COMPRESS =====
+let cpImg=null,cpFile=null,cpUrl=null;
+function loadImgCompress(inp){
+  const f=inp.files[0];if(!f)return;
+  cpFile=f;cpUrl=URL.createObjectURL(f);
+  const img=new Image();
+  img.onload=()=>{cpImg=img;document.getElementById('cp-controls').style.display='block';document.getElementById('cp-drop').style.display='none';updateCompressPreview();};
+  img.src=cpUrl;
+}
+function updateCompressPreview(){
+  if(!cpImg||!cpFile)return;
+  const fmt=document.getElementById('cp-fmt').value;
+  const q=parseInt(document.getElementById('cp-q').value)/100;
+  const c=document.getElementById('main-canvas');
+  c.width=cpImg.naturalWidth;c.height=cpImg.naturalHeight;
+  c.getContext('2d').drawImage(cpImg,0,0);
+  c.toBlob(blob=>{
+    if(!blob)return;
+    const saved=cpFile.size-blob.size;
+    const pct=Math.round(saved/cpFile.size*100);
+    document.getElementById('cp-stats').innerHTML=`
+      <div class="cs-box"><div class="cs-lbl">Original</div><div class="cs-val">${fmtSz(cpFile.size)}</div></div>
+      <div class="cs-box"><div class="cs-lbl">Compressed</div><div class="cs-val">${fmtSz(blob.size)}</div></div>
+      <div class="cs-box"><div class="cs-lbl">Saved</div><div class="cs-val saved">${pct>0?'-'+pct+'%':'0%'}</div></div>`;
+  },fmt,q);
+}
+function doCompress(){
+  if(!cpImg||!cpFile)return;
+  const fmt=document.getElementById('cp-fmt').value;
+  const q=parseInt(document.getElementById('cp-q').value)/100;
+  const ext=fmt.split('/')[1];
+  const c=document.getElementById('main-canvas');
+  c.width=cpImg.naturalWidth;c.height=cpImg.naturalHeight;
+  c.getContext('2d').drawImage(cpImg,0,0);
+  const fname=(cpFile.name.replace(/\.[^.]+$/,'')||'image')+'_compressed.'+ext;
+  c.toBlob(blob=>{
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download=fname;a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  },fmt,q);
+}
+
+// ===== CONVERT =====
+let cvImg=null,cvFile=null;
+function loadConvert(inp){
+  const f=inp.files[0];if(!f)return;
+  cvFile=f;
+  const url=URL.createObjectURL(f);
+  const img=new Image();
+  img.onload=()=>{
+    cvImg=img;
+    document.getElementById('cv-controls').style.display='block';
+    document.getElementById('cv-drop').style.display='none';
+    document.getElementById('cv-info-box').innerHTML=`<span class="ctrl-lbl">File Info</span><div style="font-size:13px;font-weight:700;color:var(--tx);">${f.name}</div><div style="font-size:12px;color:var(--tx3);">${img.naturalWidth}×${img.naturalHeight} · ${fmtSz(f.size)}</div>`;
+  };img.src=url;
+}
+function doConvert(){
+  if(!cvImg||!cvFile)return;
+  const fmt=document.getElementById('cv-fmt').value;
+  const q=parseInt(document.getElementById('cv-q').value)/100;
+  const ext=fmt.split('/')[1];
+  const c=document.getElementById('main-canvas');
+  c.width=cvImg.naturalWidth;c.height=cvImg.naturalHeight;
+  const ctx=c.getContext('2d');
+  if(fmt==='image/png'){ctx.clearRect(0,0,c.width,c.height);}
+  else{ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);}
+  ctx.drawImage(cvImg,0,0);
+  const fname=cvFile.name.replace(/\.[^.]+$/,'')+'.'+ext;
+  c.toBlob(blob=>{
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download=fname;a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  },fmt,q);
+}
+
+// ===== PDF (Images to PDF via simple HTML print trick) =====
+let pdfImgs=[];
+function addPdfImages(inp){
+  const files=Array.from(inp.files||[]);
+  files.forEach(f=>{if(f.type.startsWith('image/')){pdfImgs.push(f);}});
+  renderPdfList();
+}
+function renderPdfList(){
+  const list=document.getElementById('pdf-list');
+  if(!pdfImgs.length){list.innerHTML='';document.getElementById('pdf-acts').style.display='none';return;}
+  document.getElementById('pdf-acts').style.display='flex';
+  list.innerHTML=pdfImgs.map((f,i)=>`
+    <div class="pdf-item">
+      <div class="pdf-ic">🖼️</div>
+      <div class="pdf-name">${f.name}</div>
+      <div class="pdf-size">${fmtSz(f.size)}</div>
+      <button class="pdf-rm" onclick="pdfImgs.splice(${i},1);renderPdfList()">✕</button>
+    </div>`).join('');
+}
+async function makePDF(){
+  if(!pdfImgs.length)return;
+  const urls=await Promise.all(pdfImgs.map(f=>new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(f);})));
+  const w=window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#fff;}
+    .page{width:100%;page-break-after:always;display:flex;align-items:center;justify-content:center;padding:20px;}
+    img{max-width:100%;max-height:95vh;object-fit:contain;}
+    @media print{.page{page-break-after:always;}.no-print{display:none;}}
+  </style></head><body>
+  <div class="no-print" style="background:#0D1B3E;color:#fff;padding:12px 18px;text-align:center;font-family:sans-serif;font-size:14px;">
+    <strong>Namma Jobs PDF Tool</strong> — Press <strong>Ctrl+P</strong> (or Cmd+P) → Save as PDF
+  </div>
+  ${urls.map(u=>`<div class="page"><img src="${u}"></div>`).join('')}
+  </body></html>`);
+  w.document.close();
+  setTimeout(()=>w.print(),800);
+}
+
+// RESET
+function resetTool(p){
+  if(p==='rz'){rzImg=null;rzFile=null;document.getElementById('rz-controls').style.display='none';document.getElementById('rz-drop').style.display='block';document.getElementById('rz-input').value='';}
+  if(p==='cp'){cpImg=null;cpFile=null;document.getElementById('cp-controls').style.display='none';document.getElementById('cp-drop').style.display='block';document.getElementById('cp-input').value='';}
+  if(p==='cv'){cvImg=null;cvFile=null;document.getElementById('cv-controls').style.display='none';document.getElementById('cv-drop').style.display='block';document.getElementById('cv-input').value='';}
+}
+</script>
+</body>
+</html>
