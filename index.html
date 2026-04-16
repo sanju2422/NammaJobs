@@ -558,7 +558,7 @@ footer{background:var(--nv);color:rgba(255,255,255,.65);padding:28px 18px 14px;m
   <div>
     <!-- CATEGORIES -->
     <!-- LATEST JOBS — UPAR -->
-    <div class="sh"><div class="sd"></div><div class="st2" id="jttl">Latest Jobs</div><div class="sm t" data-en="View All →" data-kn="ಎಲ್ಲ ನೋಡಿ →">View All →</div></div>
+    <div class="sh"><div class="sd"></div><div class="st2" id="jttl">Latest Jobs</div><div class="sm t" onclick="fc('all',document.querySelectorAll('.nl')[0])" style="cursor:pointer;" data-en="View All →" data-kn="ಎಲ್ಲ ನೋಡಿ →">View All →</div></div>
     <div id="jgrid" class="jg"></div>
     <div class="sh" id="mhdr" style="display:none"><div class="sd"></div><div class="st2" id="mttl">More Jobs</div></div>
     <div class="jl" id="jlist"></div>
@@ -775,8 +775,8 @@ function renderAll() {
     { n: opn, l: lang === 'kn' ? 'ತೆರೆದ ಉದ್ಯೋಗ' : 'Open Jobs' },
   ].map((s, i, a) => `<div class="sti"><span class="stn">${s.n}</span><span class="stl">${s.l}</span></div>${i < a.length - 1 ? '<div class="sdv"></div>' : ''}`).join('');
 
-  // Cat boxes always visible (now below jobs)
-  document.getElementById('cbsec').style.display = 'block';
+  // Cat boxes visible only on All Jobs view
+  document.getElementById('cbsec').style.display = (cf === 'all' && !q) ? 'block' : 'none';
 
   // Jobs title
   document.getElementById('jttl').textContent = lang === 'kn' ? 'ಇತ್ತೀಚಿನ ಉದ್ಯೋಗಗಳು' : 'Latest Jobs';
