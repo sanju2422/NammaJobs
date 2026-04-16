@@ -567,7 +567,8 @@ footer{background:var(--nv);color:rgba(255,255,255,.65);padding:28px 18px 14px;m
     <div id="soon-sec" style="display:none;">
       <div class="sh">
         <div class="sd" style="background:#C49010;"></div>
-        <div class="st2">⏳ <span class="t" data-en="Coming Soon — Apply Date Awaited" data-kn="ಶೀಘ್ರದಲ್ಲಿ ಬರಲಿದೆ">Coming Soon — Apply Date Awaited</span></div>
+        <div class="st2" style="color:var(--tx);">⏳ <span class="t" data-en="Coming Soon Jobs" data-kn="ಶೀಘ್ರದಲ್ಲಿ ಬರಲಿದೆ">Coming Soon Jobs</span></div>
+        <div class="sm" style="background:#FDF3D7;color:#8A6000;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:700;">Apply Date Awaited</div>
       </div>
       <div id="soon-grid" class="jg"></div>
     </div>
@@ -988,7 +989,8 @@ function shareWA(id, title) {
 }
 function shareTG(id, title) {
   const url = getJobUrl(id);
-  window.open('https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent('🔔 ' + title + ' | Namma Jobs'), '_blank');
+  const text = '🔔 ' + title + ' | Namma Jobs\n👉 ' + url;
+  window.open('https://telegram.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text), '_blank');
 }
 function copyJobLink(id, btn) {
   navigator.clipboard.writeText(getJobUrl(id)).then(() => {
