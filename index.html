@@ -542,8 +542,16 @@ footer{background:var(--nv);color:rgba(255,255,255,.65);padding:28px 18px 14px;m
   </div>
 </div>
 
-<!-- STATS -->
-<div class="sbar"><div class="sbari" id="sbari"></div></div>
+<!-- STATS + JOIN BUTTONS -->
+<div style="background:var(--nv);padding:8px 0;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <div class="sbari" id="sbari" style="display:flex;align-items:center;gap:0;"></div>
+    <div style="display:flex;gap:8px;">
+      <a href="https://t.me/nammajobs_karnataka" target="_blank" style="display:flex;align-items:center;gap:5px;background:#0088cc;color:#fff;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;text-decoration:none;font-family:var(--fen);white-space:nowrap;">✈️ Join Telegram</a>
+      <a href="https://whatsapp.com/channel/0029VbD5Hy5Au3aKeDdCB10L" target="_blank" style="display:flex;align-items:center;gap:5px;background:#25D366;color:#fff;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;text-decoration:none;font-family:var(--fen);white-space:nowrap;">📱 Join WhatsApp</a>
+    </div>
+  </div>
+</div>
 
 <!-- MAIN -->
 <div class="main">
@@ -554,6 +562,15 @@ footer{background:var(--nv);color:rgba(255,255,255,.65);padding:28px 18px 14px;m
     <div id="jgrid" class="jg"></div>
     <div class="sh" id="mhdr" style="display:none"><div class="sd"></div><div class="st2" id="mttl">More Jobs</div></div>
     <div class="jl" id="jlist"></div>
+
+    <!-- COMING SOON SECTION -->
+    <div id="soon-sec" style="display:none;">
+      <div class="sh">
+        <div class="sd" style="background:#C49010;"></div>
+        <div class="st2">⏳ <span class="t" data-en="Coming Soon — Apply Date Awaited" data-kn="ಶೀಘ್ರದಲ್ಲಿ ಬರಲಿದೆ">Coming Soon — Apply Date Awaited</span></div>
+      </div>
+      <div id="soon-grid" class="jg"></div>
+    </div>
 
     <!-- CATEGORIES — NICHE -->
     <div id="cbsec">
@@ -626,10 +643,6 @@ footer{background:var(--nv);color:rgba(255,255,255,.65);padding:28px 18px 14px;m
         <span class="fl">🎓 Admit Cards</span>
         <span class="fl">📊 Results</span>
         <span class="fl">📖 Syllabus</span>
-        <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;">
-          <a href="https://t.me/nammajobs_karnataka" target="_blank" style="display:flex;align-items:center;gap:8px;background:#0088cc;color:#fff;border-radius:8px;padding:9px 14px;font-size:13px;font-weight:700;text-decoration:none;font-family:var(--fen);transition:.2s;">✈️ Join Telegram Channel</a>
-          <a href="https://whatsapp.com/channel/0029VbD5Hy5Au3aKeDdCB10L" target="_blank" style="display:flex;align-items:center;gap:8px;background:#25D366;color:#fff;border-radius:8px;padding:9px 14px;font-size:13px;font-weight:700;text-decoration:none;font-family:var(--fen);transition:.2s;">📱 Join WhatsApp Channel</a>
-        </div>
       </div>
     </div>
     <div class="fb">
@@ -710,10 +723,17 @@ function autoExpire(jobs) {
   const today = new Date();
   today.setHours(0,0,0,0);
   return jobs.map(j => {
+    // Auto close if last_date passed
     if (j.last_date && j.status !== 'closed') {
       const ld = new Date(j.last_date);
       ld.setHours(0,0,0,0);
       if (ld < today) return { ...j, status: 'closed' };
+    }
+    // Auto open Coming Soon when start_date arrives
+    if (j.status === 'soon' && j.start_date) {
+      const sd = new Date(j.start_date);
+      sd.setHours(0,0,0,0);
+      if (sd <= today) return { ...j, status: 'open' };
     }
     return j;
   });
@@ -762,8 +782,11 @@ function renderAll() {
   document.getElementById('jttl').textContent = lang === 'kn' ? 'ಇತ್ತೀಚಿನ ಉದ್ಯೋಗಗಳು' : 'Latest Jobs';
   document.getElementById('mttl').textContent = lang === 'kn' ? 'ಇತರ ಉದ್ಯೋಗಗಳು' : 'More Jobs';
 
-  // Open jobs first, then others
-  const sorted = [...fil.filter(j => j.status === 'open'), ...fil.filter(j => j.status !== 'open')];
+  // Open jobs first, then coming soon, then closed
+  const openJobs = fil.filter(j => j.status === 'open');
+  const soonJobs = fil.filter(j => j.status === 'soon');
+  const closedJobs = fil.filter(j => j.status === 'closed');
+  const sorted = [...openJobs, ...closedJobs];
   const grid = sorted.slice(0, 6), list = sorted.slice(6);
 
   document.getElementById('jgrid').innerHTML = grid.length
@@ -771,6 +794,16 @@ function renderAll() {
     : `<div class="empty" style="grid-column:1/-1">${lang === 'kn' ? 'ಯಾವುದೇ ಉದ್ಯೋಗ ಕಂಡುಬಂದಿಲ್ಲ' : 'No jobs found'}</div>`;
   document.getElementById('mhdr').style.display = list.length ? 'flex' : 'none';
   document.getElementById('jlist').innerHTML = list.map(jListCard).join('');
+
+  // Coming Soon section
+  const soonSec = document.getElementById('soon-sec');
+  const soonGrid = document.getElementById('soon-grid');
+  if (soonJobs.length > 0) {
+    soonSec.style.display = 'block';
+    soonGrid.innerHTML = soonJobs.map(jCard).join('');
+  } else {
+    soonSec.style.display = 'none';
+  }
 
   renderSB(allJobs);
 }
@@ -921,6 +954,8 @@ function jCard(j) {
 
   const ab = isOpen
     ? `<button class="ab abon" onclick="event.stopPropagation();goOff2('${j.id}')">${lang==='kn'?'ಅರ್ಜಿ ↗':'Apply ↗'}</button>`
+    : j.status === 'soon'
+    ? `<button class="ab" style="background:#FDF3D7;color:#8A6000;border:none;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;cursor:default;">${lang==='kn'?'ಶೀಘ್ರದಲ್ಲಿ':'Coming Soon'}</button>`
     : `<button class="ab aboff">${lang==='kn'?'ಮುಚ್ಚಲಾಗಿದೆ':'Closed'}</button>`;
 
   const safeTitle = (j.title_en||'').replace(/'/g, '').replace(/"/g, '');
@@ -938,11 +973,10 @@ function jCard(j) {
         ${j.age?`<span class="pl pa">🎂 ${j.age}</span>`:''}
         ${j.last_date?`<span class="pl pd">📅 ${j.last_date}</span>`:''}
       </div>
-      <div class="jf">${sBadge(j.status)}${ab}</div>
-      <div class="share-row">
-        <button class="sh-wa" onclick="event.stopPropagation();shareWA('${j.id}','${safeTitle}')">📱 ${lang==='kn'?'ಶೇರ್':'Share'}</button>
+      <div class="jf" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+        <button class="sh-wa" onclick="event.stopPropagation();shareWA('${j.id}','${safeTitle}')">📱 WhatsApp</button>
         <button class="sh-tg" onclick="event.stopPropagation();shareTG('${j.id}','${safeTitle}')">✈️ Telegram</button>
-        <button class="sh-cp" onclick="event.stopPropagation();copyJobLink('${j.id}',this)">🔗 ${lang==='kn'?'ಲಿಂಕ್':'Link'}</button>
+        ${ab}
       </div>
     </div>
   </div>`;
