@@ -46,6 +46,8 @@
 [data-theme=dark] .jlc{background:#0F2040;border-color:#1A3A5C;}
 [data-theme=dark] .sc{background:#0F2040;border-color:#1A3A5C;}
 [data-theme=dark] .cb{background:#0F2040;border-color:#1A3A5C;}
+/* Fix animation in dark mode - no white flash */
+[data-theme=dark] .jc,.jc,[data-theme=dark] .jlc,.jlc{will-change:transform,opacity;backface-visibility:hidden;}
 [data-theme=dark] .modal{background:#0A1628;}
 [data-theme=dark] .ib{background:#0A1E35;border-color:#1A3A5C;}
 [data-theme=dark] .mftr{border-top-color:#1A3A5C;}
@@ -349,6 +351,26 @@ button{cursor:pointer;font-family:var(--fen);}
 .jg .jc:nth-child(4){animation-delay:.16s}
 .jg .jc:nth-child(5){animation-delay:.20s}
 .jg .jc:nth-child(6){animation-delay:.24s}
+/* List cards animation */
+.jlc{animation:cardIn .4s ease both;}
+.jl .jlc:nth-child(1){animation-delay:.05s}
+.jl .jlc:nth-child(2){animation-delay:.10s}
+.jl .jlc:nth-child(3){animation-delay:.15s}
+.jl .jlc:nth-child(4){animation-delay:.20s}
+.jl .jlc:nth-child(5){animation-delay:.25s}
+/* Sidebar cards animation */
+.sc{animation:cardIn .5s ease both;}
+.sb3 .sc:nth-child(1){animation-delay:.1s}
+.sb3 .sc:nth-child(2){animation-delay:.2s}
+.sb3 .sc:nth-child(3){animation-delay:.3s}
+/* Category boxes animation */
+.cb{animation:cardIn .4s ease both;}
+.cg .cb:nth-child(1){animation-delay:.05s}
+.cg .cb:nth-child(2){animation-delay:.10s}
+.cg .cb:nth-child(3){animation-delay:.15s}
+.cg .cb:nth-child(4){animation-delay:.20s}
+.cg .cb:nth-child(5){animation-delay:.25s}
+.cg .cb:nth-child(6){animation-delay:.30s}
 .jc:hover{
   border-color:var(--sf);
   box-shadow:0 8px 30px rgba(232,82,26,.18);
