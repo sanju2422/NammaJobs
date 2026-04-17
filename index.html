@@ -336,41 +336,16 @@ button{cursor:pointer;font-family:var(--fen);}
 /* JOB CARDS GRID */
 .jg{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:22px;}
 @media(max-width:580px){.jg{grid-template-columns:1fr;}}
-.jc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;
-  transition:transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease, border-color .2s;
-  box-shadow:var(--sh);
-}
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(18px) scale(.97);}
-  to{opacity:1;transform:translateY(0) scale(1);}
-}
-[data-theme=dark] .jc,[data-theme=dark] .jlc{background:#0F2040;}
-@keyframes cardInDark{
-  from{opacity:0;transform:translateY(18px) scale(.97);background:#0F2040;}
-  to{opacity:1;transform:translateY(0) scale(1);background:#0F2040;}
-}
-/* Sidebar cards animation — these are static so CSS works */
-.sc{animation:cardIn .5s ease both;}
-.sb3 .sc:nth-child(1){animation-delay:.1s}
-.sb3 .sc:nth-child(2){animation-delay:.2s}
-.sb3 .sc:nth-child(3){animation-delay:.3s}
-/* Category boxes animation — static so CSS works */
-.cb{animation:cardIn .4s ease both;}
-.cg .cb:nth-child(1){animation-delay:.05s}
-.cg .cb:nth-child(2){animation-delay:.10s}
-.cg .cb:nth-child(3){animation-delay:.15s}
-.cg .cb:nth-child(4){animation-delay:.20s}
-.cg .cb:nth-child(5){animation-delay:.25s}
-.cg .cb:nth-child(6){animation-delay:.30s}
-.jc:hover{
-  border-color:var(--sf);
-  box-shadow:0 8px 30px rgba(232,82,26,.18);
-  transform:translateY(-5px) scale(1.018);
-}
-.jc:active{transform:translateY(-2px) scale(1.008);}
+.jc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s,opacity .3s;box-shadow:var(--sh);}
+/* Animate class — added by JS */
+.anim-hidden{opacity:0;transform:translateY(20px);}
+.anim-show{opacity:1;transform:translateY(0);}
+/* Sidebar cards */
+.sc{transition:background .3s;}
+/* Category boxes */
+.cb{transition:.2s;}
+.jc:hover{border-color:var(--sf);box-shadow:0 4px 22px rgba(232,82,26,.15);transform:translateY(-2px);}
 .ji{width:100%;height:128px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.ji img{transition:transform .35s ease;}
-.jc:hover .ji img{transform:scale(1.08);}
 .ji .p{position:absolute;inset:0;opacity:.07;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:12px 12px;}
 .ji .iw{position:relative;z-index:1;text-align:center;}
 .bi{font-size:34px;display:block;margin-bottom:5px;}
@@ -388,19 +363,7 @@ button{cursor:pointer;font-family:var(--fen);}
 [data-theme=dark] .cgov{color:#4ABA70;} [data-theme=dark] .ccen{color:#FF8C50;} [data-theme=dark] .crly{color:#9B80F0;} [data-theme=dark] .cpol{color:#6B8FE0;} [data-theme=dark] .ctch{color:#C084F0;}
 .jt{font-size:13px;font-weight:700;color:var(--tx);line-height:1.4;margin-bottom:7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .jm{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px;}
-/* Button animations */
-.abon{transition:transform .15s ease, background .15s ease, box-shadow .15s ease !important;}
-.abon:hover{transform:scale(1.07);box-shadow:0 3px 12px rgba(232,82,26,.35);}
-.abon:active{transform:scale(.95);}
-.sh-wa{transition:transform .15s ease, background .15s ease !important;}
-.sh-wa:hover{transform:scale(1.08);}
-.sh-wa:active{transform:scale(.92);}
-.sh-tg{transition:transform .15s ease, background .15s ease !important;}
-.sh-tg:hover{transform:scale(1.08);}
-.sh-tg:active{transform:scale(.92);}
-/* Section header slide in */
-.sh{animation:slideIn .35s ease both;}
-@keyframes slideIn{from{opacity:0;transform:translateX(-12px);}to{opacity:1;transform:translateX(0);}}
+
 .pl{display:inline-flex;align-items:center;gap:2px;font-size:10px;padding:2px 7px;border-radius:20px;font-family:var(--fen);font-weight:600;}
 .ps{background:var(--gnl);color:var(--gnd);}
 .pd{background:#FEF0EC;color:#B03010;}
@@ -852,6 +815,7 @@ function renderAll() {
   }
 
   renderSB(allJobs);
+  setTimeout(animateCards, 50);
 }
 
 function sBadge(s) {
@@ -979,11 +943,6 @@ function jobCardImg(j) {
   return `<div class="ji ${j.bg||'bg-gov'}"><div class="p"></div><div class="iw"><span class="bi">${j.icon||'💼'}</span><span class="dn">${j.dept}</span></div></div>`;
 }
 
-function getAnim(idx) {
-  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-  const name = dark ? 'cardInDark' : 'cardIn';
-  return `animation:${name} .4s ease both;animation-delay:${idx*0.07}s;`;
-}
   const base = window.location.href.replace(/[^/]*$/, '');
   return base + 'job.html?job=' + id;
 }
@@ -1011,7 +970,7 @@ function jCard(j, idx=0) {
   const safeTitle = (j.title_en||'').replace(/'/g, '').replace(/"/g, '');
   const jobUrl = getJobUrl(j.id);
 
-  return `<div class="jc ${extraClass}" style="${getAnim(idx)}" onclick="window.location.href='${jobUrl}'">
+  return `<div class="jc ${extraClass}" onclick="window.location.href='${jobUrl}'">
     ${jobCardImg(j)}
     <div class="jb">
       ${topBadge}
@@ -1056,7 +1015,7 @@ function jListCard(j, idx=0) {
   const listIcon = logo
     ? `<div class="jli" style="background:#fff;overflow:hidden;"><img src="${logo}" alt="${j.dept}" style="width:100%;height:100%;object-fit:contain;padding:4px;" onerror="this.parentElement.innerHTML='${j.icon||'💼'}'"></div>`
     : `<div class="jli">${j.icon||'💼'}</div>`;
-  return `<div class="jlc" style="${getAnim(idx)}" onclick="window.location.href='${jobUrl}'">
+  return `<div class="jlc" onclick="window.location.href='${jobUrl}'">
     ${listIcon}
     <div class="jlb">
       <div class="jlt">${tt}</div>
@@ -1147,18 +1106,18 @@ function renderSB(jobs) {
   const open = jobs.filter(j => j.status === 'open');
   document.getElementById('sbtop').innerHTML = open.slice(0,5).map((j,i) => {
     const tt = lang==='kn'&&j.title_kn?j.title_kn:j.title_en;
-    return `<div class="sj" onclick="openDet('${j.id}')" style="${getAnim(i)}"><div class="sjn">${i+1}</div><div><div class="sjt">${tt}</div><div class="sjm">${j.dept} · ${j.seats||0} Posts</div></div></div>`;
+    return `<div class="sj" onclick="openDet('${j.id}')"><div class="sjn">${i+1}</div><div><div class="sjt">${tt}</div><div class="sjm">${j.dept} · ${j.seats||0} Posts</div></div></div>`;
   }).join('') || `<div style="color:var(--tx3);font-size:13px;padding:8px 0;">No open jobs</div>`;
 
   const ddls = open.filter(j=>j.last_date).sort((a,b)=>new Date(a.last_date)-new Date(b.last_date)).slice(0,4);
   document.getElementById('sbddl').innerHTML = ddls.map((j,i) => {
     const d = new Date(j.last_date), tt = lang==='kn'&&j.title_kn?j.title_kn:j.title_en;
-    return `<div class="di" style="${getAnim(i)}"><div class="dd"><div class="ddy">${d.getDate()}</div><div class="dmo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div><div><div class="dtt">${tt}</div><div class="dde">${j.dept}</div></div></div>`;
+    return `<div class="di"><div class="dd"><div class="ddy">${d.getDate()}</div><div class="dmo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div><div><div class="dtt">${tt}</div><div class="dde">${j.dept}</div></div></div>`;
   }).join('') || `<div style="color:var(--tx3);font-size:13px;padding:8px 0;">No upcoming deadlines</div>`;
 
   document.getElementById('sbnotifs').innerHTML = open.slice(0,6).map((j,i) => {
     const tt = lang==='kn'&&j.title_kn?j.title_kn:j.title_en;
-    return `<div class="ni" onclick="openDet('${j.id}')" style="${getAnim(i)}"><div class="ndot"></div><div class="ntxt">${tt} – ${j.seats||0} ${lang==='kn'?'ಹುದ್ದೆ':'Posts'}</div></div>`;
+    return `<div class="ni" onclick="openDet('${j.id}')"><div class="ndot"></div><div class="ntxt">${tt} – ${j.seats||0} ${lang==='kn'?'ಹುದ್ದೆ':'Posts'}</div></div>`;
   }).join('');
 }
 
@@ -1185,6 +1144,20 @@ async function init() {
   } catch(e) {
     document.getElementById('jgrid').innerHTML = `<div class="empty" style="grid-column:1/-1">⚠️ Could not load jobs. Please check your connection.</div>`;
   }
+}
+
+// ===== ANIMATE CARDS =====
+function animateCards() {
+  const els = document.querySelectorAll('.jc, .jlc, .di, .sj');
+  els.forEach((el, i) => {
+    if (el.dataset.animated) return;
+    el.dataset.animated = '1';
+    el.classList.add('anim-hidden');
+    setTimeout(() => {
+      el.classList.remove('anim-hidden');
+      el.classList.add('anim-show');
+    }, i * 60);
+  });
 }
 
 init();
