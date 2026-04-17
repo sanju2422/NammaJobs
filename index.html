@@ -845,17 +845,17 @@ function renderAll() {
   const grid = sorted.slice(0, 6), list = sorted.slice(6);
 
   document.getElementById('jgrid').innerHTML = grid.length
-    ? grid.map(jCard).join('')
+    ? grid.map((j,i) => jCard(j,i)).join('')
     : `<div class="empty" style="grid-column:1/-1">${lang === 'kn' ? 'ಯಾವುದೇ ಉದ್ಯೋಗ ಕಂಡುಬಂದಿಲ್ಲ' : 'No jobs found'}</div>`;
   document.getElementById('mhdr').style.display = list.length ? 'flex' : 'none';
-  document.getElementById('jlist').innerHTML = list.map(jListCard).join('');
+  document.getElementById('jlist').innerHTML = list.map((j,i) => jListCard(j,i)).join('');
 
   // Coming Soon section
   const soonSec = document.getElementById('soon-sec');
   const soonGrid = document.getElementById('soon-grid');
   if (soonJobs.length > 0) {
     soonSec.style.display = 'block';
-    soonGrid.innerHTML = soonJobs.map(jCard).join('');
+    soonGrid.innerHTML = soonJobs.map((j,i) => jCard(j,i)).join('');
   } else {
     soonSec.style.display = 'none';
   }
@@ -993,7 +993,7 @@ function getJobUrl(id) {
   return base + 'job.html?job=' + id;
 }
 
-function jCard(j) {
+function jCard(j, idx=0) {
   const tt = lang === 'kn' && j.title_kn ? j.title_kn : j.title_en;
   const dl = daysLeft(j.last_date);
   const isOpen = j.status === 'open';
@@ -1016,7 +1016,7 @@ function jCard(j) {
   const safeTitle = (j.title_en||'').replace(/'/g, '').replace(/"/g, '');
   const jobUrl = getJobUrl(j.id);
 
-  return `<div class="jc ${extraClass}" onclick="window.location.href='${jobUrl}'">
+  return `<div class="jc ${extraClass}" style="animation:cardIn .4s ease both;animation-delay:${idx*0.07}s;" onclick="window.location.href='${jobUrl}'">
     ${jobCardImg(j)}
     <div class="jb">
       ${topBadge}
@@ -1053,7 +1053,7 @@ function copyJobLink(id, btn) {
   });
 }
 
-function jListCard(j) {
+function jListCard(j, idx=0) {
   const tt = lang === 'kn' && j.title_kn ? j.title_kn : j.title_en;
   const jobUrl = getJobUrl(j.id);
   const safeTitle = (j.title_en||'').replace(/'/g,'').replace(/"/g,'');
@@ -1061,7 +1061,7 @@ function jListCard(j) {
   const listIcon = logo
     ? `<div class="jli" style="background:#fff;overflow:hidden;"><img src="${logo}" alt="${j.dept}" style="width:100%;height:100%;object-fit:contain;padding:4px;" onerror="this.parentElement.innerHTML='${j.icon||'💼'}'"></div>`
     : `<div class="jli">${j.icon||'💼'}</div>`;
-  return `<div class="jlc" onclick="window.location.href='${jobUrl}'">
+  return `<div class="jlc" style="animation:cardIn .4s ease both;animation-delay:${idx*0.07}s;" onclick="window.location.href='${jobUrl}'">
     ${listIcon}
     <div class="jlb">
       <div class="jlt">${tt}</div>
