@@ -106,6 +106,8 @@ textarea{min-height:65px;resize:vertical;}
 .fbrow{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
 .fbtn{padding:9px 18px;border-radius:7px;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:.15s;font-family:var(--fen);}
 .fb-pub{background:var(--sf);color:#fff;flex:1;}.fb-pub:hover{background:var(--sfd);}
+[data-theme=dark] .fb-pub{background:#00C9B1 !important;color:#050E1A !important;}
+[data-theme=dark] .fb-pub:hover{background:#00E5CC !important;color:#050E1A !important;}
 .fb-upd{background:var(--gn);color:#fff;flex:1;}.fb-upd:hover{background:#0E4826;}
 .fb-clr{background:var(--border2);color:var(--tx2);}.fb-clr:hover{background:var(--border);}
 .url-hint{font-size:10px;color:var(--tx3);margin-top:4px;line-height:1.4;}
@@ -114,8 +116,23 @@ textarea{min-height:65px;resize:vertical;}
 .msg-ok{background:var(--gnl);color:var(--gn);}
 .msg-err{background:#FEE8E8;color:#A02010;}
 
-/* JOB LIST */
-.rp{display:flex;flex-direction:column;}
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.fpanel{animation:fadeUp .4s ease both;}
+.rphdr{animation:fadeUp .4s ease .1s both;}
+.rpbody{animation:fadeUp .4s ease .15s both;}
+.jr{transition:background .15s, transform .15s;}
+.jr:hover{transform:translateX(3px);}
+.fbtn{transition:transform .15s ease, background .15s ease, box-shadow .15s ease !important;}
+.fb-pub:hover,.fb-upd:hover{transform:scale(1.03);box-shadow:0 3px 12px rgba(0,0,0,.2);}
+.fb-pub:active,.fb-upd:active{transform:scale(.97);}
+.ja{transition:transform .15s ease, background .15s ease !important;}
+.ja:hover{transform:scale(1.1);}
+.ja:active{transform:scale(.92);}
+.to{transition:background .15s, border-color .15s, color .15s, transform .1s;}
+.to:hover{transform:scale(1.04);}
+.sto{transition:background .15s, border-color .15s, color .15s;}
 .rphdr{background:var(--card);border:1px solid var(--border);border-radius:var(--r) var(--r) 0 0;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;transition:background .3s;}
 .rpttl{font-size:15px;font-weight:700;color:var(--tx);}
 .rpstats{display:flex;gap:14px;flex-wrap:wrap;}
@@ -513,8 +530,8 @@ function renderList() {
     return;
   }
   const sb = s => s==='open'?`<span class="jbdg jb-open">● Open</span>`:s==='closed'?`<span class="jbdg jb-closed">○ Closed</span>`:`<span class="jbdg jb-soon">◐ Soon</span>`;
-  box.innerHTML = fil.map(j => `
-    <div class="jr ${editId===j.id?'ed':''}">
+  box.innerHTML = fil.map((j,i) => `
+    <div class="jr ${editId===j.id?'ed':''}" style="animation:fadeUp .35s ease both;animation-delay:${i*0.04}s;">
       <div>
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;">
           <span class="jric">${j.icon||'💼'}</span>
