@@ -339,31 +339,17 @@ button{cursor:pointer;font-family:var(--fen);}
 .jc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;
   transition:transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease, border-color .2s;
   box-shadow:var(--sh);
-  animation:cardIn .4s ease both;
 }
 @keyframes cardIn{
   from{opacity:0;transform:translateY(18px) scale(.97);}
   to{opacity:1;transform:translateY(0) scale(1);}
 }
-.jg .jc:nth-child(1){animation-delay:.04s}
-.jg .jc:nth-child(2){animation-delay:.08s}
-.jg .jc:nth-child(3){animation-delay:.12s}
-.jg .jc:nth-child(4){animation-delay:.16s}
-.jg .jc:nth-child(5){animation-delay:.20s}
-.jg .jc:nth-child(6){animation-delay:.24s}
-/* List cards animation */
-.jlc{animation:cardIn .4s ease both;}
-.jl .jlc:nth-child(1){animation-delay:.05s}
-.jl .jlc:nth-child(2){animation-delay:.10s}
-.jl .jlc:nth-child(3){animation-delay:.15s}
-.jl .jlc:nth-child(4){animation-delay:.20s}
-.jl .jlc:nth-child(5){animation-delay:.25s}
-/* Sidebar cards animation */
+/* Sidebar cards animation — these are static so CSS works */
 .sc{animation:cardIn .5s ease both;}
 .sb3 .sc:nth-child(1){animation-delay:.1s}
 .sb3 .sc:nth-child(2){animation-delay:.2s}
 .sb3 .sc:nth-child(3){animation-delay:.3s}
-/* Category boxes animation */
+/* Category boxes animation — static so CSS works */
 .cb{animation:cardIn .4s ease both;}
 .cg .cb:nth-child(1){animation-delay:.05s}
 .cg .cb:nth-child(2){animation-delay:.10s}
