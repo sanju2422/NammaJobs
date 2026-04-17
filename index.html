@@ -1152,18 +1152,18 @@ function renderSB(jobs) {
   const open = jobs.filter(j => j.status === 'open');
   document.getElementById('sbtop').innerHTML = open.slice(0,5).map((j,i) => {
     const tt = lang==='kn'&&j.title_kn?j.title_kn:j.title_en;
-    return `<div class="sj" onclick="openDet('${j.id}')"><div class="sjn">${i+1}</div><div><div class="sjt">${tt}</div><div class="sjm">${j.dept} · ${j.seats||0} Posts</div></div></div>`;
+    return `<div class="sj" onclick="openDet('${j.id}')" style="animation:cardIn .4s ease both;animation-delay:${i*0.07}s;"><div class="sjn">${i+1}</div><div><div class="sjt">${tt}</div><div class="sjm">${j.dept} · ${j.seats||0} Posts</div></div></div>`;
   }).join('') || `<div style="color:var(--tx3);font-size:13px;padding:8px 0;">No open jobs</div>`;
 
   const ddls = open.filter(j=>j.last_date).sort((a,b)=>new Date(a.last_date)-new Date(b.last_date)).slice(0,4);
-  document.getElementById('sbddl').innerHTML = ddls.map(j => {
+  document.getElementById('sbddl').innerHTML = ddls.map((j,i) => {
     const d = new Date(j.last_date), tt = lang==='kn'&&j.title_kn?j.title_kn:j.title_en;
-    return `<div class="di"><div class="dd"><div class="ddy">${d.getDate()}</div><div class="dmo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div><div><div class="dtt">${tt}</div><div class="dde">${j.dept}</div></div></div>`;
+    return `<div class="di" style="animation:cardIn .4s ease both;animation-delay:${i*0.08}s;"><div class="dd"><div class="ddy">${d.getDate()}</div><div class="dmo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div><div><div class="dtt">${tt}</div><div class="dde">${j.dept}</div></div></div>`;
   }).join('') || `<div style="color:var(--tx3);font-size:13px;padding:8px 0;">No upcoming deadlines</div>`;
 
-  document.getElementById('sbnotifs').innerHTML = open.slice(0,6).map(j => {
+  document.getElementById('sbnotifs').innerHTML = open.slice(0,6).map((j,i) => {
     const tt = lang==='kn'&&j.title_kn?j.title_kn:j.title_en;
-    return `<div class="ni" onclick="openDet('${j.id}')"><div class="ndot"></div><div class="ntxt">${tt} – ${j.seats||0} ${lang==='kn'?'ಹುದ್ದೆ':'Posts'}</div></div>`;
+    return `<div class="ni" onclick="openDet('${j.id}')" style="animation:cardIn .35s ease both;animation-delay:${i*0.06}s;"><div class="ndot"></div><div class="ntxt">${tt} – ${j.seats||0} ${lang==='kn'?'ಹುದ್ದೆ':'Posts'}</div></div>`;
   }).join('');
 }
 
