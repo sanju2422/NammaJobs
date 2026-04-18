@@ -339,10 +339,9 @@ function renderJob(j){
         <tr><td>Qualification</td><td>${j.skills||'—'}</td></tr>
         <tr><td>Location</td><td>${j.loc||'Karnataka'}</td></tr>
         ${j.fee?`<tr><td>Application Fee</td><td><strong style="color:var(--sf)">${j.fee}</strong></td></tr>`:''}
-        <tr><td>Notification No.</td><td>${j.notif||'—'}</td></tr>
-        <tr><td>Status</td><td>${statusBadge(j.status)}${isExpiring?` <span style="color:#C49010;font-size:12px;font-weight:700;font-family:var(--fen)">⚡ ${dl} days left!</span>`:''}</td></tr>
         ${j.start_date?`<tr><td>Apply From</td><td><strong style="color:var(--gn)">📅 ${j.start_date}</strong></td></tr>`:''}
         <tr><td>Last Date</td><td><strong style="color:${isExpiring?'#C49010':'var(--tx)'}">${j.last_date||'—'}</strong></td></tr>
+        <tr><td>Notification No.</td><td>${j.notif||'—'}</td></tr>
         <tr><td>Official Website</td><td>${j.official_url?`<a href="${j.official_url}" target="_blank" style="color:var(--sf);">${j.official_url} ↗</a>`:'—'}</td></tr>
       </table>
     </div>
@@ -356,21 +355,6 @@ function renderJob(j){
         <div class="date-item highlight"><div class="date-label">Last Date to Apply</div><div class="date-val">📅 ${j.last_date}</div></div>
         ${dl!==null?`<div class="date-item ${isExpiring?'highlight':''}"><div class="date-label">Days Remaining</div><div class="date-val">${dl>=0?dl+' Days Left':'Expired'}</div></div>`:''}
       </div>
-    </div>`:''}
-
-    <!-- SYLLABUS -->
-    ${j.syllabus?`
-    <div class="sec">
-      <div class="sec-ttl">Exam Syllabus</div>
-      <div class="sec-body"><p>${j.syllabus}</p></div>
-      ${j.syllabus_url?`<div style="margin-top:10px;"><a href="${j.syllabus_url}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--nv);color:#fff;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;text-decoration:none;font-family:var(--fen);">📄 Download Official Syllabus PDF ↗</a></div>`:''}
-    </div>`:''}
-
-    <!-- FEE SECTION -->
-    ${j.fee?`
-    <div class="sec">
-      <div class="sec-ttl">💰 Application Fee</div>
-      <div class="sec-body"><p style="font-size:15px;font-weight:600;">${j.fee}</p></div>
     </div>`:''}
 
     <!-- DESCRIPTION -->
@@ -396,6 +380,14 @@ function renderJob(j){
       </table>
     </div>`:''}
 
+    <!-- SYLLABUS -->
+    ${j.syllabus?`
+    <div class="sec">
+      <div class="sec-ttl">Exam Syllabus</div>
+      <div class="sec-body"><p>${j.syllabus}</p></div>
+      ${j.syllabus_url?`<div style="margin-top:10px;"><a href="${j.syllabus_url}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--nv);color:#fff;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;text-decoration:none;font-family:var(--fen);">📄 Download Official Syllabus PDF ↗</a></div>`:''}
+    </div>`:''}
+
     <!-- HOW TO APPLY -->
     <div class="sec" id="apply-section">
       <div class="sec-ttl">How to Apply</div>
@@ -416,7 +408,7 @@ function renderJob(j){
     ${isOpen?`
     <div class="sec">
       <div class="apply-box">
-        <div class="apply-box-ttl">Ready to Apply? / ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಸಿದ್ಧರಿದ್ದೀರಾ?</div>
+        <div class="apply-box-ttl">Ready to Apply?</div>
         <div class="apply-box-sub">Click below to go to the official application portal</div>
         <div class="apply-box-btns">
           ${j.official_url?`<button class="btn-apply-main" onclick="window.open('${j.official_url}','_blank')">🌐 Apply Online ↗</button>`:''}
@@ -427,7 +419,7 @@ function renderJob(j){
 
     <!-- SHARE -->
     <div class="sec">
-      <div class="sec-ttl">Share this Job / ಈ ಉದ್ಯೋಗ ಶೇರ್ ಮಾಡಿ</div>
+      <div class="sec-ttl">Share this Job</div>
       <div class="share-row">
         <button class="share-btn sh-wa" onclick="shareWA()">📱 WhatsApp</button>
         <button class="share-btn sh-tg" onclick="shareTG()">✈️ Telegram</button>

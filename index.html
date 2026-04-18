@@ -968,16 +968,16 @@ function jCard(j) {
 
   let topBadge = '';
   if (isExpiring) {
-    topBadge = `<span class="expiring-badge">⚡ ${'Closing Soon'} – ${dl === 0 ? ('Last Day Today') : dl + (' days left')}</span>`;
+    topBadge = `<span class="expiring-badge">⚡ Closing Soon – ${dl === 0 ? 'Last Day Today' : dl + ' days left'}</span>`;
   } else if (isOpen) {
-    topBadge = `<span class="open-badge">✓ ${'Open – Apply Now'}</span>`;
+    topBadge = `<span class="open-badge">✓ Open – Apply Now</span>`;
   }
 
   const ab = isOpen
-    ? `<button class="ab abon" onclick="event.stopPropagation();goOff2('${j.id}')">${'Apply ↗'}</button>`
+    ? `<button class="ab abon" onclick="event.stopPropagation();goOff2('${j.id}')">Apply ↗</button>`
     : j.status === 'soon'
-    ? `<button class="ab" style="background:#FDF3D7;color:#8A6000;border:none;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;cursor:default;">${'Coming Soon'}</button>`
-    : `<button class="ab aboff">${'Closed'}</button>`;
+    ? `<button class="ab" style="background:#FDF3D7;color:#8A6000;border:none;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;cursor:default;">Coming Soon</button>`
+    : `<button class="ab aboff">Closed</button>`;
 
   const safeTitle = (j.title_en||'').replace(/'/g, '').replace(/"/g, '');
   const jobUrl = getJobUrl(j.id);
@@ -989,10 +989,11 @@ function jCard(j) {
       ${catLbl(j.cat)}
       <div class="jt">${tt}</div>
       <div class="jm">
-        <span class="pl ps">👥 ${j.seats||0} ${'Posts'}</span>
+        <span class="pl ps">👥 ${j.seats||0} Posts</span>
         ${j.salary?`<span class="pl psl">💰 ${j.salary}</span>`:''}
         ${j.age?`<span class="pl pa">🎂 ${j.age}</span>`:''}
         ${j.last_date?`<span class="pl pd">📅 ${j.last_date}</span>`:''}
+        ${j.fee?`<span class="pl" style="background:#FEF0E8;color:#B53D0D;">💰 Fee: ${j.fee}</span>`:''}
       </div>
       <div class="jf" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
         <button class="sh-wa" onclick="event.stopPropagation();shareWA('${j.id}','${safeTitle}')">📱 WhatsApp</button>
