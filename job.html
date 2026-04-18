@@ -504,12 +504,19 @@ async function load(){
   if(!id){window.location.href='index.html';return;}
 
   try{
-    const r=await fetch(`${SB_URL}/rest/v1/jobs?order=created_at.desc`,{headers:H});
-    allJobs=await r.json();
-    job=allJobs.find(x=>x.id===id);
+    // Fetch only this specific job — much faster!
+    const r=await fetch(`${SB_URL}/rest/v1/jobs?id=eq.${id}&limit=1`,{headers:H});
+    const data=await r.json();
+    job=data[0];
     if(!job){document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Job not found. <a href="index.html" style="color:var(--sf)">Go back</a></div>';return;}
+
+    // Fetch related jobs in background
+    fetch(`${SB_URL}/rest/v1/jobs?select=id,title_en,dept,seats,icon,cat,status&order=created_at.desc&limit=10`,{headers:H})
+      .then(r=>r.json())
+      .then(jobs=>{ allJobs=jobs; renderSidebar(job,allJobs); })
+      .catch(()=>{});
+
     renderJob(job);
-    renderSidebar(job,allJobs);
   }catch(e){
     document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Could not load. Please check connection.</div>';
   }
