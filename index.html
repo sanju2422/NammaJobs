@@ -519,7 +519,10 @@ footer{background:var(--nv);color:rgba(255,255,255,.65);padding:28px 18px 14px;m
     </div>
     <div class="tb-right">
       <button class="dmb" id="dmb" onclick="toggleDark()">🌙</button>
-      
+      <div class="lt">
+        <button class="lb" onclick="setLang('kn')">ಕನ್ನಡ</button>
+        <button class="lb on" onclick="setLang('en')">English</button>
+      </div>
     </div>
   </div>
 </div>
@@ -715,9 +718,18 @@ async function fetchJobs() {
 }
 
 // ===== STATE =====
-const lang = 'en', cf = 'all', curJob = null, allJobs = [];
+let lang = 'en', cf = 'all', curJob = null, allJobs = [];
 
 // ===== LANG =====
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lb').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll(`.lb[onclick="setLang('${l}')"]`).forEach(b => b.classList.add('on'));
+  document.querySelectorAll('.t').forEach(el => { if (el.dataset[l]) el.textContent = el.dataset[l]; });
+  document.getElementById('srch').placeholder = l === 'kn' ? 'ಉದ್ಯೋಗ ಹುಡುಕಿ...' : 'Search jobs...';
+  renderAll();
+}
+
 // ===== DARK MODE =====
 function toggleDark() {
   const on = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -830,7 +842,7 @@ function renderAll() {
 }
 
 function sBadge(s) {
-  const labels = { open: ['Open','sop','dop'], closed: ['Closed','scl','dcl'], soon: ['Coming Soon','ssn','dsn'] };
+  const labels = { open: [lang==='kn'?'ತೆರೆದಿದೆ':'Open','sop','dop'], closed: [lang==='kn'?'ಮುಚ್ಚಲಾಗಿದೆ':'Closed','scl','dcl'], soon: [lang==='kn'?'ಶೀಘ್ರದಲ್ಲಿ':'Coming Soon','ssn','dsn'] };
   const [lbl, bc, dc] = labels[s] || labels.soon;
   return `<span class="sbdg ${bc}"><span class="dot ${dc}"></span>${lbl}</span>`;
 }
@@ -968,16 +980,16 @@ function jCard(j) {
 
   let topBadge = '';
   if (isExpiring) {
-    topBadge = `<span class="expiring-badge">⚡ Closing Soon – ${dl === 0 ? 'Last Day Today' : dl + ' days left'}</span>`;
+    topBadge = `<span class="expiring-badge">⚡ ${lang==='kn'?'ಶೀಘ್ರ ಮುಕ್ತಾಯ':'Closing Soon'} – ${dl === 0 ? (lang==='kn'?'ಇಂದೇ ಕೊನೆ':'Last Day Today') : dl + (lang==='kn'?' ದಿನ ಉಳಿದಿದೆ':' days left')}</span>`;
   } else if (isOpen) {
-    topBadge = `<span class="open-badge">✓ Open – Apply Now</span>`;
+    topBadge = `<span class="open-badge">✓ ${lang==='kn'?'ತೆರೆದಿದೆ – ಅರ್ಜಿ ಸ್ವೀಕಾರ':'Open – Apply Now'}</span>`;
   }
 
   const ab = isOpen
-    ? `<button class="ab abon" onclick="event.stopPropagation();goOff2('${j.id}')">Apply ↗</button>`
+    ? `<button class="ab abon" onclick="event.stopPropagation();goOff2('${j.id}')">${lang==='kn'?'ಅರ್ಜಿ ↗':'Apply ↗'}</button>`
     : j.status === 'soon'
-    ? `<button class="ab" style="background:#FDF3D7;color:#8A6000;border:none;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;cursor:default;">Coming Soon</button>`
-    : `<button class="ab aboff">Closed</button>`;
+    ? `<button class="ab" style="background:#FDF3D7;color:#8A6000;border:none;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;cursor:default;">${lang==='kn'?'ಶೀಘ್ರದಲ್ಲಿ':'Coming Soon'}</button>`
+    : `<button class="ab aboff">${lang==='kn'?'ಮುಚ್ಚಲಾಗಿದೆ':'Closed'}</button>`;
 
   const safeTitle = (j.title_en||'').replace(/'/g, '').replace(/"/g, '');
   const jobUrl = getJobUrl(j.id);
@@ -989,11 +1001,10 @@ function jCard(j) {
       ${catLbl(j.cat)}
       <div class="jt">${tt}</div>
       <div class="jm">
-        <span class="pl ps">👥 ${j.seats||0} Posts</span>
+        <span class="pl ps">👥 ${j.seats||0} ${lang==='kn'?'ಹುದ್ದೆ':'Posts'}</span>
         ${j.salary?`<span class="pl psl">💰 ${j.salary}</span>`:''}
         ${j.age?`<span class="pl pa">🎂 ${j.age}</span>`:''}
         ${j.last_date?`<span class="pl pd">📅 ${j.last_date}</span>`:''}
-        ${j.fee?`<span class="pl" style="background:#FEF0E8;color:#B53D0D;">💰 Fee: ${j.fee}</span>`:''}
       </div>
       <div class="jf" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
         <button class="sh-wa" onclick="event.stopPropagation();shareWA('${j.id}','${safeTitle}')">📱 WhatsApp</button>
@@ -1016,7 +1027,7 @@ function shareTG(id, title) {
 function copyJobLink(id, btn) {
   navigator.clipboard.writeText(getJobUrl(id)).then(() => {
     btn.textContent = '✓ Copied!';
-    setTimeout(() => btn.textContent = '🔗 ' + ('Link'), 2000);
+    setTimeout(() => btn.textContent = '🔗 ' + (lang==='kn'?'ಲಿಂಕ್':'Link'), 2000);
   });
 }
 
@@ -1041,7 +1052,7 @@ function jListCard(j) {
     </div>
     <div class="jlr">
       ${sBadge(j.status)}
-      ${j.status==='open'?`<button class="ab abon" style="font-size:10px;padding:4px 11px;" onclick="event.stopPropagation();goOff2('${j.id}')">${'Apply ↗'}</button>`:''}
+      ${j.status==='open'?`<button class="ab abon" style="font-size:10px;padding:4px 11px;" onclick="event.stopPropagation();goOff2('${j.id}')">${lang==='kn'?'ಅರ್ಜಿ ↗':'Apply ↗'}</button>`:''}
       <div style="display:flex;gap:4px;margin-top:3px;">
         <button class="sh-wa" style="font-size:9px;padding:3px 7px;" onclick="event.stopPropagation();shareWA('${j.id}','${safeTitle}')">📱</button>
         <button class="sh-tg" style="font-size:9px;padding:3px 7px;" onclick="event.stopPropagation();shareTG('${j.id}','${safeTitle}')">✈️</button>
@@ -1053,7 +1064,7 @@ function jListCard(j) {
 function goOff2(id) {
   const j = allJobs.find(x => x.id === id);
   if (j && j.official_url) window.open(j.official_url, '_blank');
-  else alert('No official link for this job.');
+  else alert(lang==='kn'?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್ ಲಿಂಕ್ ಇಲ್ಲ':'No official link for this job.');
 }
 
 // ===== DEEP LINK =====
@@ -1067,20 +1078,20 @@ function openDet(id) {
   url.searchParams.set('job', id);
   window.history.pushState({jobId: id}, '', url.toString());
 
-  const tt = j.title_en;
+  const tt = lang==='kn'&&j.title_kn ? j.title_kn : j.title_en;
   document.getElementById('mic').textContent = j.icon||'💼';
   document.getElementById('mttl2').textContent = tt;
   document.getElementById('mdept').textContent = j.dept + ' · ' + (j.loc||'');
   document.getElementById('mgrid').innerHTML = [
-    {l:'Total Posts',v:j.seats||0},
-    {l:'Pay Scale',v:j.salary||'—'},
-    {l:'Age Limit',v:j.age||'—'},
-    {l:'Last Date',v:j.last_date||'—'},
+    {l:lang==='kn'?'ಒಟ್ಟು ಹುದ್ದೆ':'Total Posts',v:j.seats||0},
+    {l:lang==='kn'?'ವೇತನ':'Pay Scale',v:j.salary||'—'},
+    {l:lang==='kn'?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit',v:j.age||'—'},
+    {l:lang==='kn'?'ಕೊನೆ ದಿನ':'Last Date',v:j.last_date||'—'},
     {l:'Notification No.',v:j.notif||'—'},
-    {l:'Status',v:j.status},
+    {l:lang==='kn'?'ಸ್ಥಿತಿ':'Status',v:j.status},
   ].map(x=>`<div class="ib"><div class="il">${x.l}</div><div class="iv">${x.v}</div></div>`).join('');
   document.getElementById('mcats').innerHTML = j.cats
-    ? `<div class="dtl">${'Category-wise Vacancies'}</div><table class="ctbl"><thead><tr><th>Category</th><th>Seats</th></tr></thead><tbody>${j.cats.split(',').map(c=>`<tr><td>${c.trim().split('-')[0]}</td><td>${c.trim().split('-')[1]||''}</td></tr>`).join('')}</tbody></table>` : '';
+    ? `<div class="dtl">${lang==='kn'?'ವರ್ಗವಾರ ಹುದ್ದೆ':'Category-wise Vacancies'}</div><table class="ctbl"><thead><tr><th>Category</th><th>Seats</th></tr></thead><tbody>${j.cats.split(',').map(c=>`<tr><td>${c.trim().split('-')[0]}</td><td>${c.trim().split('-')[1]||''}</td></tr>`).join('')}</tbody></table>` : '';
   document.getElementById('mdesc').textContent = j.description||'—';
   document.getElementById('mskills').textContent = j.skills||'—';
   document.getElementById('mapbtn').style.display = j.status==='open' ? 'block' : 'none';
@@ -1118,19 +1129,19 @@ window.addEventListener('popstate', (e) => {
 function renderSB(jobs) {
   const open = jobs.filter(j => j.status === 'open');
   document.getElementById('sbtop').innerHTML = open.slice(0,5).map((j,i) => {
-    const tt = j.title_en;
+    const tt = lang==='kn'&&j.title_kn?j.title_kn:j.title_en;
     return `<div class="sj" onclick="openDet('${j.id}')"><div class="sjn">${i+1}</div><div><div class="sjt">${tt}</div><div class="sjm">${j.dept} · ${j.seats||0} Posts</div></div></div>`;
   }).join('') || `<div style="color:var(--tx3);font-size:13px;padding:8px 0;">No open jobs</div>`;
 
   const ddls = open.filter(j=>j.last_date).sort((a,b)=>new Date(a.last_date)-new Date(b.last_date)).slice(0,4);
   document.getElementById('sbddl').innerHTML = ddls.map(j => {
-    const d = new Date(j.last_date), tt = j.title_en;
+    const d = new Date(j.last_date), tt = lang==='kn'&&j.title_kn?j.title_kn:j.title_en;
     return `<div class="di"><div class="dd"><div class="ddy">${d.getDate()}</div><div class="dmo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div><div><div class="dtt">${tt}</div><div class="dde">${j.dept}</div></div></div>`;
   }).join('') || `<div style="color:var(--tx3);font-size:13px;padding:8px 0;">No upcoming deadlines</div>`;
 
   document.getElementById('sbnotifs').innerHTML = open.slice(0,6).map(j => {
-    const tt = j.title_en;
-    return `<div class="ni" onclick="openDet('${j.id}')"><div class="ndot"></div><div class="ntxt">${tt} – ${j.seats||0} ${'Posts'}</div></div>`;
+    const tt = lang==='kn'&&j.title_kn?j.title_kn:j.title_en;
+    return `<div class="ni" onclick="openDet('${j.id}')"><div class="ndot"></div><div class="ntxt">${tt} – ${j.seats||0} ${lang==='kn'?'ಹುದ್ದೆ':'Posts'}</div></div>`;
   }).join('');
 }
 
@@ -1142,7 +1153,7 @@ async function init() {
   document.getElementById('tdt').textContent = new Date().toLocaleDateString('en-IN',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
   const t = localStorage.getItem('nj_theme');
   if (t === 'dark') applyDark(true);
-
+  setLang('en');
   document.getElementById('jgrid').innerHTML = `<div class="loading" style="grid-column:1/-1"><div class="spinner"></div><div>Loading jobs...</div></div>`;
   try {
     allJobs = await fetchJobs();
