@@ -1140,7 +1140,7 @@ async function init() {
   document.getElementById('tdt').textContent = new Date().toLocaleDateString('en-IN',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
   const t = localStorage.getItem('nj_theme');
   if (t === 'dark') applyDark(true);
-  setLang('en');
+
   document.getElementById('jgrid').innerHTML = `<div class="loading" style="grid-column:1/-1"><div class="spinner"></div><div>Loading jobs...</div></div>`;
   try {
     allJobs = await fetchJobs();
