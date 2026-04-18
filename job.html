@@ -346,17 +346,18 @@ function renderJob(j){
     <div class="sec">
       <div class="sec-ttl">Job Overview / ಉದ್ಯೋಗ ಸಾರಾಂಶ</div>
       <table class="info-table">
-        <tr><td>Organization</td><td>${j.dept||'—'}</td></tr>
-        <tr><td>Post Name</td><td>${j.title_en||'—'}${j.title_kn?` / ${j.title_kn}`:''}</td></tr>
-        <tr><td>Total Vacancies</td><td><strong>${j.seats||0}</strong></td></tr>
-        <tr><td>Pay Scale / Salary</td><td>${j.salary||'—'}</td></tr>
-        <tr><td>Age Limit</td><td>${j.age||'—'}</td></tr>
-        <tr><td>Qualification</td><td>${j.skills||'—'}</td></tr>
-        <tr><td>Job Location</td><td>${j.loc||'Karnataka'}</td></tr>
+        <tr><td>Organization / ಸಂಸ್ಥೆ</td><td>${j.dept||'—'}</td></tr>
+        <tr><td>Post Name / ಹುದ್ದೆ</td><td>${lang==='kn'&&j.title_kn ? j.title_kn : j.title_en||'—'}</td></tr>
+        <tr><td>Total Vacancies / ಒಟ್ಟು ಹುದ್ದೆ</td><td><strong>${j.seats||0}</strong></td></tr>
+        <tr><td>Pay Scale / ವೇತನ</td><td>${j.salary||'—'}</td></tr>
+        <tr><td>Age Limit / ವಯೋಮಿತಿ</td><td>${j.age||'—'}</td></tr>
+        <tr><td>Qualification / ಅರ್ಹತೆ</td><td>${j.skills||'—'}</td></tr>
+        <tr><td>Location / ಸ್ಥಳ</td><td>${j.loc||'Karnataka'}</td></tr>
+        ${j.fee||j.fee_kn?`<tr><td>Application Fee / ಅರ್ಜಿ ಶುಲ್ಕ</td><td><strong style="color:var(--sf)">${lang==='kn'&&j.fee_kn ? j.fee_kn : j.fee||'—'}</strong></td></tr>`:''}
         <tr><td>Notification No.</td><td>${j.notif||'—'}</td></tr>
         <tr><td>Status</td><td>${statusBadge(j.status)}${isExpiring?` <span style="color:#C49010;font-size:12px;font-weight:700;font-family:var(--fen)">⚡ ${dl} days left!</span>`:''}</td></tr>
-        ${j.start_date?`<tr><td>Apply From</td><td><strong style="color:var(--gn)">📅 ${j.start_date}</strong></td></tr>`:''}
-        <tr><td>Last Date</td><td><strong style="color:${isExpiring?'#C49010':'var(--tx)'}">${j.last_date||'—'}</strong></td></tr>
+        ${j.start_date?`<tr><td>Apply From / ಅರ್ಜಿ ಆರಂಭ</td><td><strong style="color:var(--gn)">📅 ${j.start_date}</strong></td></tr>`:''}
+        <tr><td>Last Date / ಕೊನೆ ದಿನ</td><td><strong style="color:${isExpiring?'#C49010':'var(--tx)'}">${j.last_date||'—'}</strong></td></tr>
         <tr><td>Official Website</td><td>${j.official_url?`<a href="${j.official_url}" target="_blank" style="color:var(--sf);">${j.official_url} ↗</a>`:'—'}</td></tr>
       </table>
     </div>
