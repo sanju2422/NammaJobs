@@ -256,19 +256,36 @@ textarea{min-height:65px;resize:vertical;}
       </div>
       <label>Category-wise Vacancies</label>
       <input type="text" id="f-cats" placeholder="SC-24, ST-12, OBC-32, Gen-52">
-      <label>Job Description</label>
+
+      <div class="fsec">📝 Job Description</div>
+      <label style="margin-top:0">Description (English)</label>
       <textarea id="f-desc" placeholder="Responsibilities, exam details..."></textarea>
+      <label>Description (ಕನ್ನಡ)</label>
+      <textarea id="f-desc-kn" placeholder="ಜವಾಬ್ದಾರಿಗಳು, ಪರೀಕ್ಷೆ ವಿವರಗಳು..." style="font-family:var(--fkn)"></textarea>
+
       <label>Qualifications / Skills</label>
       <input type="text" id="f-skills" placeholder="B.E Civil, Kannada knowledge, 2yr experience">
 
+      <div class="fsec">💰 Application Fee</div>
+      <label style="margin-top:0">Fee (English)</label>
+      <input type="text" id="f-fee" placeholder="Gen: ₹500 | SC/ST/PH: ₹250 | No fee for women">
+      <label>Fee (ಕನ್ನಡ)</label>
+      <input type="text" id="f-fee-kn" placeholder="ಸಾಮಾನ್ಯ: ₹500 | SC/ST: ₹250" style="font-family:var(--fkn)">
+
       <div class="fsec">📚 Syllabus (Optional)</div>
-      <textarea id="f-syllabus" style="min-height:80px;" placeholder="Exam subjects aur topics:&#10;General Knowledge, Reasoning, Mathematics, Kannada, English..."></textarea>
+      <label style="margin-top:0">Syllabus (English)</label>
+      <textarea id="f-syllabus" style="min-height:80px;" placeholder="Exam subjects aur topics:&#10;General Knowledge, Reasoning, Mathematics, English..."></textarea>
+      <label>Syllabus (ಕನ್ನಡ)</label>
+      <textarea id="f-syllabus-kn" style="min-height:80px;font-family:var(--fkn);" placeholder="ಸಾಮಾನ್ಯ ಜ್ಞಾನ, ತರ್ಕಶಕ್ತಿ, ಗಣಿತ, ಕನ್ನಡ..."></textarea>
       <label style="margin-top:6px;">Syllabus PDF Link (Official)</label>
       <input type="url" id="f-syllabus-url" placeholder="https://official-site.gov.in/syllabus.pdf">
 
-      <div class="fsec">📝 How to Apply Steps (Job detail page pe dikhega)</div>
-      <textarea id="f-hta" style="min-height:100px;" placeholder="Har step alag line mein likho:&#10;Official website https://... pe jao&#10;New Registration karo&#10;Form bharo aur submit karo&#10;Fee payment karo&#10;Printout lo"></textarea>
-      <div class="url-hint">Har line ek step ban jaayega — visitors ko clearly samajh aayega</div>
+      <div class="fsec">📋 How to Apply Steps</div>
+      <label style="margin-top:0">How to Apply (English)</label>
+      <textarea id="f-hta" style="min-height:100px;" placeholder="Each step on new line:&#10;Visit official website https://...&#10;Click New Registration&#10;Fill form and submit&#10;Pay fee&#10;Take printout"></textarea>
+      <label>How to Apply (ಕನ್ನಡ)</label>
+      <textarea id="f-hta-kn" style="min-height:100px;font-family:var(--fkn);" placeholder="ಪ್ರತಿ ಹಂತವನ್ನು ಹೊಸ ಸಾಲಿನಲ್ಲಿ ಬರೆಯಿರಿ:&#10;ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಹೋಗಿ&#10;ಹೊಸ ನೋಂದಣಿ ಮಾಡಿ&#10;ಫಾರ್ಮ್ ತುಂಬಿ ಸಲ್ಲಿಸಿ"></textarea>
+      <div class="url-hint">Har line ek step ban jaayega — EN aur KN alag alag</div>
 
       <div class="fbrow">
         <button class="fbtn fb-pub" id="pub-btn" onclick="saveJob()">
@@ -408,9 +425,13 @@ async function saveJob() {
     skills: document.getElementById('f-skills').value.trim() || null,
     start_date: document.getElementById('f-sd').value || null,
     fee: document.getElementById('f-fee').value.trim() || null,
+    fee_kn: document.getElementById('f-fee-kn').value.trim() || null,
     syllabus: document.getElementById('f-syllabus').value.trim() || null,
+    syllabus_kn: document.getElementById('f-syllabus-kn').value.trim() || null,
     syllabus_url: document.getElementById('f-syllabus-url').value.trim() || null,
     how_to_apply: document.getElementById('f-hta').value.trim() || null,
+    how_to_apply_kn: document.getElementById('f-hta-kn').value.trim() || null,
+    description_kn: document.getElementById('f-desc-kn').value.trim() || null,
     bg: BGMAP[selCat] || 'bg-gov',
   };
 
@@ -468,8 +489,13 @@ function editJob(id) {
   document.getElementById('f-hta').value = j.how_to_apply || '';
   document.getElementById('f-sd').value = j.start_date || '';
   document.getElementById('f-fee').value = j.fee || '';
+  document.getElementById('f-fee-kn').value = j.fee_kn || '';
   document.getElementById('f-syllabus').value = j.syllabus || '';
+  document.getElementById('f-syllabus-kn').value = j.syllabus_kn || '';
   document.getElementById('f-syllabus-url').value = j.syllabus_url || '';
+  document.getElementById('f-hta').value = j.how_to_apply || '';
+  document.getElementById('f-hta-kn').value = j.how_to_apply_kn || '';
+  document.getElementById('f-desc-kn').value = j.description_kn || '';
 
   const catEl = document.querySelector(`.to[data-v="${j.cat}"]`);
   if (catEl) setCat(j.cat, catEl);
@@ -506,7 +532,7 @@ function confirmDelete(id, title) {
 // CLEAR FORM
 function clearForm() {
   editId = null;
-  ['f-ten','f-tkn','f-dept','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-notif','f-icon','f-cats','f-desc','f-skills','f-hta','f-syllabus','f-syllabus-url'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['f-ten','f-tkn','f-dept','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-fee-kn','f-url','f-notif','f-icon','f-cats','f-desc','f-desc-kn','f-skills','f-hta','f-hta-kn','f-syllabus','f-syllabus-kn','f-syllabus-url'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   setCat('karnataka', document.querySelector('.to[data-v="karnataka"]'));
   setStat('open', document.querySelector('.sto[data-v="open"]'));
   document.getElementById('fpttl').textContent = '➕ Add New Job';

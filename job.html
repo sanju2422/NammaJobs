@@ -168,6 +168,10 @@ footer a{color:var(--sf);}
         </div>
       </div>
       <button class="tbtn" onclick="window.location.href='index.html'">← Back to Jobs</button>
+      <div style="display:flex;background:rgba(255,255,255,.1);border-radius:20px;padding:2px;gap:2px;">
+        <button class="tbtn" id="btn-en" onclick="setLang('en')" style="border-radius:18px;background:var(--sf);color:#fff;border-color:var(--sf);">EN</button>
+        <button class="tbtn" id="btn-kn" onclick="setLang('kn')" style="border-radius:18px;">ಕನ್ನಡ</button>
+      </div>
       <button class="tbtn sf" id="top-apply-btn" onclick="scrollToApply()">Apply Now ↗</button>
     </div>
   </div>
@@ -249,6 +253,18 @@ function toggleDark(){
   localStorage.setItem('nj_theme', on?'light':'dark');
 }
 (function(){if(localStorage.getItem('nj_theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('dmb2').textContent='☀️';}})();
+
+// Language toggle
+let lang = localStorage.getItem('nj_lang') || 'en';
+let curJob = null;
+
+function setLang(l) {
+  lang = l;
+  localStorage.setItem('nj_lang', l);
+  document.getElementById('btn-en').style.cssText = l==='en' ? 'border-radius:18px;background:var(--sf);color:#fff;border-color:var(--sf);' : 'border-radius:18px;';
+  document.getElementById('btn-kn').style.cssText = l==='kn' ? 'border-radius:18px;background:var(--sf);color:#fff;border-color:var(--sf);' : 'border-radius:18px;';
+  if (curJob) renderJob(curJob);
+}
 
 function scrollToApply(){document.getElementById('apply-section')?.scrollIntoView({behavior:'smooth'});}
 
@@ -357,18 +373,25 @@ function renderJob(j){
     </div>`:''}
 
     <!-- SYLLABUS -->
-    ${j.syllabus?`
+    ${(j.syllabus||j.syllabus_kn)?`
     <div class="sec">
       <div class="sec-ttl">Exam Syllabus / ಪರೀಕ್ಷಾ ಪಠ್ಯಕ್ರಮ</div>
-      <div class="sec-body"><p>${j.syllabus}</p></div>
+      <div class="sec-body"><p>${lang==='kn'&&j.syllabus_kn ? j.syllabus_kn : j.syllabus||''}</p></div>
       ${j.syllabus_url?`<div style="margin-top:10px;"><a href="${j.syllabus_url}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--nv);color:#fff;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;text-decoration:none;font-family:var(--fen);">📄 Download Official Syllabus PDF ↗</a></div>`:''}
     </div>`:''}
 
+    <!-- FEE -->
+    ${(j.fee||j.fee_kn)?`
+    <div class="sec">
+      <div class="sec-ttl">💰 Application Fee / ಅರ್ಜಿ ಶುಲ್ಕ</div>
+      <div class="sec-body"><p style="font-size:15px;font-weight:600;color:var(--tx);">${lang==='kn'&&j.fee_kn ? j.fee_kn : j.fee||''}</p></div>
+    </div>`:''}
+
     <!-- DESCRIPTION -->
-    ${j.description?`
+    ${(j.description||j.description_kn)?`
     <div class="sec">
       <div class="sec-ttl">About this Job / ಉದ್ಯೋಗದ ಬಗ್ಗೆ</div>
-      <div class="sec-body"><p>${j.description}</p></div>
+      <div class="sec-body"><p>${lang==='kn'&&j.description_kn ? j.description_kn : j.description||''}</p></div>
     </div>`:''}
 
     <!-- CATEGORY VACANCIES -->
@@ -378,7 +401,11 @@ function renderJob(j){
     <div class="sec" id="apply-section">
       <div class="sec-ttl">How to Apply / ಅರ್ಜಿ ಹೇಗೆ ಸಲ್ಲಿಸುವುದು</div>
       <div class="apply-steps">
-        ${htaSteps.map((s,i)=>`
+        ${(lang==='kn'&&j.how_to_apply_kn ? j.how_to_apply_kn : j.how_to_apply||'').split('\n').filter(s=>s.trim()).map((s,i)=>`
+        <div class="step">
+          <div class="step-num">${i+1}</div>
+          <div class="step-txt">${s}</div>
+        </div>`).join('')||htaSteps.map((s,i)=>`
         <div class="step">
           <div class="step-num">${i+1}</div>
           <div class="step-txt">${s}</div>
@@ -477,6 +504,9 @@ async function load(){
   const t=localStorage.getItem('nj_theme');
   if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('dmb2').textContent='☀️';}
 
+  // Apply saved language
+  setLang(lang);
+
   const params=new URLSearchParams(window.location.search);
   const id=params.get('job');
   if(!id){window.location.href='index.html';return;}
@@ -486,6 +516,7 @@ async function load(){
     allJobs=await r.json();
     job=allJobs.find(x=>x.id===id);
     if(!job){document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Job not found. <a href="index.html" style="color:var(--sf)">Go back</a></div>';return;}
+    curJob = job;
     renderJob(job);
     renderSidebar(job,allJobs);
   }catch(e){
