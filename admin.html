@@ -227,8 +227,13 @@ textarea{min-height:65px;resize:vertical;}
       </div>
 
       <div class="row2">
-        <div><label>Department *</label><input type="text" id="f-dept" placeholder="KPSC, PWD, SBI..."></div>
-        <div><label>Location</label><input type="text" id="f-loc" placeholder="Bangalore, All India"></div>
+        <div><label>Department / ಇಲಾಖೆ *</label><input type="text" id="f-dept" placeholder="KPSC, PWD, SBI..."></div>
+        <div><label>Department (ಕನ್ನಡ)</label><input type="text" id="f-dept-kn" placeholder="ಕರ್ನಾಟಕ ಲೋಕಸೇವಾ ಆಯೋಗ..." style="font-family:var(--fkn)"></div>
+      </div>
+
+      <div class="row2">
+        <div><label>Location / ಸ್ಥಳ</label><input type="text" id="f-loc" placeholder="Bangalore, All India"></div>
+        <div><label>Location (ಕನ್ನಡ)</label><input type="text" id="f-loc-kn" placeholder="ಬೆಂಗಳೂರು, ಅಖಿಲ ಭಾರತ" style="font-family:var(--fkn)"></div>
       </div>
 
       <div class="row2">
@@ -254,8 +259,10 @@ textarea{min-height:65px;resize:vertical;}
         <div><label>Notification No.</label><input type="text" id="f-notif" placeholder="KPSC/2025/JE/01"></div>
         <div><label>Icon (Emoji)</label><input type="text" id="f-icon" placeholder="🏗️" maxlength="4"></div>
       </div>
-      <label>Category-wise Vacancies</label>
+      <label>Category-wise Vacancies (English)</label>
       <input type="text" id="f-cats" placeholder="SC-24, ST-12, OBC-32, Gen-52">
+      <label>Category-wise Vacancies (ಕನ್ನಡ)</label>
+      <input type="text" id="f-cats-kn" placeholder="ಪ.ಜಾ-24, ಪ.ಪಂ-12, ಹಿಂ.ವ-32, ಸಾಮಾ-52" style="font-family:var(--fkn)">
 
       <div class="fsec">📝 Job Description</div>
       <label style="margin-top:0">Description (English)</label>
@@ -263,8 +270,10 @@ textarea{min-height:65px;resize:vertical;}
       <label>Description (ಕನ್ನಡ)</label>
       <textarea id="f-desc-kn" placeholder="ಜವಾಬ್ದಾರಿಗಳು, ಪರೀಕ್ಷೆ ವಿವರಗಳು..." style="font-family:var(--fkn)"></textarea>
 
-      <label>Qualifications / Skills</label>
+      <label>Qualifications / Skills (English)</label>
       <input type="text" id="f-skills" placeholder="B.E Civil, Kannada knowledge, 2yr experience">
+      <label>Qualifications / Skills (ಕನ್ನಡ)</label>
+      <input type="text" id="f-skills-kn" placeholder="ಬಿ.ಇ ಸಿವಿಲ್, ಕನ್ನಡ ಜ್ಞಾನ..." style="font-family:var(--fkn)">
 
       <div class="fsec">💰 Application Fee</div>
       <label style="margin-top:0">Fee (English)</label>
@@ -412,7 +421,9 @@ async function saveJob() {
     title_en: ten,
     title_kn: document.getElementById('f-tkn').value.trim() || null,
     dept,
+    dept_kn: document.getElementById('f-dept-kn').value.trim() || null,
     loc: document.getElementById('f-loc').value.trim() || null,
+    loc_kn: document.getElementById('f-loc-kn').value.trim() || null,
     seats: parseInt(document.getElementById('f-seats').value) || 0,
     salary: document.getElementById('f-sal').value.trim() || null,
     age: document.getElementById('f-age').value.trim() || null,
@@ -421,6 +432,8 @@ async function saveJob() {
     notif: document.getElementById('f-notif').value.trim() || null,
     icon: document.getElementById('f-icon').value.trim() || '💼',
     cats: document.getElementById('f-cats').value.trim() || null,
+    cats_kn: document.getElementById('f-cats-kn').value.trim() || null,
+    skills_kn: document.getElementById('f-skills-kn').value.trim() || null,
     description: document.getElementById('f-desc').value.trim() || null,
     skills: document.getElementById('f-skills').value.trim() || null,
     start_date: document.getElementById('f-sd').value || null,
@@ -475,7 +488,9 @@ function editJob(id) {
   document.getElementById('f-ten').value = j.title_en || '';
   document.getElementById('f-tkn').value = j.title_kn || '';
   document.getElementById('f-dept').value = j.dept || '';
+  document.getElementById('f-dept-kn').value = j.dept_kn || '';
   document.getElementById('f-loc').value = j.loc || '';
+  document.getElementById('f-loc-kn').value = j.loc_kn || '';
   document.getElementById('f-seats').value = j.seats || '';
   document.getElementById('f-sal').value = j.salary || '';
   document.getElementById('f-age').value = j.age || '';
@@ -484,6 +499,8 @@ function editJob(id) {
   document.getElementById('f-notif').value = j.notif || '';
   document.getElementById('f-icon').value = j.icon || '';
   document.getElementById('f-cats').value = j.cats || '';
+  document.getElementById('f-cats-kn').value = j.cats_kn || '';
+  document.getElementById('f-skills-kn').value = j.skills_kn || '';
   document.getElementById('f-desc').value = j.description || '';
   document.getElementById('f-skills').value = j.skills || '';
   document.getElementById('f-hta').value = j.how_to_apply || '';
@@ -532,7 +549,7 @@ function confirmDelete(id, title) {
 // CLEAR FORM
 function clearForm() {
   editId = null;
-  ['f-ten','f-tkn','f-dept','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-fee-kn','f-url','f-notif','f-icon','f-cats','f-desc','f-desc-kn','f-skills','f-hta','f-hta-kn','f-syllabus','f-syllabus-kn','f-syllabus-url'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-loc-kn','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-fee-kn','f-url','f-notif','f-icon','f-cats','f-cats-kn','f-desc','f-desc-kn','f-skills','f-skills-kn','f-hta','f-hta-kn','f-syllabus','f-syllabus-kn','f-syllabus-url'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   setCat('karnataka', document.querySelector('.to[data-v="karnataka"]'));
   setStat('open', document.querySelector('.sto[data-v="open"]'));
   document.getElementById('fpttl').textContent = '➕ Add New Job';
