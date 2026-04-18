@@ -267,6 +267,7 @@ function statusBadge(s){
 
 const catNames={karnataka:'Karnataka Govt',central:'Central Govt',railway:'Railway',bank:'Bank',police:'Police',teacher:'Teacher',private:'Private'};
 const catIcons={karnataka:'🏛️',central:'🇮🇳',railway:'🚂',bank:'🏦',police:'👮',teacher:'📚',private:'🏢'};
+const lang = 'en';
 
 function renderJob(j){
   const dl = daysLeft(j.last_date);
@@ -293,7 +294,7 @@ function renderJob(j){
       ];
 
   // Category vacancies table
-  const catsSource = lang==='kn' && j.cats_kn ? j.cats_kn : j.cats;
+  const catsSource = j.cats;
   const catsHtml = catsSource ? `
     <div class="sec">
       <div class="sec-ttl">Category-wise Vacancies / ವರ್ಗವಾರ ಹುದ್ದೆಗಳು</div>
