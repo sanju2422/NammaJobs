@@ -6,7 +6,7 @@
 <title>Namma Jobs – ನಮ್ಮ ಜಾಬ್ಸ್ | Karnataka Jobs Portal</title>
 <meta name="description" content="Karnataka Government & Private Jobs – ಕರ್ನಾಟಕ ಸರ್ಕಾರಿ ಮತ್ತು ಖಾಸಗಿ ಉದ್ಯೋಗ ಮಾಹಿತಿ | nammajobs.co.in">
 <meta name="keywords" content="Karnataka jobs, KPSC, KSP, Karnataka government jobs, ಕರ್ನಾಟಕ ಉದ್ಯೋಗ">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--sf:#E8521A;--sfl:#FEF0E8;--sfd:#B53D0D;--gn:#1A6B3C;--gnl:#E8F5EE;--gnd:#0E4826;--nv:#0D1B3E;--nv2:#162550;--gd:#C49010;--gdl:#FDF3D7;--bg:#FFD600;--card:#FFFBEA;--border:#E8C800;--border2:#F0D800;--tx:#282820;--tx2:#585850;--tx3:#9A9A90;--fkn:'Noto Sans Kannada',sans-serif;--fen:'DM Sans',sans-serif;--r:10px;--sh:0 2px 12px rgba(0,0,0,.10);}
 [data-theme=dark]{
@@ -696,7 +696,8 @@ const headers = {
 };
 
 async function fetchJobs() {
-  const res = await fetch(`${SB_URL}/rest/v1/jobs?order=created_at.desc`, { headers });
+  const cols = 'id,cat,status,title_en,title_kn,dept,loc,seats,salary,age,last_date,start_date,official_url,notif,icon,cats,description,bg,fee';
+  const res = await fetch(`${SB_URL}/rest/v1/jobs?select=${cols}&order=created_at.desc`, { headers });
   if (!res.ok) throw new Error('Failed to fetch');
   const jobs = await res.json();
 
@@ -951,7 +952,7 @@ function jobCardImg(j) {
     return `<div class="ji ${j.bg||'bg-gov'}" style="position:relative;">
       <div class="p"></div>
       <div class="iw">
-        <img src="${logo}" alt="${j.dept}" 
+        <img src="${logo}" alt="${j.dept}" loading="lazy"
           style="width:64px;height:64px;object-fit:contain;border-radius:10px;background:#fff;padding:6px;box-shadow:0 2px 10px rgba(0,0,0,.3);"
           onerror="this.parentElement.innerHTML='<span class=\\'bi\\'>${j.icon||'💼'}</span><span class=\\'dn\\'>${j.dept}</span>'">
         <span class="dn" style="margin-top:6px;">${j.dept}</span>
