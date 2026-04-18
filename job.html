@@ -168,10 +168,6 @@ footer a{color:var(--sf);}
         </div>
       </div>
       <button class="tbtn" onclick="window.location.href='index.html'">← Back to Jobs</button>
-      <div style="display:flex;background:rgba(255,255,255,.1);border-radius:20px;padding:2px;gap:2px;">
-        <button class="tbtn" id="btn-en" onclick="setLang('en')" style="border-radius:18px;background:var(--sf);color:#fff;border-color:var(--sf);">EN</button>
-        <button class="tbtn" id="btn-kn" onclick="setLang('kn')" style="border-radius:18px;">ಕನ್ನಡ</button>
-      </div>
       <button class="tbtn sf" id="top-apply-btn" onclick="scrollToApply()">Apply Now ↗</button>
     </div>
   </div>
@@ -254,18 +250,6 @@ function toggleDark(){
 }
 (function(){if(localStorage.getItem('nj_theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('dmb2').textContent='☀️';}})();
 
-// Language toggle
-let lang = localStorage.getItem('nj_lang') || 'en';
-let curJob = null;
-
-function setLang(l) {
-  lang = l;
-  localStorage.setItem('nj_lang', l);
-  document.getElementById('btn-en').style.cssText = l==='en' ? 'border-radius:18px;background:var(--sf);color:#fff;border-color:var(--sf);' : 'border-radius:18px;';
-  document.getElementById('btn-kn').style.cssText = l==='kn' ? 'border-radius:18px;background:var(--sf);color:#fff;border-color:var(--sf);' : 'border-radius:18px;';
-  if (curJob) renderJob(curJob);
-}
-
 function scrollToApply(){document.getElementById('apply-section')?.scrollIntoView({behavior:'smooth'});}
 
 function daysLeft(ld){
@@ -345,20 +329,20 @@ function renderJob(j){
 
     <!-- QUICK INFO TABLE -->
     <div class="sec">
-      <div class="sec-ttl">Job Overview / ಉದ್ಯೋಗ ಸಾರಾಂಶ</div>
+      <div class="sec-ttl">Job Overview</div>
       <table class="info-table">
-        <tr><td>Organization / ಸಂಸ್ಥೆ</td><td>${lang==='kn'&&j.dept_kn ? j.dept_kn : j.dept||'—'}</td></tr>
-        <tr><td>Post Name / ಹುದ್ದೆ</td><td>${lang==='kn'&&j.title_kn ? j.title_kn : j.title_en||'—'}</td></tr>
-        <tr><td>Total Vacancies / ಒಟ್ಟು ಹುದ್ದೆ</td><td><strong>${j.seats||0}</strong></td></tr>
-        <tr><td>Pay Scale / ವೇತನ</td><td>${j.salary||'—'}</td></tr>
-        <tr><td>Age Limit / ವಯೋಮಿತಿ</td><td>${j.age||'—'}</td></tr>
-        <tr><td>Qualification / ಅರ್ಹತೆ</td><td>${lang==='kn'&&j.skills_kn ? j.skills_kn : j.skills||'—'}</td></tr>
-        <tr><td>Location / ಸ್ಥಳ</td><td>${lang==='kn'&&j.loc_kn ? j.loc_kn : j.loc||'Karnataka'}</td></tr>
-        ${j.fee||j.fee_kn?`<tr><td>Application Fee / ಅರ್ಜಿ ಶುಲ್ಕ</td><td><strong style="color:var(--sf)">${lang==='kn'&&j.fee_kn ? j.fee_kn : j.fee||'—'}</strong></td></tr>`:''}
+        <tr><td>Organization</td><td>${j.dept||'—'}</td></tr>
+        <tr><td>Post Name</td><td>${j.title_en||'—'}</td></tr>
+        <tr><td>Total Vacancies</td><td><strong>${j.seats||0}</strong></td></tr>
+        <tr><td>Pay Scale / Salary</td><td>${j.salary||'—'}</td></tr>
+        <tr><td>Age Limit</td><td>${j.age||'—'}</td></tr>
+        <tr><td>Qualification</td><td>${j.skills||'—'}</td></tr>
+        <tr><td>Location</td><td>${j.loc||'Karnataka'}</td></tr>
+        ${j.fee?`<tr><td>Application Fee</td><td><strong style="color:var(--sf)">${j.fee}</strong></td></tr>`:''}
         <tr><td>Notification No.</td><td>${j.notif||'—'}</td></tr>
         <tr><td>Status</td><td>${statusBadge(j.status)}${isExpiring?` <span style="color:#C49010;font-size:12px;font-weight:700;font-family:var(--fen)">⚡ ${dl} days left!</span>`:''}</td></tr>
-        ${j.start_date?`<tr><td>Apply From / ಅರ್ಜಿ ಆರಂಭ</td><td><strong style="color:var(--gn)">📅 ${j.start_date}</strong></td></tr>`:''}
-        <tr><td>Last Date / ಕೊನೆ ದಿನ</td><td><strong style="color:${isExpiring?'#C49010':'var(--tx)'}">${j.last_date||'—'}</strong></td></tr>
+        ${j.start_date?`<tr><td>Apply From</td><td><strong style="color:var(--gn)">📅 ${j.start_date}</strong></td></tr>`:''}
+        <tr><td>Last Date</td><td><strong style="color:${isExpiring?'#C49010':'var(--tx)'}">${j.last_date||'—'}</strong></td></tr>
         <tr><td>Official Website</td><td>${j.official_url?`<a href="${j.official_url}" target="_blank" style="color:var(--sf);">${j.official_url} ↗</a>`:'—'}</td></tr>
       </table>
     </div>
@@ -366,44 +350,57 @@ function renderJob(j){
     <!-- IMPORTANT DATES -->
     ${j.last_date?`
     <div class="sec">
-      <div class="sec-ttl">Important Dates / ಮಹತ್ವದ ದಿನಾಂಕಗಳು</div>
+      <div class="sec-ttl">Important Dates</div>
       <div class="dates-grid">
-        ${j.start_date?`<div class="date-item" style="border-color:var(--gn);background:var(--gnl);"><div class="date-label">Application Start / ಅರ್ಜಿ ಪ್ರಾರಂಭ</div><div class="date-val" style="color:var(--gn)">📅 ${j.start_date}</div></div>`:'<div class="date-item"><div class="date-label">Application Start</div><div class="date-val">Available Now</div></div>'}
-        <div class="date-item highlight"><div class="date-label">Last Date / ಕೊನೆ ದಿನಾಂಕ</div><div class="date-val">📅 ${j.last_date}</div></div>
+        ${j.start_date?`<div class="date-item" style="border-color:var(--gn);background:var(--gnl);"><div class="date-label">Application Start</div><div class="date-val" style="color:var(--gn)">📅 ${j.start_date}</div></div>`:'<div class="date-item"><div class="date-label">Application Start</div><div class="date-val">Available Now</div></div>'}
+        <div class="date-item highlight"><div class="date-label">Last Date to Apply</div><div class="date-val">📅 ${j.last_date}</div></div>
         ${dl!==null?`<div class="date-item ${isExpiring?'highlight':''}"><div class="date-label">Days Remaining</div><div class="date-val">${dl>=0?dl+' Days Left':'Expired'}</div></div>`:''}
       </div>
     </div>`:''}
 
     <!-- SYLLABUS -->
-    ${(j.syllabus||j.syllabus_kn)?`
+    ${j.syllabus?`
     <div class="sec">
-      <div class="sec-ttl">Exam Syllabus / ಪರೀಕ್ಷಾ ಪಠ್ಯಕ್ರಮ</div>
-      <div class="sec-body"><p>${lang==='kn'&&j.syllabus_kn ? j.syllabus_kn : j.syllabus||''}</p></div>
+      <div class="sec-ttl">Exam Syllabus</div>
+      <div class="sec-body"><p>${j.syllabus}</p></div>
       ${j.syllabus_url?`<div style="margin-top:10px;"><a href="${j.syllabus_url}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--nv);color:#fff;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;text-decoration:none;font-family:var(--fen);">📄 Download Official Syllabus PDF ↗</a></div>`:''}
     </div>`:''}
 
-    <!-- FEE -->
-    ${(j.fee||j.fee_kn)?`
+    <!-- FEE SECTION -->
+    ${j.fee?`
     <div class="sec">
-      <div class="sec-ttl">💰 Application Fee / ಅರ್ಜಿ ಶುಲ್ಕ</div>
-      <div class="sec-body"><p style="font-size:15px;font-weight:600;color:var(--tx);">${lang==='kn'&&j.fee_kn ? j.fee_kn : j.fee||''}</p></div>
+      <div class="sec-ttl">💰 Application Fee</div>
+      <div class="sec-body"><p style="font-size:15px;font-weight:600;">${j.fee}</p></div>
     </div>`:''}
 
     <!-- DESCRIPTION -->
-    ${(j.description||j.description_kn)?`
+    ${j.description?`
     <div class="sec">
-      <div class="sec-ttl">About this Job / ಉದ್ಯೋಗದ ಬಗ್ಗೆ</div>
-      <div class="sec-body"><p>${lang==='kn'&&j.description_kn ? j.description_kn : j.description||''}</p></div>
+      <div class="sec-ttl">About this Job</div>
+      <div class="sec-body"><p>${j.description}</p></div>
     </div>`:''}
 
     <!-- CATEGORY VACANCIES -->
-    ${catsHtml}
+    ${j.cats?`
+    <div class="sec">
+      <div class="sec-ttl">Category-wise Vacancies</div>
+      <table class="cat-tbl">
+        <thead><tr><th>Category</th><th>Vacancies</th></tr></thead>
+        <tbody>
+          ${j.cats.split(',').map(c=>{
+            const parts=c.trim().split('-');
+            return`<tr><td>${parts[0]||''}</td><td><strong>${parts[1]||''}</strong></td></tr>`;
+          }).join('')}
+          <tr><td><strong>Total</strong></td><td><strong>${j.seats||0}</strong></td></tr>
+        </tbody>
+      </table>
+    </div>`:''}
 
     <!-- HOW TO APPLY -->
     <div class="sec" id="apply-section">
-      <div class="sec-ttl">How to Apply / ಅರ್ಜಿ ಹೇಗೆ ಸಲ್ಲಿಸುವುದು</div>
+      <div class="sec-ttl">How to Apply</div>
       <div class="apply-steps">
-        ${(lang==='kn'&&j.how_to_apply_kn ? j.how_to_apply_kn : j.how_to_apply||'').split('\n').filter(s=>s.trim()).map((s,i)=>`
+        ${(j.how_to_apply||'').split('\n').filter(s=>s.trim()).map((s,i)=>`
         <div class="step">
           <div class="step-num">${i+1}</div>
           <div class="step-txt">${s}</div>
@@ -506,9 +503,6 @@ async function load(){
   const t=localStorage.getItem('nj_theme');
   if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('dmb2').textContent='☀️';}
 
-  // Apply saved language
-  setLang(lang);
-
   const params=new URLSearchParams(window.location.search);
   const id=params.get('job');
   if(!id){window.location.href='index.html';return;}
@@ -518,7 +512,6 @@ async function load(){
     allJobs=await r.json();
     job=allJobs.find(x=>x.id===id);
     if(!job){document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Job not found. <a href="index.html" style="color:var(--sf)">Go back</a></div>';return;}
-    curJob = job;
     renderJob(job);
     renderSidebar(job,allJobs);
   }catch(e){
