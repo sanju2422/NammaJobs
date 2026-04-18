@@ -242,7 +242,7 @@ textarea{min-height:65px;resize:vertical;}
       </div>
       <div class="row2">
         <div><label>Start Date (Apply From)</label><input type="date" id="f-sd"></div>
-        <div><label></label></div>
+        <div><label>Application Fee</label><input type="text" id="f-fee" placeholder="Gen: ₹500 | SC/ST: ₹250"></div>
       </div>
 
       <div class="fsec">🌐 Official Apply Link (IMPORTANT)</div>
@@ -407,6 +407,7 @@ async function saveJob() {
     description: document.getElementById('f-desc').value.trim() || null,
     skills: document.getElementById('f-skills').value.trim() || null,
     start_date: document.getElementById('f-sd').value || null,
+    fee: document.getElementById('f-fee').value.trim() || null,
     syllabus: document.getElementById('f-syllabus').value.trim() || null,
     syllabus_url: document.getElementById('f-syllabus-url').value.trim() || null,
     how_to_apply: document.getElementById('f-hta').value.trim() || null,
@@ -466,6 +467,7 @@ function editJob(id) {
   document.getElementById('f-skills').value = j.skills || '';
   document.getElementById('f-hta').value = j.how_to_apply || '';
   document.getElementById('f-sd').value = j.start_date || '';
+  document.getElementById('f-fee').value = j.fee || '';
   document.getElementById('f-syllabus').value = j.syllabus || '';
   document.getElementById('f-syllabus-url').value = j.syllabus_url || '';
 
@@ -504,7 +506,7 @@ function confirmDelete(id, title) {
 // CLEAR FORM
 function clearForm() {
   editId = null;
-  ['f-ten','f-tkn','f-dept','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-url','f-notif','f-icon','f-cats','f-desc','f-skills','f-hta','f-syllabus','f-syllabus-url'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['f-ten','f-tkn','f-dept','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-notif','f-icon','f-cats','f-desc','f-skills','f-hta','f-syllabus','f-syllabus-url'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   setCat('karnataka', document.querySelector('.to[data-v="karnataka"]'));
   setStat('open', document.querySelector('.sto[data-v="open"]'));
   document.getElementById('fpttl').textContent = '➕ Add New Job';
