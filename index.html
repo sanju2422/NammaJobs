@@ -1009,7 +1009,12 @@ function jCard(j) {
       <div class="jm">
         <div class="jmr">
           <span class="pl ps">👥 ${j.seats||0} Posts</span>
-          ${j.last_date?`<span class="pl pd">📅 ${j.last_date}</span>`:''}
+          ${j.last_date
+            ? `<span class="pl pd">📅 ${j.last_date}</span>`
+            : j.status==='soon'
+              ? `<span class="pl" style="background:#FDF3D7;color:#8A6000;">📅 Date TBA</span>`
+              : ''
+          }
         </div>
         ${j.salary?`<div style="font-size:11px;color:var(--tx2);font-family:var(--fen);display:flex;align-items:center;gap:4px;padding:2px 0;"><span style="color:var(--gd);">💰</span><span>${j.salary}</span></div>`:''}
         ${j.age?`<div style="font-size:11px;color:var(--tx2);font-family:var(--fen);display:flex;align-items:center;gap:4px;padding:2px 0;"><span>🎂</span><span>${j.age}</span></div>`:''}

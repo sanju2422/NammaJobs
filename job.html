@@ -351,16 +351,20 @@ function renderJob(j){
     </div>
 
     <!-- IMPORTANT DATES -->
-    ${j.last_date?`
     <div class="sec">
       <div class="sec-ttl">Important Dates</div>
       <div class="dates-grid">
-        ${j.start_date?`<div class="date-item" style="border-color:var(--gn);background:var(--gnl);"><div class="date-label">Application Start</div><div class="date-val" style="color:var(--gn)">📅 ${j.start_date}</div></div>`:'<div class="date-item"><div class="date-label">Application Start</div><div class="date-val">Available Now</div></div>'}
-        <div class="date-item highlight"><div class="date-label">Last Date to Apply</div><div class="date-val">📅 ${j.last_date}</div></div>
+        ${j.start_date
+          ? `<div class="date-item" style="border-color:var(--gn);background:var(--gnl);"><div class="date-label">Application Start</div><div class="date-val" style="color:var(--gn)">📅 ${j.start_date}</div></div>`
+          : `<div class="date-item"><div class="date-label">Application Start</div><div class="date-val">${j.status==='soon'?'To be announced':'Available Now'}</div></div>`
+        }
+        <div class="date-item ${j.last_date?'highlight':''}">
+          <div class="date-label">Last Date to Apply</div>
+          <div class="date-val">${j.last_date ? `📅 ${j.last_date}` : '<span style="color:var(--tx3);font-size:12px;">To be announced</span>'}</div>
+        </div>
         ${dl!==null?`<div class="date-item ${isExpiring?'highlight':''}"><div class="date-label">Days Remaining</div><div class="date-val">${dl>=0?dl+' Days Left':'Expired'}</div></div>`:''}
       </div>
-    </div>`:''}
-
+    </div>
     <!-- DESCRIPTION -->
     ${j.description?`
     <div class="sec">
