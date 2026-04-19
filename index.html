@@ -373,12 +373,13 @@ button{cursor:pointer;font-family:var(--fen);}
 .bg-police{background:linear-gradient(135deg,#0A163A,#152D7A);}
 .bg-teacher{background:linear-gradient(135deg,#200A38,#4A1878);}
 .bg-private{background:linear-gradient(135deg,#1A1204,#3D2C08);}
-.jb{padding:11px 13px 13px;}
-.jcat{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;font-family:var(--fen);}
+.jb{padding:12px 14px 14px;}
+.jcat{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-family:var(--fen);}
 .cgov{color:var(--gn);}.ccen{color:var(--sfd);}.crly{color:#4A28B0;}.cbnk{color:#1A5E38;}.cpol{color:#1A348A;}.ctch{color:#6E28A0;}.cpvt{color:#A06800;}
 [data-theme=dark] .cgov{color:#4ABA70;} [data-theme=dark] .ccen{color:#FF8C50;} [data-theme=dark] .crly{color:#9B80F0;} [data-theme=dark] .cpol{color:#6B8FE0;} [data-theme=dark] .ctch{color:#C084F0;}
-.jt{font-size:13px;font-weight:700;color:var(--tx);line-height:1.4;margin-bottom:7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.jm{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px;}
+.jt{font-size:14px;font-weight:800;color:var(--tx);line-height:1.4;margin-bottom:9px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;letter-spacing:-.01em;}
+.jm{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
+.jmr{display:flex;flex-wrap:wrap;gap:4px;}
 /* Button animations */
 .abon{transition:transform .15s ease, background .15s ease, box-shadow .15s ease !important;}
 .abon:hover{transform:scale(1.07);box-shadow:0 3px 12px rgba(232,82,26,.35);}
@@ -1006,12 +1007,15 @@ function jCard(j) {
       ${catLbl(j.cat)}
       <div class="jt">${tt}</div>
       <div class="jm">
-        <span class="pl ps">👥 ${j.seats||0} ${lang==='kn'?'ಹುದ್ದೆ':'Posts'}</span>
-        ${j.salary?`<span class="pl psl">💰 ${j.salary}</span>`:''}
-        ${j.age?`<span class="pl pa">🎂 ${j.age}</span>`:''}
-        ${j.last_date?`<span class="pl pd">📅 ${j.last_date}</span>`:''}
+        <div class="jmr">
+          <span class="pl ps">👥 ${j.seats||0} Posts</span>
+          ${j.last_date?`<span class="pl pd">📅 ${j.last_date}</span>`:''}
+        </div>
+        ${j.salary?`<div style="font-size:11px;color:var(--tx2);font-family:var(--fen);display:flex;align-items:center;gap:4px;padding:2px 0;"><span style="color:var(--gd);">💰</span><span>${j.salary}</span></div>`:''}
+        ${j.age?`<div style="font-size:11px;color:var(--tx2);font-family:var(--fen);display:flex;align-items:center;gap:4px;padding:2px 0;"><span>🎂</span><span>${j.age}</span></div>`:''}
+        ${j.fee?`<div style="font-size:11px;font-weight:700;color:var(--sfd);font-family:var(--fen);display:flex;align-items:center;gap:4px;padding:2px 0;"><span>💳</span><span>Fee: ${j.fee}</span></div>`:''}
       </div>
-      <div class="jf" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+      <div class="jf" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:9px;">
         <button class="sh-wa" onclick="event.stopPropagation();shareWA('${j.id}','${safeTitle}')">📱 WhatsApp</button>
         <button class="sh-tg" onclick="event.stopPropagation();shareTG('${j.id}','${safeTitle}')">✈️ Telegram</button>
         ${ab}
