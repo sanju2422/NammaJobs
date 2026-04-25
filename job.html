@@ -5,10 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pg-title">Job Details | Namma Jobs</title>
 <meta name="description" id="pg-desc" content="Karnataka Government Job Details">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://akdfgycfigxshjboxwzp.supabase.co">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--sf:#E8521A;--sfl:#FEF0E8;--sfd:#B53D0D;--gn:#1A6B3C;--gnl:#E8F5EE;--gnd:#0E4826;--nv:#0D1B3E;--bg:#FFF8DC;--card:#FFFDF5;--border:#E8DFC0;--tx:#1A1A10;--tx2:#585850;--tx3:#9A9A90;--fkn:'Noto Sans Kannada',sans-serif;--fen:'DM Sans',sans-serif;--r:10px;}
 [data-theme=dark]{--bg:#111;--card:#1C1C1C;--border:#2E2E2E;--tx:#EFEFEF;--tx2:#AAAAAA;--tx3:#666;--nv:#080D1A;--sfl:#1E1008;}
@@ -167,10 +164,11 @@ footer a{color:var(--sf);}
         <a class="ir-btn" href="tools.html" target="_blank">🖼️ Image Resizer</a>
         <div class="ir-tip">
           <div class="ir-tip-en">📐 Free Image Tools — Job Application Ready!</div>
-          <div class="ir-tip-kn">ನಿಮ್ಮ ಫೋಟೋ ಮತ್ತು ದಾಖಲೆಗಳನ್ನು ಅರ್ಜಿಗೆ ತಕ್ಕಂತೆ Resize ಮಾಡಿ</div>
+          
         </div>
       </div>
       <button class="tbtn" onclick="window.location.href='index.html'">← Back to Jobs</button>
+      
       <button class="tbtn sf" id="top-apply-btn" onclick="scrollToApply()">Apply Now ↗</button>
     </div>
   </div>
@@ -253,6 +251,9 @@ function toggleDark(){
 }
 (function(){if(localStorage.getItem('nj_theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('dmb2').textContent='☀️';}})();
 
+
+
+const lang = 'en';
 function scrollToApply(){document.getElementById('apply-section')?.scrollIntoView({behavior:'smooth'});}
 
 function daysLeft(ld){
@@ -270,7 +271,6 @@ function statusBadge(s){
 
 const catNames={karnataka:'Karnataka Govt',central:'Central Govt',railway:'Railway',bank:'Bank',police:'Police',teacher:'Teacher',private:'Private'};
 const catIcons={karnataka:'🏛️',central:'🇮🇳',railway:'🚂',bank:'🏦',police:'👮',teacher:'📚',private:'🏢'};
-const lang = 'en';
 
 function renderJob(j){
   const dl = daysLeft(j.last_date);
@@ -288,27 +288,27 @@ function renderJob(j){
   const htaSteps = j.how_to_apply
     ? j.how_to_apply.split('\n').filter(s=>s.trim())
     : [
-        'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್ '+( j.official_url||'')+'ಗೆ ಹೋಗಿ / Visit the official website',
-        'ಹೊಸ ನೋಂದಣಿ ಮಾಡಿ ಅಥವಾ ಲಾಗಿನ್ ಮಾಡಿ / Register or Login',
-        'ಅರ್ಜಿ ನಮೂನೆ ತುಂಬಿ / Fill the application form carefully',
-        'ಅಗತ್ಯ ದಾಖಲೆಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ / Upload required documents',
-        'ಅರ್ಜಿ ಶುಲ್ಕ ಪಾವತಿಸಿ (ಅಗತ್ಯವಿದ್ದಲ್ಲಿ) / Pay application fee if applicable',
-        'ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ಮತ್ತು ಪ್ರಿಂಟ್ ತೆಗೆದಿಡಿ / Submit and keep a printout'
+        ''+( j.official_url||'')+'Visit the official website',
+        'Register or Login',
+        'Fill the application form carefully',
+        'Upload required documents',
+        'Pay application fee if applicable',
+        'Submit and keep a printout'
       ];
 
   // Category vacancies table
   const catsSource = j.cats;
   const catsHtml = catsSource ? `
     <div class="sec">
-      <div class="sec-ttl">Category-wise Vacancies / ವರ್ಗವಾರ ಹುದ್ದೆಗಳು</div>
+      <div class="sec-ttl">Category-wise Vacancies</div>
       <table class="cat-tbl">
-        <thead><tr><th>Category / ವರ್ಗ</th><th>Vacancies / ಹುದ್ದೆಗಳು</th></tr></thead>
+        <thead><tr><th>Category</th><th>Vacancies</th></tr></thead>
         <tbody>
           ${catsSource.split(',').map(c=>{
             const parts=c.trim().split('-');
             return`<tr><td>${parts[0]||''}</td><td><strong>${parts[1]||''}</strong></td></tr>`;
           }).join('')}
-          <tr><td><strong>Total / ಒಟ್ಟು</strong></td><td><strong>${j.seats||0}</strong></td></tr>
+          <tr><td><strong>Total</strong></td><td><strong>${j.seats||0}</strong></td></tr>
         </tbody>
       </table>
     </div>` : '';
@@ -338,63 +338,54 @@ function renderJob(j){
         <tr><td>Organization</td><td>${j.dept||'—'}</td></tr>
         <tr><td>Post Name</td><td>${j.title_en||'—'}</td></tr>
         <tr><td>Total Vacancies</td><td><strong>${j.seats||0}</strong></td></tr>
-        <tr><td>Pay Scale / Salary</td><td>${j.salary||'—'}</td></tr>
+        <tr><td>Pay Scale</td><td>${j.salary||'—'}</td></tr>
         <tr><td>Age Limit</td><td>${j.age||'—'}</td></tr>
         <tr><td>Qualification</td><td>${j.skills||'—'}</td></tr>
         <tr><td>Location</td><td>${j.loc||'Karnataka'}</td></tr>
-        ${j.fee?`<tr><td>Application Fee</td><td><strong style="color:var(--sf)">${j.fee}</strong></td></tr>`:''}
+        ${j.fee||j.fee_kn?`<tr><td>Application Fee</td><td><strong style="color:var(--sf)">${j.fee||'—'}</strong></td></tr>`:''}
+        <tr><td>Notification No.</td><td>${j.notif||'—'}</td></tr>
+        <tr><td>Status</td><td>${statusBadge(j.status)}${isExpiring?` <span style="color:#C49010;font-size:12px;font-weight:700;font-family:var(--fen)">⚡ ${dl} days left!</span>`:''}</td></tr>
         ${j.start_date?`<tr><td>Apply From</td><td><strong style="color:var(--gn)">📅 ${j.start_date}</strong></td></tr>`:''}
         <tr><td>Last Date</td><td><strong style="color:${isExpiring?'#C49010':'var(--tx)'}">${j.last_date||'—'}</strong></td></tr>
-        <tr><td>Notification No.</td><td>${j.notif||'—'}</td></tr>
         <tr><td>Official Website</td><td>${j.official_url?`<a href="${j.official_url}" target="_blank" style="color:var(--sf);">${j.official_url} ↗</a>`:'—'}</td></tr>
       </table>
     </div>
 
     <!-- IMPORTANT DATES -->
+    ${j.last_date?`
     <div class="sec">
       <div class="sec-ttl">Important Dates</div>
       <div class="dates-grid">
-        ${j.start_date
-          ? `<div class="date-item" style="border-color:var(--gn);background:var(--gnl);"><div class="date-label">Application Start</div><div class="date-val" style="color:var(--gn)">📅 ${j.start_date}</div></div>`
-          : `<div class="date-item"><div class="date-label">Application Start</div><div class="date-val">${j.status==='soon'?'To be announced':'Available Now'}</div></div>`
-        }
-        <div class="date-item ${j.last_date?'highlight':''}">
-          <div class="date-label">Last Date to Apply</div>
-          <div class="date-val">${j.last_date ? `📅 ${j.last_date}` : '<span style="color:var(--tx3);font-size:12px;">To be announced</span>'}</div>
-        </div>
+        ${j.start_date?`<div class="date-item" style="border-color:var(--gn);background:var(--gnl);"><div class="date-label">Application Start</div><div class="date-val" style="color:var(--gn)">📅 ${j.start_date}</div></div>`:'<div class="date-item"><div class="date-label">Application Start</div><div class="date-val">Available Now</div></div>'}
+        <div class="date-item highlight"><div class="date-label">Last Date</div><div class="date-val">📅 ${j.last_date}</div></div>
         ${dl!==null?`<div class="date-item ${isExpiring?'highlight':''}"><div class="date-label">Days Remaining</div><div class="date-val">${dl>=0?dl+' Days Left':'Expired'}</div></div>`:''}
       </div>
-    </div>
-    <!-- DESCRIPTION -->
-    ${j.description?`
-    <div class="sec">
-      <div class="sec-ttl">About this Job</div>
-      <div class="sec-body"><p>${j.description}</p></div>
-    </div>`:''}
-
-    <!-- CATEGORY VACANCIES -->
-    ${j.cats?`
-    <div class="sec">
-      <div class="sec-ttl">Category-wise Vacancies</div>
-      <table class="cat-tbl">
-        <thead><tr><th>Category</th><th>Vacancies</th></tr></thead>
-        <tbody>
-          ${j.cats.split(',').map(c=>{
-            const parts=c.trim().split('-');
-            return`<tr><td>${parts[0]||''}</td><td><strong>${parts[1]||''}</strong></td></tr>`;
-          }).join('')}
-          <tr><td><strong>Total</strong></td><td><strong>${j.seats||0}</strong></td></tr>
-        </tbody>
-      </table>
     </div>`:''}
 
     <!-- SYLLABUS -->
-    ${j.syllabus?`
+    ${(j.syllabus||j.syllabus_kn)?`
     <div class="sec">
       <div class="sec-ttl">Exam Syllabus</div>
-      <div class="sec-body"><p>${j.syllabus}</p></div>
+      <div class="sec-body"><p>${j.syllabus||''}</p></div>
       ${j.syllabus_url?`<div style="margin-top:10px;"><a href="${j.syllabus_url}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--nv);color:#fff;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;text-decoration:none;font-family:var(--fen);">📄 Download Official Syllabus PDF ↗</a></div>`:''}
     </div>`:''}
+
+    <!-- FEE -->
+    ${(j.fee||j.fee_kn)?`
+    <div class="sec">
+      <div class="sec-ttl">💰 Application Fee</div>
+      <div class="sec-body"><p style="font-size:15px;font-weight:600;color:var(--tx);">${j.fee||''}</p></div>
+    </div>`:''}
+
+    <!-- DESCRIPTION -->
+    ${(j.description||j.description_kn)?`
+    <div class="sec">
+      <div class="sec-ttl">About this Job</div>
+      <div class="sec-body"><p>${j.description||''}</p></div>
+    </div>`:''}
+
+    <!-- CATEGORY VACANCIES -->
+    ${catsHtml}
 
     <!-- HOW TO APPLY -->
     <div class="sec" id="apply-section">
@@ -416,7 +407,7 @@ function renderJob(j){
     ${isOpen?`
     <div class="sec">
       <div class="apply-box">
-        <div class="apply-box-ttl">Ready to Apply?</div>
+        <div class="apply-box-ttl">Ready to Apply??</div>
         <div class="apply-box-sub">Click below to go to the official application portal</div>
         <div class="apply-box-btns">
           ${j.official_url?`<button class="btn-apply-main" onclick="window.open('${j.official_url}','_blank')">🌐 Apply Online ↗</button>`:''}
@@ -508,19 +499,12 @@ async function load(){
   if(!id){window.location.href='index.html';return;}
 
   try{
-    // Fetch only this specific job — much faster!
-    const r=await fetch(`${SB_URL}/rest/v1/jobs?id=eq.${id}&limit=1`,{headers:H});
-    const data=await r.json();
-    job=data[0];
+    const r=await fetch(`${SB_URL}/rest/v1/jobs?order=created_at.desc`,{headers:H});
+    allJobs=await r.json();
+    job=allJobs.find(x=>x.id===id);
     if(!job){document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Job not found. <a href="index.html" style="color:var(--sf)">Go back</a></div>';return;}
-
-    // Fetch related jobs in background
-    fetch(`${SB_URL}/rest/v1/jobs?select=id,title_en,dept,seats,icon,cat,status&order=created_at.desc&limit=10`,{headers:H})
-      .then(r=>r.json())
-      .then(jobs=>{ allJobs=jobs; renderSidebar(job,allJobs); })
-      .catch(()=>{});
-
     renderJob(job);
+    renderSidebar(job,allJobs);
   }catch(e){
     document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Could not load. Please check connection.</div>';
   }

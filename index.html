@@ -978,7 +978,8 @@ function getJobUrl(id) {
 }
 
 function jCard(j) {
-  const tt = lang === 'kn' && j.title_kn ? j.title_kn : j.title_en;
+  const tt = j.title_en;
+  const ttKn = j.title_kn;
   const dl = daysLeft(j.last_date);
   const isOpen = j.status === 'open';
   const isExpiring = isOpen && dl !== null && dl >= 0 && dl <= 3;
@@ -1006,6 +1007,7 @@ function jCard(j) {
       ${topBadge}
       ${catLbl(j.cat)}
       <div class="jt">${tt}</div>
+      ${ttKn?`<div style="font-size:12px;color:var(--tx2);margin-top:-6px;margin-bottom:8px;line-height:1.4;">${ttKn}</div>`:''}
       <div class="jm">
         <div class="jmr">
           <span class="pl ps">👥 ${j.seats||0} Posts</span>
