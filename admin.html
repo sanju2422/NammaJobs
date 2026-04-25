@@ -227,8 +227,12 @@ textarea{min-height:65px;resize:vertical;}
       </div>
 
       <div class="row2">
-        <div><label>Department *</label><input type="text" id="f-dept" placeholder="KPSC, PWD, SBI..."></div>
+        <div><label>Department * (English)</label><input type="text" id="f-dept" placeholder="KPSC, PWD, SBI..."></div>
+        <div><label>Department (ಕನ್ನಡ)</label><input type="text" id="f-dept-kn" placeholder="ಕರ್ನಾಟಕ ಲೋಕಸೇವಾ ಆಯೋಗ" style="font-family:var(--fkn)"></div>
+      </div>
+      <div class="row2">
         <div><label>Location</label><input type="text" id="f-loc" placeholder="Bangalore, All India"></div>
+        <div></div>
       </div>
 
       <div class="row2">
@@ -395,6 +399,7 @@ async function saveJob() {
     title_en: ten,
     title_kn: document.getElementById('f-tkn').value.trim() || null,
     dept,
+    dept_kn: document.getElementById('f-dept-kn').value.trim() || null,
     loc: document.getElementById('f-loc').value.trim() || null,
     seats: parseInt(document.getElementById('f-seats').value) || 0,
     salary: document.getElementById('f-sal').value.trim() || null,
@@ -454,6 +459,7 @@ function editJob(id) {
   document.getElementById('f-ten').value = j.title_en || '';
   document.getElementById('f-tkn').value = j.title_kn || '';
   document.getElementById('f-dept').value = j.dept || '';
+  document.getElementById('f-dept-kn').value = j.dept_kn || '';
   document.getElementById('f-loc').value = j.loc || '';
   document.getElementById('f-seats').value = j.seats || '';
   document.getElementById('f-sal').value = j.salary || '';
@@ -506,7 +512,7 @@ function confirmDelete(id, title) {
 // CLEAR FORM
 function clearForm() {
   editId = null;
-  ['f-ten','f-tkn','f-dept','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-notif','f-icon','f-cats','f-desc','f-skills','f-hta','f-syllabus','f-syllabus-url'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-notif','f-icon','f-cats','f-desc','f-skills','f-hta','f-syllabus','f-syllabus-url'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   setCat('karnataka', document.querySelector('.to[data-v="karnataka"]'));
   setStat('open', document.querySelector('.sto[data-v="open"]'));
   document.getElementById('fpttl').textContent = '➕ Add New Job';

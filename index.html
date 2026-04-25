@@ -957,20 +957,21 @@ function getDeptLogo(dept) {
 // ===== JOB CARD IMAGE with logo =====
 function jobCardImg(j) {
   const logo = getDeptLogo(j.dept);
-  const deptDisplay = `<span class="dn" style="margin-top:6px;">${j.dept}</span>${j.dept_kn?`<span class="dn" style="margin-top:3px;font-size:11px;opacity:.85;">${j.dept_kn}</span>`:''}`;
+  const deptKn = j.dept_kn ? `<span class="dn" style="margin-top:3px;font-size:11px;opacity:.85;font-family:var(--fkn,inherit);">${j.dept_kn}</span>` : '';
   if (logo) {
     return `<div class="ji ${j.bg||'bg-gov'}" style="position:relative;">
       <div class="p"></div>
       <div class="iw">
         <img src="${logo}" alt="${j.dept}" loading="lazy"
           style="width:64px;height:64px;object-fit:contain;border-radius:10px;background:#fff;padding:6px;box-shadow:0 2px 10px rgba(0,0,0,.3);"
-          onerror="this.parentElement.innerHTML='<span class=\\'bi\\'>${j.icon||'💼'}</span>${deptDisplay.replace(/'/g,'&#39;')}'">
-        ${deptDisplay}
+          onerror="this.style.display='none';this.insertAdjacentHTML('beforebegin','<span class=&quot;bi&quot;>${j.icon||'💼'}</span>')">
+        <span class="dn" style="margin-top:6px;">${j.dept}</span>
+        ${deptKn}
       </div>
     </div>`;
   }
   // Fallback — emoji + dept name
-  return `<div class="ji ${j.bg||'bg-gov'}"><div class="p"></div><div class="iw"><span class="bi">${j.icon||'💼'}</span>${deptDisplay}</div></div>`;
+  return `<div class="ji ${j.bg||'bg-gov'}"><div class="p"></div><div class="iw"><span class="bi">${j.icon||'💼'}</span><span class="dn">${j.dept}</span>${deptKn}</div></div>`;
 }
 
 function getJobUrl(id) {
@@ -1008,7 +1009,6 @@ function jCard(j) {
       ${topBadge}
       ${catLbl(j.cat)}
       <div class="jt">${tt}</div>
-      ${ttKn?`<div style="font-size:13px;font-weight:700;color:var(--tx);margin-top:-4px;margin-bottom:8px;line-height:1.4;">${ttKn}</div>`:''}
       <div class="jm">
         <div class="jmr">
           <span class="pl ps">👥 ${j.seats||0} Posts</span>
