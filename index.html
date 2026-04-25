@@ -710,7 +710,7 @@ async function fetchJobs() {
     }
   } catch(e) {}
 
-  const cols = 'id,cat,status,title_en,title_kn,dept,loc,seats,salary,age,last_date,start_date,official_url,notif,icon,cats,description,bg,fee';
+  const cols = 'id,cat,status,title_en,title_kn,dept,dept_kn,loc,seats,salary,age,last_date,start_date,official_url,notif,icon,cats,description,bg,fee';
   const res = await fetch(`${SB_URL}/rest/v1/jobs?select=${cols}&order=created_at.desc`, { headers });
   if (!res.ok) throw new Error('Failed to fetch');
   const data = await res.json();
@@ -957,19 +957,20 @@ function getDeptLogo(dept) {
 // ===== JOB CARD IMAGE with logo =====
 function jobCardImg(j) {
   const logo = getDeptLogo(j.dept);
+  const deptDisplay = `<span class="dn" style="margin-top:6px;">${j.dept}</span>${j.dept_kn?`<span class="dn" style="margin-top:3px;font-size:11px;opacity:.85;">${j.dept_kn}</span>`:''}`;
   if (logo) {
     return `<div class="ji ${j.bg||'bg-gov'}" style="position:relative;">
       <div class="p"></div>
       <div class="iw">
         <img src="${logo}" alt="${j.dept}" loading="lazy"
           style="width:64px;height:64px;object-fit:contain;border-radius:10px;background:#fff;padding:6px;box-shadow:0 2px 10px rgba(0,0,0,.3);"
-          onerror="this.parentElement.innerHTML='<span class=\\'bi\\'>${j.icon||'💼'}</span><span class=\\'dn\\'>${j.dept}</span>'">
-        <span class="dn" style="margin-top:6px;">${j.dept}</span>
+          onerror="this.parentElement.innerHTML='<span class=\\'bi\\'>${j.icon||'💼'}</span>${deptDisplay.replace(/'/g,'&#39;')}'">
+        ${deptDisplay}
       </div>
     </div>`;
   }
   // Fallback — emoji + dept name
-  return `<div class="ji ${j.bg||'bg-gov'}"><div class="p"></div><div class="iw"><span class="bi">${j.icon||'💼'}</span><span class="dn">${j.dept}</span></div></div>`;
+  return `<div class="ji ${j.bg||'bg-gov'}"><div class="p"></div><div class="iw"><span class="bi">${j.icon||'💼'}</span>${deptDisplay}</div></div>`;
 }
 
 function getJobUrl(id) {
@@ -1007,7 +1008,7 @@ function jCard(j) {
       ${topBadge}
       ${catLbl(j.cat)}
       <div class="jt">${tt}</div>
-      ${ttKn?`<div style="font-size:12px;color:var(--tx2);margin-top:-6px;margin-bottom:8px;line-height:1.4;">${ttKn}</div>`:''}
+      ${ttKn?`<div style="font-size:13px;font-weight:700;color:var(--tx);margin-top:-4px;margin-bottom:8px;line-height:1.4;">${ttKn}</div>`:''}
       <div class="jm">
         <div class="jmr">
           <span class="pl ps">👥 ${j.seats||0} Posts</span>
@@ -1048,7 +1049,7 @@ function copyJobLink(id, btn) {
 }
 
 function jListCard(j) {
-  const tt = lang === 'kn' && j.title_kn ? j.title_kn : j.title_en;
+  const tt = j.title_en, ttKn = j.title_kn;
   const jobUrl = getJobUrl(j.id);
   const safeTitle = (j.title_en||'').replace(/'/g,'').replace(/"/g,'');
   const logo = getDeptLogo(j.dept);
@@ -1059,6 +1060,7 @@ function jListCard(j) {
     ${listIcon}
     <div class="jlb">
       <div class="jlt">${tt}</div>
+      ${ttKn?`<div style="font-size:11px;color:var(--tx2);margin-top:2px;line-height:1.3;">${ttKn}</div>`:''}
       <div class="jld">${j.dept} · ${j.loc||''}</div>
       <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;">
         <span class="pl ps" style="font-size:10px;">👥 ${j.seats||0}</span>
@@ -1145,19 +1147,19 @@ window.addEventListener('popstate', (e) => {
 function renderSB(jobs) {
   const open = jobs.filter(j => j.status === 'open');
   document.getElementById('sbtop').innerHTML = open.slice(0,5).map((j,i) => {
-    const tt = lang==='kn'&&j.title_kn?j.title_kn:j.title_en;
-    return `<div class="sj" onclick="openDet('${j.id}')"><div class="sjn">${i+1}</div><div><div class="sjt">${tt}</div><div class="sjm">${j.dept} · ${j.seats||0} Posts</div></div></div>`;
+    const tt = j.title_en, ttKn = j.title_kn;
+    return `<div class="sj" onclick="openDet('${j.id}')"><div class="sjn">${i+1}</div><div><div class="sjt">${tt}</div>${ttKn?`<div style="font-size:11px;color:var(--tx2);margin-top:2px;line-height:1.3;">${ttKn}</div>`:''}<div class="sjm">${j.dept} · ${j.seats||0} Posts</div></div></div>`;
   }).join('') || `<div style="color:var(--tx3);font-size:13px;padding:8px 0;">No open jobs</div>`;
 
   const ddls = open.filter(j=>j.last_date).sort((a,b)=>new Date(a.last_date)-new Date(b.last_date)).slice(0,4);
   document.getElementById('sbddl').innerHTML = ddls.map(j => {
-    const d = new Date(j.last_date), tt = lang==='kn'&&j.title_kn?j.title_kn:j.title_en;
-    return `<div class="di"><div class="dd"><div class="ddy">${d.getDate()}</div><div class="dmo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div><div><div class="dtt">${tt}</div><div class="dde">${j.dept}</div></div></div>`;
+    const d = new Date(j.last_date), tt = j.title_en, ttKn = j.title_kn;
+    return `<div class="di"><div class="dd"><div class="ddy">${d.getDate()}</div><div class="dmo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div><div><div class="dtt">${tt}</div>${ttKn?`<div style="font-size:11px;color:var(--tx2);margin-top:2px;line-height:1.3;">${ttKn}</div>`:''}<div class="dde">${j.dept}</div></div></div>`;
   }).join('') || `<div style="color:var(--tx3);font-size:13px;padding:8px 0;">No upcoming deadlines</div>`;
 
   document.getElementById('sbnotifs').innerHTML = open.slice(0,6).map(j => {
-    const tt = lang==='kn'&&j.title_kn?j.title_kn:j.title_en;
-    return `<div class="ni" onclick="openDet('${j.id}')"><div class="ndot"></div><div class="ntxt">${tt} – ${j.seats||0} ${lang==='kn'?'ಹುದ್ದೆ':'Posts'}</div></div>`;
+    const tt = j.title_en;
+    return `<div class="ni" onclick="openDet('${j.id}')"><div class="ndot"></div><div class="ntxt">${tt} – ${j.seats||0} Posts</div></div>`;
   }).join('');
 }
 
