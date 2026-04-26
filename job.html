@@ -3,512 +3,605 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="pg-title">Job Details | Namma Jobs</title>
-<meta name="description" id="pg-desc" content="Karnataka Government Job Details">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Job Details – Namma Jobs</title>
+<link rel="icon" type="image/png" href="NammaJobs.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://akdfgycfigxshjboxwzp.supabase.co">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&family=Noto+Sans+Kannada:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{--sf:#E8521A;--sfl:#FEF0E8;--sfd:#B53D0D;--gn:#1A6B3C;--gnl:#E8F5EE;--gnd:#0E4826;--nv:#0D1B3E;--bg:#FFF8DC;--card:#FFFDF5;--border:#E8DFC0;--tx:#1A1A10;--tx2:#585850;--tx3:#9A9A90;--fkn:'Noto Sans Kannada',sans-serif;--fen:'DM Sans',sans-serif;--r:10px;}
-[data-theme=dark]{--bg:#111;--card:#1C1C1C;--border:#2E2E2E;--tx:#EFEFEF;--tx2:#AAAAAA;--tx3:#666;--nv:#080D1A;--sfl:#1E1008;}
-*{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--fkn);background:var(--bg);color:var(--tx);line-height:1.7;}
-a{text-decoration:none;color:inherit;}
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--grad-bg:radial-gradient(ellipse at top,#1e3a8a 0%,#0c1f4a 40%,#061333 100%);--grad-pink:linear-gradient(135deg,#7c3aed,#a855f7);--glass-bg:rgba(255,255,255,0.06);--glass-bg-light:rgba(255,255,255,0.04);--glass-bg-dark:rgba(255,255,255,0.10);--glass-border:rgba(255,255,255,0.12);--glass-border-strong:rgba(255,255,255,0.25);--shadow:0 8px 32px rgba(0,0,0,0.5);--fen:'DM Sans',sans-serif;--fkn:'Noto Sans Kannada',sans-serif;--fhead:'Plus Jakarta Sans',sans-serif;}
+body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);background-attachment:fixed;color:#fff;}
+.hdr{background:rgba(0,0,0,0.3);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:2px solid var(--glass-border);padding:14px 0;position:sticky;top:0;z-index:100;}
+.hwrap{max-width:1280px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:14px;justify-content:space-between;}
+.hbrand{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;}
+.hlogo{width:42px;height:42px;border-radius:11px;background:#fff;padding:3px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.2);}
+.hlogo img{width:100%;height:100%;object-fit:contain;}
+.htxt{display:flex;flex-direction:column;line-height:1.1;}
+.htxt-en{font-family:var(--fhead);font-weight:800;font-size:17px;color:#fff;letter-spacing:-0.3px;}
+.htxt-en span{color:#a855f7;}
+.htxt-kn{font-family:var(--fkn);font-size:12px;color:rgba(255,255,255,0.95);font-weight:700;margin-top:2px;}
+.tbtns{display:flex;gap:8px;}
+.tbtn{background:var(--glass-bg);backdrop-filter:blur(10px);border:2px solid var(--glass-border);color:#fff;padding:9px 14px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;display:flex;align-items:center;gap:5px;text-decoration:none;}
+.tbtn:hover{background:var(--glass-bg-dark);border-color:var(--glass-border-strong);}
+.tbtn.primary{background:var(--grad-pink);border-color:rgba(168,85,247,0.6);box-shadow:0 4px 14px rgba(168,85,247,0.4);}
 
-/* TOPBAR */
-.topbar{background:var(--nv);padding:7px 0;}
-.tbi{max-width:1100px;margin:0 auto;padding:0 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
-.tlogo{display:flex;align-items:center;gap:8px;color:#fff;font-family:var(--fen);font-weight:700;font-size:15px;cursor:pointer;}
-.tlogo img{width:32px;height:32px;border-radius:6px;object-fit:cover;}
-.tlogo span{color:var(--sf);}
-.tbright{display:flex;gap:8px;align-items:center;}
-.tbtn{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.6);cursor:pointer;font-family:var(--fen);transition:.2s;}
-.tbtn:hover{color:#fff;border-color:rgba(255,255,255,.5);}
-.tbtn.sf{background:var(--sf);border-color:var(--sf);color:#fff;}
-.ir-btn{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;border:1.5px solid var(--sf);background:transparent;color:var(--sf);cursor:pointer;font-family:var(--fen);transition:.2s;text-decoration:none;display:flex;align-items:center;gap:4px;white-space:nowrap;}
-.ir-btn:hover{background:var(--sf);color:#fff;}
-.ir-tip{display:none;position:absolute;top:calc(100% + 10px);right:0;width:240px;background:#0D1B3E;color:#fff;border-radius:10px;padding:13px 15px;font-size:13px;line-height:1.6;z-index:300;box-shadow:0 6px 24px rgba(0,0,0,.3);pointer-events:none;}
-.ir-tip::before{content:'';position:absolute;top:-6px;right:16px;width:10px;height:10px;background:#0D1B3E;transform:rotate(45deg);}
-.ir-wrap:hover .ir-tip{display:block;}
-.ir-tip-en{font-size:13px;font-weight:700;color:#fff;margin-bottom:5px;}
-.ir-tip-kn{font-size:12px;color:rgba(255,255,255,.75);font-family:var(--fkn);}
-[data-theme=dark] .ir-btn{border-color:#00C9B1;color:#00C9B1;}
-[data-theme=dark] .ir-btn:hover{background:#00C9B1;color:#050E1A;}
-[data-theme=dark] .ir-tip{background:#050E1A;border:1px solid #1A3A5C;}
-[data-theme=dark] .ir-tip::before{background:#050E1A;}
-.breadcrumb{background:var(--card);border-bottom:1px solid var(--border);padding:10px 0;font-size:12px;color:var(--tx3);font-family:var(--fen);}
-.bci{max-width:1100px;margin:0 auto;padding:0 18px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
-.bca{color:var(--sf);cursor:pointer;}
-.bca:hover{text-decoration:underline;}
+.container{max-width:1280px;margin:0 auto;padding:24px 16px 40px;}
 
-/* LAYOUT */
-.wrap{max-width:1100px;margin:0 auto;padding:20px 18px;display:grid;grid-template-columns:1fr 320px;gap:22px;}
-@media(max-width:860px){.wrap{grid-template-columns:1fr;}}
+/* HERO */
+.hero{
+  background:var(--glass-bg);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border:2px solid var(--glass-border);
+  border-radius:22px;
+  padding:28px;
+  margin-bottom:22px;
+  display:flex;
+  gap:22px;
+  align-items:center;
+  box-shadow:var(--shadow);
+}
+.hero-logo{
+  width:90px;height:90px;
+  background:#fff;
+  border-radius:20px;
+  padding:8px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 8px 24px rgba(0,0,0,0.3);
+  font-size:50px;
+}
+.hero-logo img{width:100%;height:100%;object-fit:contain;}
+.hero-content{flex:1;min-width:0;}
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 12px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  border:1.5px solid;
+  text-shadow:0 1px 3px rgba(0,0,0,0.2);
+  margin-bottom:10px;
+  color:#fff;
+}
+.hb-open{background:rgba(76,217,100,0.3);border-color:rgba(76,217,100,0.6);}
+.hb-soon{background:rgba(255,193,7,0.3);border-color:rgba(255,193,7,0.6);}
+.hb-closed{background:rgba(150,150,150,0.3);border-color:rgba(150,150,150,0.6);}
+.hero-badge::before{content:'';width:7px;height:7px;border-radius:50%;}
+.hb-open::before{background:#4cd964;box-shadow:0 0 8px #4cd964;}
+.hb-soon::before{background:#ffc107;}
 
-/* MAIN ARTICLE */
-.article{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
-.art-hero{background:linear-gradient(135deg,var(--nv),#1A2F5E);padding:28px 28px 24px;position:relative;overflow:hidden;}
-.art-hero::before{content:'';position:absolute;inset:0;opacity:.06;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:14px 14px;}
-.art-cat{display:inline-flex;align-items:center;gap:5px;background:var(--sf);color:#fff;font-size:11px;font-weight:800;padding:3px 12px;border-radius:20px;margin-bottom:12px;font-family:var(--fen);position:relative;z-index:1;}
-.art-title{font-size:22px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:8px;position:relative;z-index:1;}
-.art-title-kn{font-size:18px;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:14px;position:relative;z-index:1;}
-.art-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:rgba(255,255,255,.6);font-family:var(--fen);position:relative;z-index:1;}
-.art-meta span{display:flex;align-items:center;gap:4px;}
+.hero h1{
+  font-family:var(--fhead);
+  font-size:26px;
+  font-weight:800;
+  color:#fff;
+  line-height:1.3;
+  margin-bottom:6px;
+  letter-spacing:-0.4px;
+  text-shadow:0 2px 8px rgba(0,0,0,0.3);
+}
+.hero-h1-kn{
+  font-family:var(--fkn);
+  font-size:18px;
+  font-weight:700;
+  color:rgba(255,255,255,0.98);
+  margin-bottom:8px;
+  line-height:1.3;
+}
+.hero-dept{
+  font-size:14px;
+  color:rgba(255,255,255,0.85);
+  font-weight:700;
+}
+.hero-dept-kn{
+  font-family:var(--fkn);
+  font-size:13px;
+  color:rgba(255,255,255,0.75);
+  font-weight:600;
+  margin-top:3px;
+}
+
+@media(max-width:768px){
+  .hero{flex-direction:column;text-align:center;padding:22px;}
+  .hero h1{font-size:22px;}
+  .hero-h1-kn{font-size:16px;}
+}
+
+/* MAIN GRID */
+.main-grid{
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:22px;
+}
+@media(max-width:1024px){.main-grid{grid-template-columns:1fr;}}
+
+.card{
+  background:var(--glass-bg);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:2px solid var(--glass-border);
+  border-radius:18px;
+  padding:22px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+}
+.card-title{
+  font-family:var(--fhead);
+  font-size:18px;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+  text-shadow:0 1px 3px rgba(0,0,0,0.2);
+}
+.card-title::before{content:'';width:5px;height:22px;background:var(--grad-pink);border-radius:3px;}
 
 /* INFO TABLE */
-.info-table{width:100%;border-collapse:collapse;font-size:14px;}
-.info-table tr:nth-child(even) td{background:var(--bg);}
-.info-table td{padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:top;}
-.info-table td:first-child{font-weight:700;color:var(--tx);width:40%;font-family:var(--fen);white-space:nowrap;}
-.info-table td:last-child{color:var(--tx2);}
+.info-table{width:100%;border-collapse:collapse;}
+.info-table tr{border-bottom:1px solid rgba(255,255,255,0.1);}
+.info-table tr:last-child{border-bottom:none;}
+.info-table td{padding:11px 6px;font-size:14px;color:#fff;font-weight:600;}
+.info-table td:first-child{width:40%;color:rgba(255,255,255,0.8);font-weight:700;}
+.info-table strong{color:#c4b5fd;font-weight:800;}
+.info-table a{color:#a855f7;font-weight:700;text-decoration:none;}
+.info-table a:hover{color:#c4b5fd;}
 
-/* SECTION */
-.sec{padding:20px 24px;border-bottom:1px solid var(--border);}
-.sec:last-child{border-bottom:none;}
-.sec-ttl{font-size:16px;font-weight:700;color:var(--nv);margin-bottom:12px;display:flex;align-items:center;gap:8px;font-family:var(--fen);}
-[data-theme=dark] .sec-ttl{color:#E8E8E8;}
-.sec-ttl::before{content:'';width:4px;height:20px;background:var(--sf);border-radius:2px;flex-shrink:0;}
-.sec-body{font-size:14px;color:var(--tx2);line-height:1.8;}
-.sec-body p{margin-bottom:10px;}
-.sec-body ul{padding-left:18px;margin-bottom:10px;}
-.sec-body li{margin-bottom:5px;}
+/* DATES */
+.dates-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.date-item{
+  background:var(--glass-bg-dark);
+  border:2px solid var(--glass-border);
+  border-radius:14px;
+  padding:14px;
+  text-align:center;
+}
+.date-item.start{border-color:rgba(76,217,100,0.4);background:rgba(76,217,100,0.12);}
+.date-item.highlight{background:rgba(255,87,87,0.18);border-color:rgba(255,87,87,0.5);}
+.date-label{font-size:10px;color:rgba(255,255,255,0.85);font-weight:800;text-transform:uppercase;margin-bottom:6px;letter-spacing:0.05em;}
+.date-val{font-family:var(--fhead);font-size:14px;color:#fff;font-weight:800;text-shadow:0 1px 3px rgba(0,0,0,0.2);}
 
-/* CAT TABLE */
-.cat-tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
-.cat-tbl th{background:var(--nv);color:#fff;padding:9px 14px;text-align:left;font-family:var(--fen);font-size:12px;}
-.cat-tbl td{padding:9px 14px;border-bottom:1px solid var(--border);}
-.cat-tbl tr:nth-child(even) td{background:var(--bg);}
-.cat-tbl tr:last-child td{border-bottom:none;font-weight:700;}
+/* APPLY STEPS */
+.steps{display:flex;flex-direction:column;gap:10px;}
+.step{
+  display:flex;
+  gap:12px;
+  background:var(--glass-bg-dark);
+  border:1.5px solid var(--glass-border);
+  border-radius:13px;
+  padding:13px 15px;
+  align-items:flex-start;
+}
+.step-num{
+  width:30px;height:30px;
+  background:var(--grad-pink);
+  border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:13px;
+  flex-shrink:0;
+  box-shadow:0 4px 12px rgba(168,85,247,0.4);
+}
+.step-text{color:#fff;font-size:14px;font-weight:600;line-height:1.5;padding-top:5px;}
 
-/* HOW TO APPLY */
-.apply-steps{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
-.step{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border-radius:8px;padding:12px 14px;border:1px solid var(--border);}
-.step-num{width:28px;height:28px;background:var(--sf);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;font-family:var(--fen);}
-.step-txt{font-size:13px;color:var(--tx2);line-height:1.5;}
-.step-txt strong{color:var(--tx);display:block;margin-bottom:2px;}
+/* CATEGORY TABLE */
+.cat-tbl{width:100%;border-collapse:collapse;}
+.cat-tbl th{padding:10px;font-size:12px;color:rgba(255,255,255,0.85);font-weight:800;text-align:left;border-bottom:2px solid rgba(255,255,255,0.2);text-transform:uppercase;}
+.cat-tbl td{padding:10px;font-size:13px;color:#fff;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.1);}
+.cat-tbl strong{color:#c4b5fd;font-weight:800;}
 
-/* APPLY BUTTONS */
-.apply-box{background:linear-gradient(135deg,#0A3020,#1A5C3A);border-radius:10px;padding:20px;text-align:center;margin-top:8px;}
-.apply-box-ttl{font-size:15px;font-weight:700;color:#fff;margin-bottom:5px;}
-.apply-box-sub{font-size:12px;color:rgba(255,255,255,.65);margin-bottom:16px;font-family:var(--fen);}
-.apply-box-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
-.btn-apply-main{background:var(--sf);color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:800;cursor:pointer;font-family:var(--fen);transition:.15s;display:flex;align-items:center;gap:6px;}
-.btn-apply-main:hover{background:var(--sfd);}
-.btn-notif{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:8px;padding:12px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fen);transition:.15s;}
-.btn-notif:hover{background:rgba(255,255,255,.2);}
+/* APPLY BOX */
+.apply-box{
+  background:linear-gradient(135deg,rgba(124,58,237,0.25),rgba(168,85,247,0.25));
+  border:2px solid rgba(168,85,247,0.5);
+  border-radius:18px;
+  padding:24px;
+  text-align:center;
+  margin-bottom:18px;
+}
+.apply-box h2{
+  font-family:var(--fhead);
+  font-size:20px;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:6px;
+  text-shadow:0 2px 6px rgba(0,0,0,0.3);
+}
+.apply-box p{
+  color:rgba(255,255,255,0.95);
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:14px;
+}
+.btn-apply-main{
+  background:var(--grad-pink);
+  border:2px solid rgba(255,255,255,0.3);
+  color:#fff;
+  padding:12px 28px;
+  border-radius:13px;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+  font-family:inherit;
+  box-shadow:0 8px 22px rgba(168,85,247,0.5);
+  transition:all .25s;
+  text-decoration:none;
+  display:inline-block;
+}
+.btn-apply-main:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(168,85,247,0.7);}
 
-/* SHARE */
-.share-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
-.share-btn{padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:var(--fen);display:flex;align-items:center;gap:5px;transition:.15s;}
-.sh-wa{background:#25D366;color:#fff;}.sh-wa:hover{background:#1DAD55;}
-.sh-tg{background:#0088cc;color:#fff;}.sh-tg:hover{background:#006699;}
-.sh-cp{background:var(--border);color:var(--tx);}.sh-cp:hover{background:var(--tx3);color:#fff;}
-
-/* IMPORTANT DATES */
-.dates-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
-@media(max-width:500px){.dates-grid{grid-template-columns:1fr;}}
-.date-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 13px;}
-.date-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--tx3);font-family:var(--fen);margin-bottom:3px;}
-.date-val{font-size:14px;font-weight:700;color:var(--nv);font-family:var(--fen);}
-[data-theme=dark] .date-val{color:#E8E8E8;}
-.date-item.highlight{border-color:var(--sf);background:var(--sfl);}
-.date-item.highlight .date-val{color:var(--sfd);}
+/* SHARE BUTTONS */
+.share-row{display:flex;gap:8px;flex-wrap:wrap;}
+.share-btn{
+  flex:1;
+  min-width:100px;
+  padding:11px 14px;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+  font-family:inherit;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  color:#fff;
+  border:2px solid;
+  transition:all .25s;
+  text-shadow:0 1px 3px rgba(0,0,0,0.2);
+}
+.sb-wa{background:rgba(37,211,102,0.3);border-color:rgba(37,211,102,0.7);}
+.sb-tg{background:rgba(0,136,204,0.3);border-color:rgba(0,136,204,0.7);}
+.sb-cp{background:var(--glass-bg-dark);border-color:var(--glass-border-strong);}
+.share-btn:hover{transform:translateY(-2px);}
 
 /* SIDEBAR */
-.sidebar{display:flex;flex-direction:column;gap:14px;}
-.scard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
-.sch{background:var(--nv);padding:10px 14px;font-size:13px;font-weight:700;color:#fff;font-family:var(--fen);}
-.scb{padding:12px 14px;}
-.quick-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
-.quick-item:last-child{border-bottom:none;padding-bottom:0;}
-.qi-label{color:var(--tx3);font-family:var(--fen);font-size:11px;font-weight:700;text-transform:uppercase;}
-.qi-val{font-weight:700;color:var(--tx);text-align:right;font-family:var(--fen);}
-.qi-val.open{color:var(--gn);}
-.qi-val.closed{color:#A02010;}
-.qi-val.soon{color:#8A6000;}
-.rel-job{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;}
-.rel-job:last-child{border-bottom:none;padding-bottom:0;}
-.rel-job:hover .rjt{color:var(--sf);}
-.rji{font-size:20px;flex-shrink:0;}
-.rjt{font-size:12px;font-weight:600;color:var(--tx);line-height:1.3;transition:.15s;}
-.rjm{font-size:10px;color:var(--tx3);font-family:var(--fen);margin-top:2px;}
+.sb-list-item{
+  display:flex;
+  gap:10px;
+  padding:11px 0;
+  border-bottom:1px solid rgba(255,255,255,0.12);
+  cursor:pointer;
+  align-items:flex-start;
+  transition:all .2s;
+}
+.sb-list-item:last-child{border-bottom:none;}
+.sb-list-item:hover{padding-left:4px;}
+.sl-num{
+  width:26px;height:26px;
+  background:var(--grad-pink);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:12px;
+  flex-shrink:0;
+}
+.sl-title{font-size:13px;font-weight:800;color:#fff;line-height:1.3;}
+.sl-meta{color:rgba(255,255,255,0.75);font-size:11px;font-weight:600;margin-top:3px;}
 
-/* PILLS */
-.pill{display:inline-flex;align-items:center;gap:3px;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:700;font-family:var(--fen);margin:2px;}
-.p-open{background:var(--gnl);color:var(--gnd);}
-.p-closed{background:#FEE8E8;color:#A02010;}
-.p-soon{background:#FDF3D7;color:#8A6000;}
-.p-blue{background:#E6F1FB;color:#185FA5;}
-.p-purple{background:#F0EEFF;color:#5234B5;}
+.dd-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.12);cursor:pointer;align-items:flex-start;}
+.dd-item:last-child{border-bottom:none;}
+.dd-box{
+  background:rgba(255,87,87,0.3);
+  border:2px solid rgba(255,87,87,0.5);
+  border-radius:10px;
+  padding:5px 8px;
+  text-align:center;
+  flex-shrink:0;
+  width:46px;
+}
+.dd-day{font-family:var(--fhead);font-size:16px;font-weight:800;color:#fff;line-height:1;}
+.dd-mo{font-size:9px;font-weight:800;color:#fff;text-transform:uppercase;margin-top:1px;}
 
-/* LOADING */
-.loading-page{text-align:center;padding:80px 20px;color:var(--tx3);}
-.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--sf);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px;}
-@keyframes spin{to{transform:rotate(360deg)}}
+.loading-page{text-align:center;padding:80px 20px;color:#fff;font-weight:600;}
+.spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,0.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-/* FOOTER */
-footer{background:var(--nv);color:rgba(255,255,255,.6);padding:20px 18px;margin-top:28px;text-align:center;font-size:12px;font-family:var(--fen);}
-footer a{color:var(--sf);}
+@media(max-width:768px){
+  .dates-grid{grid-template-columns:1fr;}
+  .htxt-en{font-size:15px;}
+  .htxt-kn{font-size:11px;}
+  .hlogo{width:38px;height:38px;}
+}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="tbi">
-    <div class="tlogo" onclick="window.location.href='index.html'">
-      <img src="NammaJobs.png" alt="Logo">
-      Namma <span>Jobs</span>
-    </div>
-    <div class="tbright">
-      <button class="tbtn" id="dmb2" onclick="toggleDark()">🌙</button>
-      <div class="ir-wrap">
-        <a class="ir-btn" href="tools.html" target="_blank">🖼️ Image Resizer</a>
-        <div class="ir-tip">
-          <div class="ir-tip-en">📐 Free Image Tools — Job Application Ready!</div>
-          
-        </div>
+<header class="hdr">
+  <div class="hwrap">
+    <a href="index.html" class="hbrand">
+      <div class="hlogo"><img src="NammaJobs.png" alt="Namma Jobs" onerror="this.parentElement.innerHTML='🎯'"></div>
+      <div class="htxt">
+        <div class="htxt-en">Namma <span>Jobs</span></div>
+        <div class="htxt-kn">ನಮ್ಮ ಜಾಬ್ಸ್</div>
       </div>
-      <button class="tbtn" onclick="window.location.href='index.html'">← Back to Jobs</button>
-      
-      <button class="tbtn sf" id="top-apply-btn" onclick="scrollToApply()">Apply Now ↗</button>
+    </a>
+    <div class="tbtns">
+      <a href="index.html" class="tbtn">← Back to Jobs</a>
+      <button class="tbtn primary" id="top-apply" onclick="scrollToApply()">Apply Now ↗</button>
     </div>
   </div>
-</div>
+</header>
 
-<div class="breadcrumb">
-  <div class="bci">
-    <span class="bca" onclick="window.location.href='index.html'">🏠 Home</span>
-    <span>›</span>
-    <span class="bca" id="bc-cat">Karnataka Jobs</span>
-    <span>›</span>
-    <span id="bc-title" style="color:var(--tx2);">Job Details</span>
+<div class="container" id="main-content">
+  <div class="loading-page">
+    <div class="spinner"></div>
+    <div>Loading job details...</div>
   </div>
 </div>
-
-<div class="wrap">
-  <div id="main-content">
-    <div class="loading-page">
-      <div class="spinner"></div>
-      <div>Loading job details...</div>
-    </div>
-  </div>
-
-  <div class="sidebar" id="sidebar-content"></div>
-</div>
-
-<footer>
-  <div>© 2025 <a href="index.html">Namma Jobs</a> | nammajobs.co.in | Karnataka's Trusted Job Portal</div>
-  <div style="margin-top:6px;">Made with ❤️ for Karnataka Job Seekers</div>
-</footer>
 
 <script>
-const SB_URL = 'https://akdfgycfigxshjboxwzp.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrZGZneWNmaWd4c2hqYm94d3pwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MTQ0MDYsImV4cCI6MjA5MTI5MDQwNn0.Yon2X_kTr4jSpBOLaGYRiQzxixLo8rsD9LB7IKliiu8';
-const H = {'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
+const SB_URL='https://akdfgycfigxshjboxwzp.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrZGZneWNmaWd4c2hqYm94d3pwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MTQ0MDYsImV4cCI6MjA5MTI5MDQwNn0.Yon2X_kTr4jSpBOLaGYRiQzxixLo8rsD9LB7IKliiu8';
+const H={'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`};
 
-// Department logo database
-const DEPT_LOGOS = {
-  'kpsc':'https://upload.wikimedia.org/wikipedia/en/b/b9/Karnataka_Public_Service_Commission_logo.png','karnataka public service commission':'https://upload.wikimedia.org/wikipedia/en/b/b9/Karnataka_Public_Service_Commission_logo.png',
-  'ksp':'https://upload.wikimedia.org/wikipedia/en/6/6b/Karnataka_State_Police_Logo.png','karnataka state police':'https://upload.wikimedia.org/wikipedia/en/6/6b/Karnataka_State_Police_Logo.png','karnataka police':'https://upload.wikimedia.org/wikipedia/en/6/6b/Karnataka_State_Police_Logo.png',
+const DEPT_LOGOS={
+  'kpsc':'https://upload.wikimedia.org/wikipedia/en/b/b9/Karnataka_Public_Service_Commission_logo.png',
+  'karnataka public service commission':'https://upload.wikimedia.org/wikipedia/en/b/b9/Karnataka_Public_Service_Commission_logo.png',
+  'ksp':'https://upload.wikimedia.org/wikipedia/en/6/6b/Karnataka_State_Police_Logo.png',
+  'karnataka state police':'https://upload.wikimedia.org/wikipedia/en/6/6b/Karnataka_State_Police_Logo.png',
   'bbmp':'https://upload.wikimedia.org/wikipedia/en/1/1d/BBMP_logo.png',
-  'upsc':'https://upload.wikimedia.org/wikipedia/en/8/86/UPSC_Logo.png','union public service commission':'https://upload.wikimedia.org/wikipedia/en/8/86/UPSC_Logo.png',
-  'ssc':'https://upload.wikimedia.org/wikipedia/en/5/5b/Staff_Selection_Commission_of_India_Logo.png','staff selection commission':'https://upload.wikimedia.org/wikipedia/en/5/5b/Staff_Selection_Commission_of_India_Logo.png',
-  'sbi':'https://upload.wikimedia.org/wikipedia/en/5/58/SBI_logo.svg','state bank of india':'https://upload.wikimedia.org/wikipedia/en/5/58/SBI_logo.svg',
-  'rbi':'https://upload.wikimedia.org/wikipedia/commons/9/9c/Reserve_Bank_of_India_logo.svg','reserve bank of india':'https://upload.wikimedia.org/wikipedia/commons/9/9c/Reserve_Bank_of_India_logo.svg',
-  'ibps':'https://upload.wikimedia.org/wikipedia/en/0/05/IBPS_logo.png',
-  'railway recruitment board':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg','rrb':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg','indian railways':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
-  'crpf':'https://upload.wikimedia.org/wikipedia/en/2/2b/CRPF_Logo.png','central reserve police force':'https://upload.wikimedia.org/wikipedia/en/2/2b/CRPF_Logo.png',
-  'cisf':'https://upload.wikimedia.org/wikipedia/en/9/93/CISF_Logo.png',
-  'bsf':'https://upload.wikimedia.org/wikipedia/en/b/b7/BSF_Logo.png','border security force':'https://upload.wikimedia.org/wikipedia/en/b/b7/BSF_Logo.png',
-  'indian army':'https://upload.wikimedia.org/wikipedia/commons/4/4f/Indian_Army_Logo.svg',
-  'indian navy':'https://upload.wikimedia.org/wikipedia/commons/2/26/Indian_Navy_Crest.svg',
-  'indian air force':'https://upload.wikimedia.org/wikipedia/commons/9/9f/Indian_Air_Force_Logo.svg','air force':'https://upload.wikimedia.org/wikipedia/commons/9/9f/Indian_Air_Force_Logo.svg',
-  'india post':'https://upload.wikimedia.org/wikipedia/en/b/b0/India_Post_Logo.svg','postal':'https://upload.wikimedia.org/wikipedia/en/b/b0/India_Post_Logo.svg',
+  'pwd':'https://upload.wikimedia.org/wikipedia/commons/5/5a/Karnataka_government_Logo.png',
+  'upsc':'https://upload.wikimedia.org/wikipedia/en/8/86/UPSC_Logo.png',
+  'union public service commission':'https://upload.wikimedia.org/wikipedia/en/8/86/UPSC_Logo.png',
+  'ssc':'https://upload.wikimedia.org/wikipedia/en/5/5b/Staff_Selection_Commission_of_India_Logo.png',
+  'staff selection commission':'https://upload.wikimedia.org/wikipedia/en/5/5b/Staff_Selection_Commission_of_India_Logo.png',
+  'sbi':'https://upload.wikimedia.org/wikipedia/en/5/58/SBI_logo.svg',
+  'state bank of india':'https://upload.wikimedia.org/wikipedia/en/5/58/SBI_logo.svg',
+  'rbi':'https://upload.wikimedia.org/wikipedia/commons/9/9c/Reserve_Bank_of_India_logo.svg',
+  'pnb':'https://upload.wikimedia.org/wikipedia/en/2/21/Punjab_National_Bank_logo.svg',
+  'rrb':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
+  'indian railways':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
+  'irfc':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
   'isro':'https://upload.wikimedia.org/wikipedia/commons/b/bd/Indian_Space_Research_Organisation_Logo.svg',
   'drdo':'https://upload.wikimedia.org/wikipedia/en/3/36/DRDO_Logo.png',
-  'infosys':'https://upload.wikimedia.org/wikipedia/commons/9/95/Infosys_logo.svg',
-  'wipro':'https://upload.wikimedia.org/wikipedia/commons/a/a0/Wipro_Primary_Logo_Color_RGB.svg',
-  'tcs':'https://upload.wikimedia.org/wikipedia/commons/b/b1/Tata_Consultancy_Services_Logo.svg',
-  'canara bank':'https://upload.wikimedia.org/wikipedia/en/9/9a/Canara_Bank_Logo.svg',
-  'nabard':'https://upload.wikimedia.org/wikipedia/en/f/f3/NABARD_Logo.png',
-  'hal':'https://upload.wikimedia.org/wikipedia/en/a/ab/Hindustan_Aeronautics_Limited_Logo.png','hindustan aeronautics':'https://upload.wikimedia.org/wikipedia/en/a/ab/Hindustan_Aeronautics_Limited_Logo.png',
+  'bel':'https://upload.wikimedia.org/wikipedia/commons/b/b7/Bharat_Electronics_Logo.svg',
+  'bharat electronics':'https://upload.wikimedia.org/wikipedia/commons/b/b7/Bharat_Electronics_Logo.svg',
+  'india post':'https://upload.wikimedia.org/wikipedia/en/b/b0/India_Post_Logo.svg',
+  'indian army':'https://upload.wikimedia.org/wikipedia/commons/4/4f/Indian_Army_Logo.svg',
+  'territorial army':'https://upload.wikimedia.org/wikipedia/commons/4/4f/Indian_Army_Logo.svg',
 };
-function getDeptLogo(dept) {
-  if (!dept) return null;
-  const key = dept.toLowerCase().trim();
-  if (DEPT_LOGOS[key]) return DEPT_LOGOS[key];
-  for (const [k, v] of Object.entries(DEPT_LOGOS)) {
-    if (key.includes(k) || k.includes(key)) return v;
-  }
+
+function getDeptLogo(d){
+  if(!d)return null;
+  const k=d.toLowerCase().trim();
+  if(DEPT_LOGOS[k])return DEPT_LOGOS[k];
+  for(const[key,v] of Object.entries(DEPT_LOGOS)){if(k.includes(key))return v;}
   return null;
 }
 
-// Dark mode
-function toggleDark(){
-  const on = document.documentElement.getAttribute('data-theme')==='dark';
-  document.documentElement.setAttribute('data-theme', on?'light':'dark');
-  document.getElementById('dmb2').textContent = on?'🌙':'☀️';
-  localStorage.setItem('nj_theme', on?'light':'dark');
+let job=null,allJobs=[];
+
+function fmtDate(d){
+  if(!d)return '';
+  const dt=new Date(d);
+  const dd=String(dt.getDate()).padStart(2,'0');
+  const mm=String(dt.getMonth()+1).padStart(2,'0');
+  const yy=dt.getFullYear();
+  return `${dd}-${mm}-${yy}`;
 }
-(function(){if(localStorage.getItem('nj_theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('dmb2').textContent='☀️';}})();
 
+function daysLeft(ld){if(!ld)return null;const t=new Date();t.setHours(0,0,0,0);const d=new Date(ld);d.setHours(0,0,0,0);return Math.ceil((d-t)/86400000);}
 
-
-const lang = 'en';
 function scrollToApply(){document.getElementById('apply-section')?.scrollIntoView({behavior:'smooth'});}
 
-function daysLeft(ld){
-  if(!ld)return null;
-  const t=new Date();t.setHours(0,0,0,0);
-  const d=new Date(ld);d.setHours(0,0,0,0);
-  return Math.ceil((d-t)/86400000);
+function shareWA(){
+  const url=window.location.href;
+  const txt=`🎯 *${job.title_en}*\n\nApply: ${url}\n\n— Namma Jobs`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
 }
-
-function statusBadge(s){
-  if(s==='open')return`<span class="pill p-open">● Open</span>`;
-  if(s==='closed')return`<span class="pill p-closed">● Closed</span>`;
-  return`<span class="pill p-soon">◐ Coming Soon</span>`;
+function shareTG(){
+  const url=window.location.href;
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(job.title_en)}`,'_blank');
 }
-
-const catNames={karnataka:'Karnataka Govt',central:'Central Govt',railway:'Railway',bank:'Bank',police:'Police',teacher:'Teacher',private:'Private'};
-const catIcons={karnataka:'🏛️',central:'🇮🇳',railway:'🚂',bank:'🏦',police:'👮',teacher:'📚',private:'🏢'};
-
-function renderJob(j){
-  const dl = daysLeft(j.last_date);
-  const isOpen = j.status==='open';
-  const isExpiring = isOpen && dl!==null && dl>=0 && dl<=5;
-
-  // Page title & meta
-  document.title = (j.title_en||'Job') + ' | Namma Jobs';
-  document.getElementById('pg-title').textContent = j.title_en + ' | Namma Jobs';
-  document.getElementById('pg-desc').content = j.description||j.title_en;
-  document.getElementById('bc-cat').textContent = catNames[j.cat]||'Jobs';
-  document.getElementById('bc-title').textContent = j.title_en;
-
-  // Parse how_to_apply steps
-  const htaSteps = j.how_to_apply
-    ? j.how_to_apply.split('\n').filter(s=>s.trim())
-    : [
-        ''+( j.official_url||'')+'Visit the official website',
-        'Register or Login',
-        'Fill the application form carefully',
-        'Upload required documents',
-        'Pay application fee if applicable',
-        'Submit and keep a printout'
-      ];
-
-  // Category vacancies table
-  const catsSource = j.cats;
-  const catsHtml = catsSource ? `
-    <div class="sec">
-      <div class="sec-ttl">Category-wise Vacancies</div>
-      <table class="cat-tbl">
-        <thead><tr><th>Category</th><th>Vacancies</th></tr></thead>
-        <tbody>
-          ${catsSource.split(',').map(c=>{
-            const parts=c.trim().split('-');
-            return`<tr><td>${parts[0]||''}</td><td><strong>${parts[1]||''}</strong></td></tr>`;
-          }).join('')}
-          <tr><td><strong>Total</strong></td><td><strong>${j.seats||0}</strong></td></tr>
-        </tbody>
-      </table>
-    </div>` : '';
-
-  const logo = getDeptLogo(j.dept);
-  const logoHtml = logo ? `<img src="${logo}" alt="${j.dept}" style="width:70px;height:70px;object-fit:contain;background:#fff;border-radius:12px;padding:8px;box-shadow:0 4px 16px rgba(0,0,0,.3);margin-bottom:14px;display:block;" onerror="this.style.display='none'">` : '';
-
-  const html = `
-  <div class="article">
-    <div class="art-hero">
-      ${logoHtml}
-      <div class="art-cat">${catIcons[j.cat]||'💼'} ${catNames[j.cat]||'Government Job'}</div>
-      <div class="art-title">${j.title_en||''}</div>
-      ${j.title_kn?`<div class="art-title-kn">${j.title_kn}</div>`:''}
-      <div class="art-meta">
-        <span>🏢 ${j.dept||''}</span>
-        <span>📍 ${j.loc||'Karnataka'}</span>
-        <span>👥 ${j.seats||0} Posts</span>
-        ${j.notif?`<span>📋 ${j.notif}</span>`:''}
-      </div>
-    </div>
-
-    <!-- QUICK INFO TABLE -->
-    <div class="sec">
-      <div class="sec-ttl">Job Overview</div>
-      <table class="info-table">
-        <tr><td>Organization</td><td>${j.dept||'—'}</td></tr>
-        <tr><td>Post Name</td><td>${j.title_en||'—'}</td></tr>
-        <tr><td>Total Vacancies</td><td><strong>${j.seats||0}</strong></td></tr>
-        <tr><td>Pay Scale</td><td>${j.salary||'—'}</td></tr>
-        <tr><td>Age Limit</td><td>${j.age||'—'}</td></tr>
-        <tr><td>Qualification</td><td>${j.skills||'—'}</td></tr>
-        <tr><td>Location</td><td>${j.loc||'Karnataka'}</td></tr>
-        ${j.fee||j.fee_kn?`<tr><td>Application Fee</td><td><strong style="color:var(--sf)">${j.fee||'—'}</strong></td></tr>`:''}
-        <tr><td>Notification No.</td><td>${j.notif||'—'}</td></tr>
-        <tr><td>Status</td><td>${statusBadge(j.status)}${isExpiring?` <span style="color:#C49010;font-size:12px;font-weight:700;font-family:var(--fen)">⚡ ${dl} days left!</span>`:''}</td></tr>
-        ${j.start_date?`<tr><td>Apply From</td><td><strong style="color:var(--gn)">📅 ${j.start_date}</strong></td></tr>`:''}
-        <tr><td>Last Date</td><td><strong style="color:${isExpiring?'#C49010':'var(--tx)'}">${j.last_date||'—'}</strong></td></tr>
-        <tr><td>Official Website</td><td>${j.official_url?`<a href="${j.official_url}" target="_blank" style="color:var(--sf);">${j.official_url} ↗</a>`:'—'}</td></tr>
-      </table>
-    </div>
-
-    <!-- IMPORTANT DATES -->
-    ${j.last_date?`
-    <div class="sec">
-      <div class="sec-ttl">Important Dates</div>
-      <div class="dates-grid">
-        ${j.start_date?`<div class="date-item" style="border-color:var(--gn);background:var(--gnl);"><div class="date-label">Application Start</div><div class="date-val" style="color:var(--gn)">📅 ${j.start_date}</div></div>`:'<div class="date-item"><div class="date-label">Application Start</div><div class="date-val">Available Now</div></div>'}
-        <div class="date-item highlight"><div class="date-label">Last Date</div><div class="date-val">📅 ${j.last_date}</div></div>
-        ${dl!==null?`<div class="date-item ${isExpiring?'highlight':''}"><div class="date-label">Days Remaining</div><div class="date-val">${dl>=0?dl+' Days Left':'Expired'}</div></div>`:''}
-      </div>
-    </div>`:''}
-
-    <!-- SYLLABUS -->
-    ${(j.syllabus||j.syllabus_kn)?`
-    <div class="sec">
-      <div class="sec-ttl">Exam Syllabus</div>
-      <div class="sec-body"><p>${j.syllabus||''}</p></div>
-      ${j.syllabus_url?`<div style="margin-top:10px;"><a href="${j.syllabus_url}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--nv);color:#fff;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;text-decoration:none;font-family:var(--fen);">📄 Download Official Syllabus PDF ↗</a></div>`:''}
-    </div>`:''}
-
-    <!-- FEE -->
-    ${(j.fee||j.fee_kn)?`
-    <div class="sec">
-      <div class="sec-ttl">💰 Application Fee</div>
-      <div class="sec-body"><p style="font-size:15px;font-weight:600;color:var(--tx);">${j.fee||''}</p></div>
-    </div>`:''}
-
-    <!-- DESCRIPTION -->
-    ${(j.description||j.description_kn)?`
-    <div class="sec">
-      <div class="sec-ttl">About this Job</div>
-      <div class="sec-body"><p>${j.description||''}</p></div>
-    </div>`:''}
-
-    <!-- CATEGORY VACANCIES -->
-    ${catsHtml}
-
-    <!-- HOW TO APPLY -->
-    <div class="sec" id="apply-section">
-      <div class="sec-ttl">How to Apply</div>
-      <div class="apply-steps">
-        ${(j.how_to_apply||'').split('\n').filter(s=>s.trim()).map((s,i)=>`
-        <div class="step">
-          <div class="step-num">${i+1}</div>
-          <div class="step-txt">${s}</div>
-        </div>`).join('')||htaSteps.map((s,i)=>`
-        <div class="step">
-          <div class="step-num">${i+1}</div>
-          <div class="step-txt">${s}</div>
-        </div>`).join('')}
-      </div>
-    </div>
-
-    <!-- APPLY NOW BOX -->
-    ${isOpen?`
-    <div class="sec">
-      <div class="apply-box">
-        <div class="apply-box-ttl">Ready to Apply??</div>
-        <div class="apply-box-sub">Click below to go to the official application portal</div>
-        <div class="apply-box-btns">
-          ${j.official_url?`<button class="btn-apply-main" onclick="window.open('${j.official_url}','_blank')">🌐 Apply Online ↗</button>`:''}
-          <button class="btn-notif" onclick="shareJob()">🔗 Share this Job</button>
-        </div>
-      </div>
-    </div>`:''}
-
-    <!-- SHARE -->
-    <div class="sec">
-      <div class="sec-ttl">Share this Job</div>
-      <div class="share-row">
-        <button class="share-btn sh-wa" onclick="shareWA()">📱 WhatsApp</button>
-        <button class="share-btn sh-tg" onclick="shareTG()">✈️ Telegram</button>
-        <button class="share-btn sh-cp" id="copy-btn" onclick="copyLink()">🔗 Copy Link</button>
-      </div>
-    </div>
-  </div>`;
-
-  document.getElementById('main-content').innerHTML = html;
-}
-
-function renderSidebar(j, jobs){
-  const related = jobs.filter(x=>x.id!==j.id && (x.cat===j.cat||x.status==='open')).slice(0,5);
-  document.getElementById('sidebar-content').innerHTML = `
-    <div class="scard">
-      <div class="sch">📋 Quick Details</div>
-      <div class="scb">
-        <div class="quick-item"><span class="qi-label">Status</span><span class="qi-val ${j.status}">${j.status.charAt(0).toUpperCase()+j.status.slice(1)}</span></div>
-        <div class="quick-item"><span class="qi-label">Posts</span><span class="qi-val">${j.seats||0}</span></div>
-        <div class="quick-item"><span class="qi-label">Salary</span><span class="qi-val" style="font-size:11px;">${j.salary||'—'}</span></div>
-        <div class="quick-item"><span class="qi-label">Age Limit</span><span class="qi-val">${j.age||'—'}</span></div>
-        <div class="quick-item"><span class="qi-label">Last Date</span><span class="qi-val" style="color:var(--sf)">${j.last_date||'—'}</span></div>
-        ${j.official_url?`<div style="margin-top:12px;"><button onclick="window.open('${j.official_url}','_blank')" style="width:100%;background:var(--sf);color:#fff;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fen)">Apply Now ↗</button></div>`:''}
-      </div>
-    </div>
-
-    <div class="scard">
-      <div class="sch">🖼️ Image Resizer Tool</div>
-      <div class="scb" style="text-align:center;padding:16px 14px;">
-        <div style="font-size:32px;margin-bottom:8px;">📐</div>
-        <div style="font-size:13px;font-weight:700;color:var(--tx);margin-bottom:5px;font-family:var(--fen);">📐 Free Image Tools</div>
-        <div style="font-size:12px;color:var(--tx2);margin-bottom:5px;line-height:1.5;">Job Application Ready!</div>
-        <div style="font-size:12px;color:var(--tx2);margin-bottom:14px;line-height:1.5;font-family:var(--fkn);">ನಿಮ್ಮ ಫೋಟೋ ಮತ್ತು ದಾಖಲೆಗಳನ್ನು ಅರ್ಜಿಗೆ ತಕ್ಕಂತೆ Resize ಮಾಡಿ</div>
-        <a href="tools.html" target="_blank" style="display:block;background:var(--sf);color:#fff;border-radius:8px;padding:10px;font-size:13px;font-weight:700;text-decoration:none;font-family:var(--fen);transition:.15s;">🖼️ Open Image Resizer ↗</a>
-        <div style="font-size:11px;color:var(--tx3);margin-top:8px;font-family:var(--fen);">✓ Resize · ✓ Compress · ✓ Convert · ✓ PDF</div>
-      </div>
-    </div>
-    ${related.length?`
-    <div class="scard">
-      <div class="sch">🔥 Related Jobs</div>
-      <div class="scb">
-        ${related.map(r=>`
-        <div class="rel-job" onclick="window.location.href='job.html?job=${r.id}'">
-          <div class="rji">${r.icon||'💼'}</div>
-          <div><div class="rjt">${r.title_en}</div><div class="rjm">${r.dept} · ${r.seats||0} Posts</div></div>
-        </div>`).join('')}
-      </div>
-    </div>`:''}
-    <div class="scard">
-      <div class="sch">📢 Share & Help Others</div>
-      <div class="scb" style="display:flex;flex-direction:column;gap:8px;">
-        <button class="share-btn sh-wa" style="justify-content:center;" onclick="shareWA()">📱 Share on WhatsApp</button>
-        <button class="share-btn sh-tg" style="justify-content:center;" onclick="shareTG()">✈️ Share on Telegram</button>
-      </div>
-    </div>`;
-}
-
-// SHARE FUNCTIONS
-function getShareUrl(){return window.location.origin+'/job.html?job='+job.id;}
-function getShareText(){return `🔔 ${job.title_en}\n🏢 ${job.dept}\n👥 ${job.seats||0} Posts\n📅 Last Date: ${job.last_date||'Check site'}\n\n🔗 `+getShareUrl();}
-function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent(getShareText()),'_blank');}
-function shareTG(){window.open('https://t.me/share/url?url='+encodeURIComponent(getShareUrl())+'&text='+encodeURIComponent(job.title_en),'_blank');}
 function copyLink(){
-  navigator.clipboard.writeText(getShareUrl()).then(()=>{
-    const b=document.getElementById('copy-btn');
-    if(b){b.textContent='✓ Copied!';setTimeout(()=>b.textContent='🔗 Copy Link',2000);}
+  navigator.clipboard.writeText(window.location.href).then(()=>{
+    const btn=document.getElementById('copy-btn');
+    const orig=btn.innerHTML;
+    btn.innerHTML='✓ Copied!';
+    setTimeout(()=>{btn.innerHTML=orig;},2000);
   });
 }
-function shareJob(){shareWA();}
 
-// LOAD
+function badgeForJob(j,dl){
+  if(j.status==='soon')return `<div class="hero-badge hb-soon">◐ Coming Soon</div>`;
+  if(j.status==='closed')return `<div class="hero-badge hb-closed">○ Closed</div>`;
+  if(dl!==null && dl>=0 && dl<=5)return `<div class="hero-badge hb-soon">⚡ ${dl===0?'Last Day Today':dl+' days left'}</div>`;
+  return `<div class="hero-badge hb-open">✓ Open – Apply Now</div>`;
+}
+
+function renderJob(j){
+  const dl=daysLeft(j.last_date);
+  const isOpen=j.status==='open';
+  const isExpiring=isOpen&&dl!==null&&dl>=0&&dl<=5;
+
+  const logo=getDeptLogo(j.dept);
+  const heroLogoHtml=logo
+    ?`<div class="hero-logo"><img src="${logo}" alt="${j.dept}" onerror="this.parentElement.innerHTML='${j.icon||'💼'}'"></div>`
+    :`<div class="hero-logo">${j.icon||'💼'}</div>`;
+
+  const hideTopApply=!isOpen;
+  if(hideTopApply){
+    const topApply=document.getElementById('top-apply');
+    if(topApply)topApply.style.display='none';
+  }
+
+  let html=`
+    <div class="hero">
+      ${heroLogoHtml}
+      <div class="hero-content">
+        ${badgeForJob(j,dl)}
+        <h1>${j.title_en||''}</h1>
+        ${j.title_kn?`<div class="hero-h1-kn">${j.title_kn}</div>`:''}
+        <div class="hero-dept">${j.dept||''}</div>
+        ${j.dept_kn?`<div class="hero-dept-kn">${j.dept_kn}</div>`:''}
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <div>
+        <div class="card">
+          <div class="card-title">Job Overview</div>
+          <table class="info-table">
+            <tr><td>Organization</td><td>${j.dept||'—'}</td></tr>
+            <tr><td>Post Name</td><td>${j.title_en||'—'}</td></tr>
+            <tr><td>Total Vacancies</td><td><strong>${j.seats||0}</strong></td></tr>
+            ${j.salary?`<tr><td>Pay Scale / Salary</td><td>${j.salary}</td></tr>`:''}
+            ${j.age?`<tr><td>Age Limit</td><td>${j.age}</td></tr>`:''}
+            ${j.skills?`<tr><td>Qualification</td><td>${j.skills}</td></tr>`:''}
+            <tr><td>Location</td><td>${j.loc||'Karnataka'}</td></tr>
+            ${j.fee?`<tr><td>Application Fee</td><td><strong>${j.fee}</strong></td></tr>`:''}
+            ${j.notif?`<tr><td>Notification No.</td><td>${j.notif}</td></tr>`:''}
+            ${j.start_date?`<tr><td>Apply From</td><td><strong style="color:#4ade80;">📅 ${fmtDate(j.start_date)}</strong></td></tr>`:''}
+            ${j.last_date?`<tr><td>Last Date</td><td><strong style="color:${isExpiring?'#ff5757':'#c4b5fd'};">📅 ${fmtDate(j.last_date)}</strong></td></tr>`:''}
+            ${j.official_url?`<tr><td>Official Website</td><td><a href="${j.official_url}" target="_blank">${j.official_url} ↗</a></td></tr>`:''}
+          </table>
+        </div>
+
+        ${(j.last_date||j.start_date)?`
+        <div class="card">
+          <div class="card-title">Important Dates</div>
+          <div class="dates-grid">
+            ${j.start_date
+              ?`<div class="date-item start"><div class="date-label">Application Start</div><div class="date-val">📅 ${fmtDate(j.start_date)}</div></div>`
+              :`<div class="date-item"><div class="date-label">Application Start</div><div class="date-val">${j.status==='soon'?'TBA':'Available Now'}</div></div>`}
+            <div class="date-item ${isExpiring?'highlight':''}">
+              <div class="date-label">Last Date to Apply</div>
+              <div class="date-val">${j.last_date?'📅 '+fmtDate(j.last_date):'<span style="color:rgba(255,255,255,0.7);">TBA</span>'}</div>
+            </div>
+            ${dl!==null?`<div class="date-item ${isExpiring?'highlight':''}"><div class="date-label">Days Remaining</div><div class="date-val">${dl>=0?dl+' Days Left':'Expired'}</div></div>`:''}
+          </div>
+        </div>`:''}
+
+        ${j.description?`
+        <div class="card">
+          <div class="card-title">About this Job</div>
+          <div style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${j.description}</div>
+        </div>`:''}
+
+        ${j.cats?`
+        <div class="card">
+          <div class="card-title">Category-wise Vacancies</div>
+          <table class="cat-tbl">
+            <thead><tr><th>Category</th><th>Vacancies</th></tr></thead>
+            <tbody>
+              ${j.cats.split(',').map(c=>{const p=c.trim().split('-');return `<tr><td>${p[0]||''}</td><td><strong>${p[1]||''}</strong></td></tr>`;}).join('')}
+              <tr><td><strong>Total</strong></td><td><strong>${j.seats||0}</strong></td></tr>
+            </tbody>
+          </table>
+        </div>`:''}
+
+        ${j.syllabus?`
+        <div class="card">
+          <div class="card-title">Exam Syllabus</div>
+          <div style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${j.syllabus}</div>
+          ${j.syllabus_url?`<div style="margin-top:12px;"><a href="${j.syllabus_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:13px;padding:10px 20px;">📄 Download Syllabus PDF ↗</a></div>`:''}
+        </div>`:''}
+
+        <div class="card" id="apply-section">
+          <div class="card-title">How to Apply</div>
+          <div class="steps">
+            ${(j.how_to_apply||'').split('\n').filter(s=>s.trim()).map((s,i)=>`
+              <div class="step"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>
+            `).join('')||`<div class="step"><div class="step-num">1</div><div class="step-text">Visit the official website and apply online before the last date.</div></div>`}
+          </div>
+        </div>
+
+        ${isOpen&&j.official_url?`
+        <div class="apply-box">
+          <h2>Ready to Apply?</h2>
+          <p>Click below to go to the official application portal</p>
+          <a href="${j.official_url}" target="_blank" class="btn-apply-main">🌐 Apply Online ↗</a>
+        </div>`:''}
+
+        <div class="card">
+          <div class="card-title">Share this Job</div>
+          <div class="share-row">
+            <button class="share-btn sb-wa" onclick="shareWA()">📱 WhatsApp</button>
+            <button class="share-btn sb-tg" onclick="shareTG()">✈️ Telegram</button>
+            <button class="share-btn sb-cp" id="copy-btn" onclick="copyLink()">🔗 Copy Link</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="sidebar"></div>
+    </div>
+  `;
+
+  document.getElementById('main-content').innerHTML=html;
+}
+
+function renderSidebar(currentJob,jobs){
+  const open=jobs.filter(j=>j.status==='open'&&j.id!==currentJob.id);
+  const latest=open.slice(0,5);
+  const ddls=open.filter(j=>j.last_date).sort((a,b)=>new Date(a.last_date)-new Date(b.last_date)).slice(0,4);
+
+  const sidebar=document.getElementById('sidebar');
+  if(!sidebar)return;
+
+  let html='';
+  if(latest.length){
+    html+=`<div class="card"><div class="card-title">Latest Jobs</div>`;
+    html+=latest.map((j,i)=>`
+      <div class="sb-list-item" onclick="window.location.href='job.html?job=${j.id}'">
+        <div class="sl-num">${i+1}</div>
+        <div>
+          <div class="sl-title">${j.title_en||''}</div>
+          <div class="sl-meta">${j.dept||''} · ${j.seats||0} Posts</div>
+        </div>
+      </div>
+    `).join('');
+    html+=`</div>`;
+  }
+
+  if(ddls.length){
+    html+=`<div class="card"><div class="card-title">Last Date Approaching</div>`;
+    html+=ddls.map(j=>{
+      const d=new Date(j.last_date);
+      return `<div class="dd-item" onclick="window.location.href='job.html?job=${j.id}'">
+        <div class="dd-box"><div class="dd-day">${d.getDate()}</div><div class="dd-mo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div>
+        <div>
+          <div class="sl-title">${j.title_en||''}</div>
+          <div class="sl-meta">${j.dept||''} · ${j.seats||0} Posts</div>
+        </div>
+      </div>`;
+    }).join('');
+    html+=`</div>`;
+  }
+
+  sidebar.innerHTML=html;
+}
+
 async function load(){
-  const t=localStorage.getItem('nj_theme');
-  if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('dmb2').textContent='☀️';}
-
   const params=new URLSearchParams(window.location.search);
   const id=params.get('job');
   if(!id){window.location.href='index.html';return;}
 
   try{
-    const r=await fetch(`${SB_URL}/rest/v1/jobs?order=created_at.desc`,{headers:H});
-    allJobs=await r.json();
-    job=allJobs.find(x=>x.id===id);
-    if(!job){document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Job not found. <a href="index.html" style="color:var(--sf)">Go back</a></div>';return;}
+    const r=await fetch(`${SB_URL}/rest/v1/jobs?id=eq.${id}&limit=1`,{headers:H});
+    const data=await r.json();
+    job=data[0];
+    if(!job){
+      document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Job not found. <a href="index.html" style="color:#a855f7">Go back</a></div>';
+      return;
+    }
+
+    // Background fetch sidebar jobs
+    fetch(`${SB_URL}/rest/v1/jobs?select=id,title_en,dept,seats,icon,cat,status,last_date&order=created_at.desc&limit=12`,{headers:H})
+      .then(r=>r.json())
+      .then(jobs=>{allJobs=jobs;renderSidebar(job,allJobs);})
+      .catch(()=>{});
+
     renderJob(job);
-    renderSidebar(job,allJobs);
   }catch(e){
     document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Could not load. Please check connection.</div>';
   }
 }
+
 load();
 </script>
 </body>
