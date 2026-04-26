@@ -352,6 +352,10 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         <label>Category-wise Vacancies</label>
         <input type="text" id="f-cats" placeholder="SC-24, ST-12, OBC-32, Gen-52">
 
+        <label>🎓 Tags / Eligibility (Comma separated)</label>
+        <input type="text" id="f-tags" placeholder="10th Pass, 12th Pass, Graduate, Diploma">
+        <div class="url-hint">Examples: 10th Pass, 12th Pass, Graduate, Post Graduate, Diploma, ITI, Engineering, MBA</div>
+
         <div class="fsec">📝 Job Description</div>
         <textarea id="f-desc" placeholder="Responsibilities, exam details, eligibility..."></textarea>
 
@@ -592,6 +596,7 @@ async function saveJob(){
     notif:document.getElementById('f-notif').value.trim()||null,
     icon:document.getElementById('f-icon').value.trim()||'💼',
     cats:document.getElementById('f-cats').value.trim()||null,
+    tags:document.getElementById('f-tags').value.trim()||null,
     description:document.getElementById('f-desc').value.trim()||null,
     skills:document.getElementById('f-skills').value.trim()||null,
     syllabus:document.getElementById('f-syllabus').value.trim()||null,
@@ -643,6 +648,7 @@ function editJob(id){
   document.getElementById('f-notif').value=j.notif||'';
   document.getElementById('f-icon').value=j.icon||'';
   document.getElementById('f-cats').value=j.cats||'';
+  document.getElementById('f-tags').value=j.tags||'';
   document.getElementById('f-desc').value=j.description||'';
   document.getElementById('f-skills').value=j.skills||'';
   document.getElementById('f-syllabus').value=j.syllabus||'';
@@ -690,7 +696,7 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-notif','f-icon','f-cats','f-desc','f-skills','f-hta','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-notif','f-icon','f-cats','f-tags','f-desc','f-skills','f-hta','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-ld-tba','f-sd-tba','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
   selCat='karnataka';selStat='open';
