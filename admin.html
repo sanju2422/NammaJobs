@@ -272,10 +272,19 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         <label>Location</label>
         <input type="text" id="f-loc" placeholder="Bangalore, All India">
 
-        <div class="row2">
-          <div><label>Total Vacancies</label><input type="number" id="f-seats" placeholder="120" min="0"></div>
-          <div><label>Salary / Pay Scale</label><input type="text" id="f-sal" placeholder="₹35,400-1,12,400"></div>
-        </div>
+        <label>Total Vacancies</label>
+        <input type="number" id="f-seats" placeholder="120" min="0">
+        <label class="tba-row">
+          <input type="checkbox" id="f-seats-tba" onchange="toggleSeatsTBA(this.checked)">
+          <span class="tba-label">⚠️ Vacancies abhi confirm nahi hai (To Be Announced)</span>
+        </label>
+
+        <label style="margin-top:14px;">Salary / Pay Scale</label>
+        <input type="text" id="f-sal" placeholder="₹35,400-1,12,400">
+        <label class="tba-row">
+          <input type="checkbox" id="f-sal-tba" onchange="toggleSalTBA(this.checked)">
+          <span class="tba-label">⚠️ Salary abhi confirm nahi hai (To Be Announced)</span>
+        </label>
 
         <label>Age Limit</label>
         <input type="text" id="f-age" placeholder="18-35 years">
@@ -448,6 +457,29 @@ function toggleFeeTBA(checked){
     input.style.opacity='1';
   }
 }
+function toggleSeatsTBA(checked){
+  const input=document.getElementById('f-seats');
+  if(checked){
+    input.value='';
+    input.disabled=true;
+    input.style.opacity='0.4';
+  }else{
+    input.disabled=false;
+    input.style.opacity='1';
+  }
+}
+function toggleSalTBA(checked){
+  const input=document.getElementById('f-sal');
+  if(checked){
+    input.value='To Be Announced';
+    input.disabled=true;
+    input.style.opacity='0.6';
+  }else{
+    input.value='';
+    input.disabled=false;
+    input.style.opacity='1';
+  }
+}
 
 // TOAST
 function toast(type,msg){
@@ -476,8 +508,8 @@ async function saveJob(){
     dept,
     dept_kn:document.getElementById('f-dept-kn').value.trim()||null,
     loc:document.getElementById('f-loc').value.trim()||null,
-    seats:parseInt(document.getElementById('f-seats').value)||0,
-    salary:document.getElementById('f-sal').value.trim()||null,
+    seats:document.getElementById('f-seats-tba').checked?null:(parseInt(document.getElementById('f-seats').value)||0),
+    salary:document.getElementById('f-sal-tba').checked?'To Be Announced':(document.getElementById('f-sal').value.trim()||null),
     age:document.getElementById('f-age').value.trim()||null,
     last_date:document.getElementById('f-ld-tba').checked?null:(document.getElementById('f-ld').value||null),
     start_date:document.getElementById('f-sd-tba').checked?null:(document.getElementById('f-sd').value||null),
@@ -547,9 +579,13 @@ function editJob(id){
   document.getElementById('f-ld-tba').checked=false;
   document.getElementById('f-sd-tba').checked=false;
   document.getElementById('f-fee-tba').checked=(j.fee==='To Be Announced');
+  document.getElementById('f-seats-tba').checked=(j.seats===null||j.seats===undefined);
+  document.getElementById('f-sal-tba').checked=(j.salary==='To Be Announced');
   toggleTBA('f-ld',false);
   toggleTBA('f-sd',false);
   toggleFeeTBA(j.fee==='To Be Announced');
+  toggleSeatsTBA(j.seats===null||j.seats===undefined);
+  toggleSalTBA(j.salary==='To Be Announced');
 
   document.getElementById('fpttl').textContent='✏️ Edit Job';
   document.getElementById('fpsub').textContent='Update existing job details';
@@ -581,8 +617,8 @@ function delJob(id){
 function clearForm(){
   editId=null;
   ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-notif','f-icon','f-cats','f-desc','f-skills','f-hta','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  ['f-ld-tba','f-sd-tba','f-fee-tba'].forEach(id=>{document.getElementById(id).checked=false;});
-  toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleFeeTBA(false);
+  ['f-ld-tba','f-sd-tba','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
+  toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
   selCat='karnataka';selStat='open';
   renderCatGrid();
   document.querySelectorAll('.sto').forEach(b=>b.classList.toggle('on',b.dataset.v==='open'));

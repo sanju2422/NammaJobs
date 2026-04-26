@@ -370,7 +370,6 @@ function jCard(j){
         <span class="pl pl-posts">👥 ${j.seats||0} Posts</span>
         ${j.salary?`<span class="pl pl-salary">💰 ${j.salary}</span>`:''}
         ${showDate}
-        ${j.fee?`<span class="pl pl-fee">💳 ${j.fee}</span>`:''}
       </div>
       <div class="jf">
         <button class="btn-card bc-wa" onclick="event.stopPropagation();shareWA('${j.id}','${safeTitle}')">📱 WhatsApp</button>
