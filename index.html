@@ -367,7 +367,7 @@ function jCard(j){
       <div class="jt">${j.title_en||''}</div>
       ${j.title_kn?`<div class="jt-kn">${j.title_kn}</div>`:''}
       <div class="jm">
-        <span class="pl pl-posts">👥 ${j.seats||0} Posts</span>
+        <span class="pl pl-posts">👥 ${j.seats?j.seats+' Posts':'Posts TBA'}</span>
         ${j.salary?`<span class="pl pl-salary">💰 ${j.salary}</span>`:''}
         ${showDate}
       </div>
