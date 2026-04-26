@@ -31,8 +31,8 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .hbrand{display:flex;align-items:center;gap:10px;text-decoration:none;}
 .hlogo{width:42px;height:42px;border-radius:11px;background:#fff;padding:3px;display:flex;align-items:center;justify-content:center;}
 .hlogo img{width:100%;height:100%;object-fit:contain;}
-.htxt-en{font-family:var(--fhead);font-weight:800;font-size:17px;color:#fff;}
-.htxt-en span{color:#a855f7;}
+.htxt-en{font-family:var(--fhead);font-weight:800;font-size:17px;color:#FFD60A;}
+.htxt-en span{color:#FF3B30;}
 .htxt-sub{font-size:11px;color:rgba(255,255,255,0.7);font-weight:600;margin-top:2px;}
 
 .btn-back{background:var(--glass-bg);border:2px solid var(--glass-border);color:#fff;padding:9px 14px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;text-decoration:none;margin-left:auto;}
@@ -208,6 +208,23 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
 .cfa button{flex:1;padding:11px;border-radius:11px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;border:2px solid;}
 .cf-no{background:var(--glass-bg-dark);border-color:var(--glass-border);color:#fff;}
 .cf-yes{background:rgba(255,87,87,0.5);border-color:rgba(255,87,87,0.8);color:#fff;}
+
+/* TABS */
+.tab-btn{
+  background:var(--glass-bg);
+  backdrop-filter:blur(10px);
+  border:2px solid var(--glass-border);
+  color:#fff;
+  padding:10px 20px;
+  border-radius:13px;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .25s;
+}
+.tab-btn:hover{background:var(--glass-bg-dark);}
+.tab-btn.on{background:var(--grad-pink);border-color:rgba(168,85,247,0.7);box-shadow:0 4px 14px rgba(168,85,247,0.4);}
 </style>
 </head>
 <body>
@@ -240,6 +257,15 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
   </header>
 
   <div class="container">
+
+    <!-- TABS -->
+    <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;">
+      <button class="tab-btn on" id="tab-jobs" onclick="switchTab('jobs')">💼 Jobs</button>
+      <button class="tab-btn" id="tab-ac" onclick="switchTab('ac')">🎓 Admit Card</button>
+      <button class="tab-btn" id="tab-rs" onclick="switchTab('rs')">📊 Result</button>
+    </div>
+
+    <div id="tab-content-jobs">
     <div class="layout">
 
       <!-- FORM PANEL -->
@@ -363,6 +389,54 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         <div class="jl" id="jl"><div style="color:rgba(255,255,255,0.7);text-align:center;padding:20px;font-size:13px;">Loading...</div></div>
       </div>
 
+    </div>
+    </div><!-- end tab-content-jobs -->
+
+    <!-- ADMIT CARD / RESULT TAB -->
+    <div id="tab-content-notif" style="display:none;">
+      <div class="layout">
+        <!-- FORM -->
+        <div class="panel">
+          <div class="panel-hdr" id="notif-hdr">
+            <h2 id="notif-ttl">🎓 Add Admit Card</h2>
+            <p id="notif-sub">Post admit card / hall ticket notification</p>
+          </div>
+
+          <label>Title (English) *</label>
+          <input type="text" id="n-title" placeholder="e.g. KPSC FDA Admit Card 2026 Released">
+
+          <label>Department / Organization</label>
+          <input type="text" id="n-dept" placeholder="KPSC, SSC, Railway...">
+
+          <label>Department (ಕನ್ನಡ)</label>
+          <input type="text" id="n-dept-kn" placeholder="ಕರ್ನಾಟಕ ಲೋಕಸೇವಾ ಆಯೋಗ" style="font-family:var(--fkn);">
+
+          <label>Official URL (Download/View Link) *</label>
+          <input type="url" id="n-url" placeholder="https://kpsc.kar.nic.in/admit-card">
+          <div class="url-hint">⚠️ Yeh link click karne pe khulega — official URL daalo</div>
+
+          <label id="n-date-label">Exam Date</label>
+          <input type="date" id="n-date">
+
+          <div class="fbtns">
+            <button class="fbtn fb-pub" id="notif-pub-btn" onclick="saveNotif()">
+              <span id="notif-spin" class="spin"></span>
+              <span id="notif-btn-txt">✓ Publish</span>
+            </button>
+            <button class="fbtn fb-clr" onclick="clearNotifForm()">✕ Clear</button>
+          </div>
+        </div>
+
+        <!-- LIST -->
+        <div class="panel">
+          <div class="panel-hdr" style="background:linear-gradient(135deg,#1e40af,#3b82f6);">
+            <h2 id="notif-list-ttl">📋 Posted Admit Cards</h2>
+            <p>Edit or delete</p>
+          </div>
+          <div class="jl" id="notif-list"><div style="color:rgba(255,255,255,0.7);text-align:center;padding:20px;font-size:13px;">Loading...</div></div>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>
@@ -671,6 +745,144 @@ function init(){
 }
 
 if(document.getElementById('app').style.display!=='none')init();
+
+// ============ TABS & NOTIFICATIONS (Admit Card / Result) ============
+let currentTab='jobs', currentNotifType='admit_card', editNotifId=null, allNotifs=[];
+
+function switchTab(tab){
+  currentTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-'+tab).classList.add('on');
+  document.getElementById('tab-content-jobs').style.display=tab==='jobs'?'block':'none';
+  document.getElementById('tab-content-notif').style.display=(tab==='ac'||tab==='rs')?'block':'none';
+
+  if(tab==='ac'){
+    currentNotifType='admit_card';
+    document.getElementById('notif-ttl').textContent='🎓 Add Admit Card';
+    document.getElementById('notif-sub').textContent='Post admit card / hall ticket notification';
+    document.getElementById('notif-list-ttl').textContent='📋 Posted Admit Cards';
+    document.getElementById('n-date-label').textContent='Exam Date';
+    clearNotifForm();
+    loadNotifs();
+  } else if(tab==='rs'){
+    currentNotifType='result';
+    document.getElementById('notif-ttl').textContent='📊 Add Result';
+    document.getElementById('notif-sub').textContent='Post exam result notification';
+    document.getElementById('notif-list-ttl').textContent='📋 Posted Results';
+    document.getElementById('n-date-label').textContent='Released On';
+    clearNotifForm();
+    loadNotifs();
+  }
+}
+
+async function saveNotif(){
+  const title=document.getElementById('n-title').value.trim();
+  const url=document.getElementById('n-url').value.trim();
+  if(!title||!url){toast('err','Title aur URL zaroori hai!');return;}
+
+  const btn=document.getElementById('notif-pub-btn');
+  const sp=document.getElementById('notif-spin');
+  btn.disabled=true;sp.style.display='inline-block';
+
+  const notif={
+    type:currentNotifType,
+    title:title,
+    dept:document.getElementById('n-dept').value.trim()||null,
+    dept_kn:document.getElementById('n-dept-kn').value.trim()||null,
+    url:url,
+    date:document.getElementById('n-date').value||null,
+  };
+
+  try{
+    let res;
+    if(editNotifId){
+      res=await fetch(`${SB_URL}/rest/v1/notifications?id=eq.${editNotifId}`,{method:'PATCH',headers:H,body:JSON.stringify(notif)});
+    }else{
+      res=await fetch(`${SB_URL}/rest/v1/notifications`,{method:'POST',headers:H,body:JSON.stringify(notif)});
+    }
+    if(!res.ok)throw new Error('save failed');
+    toast('ok',editNotifId?'Updated!':'Published!');
+    clearNotifForm();
+    await loadNotifs();
+  }catch(e){
+    toast('err','Save failed. Make sure DB table exists.');
+  }finally{
+    btn.disabled=false;sp.style.display='none';
+  }
+}
+
+function editNotif(id){
+  const n=allNotifs.find(x=>x.id===id);
+  if(!n)return;
+  editNotifId=id;
+  document.getElementById('n-title').value=n.title||'';
+  document.getElementById('n-dept').value=n.dept||'';
+  document.getElementById('n-dept-kn').value=n.dept_kn||'';
+  document.getElementById('n-url').value=n.url||'';
+  document.getElementById('n-date').value=n.date||'';
+  document.getElementById('notif-btn-txt').textContent='✓ Update';
+  document.getElementById('notif-pub-btn').className='fbtn fb-upd';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function delNotif(id){
+  const n=allNotifs.find(x=>x.id===id);
+  document.getElementById('cf-ttl').textContent='Delete?';
+  document.getElementById('cf-msg').innerHTML=`<strong>${n?n.title:''}</strong><br>Permanent action.`;
+  document.getElementById('cf-yes').onclick=async()=>{
+    try{
+      await fetch(`${SB_URL}/rest/v1/notifications?id=eq.${id}`,{method:'DELETE',headers:H});
+      allNotifs=allNotifs.filter(x=>x.id!==id);
+      document.getElementById('cfbg').classList.remove('open');
+      toast('ok','Deleted');
+      if(editNotifId===id)clearNotifForm();
+      renderNotifList();
+    }catch(e){toast('err','Delete failed');}
+  };
+  document.getElementById('cfbg').classList.add('open');
+}
+
+function clearNotifForm(){
+  editNotifId=null;
+  ['n-title','n-dept','n-dept-kn','n-url','n-date'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('notif-btn-txt').textContent='✓ Publish';
+  document.getElementById('notif-pub-btn').className='fbtn fb-pub';
+}
+
+function renderNotifList(){
+  const filtered=allNotifs.filter(n=>n.type===currentNotifType);
+  if(!filtered.length){
+    document.getElementById('notif-list').innerHTML=`<div style="color:rgba(255,255,255,0.7);text-align:center;padding:30px;font-size:13px;">No ${currentNotifType==='admit_card'?'admit cards':'results'} posted yet</div>`;
+    return;
+  }
+  document.getElementById('notif-list').innerHTML=filtered.map(n=>`
+    <div class="ji">
+      <div class="jit">${n.title}</div>
+      <div class="jim">
+        <span class="jim-pill">${n.dept||'—'}</span>
+        ${n.date?`<span class="jim-pill">📅 ${n.date}</span>`:''}
+      </div>
+      <div class="jactions">
+        <button class="jab jab-edit" onclick="editNotif('${n.id}')">✏️ Edit</button>
+        <button class="jab jab-del" onclick="delNotif('${n.id}')">🗑️ Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadNotifs(){
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/notifications?order=created_at.desc`,{headers:H});
+    if(!r.ok){
+      document.getElementById('notif-list').innerHTML=`<div style="color:#ff8080;text-align:center;padding:20px;font-size:12px;">⚠️ Run SQL to create notifications table first</div>`;
+      return;
+    }
+    allNotifs=await r.json();
+    renderNotifList();
+  }catch(e){
+    document.getElementById('notif-list').innerHTML=`<div style="color:#ff8080;text-align:center;padding:20px;">⚠️ Could not load</div>`;
+  }
+}
 </script>
 </body>
 </html>

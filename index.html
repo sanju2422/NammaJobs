@@ -27,9 +27,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .hlogo{width:46px;height:46px;border-radius:12px;background:#fff;padding:3px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.2);}
 .hlogo img{width:100%;height:100%;object-fit:contain;}
 .htxt{display:flex;flex-direction:column;line-height:1.1;}
-.htxt-en{font-family:var(--fhead);font-weight:800;font-size:18px;color:#fff;letter-spacing:-0.3px;text-shadow:0 1px 3px rgba(0,0,0,0.2);}
-.htxt-en span{color:#a855f7;}
-.htxt-kn{font-family:var(--fkn);font-size:13px;color:rgba(255,255,255,0.95);font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,0.2);margin-top:2px;}
+.htxt-en{font-family:var(--fhead);font-weight:800;font-size:18px;color:#FFD60A;letter-spacing:-0.3px;text-shadow:0 1px 3px rgba(0,0,0,0.2);}
+.htxt-en span{color:#FF3B30;}
+.htxt-kn{font-family:var(--fkn);font-size:13px;color:#FFD60A;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,0.2);margin-top:2px;}
+.htxt-kn span{color:#FF3B30;}
 .hs{flex:1;position:relative;max-width:540px;}
 .hs input{width:100%;padding:11px 16px 11px 42px;background:var(--glass-bg-light);border:2px solid var(--glass-border);border-radius:14px;font-size:13px;color:#fff;outline:none;font-family:inherit;font-weight:600;transition:all .25s;}
 .hs input::placeholder{color:rgba(255,255,255,0.7);font-weight:500;}
@@ -157,7 +158,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       <div class="hlogo"><img src="NammaJobs.png" alt="Namma Jobs" onerror="this.parentElement.innerHTML='🎯'"></div>
       <div class="htxt">
         <div class="htxt-en">Namma <span>Jobs</span></div>
-        <div class="htxt-kn">ನಮ್ಮ ಜಾಬ್ಸ್</div>
+        <div class="htxt-kn">ನಮ್ಮ <span>ಜಾಬ್ಸ್</span></div>
       </div>
     </div>
     <div class="hs">
@@ -198,6 +199,16 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
     <div id="more-sec" style="display:none;">
       <div class="sh">📋 More Jobs</div>
       <div id="more-grid"></div>
+    </div>
+
+    <div id="ac-sec" style="display:none;">
+      <div class="sh">🎓 Admit Card</div>
+      <div class="jg" id="ac-grid"></div>
+    </div>
+
+    <div id="rs-sec" style="display:none;">
+      <div class="sh">📊 Results</div>
+      <div class="jg" id="rs-grid"></div>
     </div>
   </div>
 
@@ -321,6 +332,66 @@ function statusBadge(s,dl){
 }
 
 function getJobUrl(id){return`job.html?job=${id}`;}
+
+function shareACWA(item){
+  const txt=`🎓 *Admit Card Released*\n\n${item.title}\n${item.dept||''}\n\nDownload: ${item.url}\n\n— Namma Jobs`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
+}
+function shareACTG(item){
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(item.url)}&text=${encodeURIComponent('🎓 Admit Card: '+item.title)}`,'_blank');
+}
+function shareRSWA(item){
+  const txt=`📊 *Result Out*\n\n${item.title}\n${item.dept||''}\n\nCheck: ${item.url}\n\n— Namma Jobs`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
+}
+function shareRSTG(item){
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(item.url)}&text=${encodeURIComponent('📊 Result: '+item.title)}`,'_blank');
+}
+
+function notifCard(item, type){
+  const isAC = type==='ac';
+  const icon = isAC?'🎓':'📊';
+  const color = isAC?'rgba(76,217,100,0.3)':'rgba(168,85,247,0.3)';
+  const borderColor = isAC?'rgba(76,217,100,0.6)':'rgba(168,85,247,0.6)';
+  const dateLabel = isAC?'Exam Date':'Released On';
+  const dateVal = item.date?fmtDate(item.date):'TBA';
+  const shareWA = isAC?`shareACWA(${JSON.stringify(item).replace(/"/g,'&quot;')})`:`shareRSWA(${JSON.stringify(item).replace(/"/g,'&quot;')})`;
+  const shareTG = isAC?`shareACTG(${JSON.stringify(item).replace(/"/g,'&quot;')})`:`shareRSTG(${JSON.stringify(item).replace(/"/g,'&quot;')})`;
+
+  return `<div class="jc" onclick="window.open('${item.url}','_blank')">
+    <div class="ji" style="background:linear-gradient(135deg,${color},rgba(0,0,0,0.05));border-bottom-color:${borderColor};">
+      <div class="dlogo"><span class="dlogo-emoji">${icon}</span></div>
+      <div class="iw">
+        <div class="dn">${item.dept||'Notification'}</div>
+        ${item.dept_kn?`<div class="dn-kn">${item.dept_kn}</div>`:''}
+      </div>
+    </div>
+    <div class="jb">
+      <div class="jcat-row">
+        <span class="status-badge sb-open" style="background:${color};border-color:${borderColor};">${icon} ${isAC?'ADMIT CARD':'RESULT OUT'}</span>
+      </div>
+      <div class="jt">${item.title}</div>
+      <div class="jm">
+        <span class="pl pl-date">📅 ${dateLabel}: ${dateVal}</span>
+      </div>
+      <div class="jf">
+        <button class="btn-card bc-wa" onclick="event.stopPropagation();${shareWA}">📱 WhatsApp</button>
+        <button class="btn-card bc-tg" onclick="event.stopPropagation();${shareTG}">✈️ Telegram</button>
+        <button class="btn-card bc-apply" onclick="event.stopPropagation();window.open('${item.url}','_blank')">${isAC?'Download ↗':'Check Result ↗'}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+let allAC=[],allRS=[];
+
+async function fetchNotifs(){
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/notifications?order=created_at.desc`,{headers});
+    if(!r.ok)return [];
+    return await r.json();
+  }catch(e){return [];}
+}
 
 function shareWA(id,title){
   const url=window.location.origin+'/'+getJobUrl(id);
@@ -483,8 +554,24 @@ async function init(){
     allJobs=await fetchJobs();
     renderCats();
     renderAll();
+    // Fetch admit cards & results in background
+    const notifs=await fetchNotifs();
+    allAC=notifs.filter(n=>n.type==='admit_card');
+    allRS=notifs.filter(n=>n.type==='result');
+    renderNotifs();
   }catch(e){
     document.getElementById('jgrid').innerHTML=`<div class="empty" style="grid-column:1/-1;">⚠️ Could not load jobs. Please refresh.</div>`;
+  }
+}
+
+function renderNotifs(){
+  if(allAC.length){
+    document.getElementById('ac-sec').style.display='block';
+    document.getElementById('ac-grid').innerHTML=allAC.map(item=>notifCard(item,'ac')).join('');
+  }
+  if(allRS.length){
+    document.getElementById('rs-sec').style.display='block';
+    document.getElementById('rs-grid').innerHTML=allRS.map(item=>notifCard(item,'rs')).join('');
   }
 }
 
