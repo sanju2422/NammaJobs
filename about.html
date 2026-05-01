@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us – Namma Jobs</title>
+<meta name="description" content="About Namma Jobs - Karnataka's Trusted Job Portal for Government and Private jobs">
+<link rel="icon" type="image/png" href="NammaJobs.png">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&family=Noto+Sans+Kannada:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --grad-bg:radial-gradient(ellipse at top,#1e3a8a 0%,#0c1f4a 40%,#061333 100%);
+  --grad-pink:linear-gradient(135deg,#7c3aed,#a855f7);
+  --glass-bg:rgba(255,255,255,0.06);
+  --glass-bg-dark:rgba(255,255,255,0.10);
+  --glass-border:rgba(255,255,255,0.15);
+  --shadow:0 8px 32px rgba(0,0,0,0.5);
+  --fen:'DM Sans',sans-serif;
+  --fkn:'Noto Sans Kannada',sans-serif;
+  --fhead:'Plus Jakarta Sans',sans-serif;
+}
+body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);background-attachment:fixed;color:#fff;}
+.hdr{background:rgba(0,0,0,0.3);backdrop-filter:blur(20px);border-bottom:2px solid var(--glass-border);padding:14px 0;position:sticky;top:0;z-index:100;}
+.hwrap{max-width:1000px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:14px;justify-content:space-between;}
+.hbrand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.hlogo{width:42px;height:42px;border-radius:11px;background:#fff;padding:3px;}
+.hlogo img{width:100%;height:100%;object-fit:contain;}
+.htxt-en{font-family:var(--fhead);font-weight:800;font-size:17px;color:#FFD60A;}
+.htxt-en span{color:#FF3B30;}
+.htxt-kn{font-family:var(--fkn);font-size:12px;color:#FFD60A;font-weight:700;margin-top:2px;}
+.htxt-kn span{color:#FF3B30;}
+.btn-back{background:var(--glass-bg);border:2px solid var(--glass-border);color:#fff;padding:9px 14px;border-radius:12px;font-size:12px;font-weight:700;text-decoration:none;}
+.container{max-width:900px;margin:0 auto;padding:30px 16px 50px;}
+.card{background:var(--glass-bg);backdrop-filter:blur(20px);border:2px solid var(--glass-border);border-radius:20px;padding:36px;box-shadow:var(--shadow);margin-bottom:18px;}
+.hero-section{text-align:center;margin-bottom:30px;}
+.big-logo{width:90px;height:90px;background:#fff;border-radius:22px;padding:8px;margin:0 auto 18px;box-shadow:0 8px 24px rgba(0,0,0,0.3);}
+.big-logo img{width:100%;height:100%;object-fit:contain;}
+h1{font-family:var(--fhead);font-size:36px;font-weight:800;color:#fff;margin-bottom:6px;text-shadow:0 4px 20px rgba(0,0,0,0.25);}
+.tagline{font-family:var(--fkn);font-size:20px;color:#FFD60A;font-weight:700;margin-bottom:8px;}
+.tagline span{color:#FF3B30;}
+.subtitle{color:rgba(255,255,255,0.85);font-size:15px;font-weight:600;}
+h2{font-family:var(--fhead);font-size:22px;font-weight:800;color:#FFD60A;margin-top:20px;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+p{color:rgba(255,255,255,0.92);font-size:15px;line-height:1.7;font-weight:500;margin-bottom:14px;}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0;}
+.feature{background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);border-radius:14px;padding:18px;}
+.feature-icon{font-size:32px;margin-bottom:8px;}
+.feature-title{font-family:var(--fhead);font-size:15px;font-weight:800;color:#fff;margin-bottom:5px;}
+.feature-desc{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;font-weight:500;}
+ul{margin-left:20px;margin-bottom:14px;}
+li{color:rgba(255,255,255,0.92);font-size:15px;line-height:1.7;font-weight:500;margin-bottom:6px;}
+a{color:#a855f7;font-weight:700;text-decoration:none;}
+.cta-box{background:var(--grad-pink);border:2px solid rgba(255,255,255,0.3);border-radius:16px;padding:24px;text-align:center;margin-top:24px;}
+.cta-box h3{font-family:var(--fhead);font-size:20px;margin-bottom:6px;}
+.cta-box p{color:rgba(255,255,255,0.95);margin-bottom:14px;}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.cta-btn{background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.4);color:#fff;padding:10px 20px;border-radius:12px;font-weight:800;text-decoration:none;font-size:13px;}
+@media(max-width:768px){h1{font-size:26px;}.card{padding:24px;}}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hwrap">
+    <a href="index.html" class="hbrand">
+      <div class="hlogo"><img src="NammaJobs.png" alt="Namma Jobs"></div>
+      <div>
+        <div class="htxt-en">Namma <span>Jobs</span></div>
+        <div class="htxt-kn">ನಮ್ಮ <span>ಜಾಬ್ಸ್</span></div>
+      </div>
+    </a>
+    <a href="index.html" class="btn-back">← Back to Home</a>
+  </div>
+</header>
+
+<div class="container">
+  <div class="card">
+    <div class="hero-section">
+      <div class="big-logo"><img src="NammaJobs.png" alt="Namma Jobs"></div>
+      <h1>About Namma Jobs</h1>
+      <div class="tagline">ನಮ್ಮ <span>ಜಾಬ್ಸ್</span></div>
+      <div class="subtitle">Karnataka's Trusted Job Portal · ಕರ್ನಾಟಕದ ವಿಶ್ವಾಸಾರ್ಹ ಉದ್ಯೋಗ ಪೋರ್ಟಲ್</div>
+    </div>
+
+    <h2>🎯 Our Mission</h2>
+    <p>Namma Jobs (nammajobs.co.in) is a dedicated job notification portal serving the people of Karnataka. Our mission is to provide timely, accurate, and verified information about Government jobs, Private jobs, Banking jobs, Railway jobs, Teaching positions, Police recruitment, and more.</p>
+    <p>We believe every job seeker in Karnataka deserves easy access to genuine employment opportunities — without hidden fees, spam, or fake notifications.</p>
+
+    <h2>✨ What We Offer</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="feature-icon">💼</div>
+        <div class="feature-title">Latest Job Notifications</div>
+        <div class="feature-desc">Daily updates on Karnataka Government & Central Government jobs</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎓</div>
+        <div class="feature-title">Admit Cards</div>
+        <div class="feature-desc">Quick access to exam admit cards and hall tickets</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Results</div>
+        <div class="feature-desc">Latest exam results and merit lists</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🛠️</div>
+        <div class="feature-title">Image Tools</div>
+        <div class="feature-desc">Free image resizer, compressor for job applications</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🌐</div>
+        <div class="feature-title">Bilingual Support</div>
+        <div class="feature-desc">Information in both English and Kannada</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">Mobile Friendly</div>
+        <div class="feature-desc">Optimized for mobile and desktop</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📋 Why Choose Namma Jobs?</h2>
+    <ul>
+      <li><strong>✅ Verified Information:</strong> All job notifications are sourced from official government websites</li>
+      <li><strong>✅ Direct Apply Links:</strong> One-click access to official application portals</li>
+      <li><strong>✅ No Hidden Fees:</strong> Completely free service for all job seekers</li>
+      <li><strong>✅ Daily Updates:</strong> New jobs added regularly</li>
+      <li><strong>✅ Bilingual:</strong> Available in English aur ಕನ್ನಡ</li>
+      <li><strong>✅ Fast & Clean:</strong> Modern, fast-loading website</li>
+      <li><strong>✅ Privacy Focused:</strong> No registration required, no spam emails</li>
+    </ul>
+
+    <h2>🎯 Our Categories</h2>
+    <ul>
+      <li>🏛️ <strong>Karnataka Government</strong> — KPSC, KSP, BBMP, PWD, etc.</li>
+      <li>🇮🇳 <strong>Central Government</strong> — UPSC, SSC, etc.</li>
+      <li>🚂 <strong>Railway Jobs</strong> — RRB, IRFC, Indian Railways</li>
+      <li>🏦 <strong>Banking</strong> — SBI, RBI, PNB, IBPS</li>
+      <li>👮 <strong>Police</strong> — Karnataka Police, CISF, CRPF</li>
+      <li>📚 <strong>Teaching</strong> — School and college teaching positions</li>
+      <li>🏢 <strong>Private Sector</strong> — Companies and PSUs</li>
+    </ul>
+
+    <h2>📍 Based in Karnataka</h2>
+    <p>Namma Jobs is proudly based in Karnataka, India. We understand the local job market and the unique needs of Karnataka job seekers. From Bengaluru to Belagavi, Mysuru to Mangaluru — we serve job seekers across all 31 districts of Karnataka.</p>
+
+    <div class="cta-box">
+      <h3>🚀 Join Our Community</h3>
+      <p>Get instant job notifications on Telegram and WhatsApp</p>
+      <div class="cta-btns">
+        <a href="https://t.me/nammajobs_karnataka" target="_blank" class="cta-btn">✈️ Join Telegram</a>
+        <a href="https://whatsapp.com/channel/0029VbD5Hy5Au3aKeDdCB10L" target="_blank" class="cta-btn">📱 Join WhatsApp</a>
+      </div>
+    </div>
+
+    <p style="margin-top:30px;text-align:center;color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;">© 2026 Namma Jobs · Made with ❤️ for Karnataka Job Seekers</p>
+  </div>
+</div>
+</body>
+</html>
