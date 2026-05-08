@@ -386,6 +386,10 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
           <h2>📋 Posted Jobs</h2>
           <p>Edit or delete existing jobs</p>
         </div>
+        <div style="position:relative;margin-bottom:14px;">
+          <input type="text" id="job-search" placeholder="🔍 Search jobs by title, dept..." oninput="filterJobs()" style="padding:11px 14px 11px 40px;background:var(--glass-bg-dark);border:2px solid var(--glass-border);border-radius:12px;font-size:13px;color:#fff;outline:none;font-family:inherit;font-weight:600;width:100%;">
+          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;">🔍</span>
+        </div>
         <div class="jlist-hdr">
           <div class="jlist-ttl">All Jobs</div>
           <div class="jcnt" id="jcnt">0 jobs</div>
@@ -710,13 +714,27 @@ function clearForm(){
 }
 
 // LIST
+function filterJobs(){
+  renderList();
+}
+
 function renderList(){
-  document.getElementById('jcnt').textContent=`${allJobs.length} job${allJobs.length!==1?'s':''}`;
-  if(!allJobs.length){
-    document.getElementById('jl').innerHTML=`<div style="color:rgba(255,255,255,0.7);text-align:center;padding:30px;font-size:13px;">No jobs posted yet</div>`;
+  const q=(document.getElementById('job-search')?.value||'').toLowerCase().trim();
+  let filtered=allJobs;
+  if(q){
+    filtered=allJobs.filter(j=>
+      (j.title_en||'').toLowerCase().includes(q)||
+      (j.title_kn||'').includes(q)||
+      (j.dept||'').toLowerCase().includes(q)||
+      (j.notif||'').toLowerCase().includes(q)
+    );
+  }
+  document.getElementById('jcnt').textContent=`${filtered.length}${q?' / '+allJobs.length:''} job${filtered.length!==1?'s':''}`;
+  if(!filtered.length){
+    document.getElementById('jl').innerHTML=`<div style="color:rgba(255,255,255,0.7);text-align:center;padding:30px;font-size:13px;">${q?'No jobs match your search':'No jobs posted yet'}</div>`;
     return;
   }
-  document.getElementById('jl').innerHTML=allJobs.map(j=>{
+  document.getElementById('jl').innerHTML=filtered.map(j=>{
     const sc=`s-${j.status||'open'}`;
     const sn={open:'OPEN',soon:'SOON',closed:'CLOSED'}[j.status||'open'];
     return `<div class="ji" data-id="${j.id}">
