@@ -318,9 +318,42 @@ async function fetchJobs(){
   try{const c=sessionStorage.getItem('nj_jobs');if(c){const p=JSON.parse(c);if(Date.now()-p.t<5*60*1000)return p.d;}}catch(e){}
   const r=await fetch(`${SB_URL}/rest/v1/jobs?order=created_at.desc`,{headers});
   if(!r.ok)throw new Error('fail');
-  const d=await r.json();
-  try{sessionStorage.setItem('nj_jobs',JSON.stringify({d,t:Date.now()}));}catch(e){}
-  return d;
+  const data=await r.json();
+
+  // === AUTO STATUS UPDATE ===
+  const today=new Date();today.setHours(0,0,0,0);
+  const updates=[];
+
+  data.forEach(j=>{
+    // 1. If Last Date passed → close the job
+    if(j.status==='open'&&j.last_date){
+      const ld=new Date(j.last_date);ld.setHours(0,0,0,0);
+      if(ld<today){
+        j.status='closed';
+        updates.push({id:j.id,status:'closed'});
+      }
+    }
+    // 2. If Coming Soon job's Start Date arrived → make it open
+    if(j.status==='soon'&&j.start_date){
+      const sd=new Date(j.start_date);sd.setHours(0,0,0,0);
+      if(sd<=today){
+        j.status='open';
+        updates.push({id:j.id,status:'open'});
+      }
+    }
+  });
+
+  // Send updates to DB in background (don't wait)
+  updates.forEach(u=>{
+    fetch(`${SB_URL}/rest/v1/jobs?id=eq.${u.id}`,{
+      method:'PATCH',
+      headers:{...headers,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({status:u.status})
+    }).catch(()=>{});
+  });
+
+  try{sessionStorage.setItem('nj_jobs',JSON.stringify({d:data,t:Date.now()}));}catch(e){}
+  return data;
 }
 
 function daysLeft(ld){if(!ld)return null;const t=new Date();t.setHours(0,0,0,0);const d=new Date(ld);d.setHours(0,0,0,0);return Math.ceil((d-t)/86400000);}
