@@ -458,19 +458,21 @@ function renderJob(j){
             <tr><td>Location</td><td>${j.loc||'Karnataka'}</td></tr>
             ${j.fee?`<tr><td>Application Fee</td><td><strong>${j.fee}</strong></td></tr>`:''}
             ${j.notif?`<tr><td>Notification No.</td><td>${j.notif}</td></tr>`:''}
-            ${j.start_date?`<tr><td>Apply From</td><td><strong style="color:#4ade80;">📅 ${fmtDate(j.start_date)}</strong></td></tr>`:''}
+            ${j.start_status==='started'?`<tr><td>Apply From</td><td><strong style="color:#4ade80;">✅ Already Started</strong></td></tr>`:(j.start_date?`<tr><td>Apply From</td><td><strong style="color:#4ade80;">📅 ${fmtDate(j.start_date)}</strong></td></tr>`:'')}
             ${j.last_date?`<tr><td>Last Date</td><td><strong style="color:${isExpiring?'#ff5757':'#c4b5fd'};">📅 ${fmtDate(j.last_date)}</strong></td></tr>`:''}
             ${j.official_url?`<tr><td>Official Website</td><td><a href="${j.official_url}" target="_blank">${j.official_url} ↗</a></td></tr>`:''}
           </table>
         </div>
 
-        ${(j.last_date||j.start_date)?`
+        ${(j.last_date||j.start_date||j.start_status==='started')?`
         <div class="card">
           <div class="card-title">Important Dates</div>
           <div class="dates-grid">
-            ${j.start_date
+            ${j.start_status==='started'
+              ?`<div class="date-item start"><div class="date-label">Application Start</div><div class="date-val">✅ Already Started</div></div>`
+              :(j.start_date
               ?`<div class="date-item start"><div class="date-label">Application Start</div><div class="date-val">📅 ${fmtDate(j.start_date)}</div></div>`
-              :`<div class="date-item"><div class="date-label">Application Start</div><div class="date-val">${j.status==='soon'?'TBA':'Available Now'}</div></div>`}
+              :`<div class="date-item"><div class="date-label">Application Start</div><div class="date-val">${j.status==='soon'?'TBA':'Available Now'}</div></div>`)}
             <div class="date-item ${isExpiring?'highlight':''}">
               <div class="date-label">Last Date to Apply</div>
               <div class="date-val">${j.last_date?'📅 '+fmtDate(j.last_date):'<span style="color:rgba(255,255,255,0.7);">TBA</span>'}</div>

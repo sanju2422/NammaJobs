@@ -466,7 +466,7 @@ function jCard(j){
   else if(j.status==='soon'){actionBtn=`<button class="btn-card bc-soon">Coming Soon</button>`;}
   else{actionBtn=`<button class="btn-card bc-closed">Closed</button>`;}
 
-  const showDate=j.last_date?`<span class="pl pl-date">📅 ${fmtDate(j.last_date)}</span>`:(j.status==='soon'?`<span class="pl pl-tba">📅 Date TBA</span>`:'');
+  const showDate=j.last_date?`<span class="pl pl-date">📅 ${fmtDate(j.last_date)}</span>`:(j.start_status==='started'?`<span class="pl pl-posts">✅ Already Started</span>`:(j.status==='soon'?`<span class="pl pl-tba">📅 Date TBA</span>`:''));
 
   return`<div class="jc" onclick="window.location.href='${url}'">
     <div class="ji">
