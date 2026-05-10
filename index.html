@@ -210,18 +210,17 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       <div id="more-grid"></div>
     </div>
 
-    <div id="ac-sec" style="display:none;">
-      <div class="sh">🎓 Admit Card</div>
-      <div class="jg" id="ac-grid"></div>
-    </div>
-
-    <div id="rs-sec" style="display:none;">
-      <div class="sh">📊 Results</div>
-      <div class="jg" id="rs-grid"></div>
-    </div>
   </div>
 
   <div class="sb">
+    <div class="sc" id="sb-ac" style="display:none;">
+      <div class="sc-ttl">🎓 Admit Card</div>
+      <div id="sb-ac-list"></div>
+    </div>
+    <div class="sc" id="sb-rs" style="display:none;">
+      <div class="sc-ttl">📊 Results</div>
+      <div id="sb-rs-list"></div>
+    </div>
     <div class="sc">
       <div class="sc-ttl">📊 Top Vacancies</div>
       <div id="sb-top"></div>
@@ -633,14 +632,28 @@ async function init(){
   }
 }
 
+function sidebarNotifItem(item, type){
+  const isAC = type==='ac';
+  const icon = isAC?'🎓':'📊';
+  const dateLabel = isAC?'Exam':'Released';
+  const dateVal = item.date?fmtDate(item.date):'TBA';
+  return `<div class="sj" onclick="window.open('${item.url}','_blank')">
+    <div class="sjn" style="background:${isAC?'rgba(76,217,100,0.4)':'rgba(168,85,247,0.4)'};">${icon}</div>
+    <div style="flex:1;min-width:0;">
+      <div class="sjt">${item.title}</div>
+      <div class="sjm">${item.dept||''} · ${dateLabel}: ${dateVal}</div>
+    </div>
+  </div>`;
+}
+
 function renderNotifs(){
   if(allAC.length){
-    document.getElementById('ac-sec').style.display='block';
-    document.getElementById('ac-grid').innerHTML=allAC.map(item=>notifCard(item,'ac')).join('');
+    document.getElementById('sb-ac').style.display='block';
+    document.getElementById('sb-ac-list').innerHTML=allAC.slice(0,5).map(item=>sidebarNotifItem(item,'ac')).join('');
   }
   if(allRS.length){
-    document.getElementById('rs-sec').style.display='block';
-    document.getElementById('rs-grid').innerHTML=allRS.map(item=>notifCard(item,'rs')).join('');
+    document.getElementById('sb-rs').style.display='block';
+    document.getElementById('sb-rs-list').innerHTML=allRS.slice(0,5).map(item=>sidebarNotifItem(item,'rs')).join('');
   }
 }
 
