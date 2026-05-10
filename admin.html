@@ -349,6 +349,10 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
           <div><label>Icon (Emoji)</label><input type="text" id="f-icon" placeholder="🏗️" maxlength="4"></div>
         </div>
 
+        <label>🖼️ Company Logo URL (Optional)</label>
+        <input type="url" id="f-logo" placeholder="https://i.postimg.cc/abc123/logo.png">
+        <div class="url-hint">📤 Postimages.org ya Wikipedia se logo ka direct URL paste karo. Agar daloge to logo dikhega, warna icon emoji dikhega.</div>
+
         <label>Category-wise Vacancies</label>
         <input type="text" id="f-cats" placeholder="SC-24, ST-12, OBC-32, Gen-52">
 
@@ -599,6 +603,7 @@ async function saveJob(){
     official_url:document.getElementById('f-url').value.trim()||null,
     notif:document.getElementById('f-notif').value.trim()||null,
     icon:document.getElementById('f-icon').value.trim()||'💼',
+    logo_url:document.getElementById('f-logo').value.trim()||null,
     cats:document.getElementById('f-cats').value.trim()||null,
     tags:document.getElementById('f-tags').value.trim()||null,
     description:document.getElementById('f-desc').value.trim()||null,
@@ -651,6 +656,7 @@ function editJob(id){
   document.getElementById('f-url').value=j.official_url||'';
   document.getElementById('f-notif').value=j.notif||'';
   document.getElementById('f-icon').value=j.icon||'';
+  document.getElementById('f-logo').value=j.logo_url||'';
   document.getElementById('f-cats').value=j.cats||'';
   document.getElementById('f-tags').value=j.tags||'';
   document.getElementById('f-desc').value=j.description||'';
@@ -700,7 +706,7 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-notif','f-icon','f-cats','f-tags','f-desc','f-skills','f-hta','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-ld-tba','f-sd-tba','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
   selCat='karnataka';selStat='open';

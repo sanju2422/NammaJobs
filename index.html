@@ -448,7 +448,7 @@ function shareTG(id,title){
 function goOff(url){if(url)window.open(url,'_blank');}
 
 function deptLogoBlock(j){
-  const logo=getDeptLogo(j.dept);
+  const logo=j.logo_url||getDeptLogo(j.dept);
   return logo
     ?`<div class="dlogo"><img src="${logo}" alt="${j.dept}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=&quot;dlogo-emoji&quot;>${j.icon||'💼'}</span>'"></div>`
     :`<div class="dlogo"><span class="dlogo-emoji">${j.icon||'💼'}</span></div>`;
@@ -497,7 +497,7 @@ function jCard(j){
 
 function jListCard(j){
   const url=getJobUrl(j.id);
-  const logo=getDeptLogo(j.dept);
+  const logo=j.logo_url||getDeptLogo(j.dept);
   const lico=logo
     ?`<div class="jli"><img src="${logo}" alt="${j.dept}" onerror="this.parentElement.innerHTML='${j.icon||'💼'}'"></div>`
     :`<div class="jli">${j.icon||'💼'}</div>`;

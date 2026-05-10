@@ -420,7 +420,7 @@ function renderJob(j){
   const isOpen=j.status==='open';
   const isExpiring=isOpen&&dl!==null&&dl>=0&&dl<=5;
 
-  const logo=getDeptLogo(j.dept);
+  const logo=j.logo_url||getDeptLogo(j.dept);
   const heroLogoHtml=logo
     ?`<div class="hero-logo"><img src="${logo}" alt="${j.dept}" onerror="this.parentElement.innerHTML='${j.icon||'💼'}'"></div>`
     :`<div class="hero-logo">${j.icon||'💼'}</div>`;
