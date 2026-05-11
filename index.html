@@ -530,14 +530,24 @@ function renderCats(){
     </div>
   `).join('');
 
-  // Render tags filter
-  const allTags=new Set();
+  // Render tags filter (only standard eligibility tags)
+  const STANDARD_TAGS = ['10th Pass', '12th Pass', 'Diploma', 'ITI', 'Graduate', 'Post Graduate', 'Engineering', 'MBA'];
+  const allTags = new Set();
   allJobs.forEach(j=>{
-    if(j.tags){j.tags.split(',').forEach(t=>allTags.add(t.trim()));}
+    if(j.tags){
+      j.tags.split(',').forEach(t=>{
+        const trimmed = t.trim();
+        // Only add if it matches a standard tag (case-insensitive)
+        const matched = STANDARD_TAGS.find(s => s.toLowerCase() === trimmed.toLowerCase());
+        if(matched) allTags.add(matched);
+      });
+    }
   });
   if(allTags.size>0){
     document.getElementById('tags-section').style.display='block';
-    const tagsArr=['all',...allTags];
+    // Show in standard order, only ones that exist in jobs
+    const orderedTags = STANDARD_TAGS.filter(t => allTags.has(t));
+    const tagsArr = ['all', ...orderedTags];
     document.getElementById('tags-grid').innerHTML=tagsArr.map(t=>`
       <button class="tag-btn ${tagFilter===t?'on':''}" onclick="filtTag('${t.replace(/'/g,'')}')">${t==='all'?'🌟 All':'🎓 '+t}</button>
     `).join('');
@@ -566,8 +576,8 @@ function renderAll(){
     if(cf!=='all'&&j.cat!==cf)return false;
     if(tagFilter!=='all'){
       if(!j.tags)return false;
-      const jobTags=j.tags.split(',').map(t=>t.trim());
-      if(!jobTags.includes(tagFilter))return false;
+      const jobTags=j.tags.split(',').map(t=>t.trim().toLowerCase());
+      if(!jobTags.includes(tagFilter.toLowerCase()))return false;
     }
     if(q&&!(j.title_en||'').toLowerCase().includes(q)&&!(j.title_kn||'').includes(q)&&!(j.dept||'').toLowerCase().includes(q))return false;
     return true;
