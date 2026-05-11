@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Resizer – Namma Jobs</title>
+<title>Image & PDF Tools – Namma Jobs</title>
 <link rel="icon" type="image/png" href="NammaJobs.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&family=Noto+Sans+Kannada:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -23,65 +25,33 @@
   --fhead:'Plus Jakarta Sans',sans-serif;
 }
 body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);background-attachment:fixed;color:#fff;}
-
 .hdr{background:rgba(0,0,0,0.3);backdrop-filter:blur(20px);border-bottom:2px solid var(--glass-border);padding:14px 0;position:sticky;top:0;z-index:100;}
 .hwrap{max-width:1100px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:14px;justify-content:space-between;}
 .hbrand{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.hlogo{width:42px;height:42px;border-radius:11px;background:#fff;padding:3px;display:flex;align-items:center;justify-content:center;}
+.hlogo{width:42px;height:42px;border-radius:11px;background:#fff;padding:3px;}
 .hlogo img{width:100%;height:100%;object-fit:contain;}
 .htxt-en{font-family:var(--fhead);font-weight:800;font-size:17px;color:#FFD60A;}
 .htxt-en span{color:#FF3B30;}
 .htxt-kn{font-family:var(--fkn);font-size:12px;color:#FFD60A;font-weight:700;margin-top:2px;}
 .htxt-kn span{color:#FF3B30;}
-.btn-back{background:var(--glass-bg);border:2px solid var(--glass-border);color:#fff;padding:9px 14px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;}
-.btn-back:hover{background:var(--glass-bg-dark);}
-
+.btn-back{background:var(--glass-bg);border:2px solid var(--glass-border);color:#fff;padding:9px 14px;border-radius:12px;font-size:12px;font-weight:700;text-decoration:none;}
 .container{max-width:1100px;margin:0 auto;padding:30px 16px 50px;}
-
 .hero{text-align:center;margin-bottom:28px;}
 .hero h1{font-family:var(--fhead);font-size:32px;font-weight:800;color:#fff;margin-bottom:6px;text-shadow:0 4px 20px rgba(0,0,0,0.25);}
 .hero-kn{font-family:var(--fkn);font-size:18px;font-weight:700;color:#c4b5fd;margin-bottom:8px;}
 .hero p{color:rgba(255,255,255,0.85);font-size:14px;font-weight:600;}
 
-.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:24px;}
-.tool-tab{
-  background:var(--glass-bg);
-  backdrop-filter:blur(15px);
-  border:2px solid var(--glass-border);
-  border-radius:14px;
-  padding:14px;
-  cursor:pointer;
-  transition:all .25s;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  color:#fff;
-}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px;}
+.tool-tab{background:var(--glass-bg);backdrop-filter:blur(15px);border:2px solid var(--glass-border);border-radius:14px;padding:14px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:10px;color:#fff;}
 .tool-tab:hover{background:var(--glass-bg-dark);transform:translateY(-2px);}
 .tool-tab.on{background:var(--grad-pink);border-color:rgba(168,85,247,0.7);box-shadow:0 6px 20px rgba(168,85,247,0.4);}
-.tool-icon{font-size:28px;}
-.tool-name{font-weight:800;font-size:14px;}
-.tool-desc{font-size:11px;color:rgba(255,255,255,0.7);font-weight:600;margin-top:2px;}
+.tool-icon{font-size:24px;}
+.tool-name{font-weight:800;font-size:13px;}
+.tool-desc{font-size:10px;color:rgba(255,255,255,0.7);font-weight:600;margin-top:2px;}
 .tool-tab.on .tool-desc{color:rgba(255,255,255,0.95);}
 
-.panel{
-  background:var(--glass-bg);
-  backdrop-filter:blur(20px);
-  border:2px solid var(--glass-border);
-  border-radius:18px;
-  padding:24px;
-  box-shadow:var(--shadow);
-}
-
-.upload-zone{
-  background:var(--glass-bg-dark);
-  border:2px dashed var(--glass-border-strong);
-  border-radius:14px;
-  padding:40px 20px;
-  text-align:center;
-  cursor:pointer;
-  transition:all .25s;
-}
+.panel{background:var(--glass-bg);backdrop-filter:blur(20px);border:2px solid var(--glass-border);border-radius:18px;padding:24px;box-shadow:var(--shadow);}
+.upload-zone{background:var(--glass-bg-dark);border:2px dashed var(--glass-border-strong);border-radius:14px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .25s;}
 .upload-zone:hover{background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.5);}
 .upload-icon{font-size:48px;margin-bottom:10px;}
 .upload-text{font-weight:700;font-size:15px;margin-bottom:4px;}
@@ -90,27 +60,16 @@ input[type=file]{display:none;}
 
 .preview-area{margin-top:20px;display:none;}
 .preview-area.show{display:block;}
-.preview-img{
-  max-width:100%;
-  max-height:300px;
-  border-radius:12px;
-  border:2px solid var(--glass-border);
-  display:block;
-  margin:0 auto 16px;
-  background:#fff;
-  padding:6px;
-}
+.preview-img{max-width:100%;max-height:300px;border-radius:12px;border:2px solid var(--glass-border);display:block;margin:0 auto 16px;background:#fff;padding:6px;}
+.preview-pdf{background:var(--glass-bg-dark);border:2px solid var(--glass-border);border-radius:12px;padding:30px;text-align:center;margin:0 auto 16px;max-width:300px;}
+.preview-pdf-icon{font-size:64px;margin-bottom:10px;}
+.preview-pdf-name{font-weight:700;color:#fff;margin-bottom:6px;word-break:break-all;}
+.preview-pdf-pages{font-size:12px;color:rgba(255,255,255,0.7);font-weight:600;}
 
 .controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
-@media(max-width:600px){.controls{grid-template-columns:1fr;}}
+@media(max-width:600px){.controls{grid-template-columns:1fr;}.tools-grid{grid-template-columns:repeat(2,1fr);}}
 label{display:block;font-size:11px;font-weight:800;color:rgba(255,255,255,0.85);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
-input[type=number],input[type=range],select{
-  width:100%;padding:11px 14px;
-  background:var(--glass-bg-dark);
-  border:2px solid var(--glass-border);
-  border-radius:12px;font-size:13px;color:#fff;outline:none;
-  font-family:inherit;font-weight:600;
-}
+input[type=number],input[type=range],select{width:100%;padding:11px 14px;background:var(--glass-bg-dark);border:2px solid var(--glass-border);border-radius:12px;font-size:13px;color:#fff;outline:none;font-family:inherit;font-weight:600;}
 input:focus,select:focus{border-color:rgba(168,85,247,0.6);}
 select option{background:#1a1556;color:#fff;}
 
@@ -122,17 +81,17 @@ select option{background:#1a1556;color:#fff;}
 .btn{flex:1;padding:13px 18px;border-radius:13px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;border:2px solid;color:#fff;transition:all .25s;}
 .btn-primary{background:var(--grad-pink);border-color:rgba(168,85,247,0.7);box-shadow:0 6px 18px rgba(168,85,247,0.4);}
 .btn-primary:hover{transform:translateY(-2px);}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed;}
 .btn-secondary{background:var(--glass-bg-dark);border-color:var(--glass-border);}
 
 .info-row{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.85);font-weight:600;margin:8px 0;padding:8px 12px;background:var(--glass-bg-dark);border-radius:10px;}
 .info-row strong{color:#c4b5fd;}
-
 .range-val{font-size:13px;font-weight:800;color:#c4b5fd;margin-left:8px;}
+.status-msg{padding:10px;background:rgba(76,217,100,0.15);border:1.5px solid rgba(76,217,100,0.4);border-radius:10px;color:#86efac;font-size:13px;font-weight:600;text-align:center;margin-top:10px;display:none;}
+.status-msg.show{display:block;}
+.status-msg.err{background:rgba(255,87,87,0.15);border-color:rgba(255,87,87,0.4);color:#fca5a5;}
 
-@media(max-width:768px){
-  .hero h1{font-size:24px;}
-  .hero-kn{font-size:15px;}
-}
+@media(max-width:768px){.hero h1{font-size:24px;}.hero-kn{font-size:15px;}}
 </style>
 </head>
 <body>
@@ -153,54 +112,49 @@ select option{background:#1a1556;color:#fff;}
 <div class="container">
 
   <div class="hero">
-    <h1>🛠️ Image Tools</h1>
-    <div class="hero-kn">ಚಿತ್ರ ಪರಿಕರಗಳು</div>
-    <p>Resize, compress, and convert images for job applications</p>
+    <h1>🛠️ Image & PDF Tools</h1>
+    <div class="hero-kn">ಚಿತ್ರ ಮತ್ತು PDF ಪರಿಕರಗಳು</div>
+    <p>Free tools for resizing, compressing, and converting files for job applications</p>
   </div>
 
-  <!-- TOOL TABS -->
   <div class="tools-grid">
     <div class="tool-tab on" onclick="switchTool('resize',this)">
       <div class="tool-icon">📐</div>
-      <div>
-        <div class="tool-name">Resize</div>
-        <div class="tool-desc">Change dimensions</div>
-      </div>
+      <div><div class="tool-name">Image Resize</div><div class="tool-desc">Change dimensions</div></div>
     </div>
     <div class="tool-tab" onclick="switchTool('compress',this)">
       <div class="tool-icon">🗜️</div>
-      <div>
-        <div class="tool-name">Compress</div>
-        <div class="tool-desc">Reduce file size</div>
-      </div>
+      <div><div class="tool-name">Image Compress</div><div class="tool-desc">Reduce file size</div></div>
     </div>
     <div class="tool-tab" onclick="switchTool('convert',this)">
       <div class="tool-icon">🔄</div>
-      <div>
-        <div class="tool-name">Convert</div>
-        <div class="tool-desc">JPG / PNG / WEBP</div>
-      </div>
+      <div><div class="tool-name">Convert</div><div class="tool-desc">JPG/PNG/WEBP/PDF</div></div>
+    </div>
+    <div class="tool-tab" onclick="switchTool('pdfcompress',this)">
+      <div class="tool-icon">📄</div>
+      <div><div class="tool-name">PDF Compress</div><div class="tool-desc">Reduce PDF size</div></div>
+    </div>
+    <div class="tool-tab" onclick="switchTool('pdfresize',this)">
+      <div class="tool-icon">📑</div>
+      <div><div class="tool-name">PDF Resize</div><div class="tool-desc">Change page size</div></div>
     </div>
   </div>
 
-  <!-- PANEL -->
   <div class="panel">
     <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-      <div class="upload-icon">📤</div>
-      <div class="upload-text">Click to Upload Image</div>
-      <div class="upload-sub">JPG, PNG, WEBP — Max 10MB</div>
+      <div class="upload-icon" id="uploadIcon">📤</div>
+      <div class="upload-text" id="uploadText">Click to Upload Image</div>
+      <div class="upload-sub" id="uploadSub">JPG, PNG, WEBP — Max 10MB</div>
     </div>
     <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
 
     <div class="preview-area" id="preview">
-      <img id="previewImg" class="preview-img" alt="Preview">
-
+      <div id="previewContainer"></div>
       <div class="info-row">
         <span>Original Size: <strong id="origSize">—</strong></span>
-        <span>Dimensions: <strong id="origDim">—</strong></span>
+        <span id="origDimWrap">Dimensions: <strong id="origDim">—</strong></span>
       </div>
 
-      <!-- RESIZE TOOL -->
       <div id="tool-resize" class="tool-content">
         <div class="preset-row">
           <button class="preset" onclick="setSize(100,150)">📷 100×150 (Photo)</button>
@@ -209,14 +163,8 @@ select option{background:#1a1556;color:#fff;}
           <button class="preset" onclick="setSize(600,800)">📄 600×800 (Form)</button>
         </div>
         <div class="controls">
-          <div>
-            <label>Width (px)</label>
-            <input type="number" id="newWidth" placeholder="Width" min="1">
-          </div>
-          <div>
-            <label>Height (px)</label>
-            <input type="number" id="newHeight" placeholder="Height" min="1">
-          </div>
+          <div><label>Width (px)</label><input type="number" id="newWidth" placeholder="Width" min="1"></div>
+          <div><label>Height (px)</label><input type="number" id="newHeight" placeholder="Height" min="1"></div>
         </div>
         <div class="info-row">
           <label style="margin:0;display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;letter-spacing:normal;font-size:12px;">
@@ -225,13 +173,10 @@ select option{background:#1a1556;color:#fff;}
         </div>
       </div>
 
-      <!-- COMPRESS TOOL -->
       <div id="tool-compress" class="tool-content" style="display:none;">
         <div class="controls" style="grid-template-columns:1fr;">
-          <div>
-            <label>Quality <span class="range-val" id="qualityVal">80%</span></label>
-            <input type="range" id="quality" min="10" max="100" value="80" oninput="document.getElementById('qualityVal').textContent=this.value+'%';">
-          </div>
+          <div><label>Quality <span class="range-val" id="qualityVal">80%</span></label>
+          <input type="range" id="quality" min="10" max="100" value="80" oninput="document.getElementById('qualityVal').textContent=this.value+'%';"></div>
         </div>
         <div class="preset-row">
           <button class="preset" onclick="setQuality(50)">High Compression (50%)</button>
@@ -240,59 +185,134 @@ select option{background:#1a1556;color:#fff;}
         </div>
       </div>
 
-      <!-- CONVERT TOOL -->
       <div id="tool-convert" class="tool-content" style="display:none;">
         <div class="controls" style="grid-template-columns:1fr;">
-          <div>
-            <label>Output Format</label>
-            <select id="outFormat">
-              <option value="image/jpeg">JPG (Smaller, no transparency)</option>
-              <option value="image/png">PNG (Best quality, supports transparency)</option>
-              <option value="image/webp">WEBP (Modern, smaller size)</option>
-            </select>
-          </div>
+          <div><label>Output Format</label>
+          <select id="outFormat">
+            <option value="image/jpeg">JPG (Smaller, no transparency)</option>
+            <option value="image/png">PNG (Best quality, supports transparency)</option>
+            <option value="image/webp">WEBP (Modern, smaller size)</option>
+            <option value="application/pdf">PDF (Convert image to PDF)</option>
+          </select></div>
         </div>
+        <div class="info-row" style="font-size:11px;">ℹ️ Upload image OR PDF. PDF will be converted to image (multi-page combined).</div>
+      </div>
+
+      <div id="tool-pdfcompress" class="tool-content" style="display:none;">
+        <div class="controls" style="grid-template-columns:1fr;">
+          <div><label>Image Quality in PDF <span class="range-val" id="pdfQualityVal">60%</span></label>
+          <input type="range" id="pdfQuality" min="20" max="95" value="60" oninput="document.getElementById('pdfQualityVal').textContent=this.value+'%';"></div>
+        </div>
+        <div class="preset-row">
+          <button class="preset" onclick="setPdfQuality(40)">Maximum (40%)</button>
+          <button class="preset" onclick="setPdfQuality(60)">High (60%)</button>
+          <button class="preset" onclick="setPdfQuality(80)">Medium (80%)</button>
+        </div>
+        <div class="info-row" style="font-size:11px;">ℹ️ Lower quality = smaller file size. Best for govt form uploads.</div>
+      </div>
+
+      <div id="tool-pdfresize" class="tool-content" style="display:none;">
+        <div class="controls" style="grid-template-columns:1fr;">
+          <div><label>Page Size</label>
+          <select id="pdfPageSize">
+            <option value="A4">A4 (210 × 297 mm) — Standard</option>
+            <option value="A5">A5 (148 × 210 mm) — Half of A4</option>
+            <option value="Letter">Letter (8.5 × 11 in) — US Standard</option>
+            <option value="Legal">Legal (8.5 × 14 in)</option>
+          </select></div>
+        </div>
+        <div class="info-row" style="font-size:11px;">ℹ️ Changes PDF pages to selected size. Content auto-scaled.</div>
       </div>
 
       <div class="actions">
-        <button class="btn btn-primary" onclick="processImage()">⚡ Process & Download</button>
-        <button class="btn btn-secondary" onclick="reset()">🔄 New Image</button>
+        <button class="btn btn-primary" id="processBtn" onclick="processFile()">⚡ Process & Download</button>
+        <button class="btn btn-secondary" onclick="reset()">🔄 New File</button>
       </div>
+      <div class="status-msg" id="statusMsg"></div>
     </div>
   </div>
-
 </div>
 
 <script>
-let currentTool='resize',img=null,origFile=null;
+let currentTool='resize', img=null, origFile=null, pdfDoc=null, fileType='image';
 
-function switchTool(tool,el){
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+function switchTool(tool, el){
   currentTool=tool;
   document.querySelectorAll('.tool-tab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');
   document.querySelectorAll('.tool-content').forEach(c=>c.style.display='none');
   document.getElementById('tool-'+tool).style.display='block';
+
+  const isPdfTool = tool==='pdfcompress' || tool==='pdfresize';
+  const isConvert = tool==='convert';
+
+  if(isPdfTool){
+    document.getElementById('uploadIcon').textContent='📄';
+    document.getElementById('uploadText').textContent='Click to Upload PDF';
+    document.getElementById('uploadSub').textContent='PDF file — Max 20MB';
+    document.getElementById('fileInput').accept='application/pdf';
+  } else if(isConvert){
+    document.getElementById('uploadIcon').textContent='📤';
+    document.getElementById('uploadText').textContent='Click to Upload Image or PDF';
+    document.getElementById('uploadSub').textContent='JPG, PNG, WEBP, PDF — Max 20MB';
+    document.getElementById('fileInput').accept='image/*,application/pdf';
+  } else {
+    document.getElementById('uploadIcon').textContent='📤';
+    document.getElementById('uploadText').textContent='Click to Upload Image';
+    document.getElementById('uploadSub').textContent='JPG, PNG, WEBP — Max 10MB';
+    document.getElementById('fileInput').accept='image/*';
+  }
+  reset();
 }
 
-function handleFile(e){
-  const f=e.target.files[0];
-  if(!f)return;
-  if(f.size>10*1024*1024){alert('Max 10MB!');return;}
-  origFile=f;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    img=new Image();
-    img.onload=()=>{
-      document.getElementById('previewImg').src=img.src;
-      document.getElementById('origSize').textContent=fmtSize(f.size);
-      document.getElementById('origDim').textContent=`${img.width}×${img.height}px`;
-      document.getElementById('newWidth').value=img.width;
-      document.getElementById('newHeight').value=img.height;
-      document.getElementById('preview').classList.add('show');
+async function handleFile(e){
+  const f = e.target.files[0];
+  if(!f) return;
+  const maxSize = (currentTool==='pdfcompress'||currentTool==='pdfresize'||currentTool==='convert') ? 20 : 10;
+  if(f.size > maxSize*1024*1024){alert('Max '+maxSize+'MB!');return;}
+
+  origFile = f;
+  fileType = f.type.includes('pdf') ? 'pdf' : 'image';
+  hideStatus();
+
+  if(fileType==='pdf'){
+    const reader = new FileReader();
+    reader.onload = async ev => {
+      try{
+        const pdfData = new Uint8Array(ev.target.result);
+        pdfDoc = await pdfjsLib.getDocument({data: pdfData}).promise;
+        document.getElementById('previewContainer').innerHTML = `
+          <div class="preview-pdf">
+            <div class="preview-pdf-icon">📄</div>
+            <div class="preview-pdf-name">${f.name}</div>
+            <div class="preview-pdf-pages">${pdfDoc.numPages} page${pdfDoc.numPages>1?'s':''}</div>
+          </div>`;
+        document.getElementById('origSize').textContent = fmtSize(f.size);
+        document.getElementById('origDimWrap').innerHTML = `Pages: <strong>${pdfDoc.numPages}</strong>`;
+        document.getElementById('preview').classList.add('show');
+      } catch(err){
+        showStatus('err', 'Could not read PDF');
+      }
     };
-    img.src=ev.target.result;
-  };
-  reader.readAsDataURL(f);
+    reader.readAsArrayBuffer(f);
+  } else {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      img = new Image();
+      img.onload = () => {
+        document.getElementById('previewContainer').innerHTML = `<img class="preview-img" src="${img.src}" alt="Preview">`;
+        document.getElementById('origSize').textContent = fmtSize(f.size);
+        document.getElementById('origDimWrap').innerHTML = `Dimensions: <strong>${img.width}×${img.height}px</strong>`;
+        document.getElementById('newWidth').value = img.width;
+        document.getElementById('newHeight').value = img.height;
+        document.getElementById('preview').classList.add('show');
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(f);
+  }
 }
 
 function fmtSize(b){
@@ -301,69 +321,185 @@ function fmtSize(b){
   return (b/(1024*1024)).toFixed(2)+' MB';
 }
 
-function setSize(w,h){
-  document.getElementById('newWidth').value=w;
-  document.getElementById('newHeight').value=h;
-}
-
-function setQuality(q){
-  document.getElementById('quality').value=q;
-  document.getElementById('qualityVal').textContent=q+'%';
-}
+function setSize(w,h){document.getElementById('newWidth').value=w;document.getElementById('newHeight').value=h;}
+function setQuality(q){document.getElementById('quality').value=q;document.getElementById('qualityVal').textContent=q+'%';}
+function setPdfQuality(q){document.getElementById('pdfQuality').value=q;document.getElementById('pdfQualityVal').textContent=q+'%';}
 
 document.getElementById('newWidth').addEventListener('input',function(){
   if(!img||!document.getElementById('keepRatio').checked)return;
-  const ratio=img.width/img.height;
-  document.getElementById('newHeight').value=Math.round(this.value/ratio);
+  const r=img.width/img.height;
+  document.getElementById('newHeight').value=Math.round(this.value/r);
 });
 document.getElementById('newHeight').addEventListener('input',function(){
   if(!img||!document.getElementById('keepRatio').checked)return;
-  const ratio=img.width/img.height;
-  document.getElementById('newWidth').value=Math.round(this.value*ratio);
+  const r=img.width/img.height;
+  document.getElementById('newWidth').value=Math.round(this.value*r);
 });
 
+function showStatus(type, msg){
+  const s = document.getElementById('statusMsg');
+  s.className = 'status-msg show '+(type==='err'?'err':'');
+  s.textContent = (type==='err'?'⚠️ ':'✅ ')+msg;
+}
+function hideStatus(){document.getElementById('statusMsg').classList.remove('show');}
+
+async function processFile(){
+  if(!origFile){alert('Upload file first!');return;}
+  const btn = document.getElementById('processBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Processing...';
+  hideStatus();
+
+  try{
+    if(currentTool==='resize'||currentTool==='compress'){
+      if(fileType!=='image')throw new Error('Please upload an image');
+      processImage();
+    } else if(currentTool==='convert'){
+      await processConvert();
+    } else if(currentTool==='pdfcompress'){
+      if(fileType!=='pdf')throw new Error('Please upload a PDF');
+      await processPdfCompress();
+    } else if(currentTool==='pdfresize'){
+      if(fileType!=='pdf')throw new Error('Please upload a PDF');
+      await processPdfResize();
+    }
+    showStatus('ok','Done! File downloaded.');
+  } catch(e){
+    showStatus('err', e.message || 'Processing failed');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⚡ Process & Download';
+  }
+}
+
 function processImage(){
-  if(!img){alert('Upload image first!');return;}
-  const canvas=document.createElement('canvas');
-  let w=img.width,h=img.height;
-
+  const canvas = document.createElement('canvas');
+  let w = img.width, h = img.height;
   if(currentTool==='resize'){
-    w=parseInt(document.getElementById('newWidth').value)||img.width;
-    h=parseInt(document.getElementById('newHeight').value)||img.height;
+    w = parseInt(document.getElementById('newWidth').value)||img.width;
+    h = parseInt(document.getElementById('newHeight').value)||img.height;
   }
-
-  canvas.width=w;canvas.height=h;
-  const ctx=canvas.getContext('2d');
-  ctx.drawImage(img,0,0,w,h);
-
-  let format='image/jpeg', quality=0.92, ext='jpg';
+  canvas.width = w; canvas.height = h;
+  canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+  let format = 'image/jpeg', quality = 0.92, ext = 'jpg';
   if(currentTool==='compress'){
-    quality=parseInt(document.getElementById('quality').value)/100;
-    format='image/jpeg';
-    ext='jpg';
-  } else if(currentTool==='convert'){
-    format=document.getElementById('outFormat').value;
-    ext=format.split('/')[1].replace('jpeg','jpg');
+    quality = parseInt(document.getElementById('quality').value)/100;
   } else {
-    // resize keeps original format
-    format=origFile.type.includes('png')?'image/png':'image/jpeg';
-    ext=format.split('/')[1].replace('jpeg','jpg');
+    format = origFile.type.includes('png') ? 'image/png' : 'image/jpeg';
+    ext = format.split('/')[1].replace('jpeg','jpg');
+  }
+  canvas.toBlob(b => downloadBlob(b, 'nammajobs-'+currentTool+'-'+Date.now()+'.'+ext), format, quality);
+}
+
+async function processConvert(){
+  const format = document.getElementById('outFormat').value;
+  if(fileType==='pdf' && format==='application/pdf')throw new Error('PDF→PDF? Use PDF Compress or Resize instead.');
+
+  if(fileType==='pdf'){
+    const ext = format.split('/')[1].replace('jpeg','jpg');
+    const pages = [];
+    for(let i=1; i<=pdfDoc.numPages; i++){
+      const page = await pdfDoc.getPage(i);
+      const viewport = page.getViewport({scale: 2});
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({canvasContext: canvas.getContext('2d'), viewport}).promise;
+      pages.push(canvas);
+    }
+    if(pages.length===1){
+      pages[0].toBlob(b => downloadBlob(b, 'nammajobs-converted-'+Date.now()+'.'+ext), format, 0.92);
+    } else {
+      const totalH = pages.reduce((s,c)=>s+c.height,0);
+      const maxW = Math.max(...pages.map(c=>c.width));
+      const fc = document.createElement('canvas');
+      fc.width = maxW; fc.height = totalH;
+      const ctx = fc.getContext('2d');
+      ctx.fillStyle='#fff';ctx.fillRect(0,0,maxW,totalH);
+      let y=0; pages.forEach(c=>{ctx.drawImage(c,0,y);y+=c.height;});
+      fc.toBlob(b => downloadBlob(b, 'nammajobs-converted-'+Date.now()+'.'+ext), format, 0.92);
+    }
+    return;
   }
 
-  canvas.toBlob(blob=>{
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;
-    a.download='nammajobs-'+currentTool+'-'+Date.now()+'.'+ext;
-    a.click();
-    URL.revokeObjectURL(url);
-  },format,quality);
+  if(format==='application/pdf'){
+    const {jsPDF} = window.jspdf;
+    const orientation = img.width > img.height ? 'l' : 'p';
+    const pdf = new jsPDF({orientation, unit:'mm', format:'a4'});
+    const pdfW = pdf.internal.pageSize.getWidth();
+    const pdfH = pdf.internal.pageSize.getHeight();
+    const ratio = Math.min(pdfW/img.width, pdfH/img.height) * 0.95;
+    const w = img.width * ratio, h = img.height * ratio;
+    pdf.addImage(img.src, 'JPEG', (pdfW-w)/2, (pdfH-h)/2, w, h);
+    pdf.save('nammajobs-converted-'+Date.now()+'.pdf');
+    return;
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = img.width; canvas.height = img.height;
+  canvas.getContext('2d').drawImage(img, 0, 0);
+  const ext = format.split('/')[1].replace('jpeg','jpg');
+  canvas.toBlob(b => downloadBlob(b, 'nammajobs-converted-'+Date.now()+'.'+ext), format, 0.92);
+}
+
+async function processPdfCompress(){
+  const quality = parseInt(document.getElementById('pdfQuality').value)/100;
+  const {jsPDF} = window.jspdf;
+  const newPdf = new jsPDF({unit:'pt', format:'a4'});
+  const pdfW = newPdf.internal.pageSize.getWidth();
+  const pdfH = newPdf.internal.pageSize.getHeight();
+
+  for(let i=1; i<=pdfDoc.numPages; i++){
+    const page = await pdfDoc.getPage(i);
+    const viewport = page.getViewport({scale: 1.5});
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    await page.render({canvasContext: canvas.getContext('2d'), viewport}).promise;
+    const imgData = canvas.toDataURL('image/jpeg', quality);
+    if(i > 1) newPdf.addPage();
+    const ratio = Math.min(pdfW/canvas.width, pdfH/canvas.height);
+    const w = canvas.width * ratio, h = canvas.height * ratio;
+    newPdf.addImage(imgData, 'JPEG', (pdfW-w)/2, (pdfH-h)/2, w, h);
+  }
+  newPdf.save('nammajobs-compressed-'+Date.now()+'.pdf');
+}
+
+async function processPdfResize(){
+  const targetSize = document.getElementById('pdfPageSize').value;
+  const sizes = {'A4':[595,842],'A5':[420,595],'Letter':[612,792],'Legal':[612,1008]};
+  const [targetW, targetH] = sizes[targetSize];
+  const {jsPDF} = window.jspdf;
+  const newPdf = new jsPDF({unit:'pt', format:[targetW, targetH]});
+
+  for(let i=1; i<=pdfDoc.numPages; i++){
+    const page = await pdfDoc.getPage(i);
+    const viewport = page.getViewport({scale: 2});
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    await page.render({canvasContext: canvas.getContext('2d'), viewport}).promise;
+    const imgData = canvas.toDataURL('image/jpeg', 0.9);
+    if(i > 1) newPdf.addPage([targetW, targetH]);
+    const ratio = Math.min(targetW/canvas.width, targetH/canvas.height);
+    const w = canvas.width * ratio, h = canvas.height * ratio;
+    newPdf.addImage(imgData, 'JPEG', (targetW-w)/2, (targetH-h)/2, w, h);
+  }
+  newPdf.save('nammajobs-resized-'+targetSize+'-'+Date.now()+'.pdf');
+}
+
+function downloadBlob(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
 }
 
 function reset(){
-  origFile=null;img=null;
+  origFile = null; img = null; pdfDoc = null;
   document.getElementById('preview').classList.remove('show');
-  document.getElementById('fileInput').value='';
+  document.getElementById('fileInput').value = '';
+  hideStatus();
 }
 </script>
 </body>
