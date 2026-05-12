@@ -604,12 +604,11 @@ function renderAll(){
   const open=filt.filter(j=>j.status==='open');
   const soon=filt.filter(j=>j.status==='soon');
 
-  // Sort: auto-shifted jobs (just opened) first, then by created_at
+  // Sort: use GREATEST(created_at, start_date) so auto-shifted jobs rank equally with today's posts
   open.sort((a,b)=>{
-    const aShifted = a._justOpened ? 1 : 0;
-    const bShifted = b._justOpened ? 1 : 0;
-    if(aShifted !== bShifted) return bShifted - aShifted;
-    return new Date(b.created_at||0) - new Date(a.created_at||0);
+    const aDate = new Date(Math.max(new Date(a.created_at||0), new Date(a.start_date||0)));
+    const bDate = new Date(Math.max(new Date(b.created_at||0), new Date(b.start_date||0)));
+    return bDate - aDate;
   });
 
   const latest=open.slice(0,12);
