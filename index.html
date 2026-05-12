@@ -358,6 +358,7 @@ async function fetchJobs(){
       const sd=new Date(j.start_date);sd.setHours(0,0,0,0);
       if(sd<=today){
         j.status='open';
+        j._justOpened=true;
         updates.push({id:j.id,status:'open'});
       }
     }
@@ -598,8 +599,17 @@ function renderAll(){
 
   const open=filt.filter(j=>j.status==='open');
   const soon=filt.filter(j=>j.status==='soon');
-  const latest=open.slice(0,6);
-  const more=open.slice(6);
+
+  // Sort: auto-shifted jobs (just opened) first, then by created_at
+  open.sort((a,b)=>{
+    const aShifted = a._justOpened ? 1 : 0;
+    const bShifted = b._justOpened ? 1 : 0;
+    if(aShifted !== bShifted) return bShifted - aShifted;
+    return new Date(b.created_at||0) - new Date(a.created_at||0);
+  });
+
+  const latest=open.slice(0,12);
+  const more=open.slice(12);
 
   document.getElementById('jgrid').innerHTML=latest.length?latest.map(jCard).join(''):`<div class="empty" style="grid-column:1/-1;">No jobs found</div>`;
 
