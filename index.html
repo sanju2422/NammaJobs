@@ -323,12 +323,24 @@ function getDeptLogo(d){
 let cf='all',allJobs=[],tagFilter='all';
 
 async function fetchJobs(){
-  try{const c=sessionStorage.getItem('nj_jobs');if(c){const p=JSON.parse(c);if(Date.now()-p.t<5*60*1000)return p.d;}}catch(e){}
-  const r=await fetch(`${SB_URL}/rest/v1/jobs?order=created_at.desc`,{headers});
-  if(!r.ok)throw new Error('fail');
-  const data=await r.json();
+  // Check cache first
+  let data = null;
+  try{
+    const c=sessionStorage.getItem('nj_jobs');
+    if(c){
+      const p=JSON.parse(c);
+      if(Date.now()-p.t<5*60*1000) data = p.d;
+    }
+  }catch(e){}
 
-  // === AUTO STATUS UPDATE ===
+  // If no cache, fetch fresh
+  if(!data){
+    const r=await fetch(`${SB_URL}/rest/v1/jobs?order=created_at.desc`,{headers});
+    if(!r.ok)throw new Error('fail');
+    data=await r.json();
+  }
+
+  // === AUTO STATUS UPDATE (runs on every page load, even with cache) ===
   const today=new Date();today.setHours(0,0,0,0);
   const updates=[];
 
@@ -360,6 +372,7 @@ async function fetchJobs(){
     }).catch(()=>{});
   });
 
+  // Update cache with new statuses
   try{sessionStorage.setItem('nj_jobs',JSON.stringify({d:data,t:Date.now()}));}catch(e){}
   return data;
 }
