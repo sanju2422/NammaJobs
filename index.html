@@ -701,11 +701,18 @@ function sidebarNotifItem(item, type){
   const icon = isAC?'🎓':'📊';
   const dateLabel = isAC?'Exam':'Released';
   const dateVal = item.date?fmtDate(item.date):'TBA';
+  const itemJson = JSON.stringify(item).replace(/"/g,'&quot;');
+  const waFn = isAC?`shareACWA(${itemJson})`:`shareRSWA(${itemJson})`;
+  const tgFn = isAC?`shareACTG(${itemJson})`:`shareRSTG(${itemJson})`;
   return `<div class="sj" onclick="window.open('${item.url}','_blank')">
     <div class="sjn" style="background:${isAC?'rgba(76,217,100,0.4)':'rgba(168,85,247,0.4)'};">${icon}</div>
     <div style="flex:1;min-width:0;">
       <div class="sjt">${item.title}</div>
       <div class="sjm">${item.dept||''} · ${dateLabel}: ${dateVal}</div>
+      <div style="display:flex;gap:6px;margin-top:6px;">
+        <button class="btn-card bc-wa" onclick="event.stopPropagation();${waFn}" style="font-size:11px;padding:4px 8px;">📱 WhatsApp</button>
+        <button class="btn-card bc-tg" onclick="event.stopPropagation();${tgFn}" style="font-size:11px;padding:4px 8px;">✈️ Telegram</button>
+      </div>
     </div>
   </div>`;
 }
