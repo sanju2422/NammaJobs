@@ -462,7 +462,7 @@ function renderJob(j){
             ${j.start_status==='started'?`<tr><td>Apply From</td><td><strong style="color:#4ade80;">✅ Already Started</strong></td></tr>`:(j.start_date?`<tr><td>Apply From</td><td><strong style="color:#4ade80;">📅 ${fmtDate(j.start_date)}</strong></td></tr>`:'')}
             ${j.last_date?`<tr><td>Last Date</td><td><strong style="color:${isExpiring?'#ff5757':'#c4b5fd'};">📅 ${fmtDate(j.last_date)}</strong></td></tr>`:''}
             ${j.official_url?`<tr><td>Official Website</td><td><a href="${j.official_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">🌐 Visit Official Website ↗</a></td></tr>`:''}
-            ${j.apply_link?`<tr><td>Apply Link</td><td><a href="${j.apply_link}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;background:linear-gradient(135deg,#4ade80,#22c55e);">📋 Apply Now ↗</a></td></tr>`:''}
+            ${j.apply_link?`<tr><td>Apply Link</td><td><a href="${j.apply_link}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#1a1a2e !important;text-decoration:none;">📋 Apply Now ↗</a></td></tr>`:''}
           </table>
         </div>
 
@@ -523,7 +523,7 @@ function renderJob(j){
           <p>Click below to go to the official application portal</p>
           <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
             ${j.official_url?`<a href="${j.official_url}" target="_blank" class="btn-apply-main">🌐 Visit Official Website ↗</a>`:''}
-            ${j.apply_link?`<a href="${j.apply_link}" target="_blank" class="btn-apply-main" style="background:linear-gradient(135deg,#4ade80,#22c55e);">📋 Apply Now ↗</a>`:''}
+            ${j.apply_link?`<a href="${j.apply_link}" target="_blank" class="btn-apply-main" style="background:linear-gradient(135deg,#4ade80,#22c55e);color:#1a1a2e !important;">📋 Apply Now ↗</a>`:''}
           </div>
         </div>`:''}
 
