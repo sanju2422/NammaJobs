@@ -400,7 +400,9 @@ function daysLeft(ld){if(!ld)return null;const t=new Date();t.setHours(0,0,0,0);
 
 function fmtDate(d){
   if(!d)return '';
+  // Agar text format hai (e.g. "13/06/2026 (General)") toh directly return karo
   const dt=new Date(d);
+  if(isNaN(dt.getTime()))return d;
   const dd=String(dt.getDate()).padStart(2,'0');
   const mm=String(dt.getMonth()+1).padStart(2,'0');
   const yy=dt.getFullYear();
