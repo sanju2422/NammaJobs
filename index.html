@@ -532,7 +532,8 @@ function jCard(j){
   else if(j.status==='soon'){actionBtn=`<button class="btn-card bc-soon">Coming Soon</button>`;}
   else{actionBtn=`<button class="btn-card bc-closed">Closed</button>`;}
 
-  const showDate=j.last_date?`<span class="pl pl-date">📅 Last Date: ${fmtDate(j.last_date)}</span>`:(j.start_status==='started'?`<span class="pl pl-posts">✅ Already Started</span>`:(j.status==='soon'?(j.start_date?`<span class="pl pl-tba">🔜 Starts: ${fmtDate(j.start_date)}</span>`:`<span class="pl pl-tba">📅 Start Date TBA</span>`):''));
+  const startBadge=j.start_date&&j.status!=='soon'?(j.start_status==='started'?`<span class="pl pl-posts">✅ Already Started</span>`:`<span class="pl pl-tba">🗓️ Start: ${fmtDate(j.start_date)}</span>`):(j.start_status==='started'?`<span class="pl pl-posts">✅ Already Started</span>`:'');
+  const showDate=j.last_date?`<span class="pl pl-date">📅 Last Date: ${fmtDate(j.last_date)}</span>`:(j.status==='soon'?(j.start_date?`<span class="pl pl-tba">🔜 Starts: ${fmtDate(j.start_date)}</span>`:`<span class="pl pl-tba">📅 Start Date TBA</span>`):'');
 
   return`<div class="jc" onclick="window.location.href='${url}'">
     <div class="ji">
@@ -549,6 +550,7 @@ function jCard(j){
       <div class="jm">
         <span class="pl pl-posts">👥 ${j.seats?j.seats+' Posts':'Posts TBA'}</span>
         ${j.salary?`<span class="pl pl-salary">💰 ${j.salary}</span>`:''}
+        ${startBadge}
         ${showDate}
       </div>
       ${j.tags?`<div class="jm" style="margin-top:-8px;">${j.tags.split(',').map(t=>`<span class="pl pl-tag">🎓 ${t.trim()}</span>`).join('')}</div>`:''}
