@@ -541,7 +541,13 @@ function jCard(j){
       startBadge=`<span class="pl pl-tba">🗓️ Start: ${fmtDate(j.start_date)}</span>`;
     }
   }
-  const showDate=j.last_date?`<span class="pl pl-date">📅 Last Date: ${fmtDate(j.last_date)}</span>`:(j.status==='soon'?(j.start_date?`<span class="pl pl-tba">🔜 Starts: ${fmtDate(j.start_date)}</span>`:`<span class="pl pl-tba">📅 Start Date TBA</span>`):'');
+  // showDate: Coming Soon me start date, Open me last date
+  let showDate='';
+  if(j.status==='soon'){
+    showDate=j.start_date?`<span class="pl pl-tba">🔜 Starts: ${fmtDate(j.start_date)}</span>`:`<span class="pl pl-tba">📅 Start Date TBA</span>`;
+  } else if(j.last_date){
+    showDate=`<span class="pl pl-date">📅 Last Date: ${fmtDate(j.last_date)}</span>`;
+  }
 
   return`<div class="jc" onclick="window.location.href='${url}'">
     <div class="ji">
