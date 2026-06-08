@@ -499,6 +499,18 @@ function shareTG(id,title){
   const url=window.location.origin+'/'+getJobUrl(id);
   window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,'_blank');
 }
+function shareCSWA(id,title,startDate){
+  const url=window.location.origin+'/'+getJobUrl(id);
+  const sd=startDate?`📅 Starting From: ${fmtDate(startDate)}`:'📅 Start Date: Coming Soon';
+  const txt=`🔜 *Coming Soon!*\n\n📋 *${title}*\n\n${sd}\n🔗 ${url}\n\n— Namma Jobs`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
+}
+function shareCSTG(id,title,startDate){
+  const url=window.location.origin+'/'+getJobUrl(id);
+  const sd=startDate?`📅 Starting From: ${fmtDate(startDate)}`:'📅 Start Date: Coming Soon';
+  const txt=`🔜 Coming Soon!\n\n📋 ${title}\n\n${sd}\n\n— Namma Jobs`;
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(txt)}`,'_blank');
+}
 function goOff(url){if(url)window.open(url,'_blank');}
 
 function deptLogoBlock(j){
@@ -541,8 +553,13 @@ function jCard(j){
       </div>
       ${j.tags?`<div class="jm" style="margin-top:-8px;">${j.tags.split(',').map(t=>`<span class="pl pl-tag">🎓 ${t.trim()}</span>`).join('')}</div>`:''}
       <div class="jf">
+        ${j.status==='soon'?`
+        <button class="btn-card bc-wa" onclick="event.stopPropagation();shareCSWA('${j.id}','${safeTitle}','${j.start_date||''}')">📱 WhatsApp</button>
+        <button class="btn-card bc-tg" onclick="event.stopPropagation();shareCSTG('${j.id}','${safeTitle}','${j.start_date||''}')">✈️ Telegram</button>
+        `:`
         <button class="btn-card bc-wa" onclick="event.stopPropagation();shareWA('${j.id}','${safeTitle}')">📱 WhatsApp</button>
         <button class="btn-card bc-tg" onclick="event.stopPropagation();shareTG('${j.id}','${safeTitle}')">✈️ Telegram</button>
+        `}
         ${actionBtn}
       </div>
     </div>
