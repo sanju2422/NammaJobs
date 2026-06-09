@@ -567,7 +567,7 @@ function jCard(j){
         ${startBadge}
         ${showDate}
       </div>
-      ${j.tags?`<div class="jm" style="margin-top:-8px;">${j.tags.split(',').map(t=>`<span class="pl pl-tag">🎓 ${t.trim()}</span>`).join('')}</div>`:''}
+      
       <div class="jf">
         ${j.status==='soon'?`
         <button class="btn-card bc-wa" onclick="event.stopPropagation();shareCSWA('${j.id}','${safeTitle}','${j.start_date||''}')">📱 WhatsApp</button>
