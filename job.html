@@ -393,12 +393,25 @@ function scrollToApply(){document.getElementById('apply-section')?.scrollIntoVie
 
 function shareWA(){
   const url=window.location.href;
-  const txt=`🎯 *${job.title_en}*\n\nApply: ${url}\n\n— Namma Jobs`;
+  let txt;
+  if(job.status==='soon'){
+    const sd=job.start_date?`📅 Starting From: ${fmtDate(job.start_date)}`:'📅 Start Date: Coming Soon';
+    txt=`🔜 *Coming Soon!*\n\n📋 *${job.title_en}*\n\n${sd}\n🔗 ${url}\n\n— Namma Jobs`;
+  } else {
+    txt=`🎯 *${job.title_en}*\n\nApply: ${url}\n\n— Namma Jobs`;
+  }
   window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
 }
 function shareTG(){
   const url=window.location.href;
-  window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(job.title_en)}`,'_blank');
+  let txt;
+  if(job.status==='soon'){
+    const sd=job.start_date?`📅 Starting From: ${fmtDate(job.start_date)}`:'📅 Start Date: Coming Soon';
+    txt=`🔜 Coming Soon!\n\n📋 ${job.title_en}\n\n${sd}\n\n— Namma Jobs`;
+  } else {
+    txt=job.title_en;
+  }
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(txt)}`,'_blank');
 }
 function copyLink(){
   navigator.clipboard.writeText(window.location.href).then(()=>{
