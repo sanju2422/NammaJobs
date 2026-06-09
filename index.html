@@ -528,7 +528,7 @@ function jCard(j){
   const url=getJobUrl(j.id);
 
   let actionBtn;
-  if(isOpen){actionBtn=`<button class="btn-card bc-apply" onclick="event.stopPropagation();goOff('${j.official_url||''}')">Apply ↗</button>`;}
+  if(isOpen){actionBtn=`<button class="btn-card bc-apply" onclick="event.stopPropagation();goOff('${j.apply_link||j.official_url||''}')">Apply ↗</button>`;}
   else if(j.status==='soon'){actionBtn=`<button class="btn-card bc-soon">Coming Soon</button>`;}
   else{actionBtn=`<button class="btn-card bc-closed">Closed</button>`;}
 
