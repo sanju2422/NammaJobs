@@ -381,6 +381,12 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         <input type="url" id="f-syllabus-url" placeholder="https://official-site.gov.in/syllabus.pdf">
 
         <div class="fsec">📋 How to Apply Steps</div>
+        <label style="margin-top:8px;">🏆 Selection Process</label>
+        <textarea id="f-sel-process" style="min-height:80px;" placeholder="Each stage on new line:&#10;Written Exam&#10;Physical Test&#10;Skill Test&#10;Interview&#10;Document Verification&#10;Merit List"></textarea>
+
+        <label style="margin-top:8px;">📋 Required Documents</label>
+        <textarea id="f-req-docs" style="min-height:100px;" placeholder="Each document on new line:&#10;SSLC / 10th Marks Card&#10;PUC / 12th Marks Card&#10;Degree Certificate&#10;Aadhaar Card&#10;Caste Certificate&#10;Income Certificate&#10;Passport Size Photo&#10;Signature"></textarea>
+
         <textarea id="f-hta" style="min-height:100px;" placeholder="Each step on new line:&#10;Visit official website&#10;Click New Registration&#10;Fill form and submit&#10;Pay fee&#10;Take printout"></textarea>
         <div class="url-hint">Har line ek step ban jaayega — visitors ko clearly samajh aayega</div>
 
@@ -634,6 +640,8 @@ async function saveJob(){
     skills:document.getElementById('f-skills').value.trim()||null,
     syllabus:document.getElementById('f-syllabus').value.trim()||null,
     syllabus_url:document.getElementById('f-syllabus-url').value.trim()||null,
+    selection_process:document.getElementById('f-sel-process').value.trim()||null,
+    required_docs:document.getElementById('f-req-docs').value.trim()||null,
     how_to_apply:document.getElementById('f-hta').value.trim()||null,
     bg:BGMAP[selCat]||'bg-gov',
   };
@@ -688,6 +696,8 @@ function editJob(id){
   document.getElementById('f-skills').value=j.skills||'';
   document.getElementById('f-syllabus').value=j.syllabus||'';
   document.getElementById('f-syllabus-url').value=j.syllabus_url||'';
+  document.getElementById('f-sel-process').value=j.selection_process||'';
+  document.getElementById('f-req-docs').value=j.required_docs||'';
   document.getElementById('f-hta').value=j.how_to_apply||'';
 
   // Reset TBA checkboxes
@@ -733,7 +743,7 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-sel-process','f-req-docs','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-ld-tba','f-sd-tba','f-sd-started','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleStarted(false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
   selCat='karnataka';selStat='open';
