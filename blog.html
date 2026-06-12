@@ -64,7 +64,17 @@ footer{background:var(--glass-bg);border-top:2px solid var(--glass-border);paddi
 footer p{font-size:13px;color:rgba(255,255,255,0.6);}
 footer a{color:#c4b5fd;text-decoration:none;font-weight:700;}
 @media(max-width:768px){.hero h1{font-size:26px;}.blog-grid{grid-template-columns:1fr;}}
+
+/* ===== LANGUAGE TOGGLE ===== */
+.lang-toggle{display:flex;align-items:center;background:var(--glass-bg);border:2px solid var(--glass-border);border-radius:12px;overflow:hidden;padding:2px;gap:2px;}
+.lang-toggle-btn{background:transparent;border:none;color:rgba(255,255,255,0.6);padding:5px 10px;border-radius:9px;font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .2s;line-height:1;}
+.lang-toggle-btn.lang-active{background:linear-gradient(135deg,#FFD60A,#f59e0b);color:#1a1a2e;box-shadow:0 2px 8px rgba(255,214,10,0.4);}
+.lang-toggle-btn:hover:not(.lang-active){color:#fff;background:var(--glass-bg-dark);}
+[data-lang="en"] .lang-kn{display:none !important;}
+[data-lang="kn"] .lang-en{display:none !important;}
+/* ===== END LANGUAGE TOGGLE ===== */
 </style>
+<script src="lang.js"></script>
 </head>
 <body>
 <div class="blob blob-1"></div>
@@ -78,6 +88,10 @@ footer a{color:#c4b5fd;text-decoration:none;font-weight:700;}
         <div class="htxt-kn">ನಮ್ಮ<span>ಜಾಬ್ಸ್</span></div>
       </div>
     </a>
+    <div class="lang-toggle">
+        <button class="lang-toggle-btn lang-active" id="lang-btn-en" onclick="njToggleLang('en')">EN</button>
+        <button class="lang-toggle-btn" id="lang-btn-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
+      </div>
     <a href="index.html" class="hback">← Back to Jobs</a>
   </div>
 </header>
