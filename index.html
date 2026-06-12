@@ -113,6 +113,8 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .bc-tg:hover{background:rgba(0,136,204,0.8);}
 .bc-apply{background:var(--grad-pink);border-color:rgba(255,107,157,0.8);box-shadow:0 4px 14px rgba(255,107,157,0.4);}
 .bc-apply:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(255,107,157,0.6);}
+.bc-details{background:linear-gradient(135deg,#4ade80,#22c55e);border-color:rgba(74,222,128,0.8);box-shadow:0 4px 14px rgba(74,222,128,0.4);color:#1a1a2e !important;text-shadow:none;}
+.bc-details:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(74,222,128,0.6);}
 .bc-closed{background:rgba(150,150,150,0.3);border-color:rgba(150,150,150,0.6);cursor:default;}
 .bc-soon{background:rgba(255,193,7,0.3);border-color:rgba(255,193,7,0.7);cursor:default;}
 .jlc{background:var(--glass-bg);backdrop-filter:blur(20px);border:2px solid var(--glass-border);border-radius:16px;padding:14px 16px;cursor:pointer;transition:all .25s;display:flex;gap:14px;align-items:center;margin-bottom:10px;}
@@ -815,7 +817,7 @@ function jCard(j){
   const url=getJobUrl(j.id);
 
   let actionBtn;
-  if(isOpen){actionBtn=`<button class="btn-card bc-apply" onclick="event.stopPropagation();window.location.href=getJobUrl(j.id)">Job Details →</button>`;}
+  if(isOpen){actionBtn=`<a class="btn-card bc-details" href="${getJobUrl(j.id)}" onclick="event.stopPropagation();" style="text-decoration:none;">Job Details →</a>`;}
   else if(j.status==='soon'){actionBtn=`<button class="btn-card bc-soon">Coming Soon</button>`;}
   else{actionBtn=`<button class="btn-card bc-closed">Closed</button>`;}
 
