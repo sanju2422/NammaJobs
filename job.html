@@ -514,6 +514,29 @@ function renderJob(j){
           </table>
         </div>`:''}
 
+        ${j.selection_process?`
+        <div class="card">
+          <div class="card-title">🏆 Selection Process</div>
+          <div class="steps">
+            ${j.selection_process.split('\n').filter(s=>s.trim()).map((s,i)=>`
+              <div class="step"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>
+            `).join('')}
+          </div>
+        </div>`:''}
+
+        ${j.required_docs?`
+        <div class="card">
+          <div class="card-title">📋 Required Documents</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+            ${j.required_docs.split('\n').filter(s=>s.trim()).map(s=>`
+              <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;">
+                <span style="color:#4ade80;font-size:16px;flex-shrink:0;">✅</span>
+                <span style="font-size:14px;color:rgba(255,255,255,0.9);font-weight:600;">${s.trim()}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>`:''}
+
         ${j.syllabus?`
         <div class="card">
           <div class="card-title">Exam Syllabus</div>
