@@ -156,6 +156,16 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 @media(max-width:1024px){.main{grid-template-columns:1fr;}}
 @media(max-width:768px){.hero-en{font-size:28px;}.hero-kn{font-size:18px;}.hwrap{flex-wrap:wrap;}.hs{order:3;width:100%;max-width:none;}.htxt-en{font-size:16px;}.htxt-kn{font-size:11px;}.stats-grid{grid-template-columns:repeat(3,1fr);}.btn-tg-channel,.btn-wa-channel{grid-column:span 3;justify-content:center;}.hero{padding:28px 16px 18px;}.hbtns{display:none;}.stats-grid{padding:14px;gap:8px;}.stat-num{font-size:22px;}.stat-label{font-size:9px;}}
 @media(max-width:680px){.jg{grid-template-columns:1fr;}}
+
+/* ===== LANGUAGE TOGGLE ===== */
+.lang-toggle{display:flex;align-items:center;background:var(--glass-bg);border:2px solid var(--glass-border);border-radius:12px;overflow:hidden;padding:2px;gap:2px;}
+.lang-toggle-btn{background:transparent;border:none;color:rgba(255,255,255,0.6);padding:5px 10px;border-radius:9px;font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .2s;line-height:1;}
+.lang-toggle-btn.lang-active{background:linear-gradient(135deg,#FFD60A,#f59e0b);color:#1a1a2e;box-shadow:0 2px 8px rgba(255,214,10,0.4);}
+.lang-toggle-btn:hover:not(.lang-active){color:#fff;background:var(--glass-bg-dark);}
+/* Content visibility by language */
+[data-lang="en"] .lang-kn{display:none !important;}
+[data-lang="kn"] .lang-en{display:none !important;}
+/* ===== END LANGUAGE TOGGLE ===== */
 </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9037988612895250" crossorigin="anonymous"></script>
   <style>
@@ -177,6 +187,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   ]
 }
 </script>
+<script src="lang.js"></script>
 </head>
 <body>
 
@@ -202,6 +213,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       <div class="tooltip-wrap">
         <button class="tbtn" onclick="window.location.href='tools.html'">🖼️ Image Resizer</button>
         <div class="tooltip-glass">Edit your documents according to your job requirements</div>
+      </div>
+      <div class="lang-toggle">
+        <button class="lang-toggle-btn lang-active" id="lang-btn-en" onclick="njToggleLang('en')">EN</button>
+        <button class="lang-toggle-btn" id="lang-btn-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
       </div>
       <button class="dmb tbtn" id="dmb" onclick="toggleDark()">🌙</button>
     </div>
