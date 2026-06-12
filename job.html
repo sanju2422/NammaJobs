@@ -308,8 +308,18 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   .htxt-kn{font-size:11px;}
   .hlogo{width:38px;height:38px;}
 }
+
+/* ===== LANGUAGE TOGGLE ===== */
+.lang-toggle{display:flex;align-items:center;background:var(--glass-bg);border:2px solid var(--glass-border);border-radius:12px;overflow:hidden;padding:2px;gap:2px;}
+.lang-toggle-btn{background:transparent;border:none;color:rgba(255,255,255,0.6);padding:5px 10px;border-radius:9px;font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .2s;line-height:1;}
+.lang-toggle-btn.lang-active{background:linear-gradient(135deg,#FFD60A,#f59e0b);color:#1a1a2e;box-shadow:0 2px 8px rgba(255,214,10,0.4);}
+.lang-toggle-btn:hover:not(.lang-active){color:#fff;background:var(--glass-bg-dark);}
+[data-lang="en"] .lang-kn{display:none !important;}
+[data-lang="kn"] .lang-en{display:none !important;}
+/* ===== END LANGUAGE TOGGLE ===== */
 </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9037988612895250" crossorigin="anonymous"></script>
+<script src="lang.js"></script>
 </head>
 <body>
 
@@ -323,6 +333,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       </div>
     </a>
     <div class="tbtns">
+      <div class="lang-toggle">
+        <button class="lang-toggle-btn lang-active" id="lang-btn-en" onclick="njToggleLang('en')">EN</button>
+        <button class="lang-toggle-btn" id="lang-btn-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
+      </div>
       <a href="index.html" class="tbtn">← Back to Jobs</a>
       <button class="tbtn primary" id="top-apply" onclick="scrollToApply()">Apply Now ↗</button>
     </div>
