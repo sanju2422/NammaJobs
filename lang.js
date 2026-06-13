@@ -1,12 +1,13 @@
 /**
- * NammaJobs Language System — lang.js
- * Phase 2A: Foundation only (toggle + localStorage)
- * Phase 2B: Will add data-driven bilingual content
- * 
- * Usage:
- *   - Add class="lang-en" to English-only content
- *   - Add class="lang-kn" to Kannada-only content
- *   - Future DB fields: title_en/title_kn, dept_en/dept_kn etc.
+ * NammaJobs Language System — lang.js v2.0
+ * Phase 2A: Toggle + localStorage ✅
+ * Phase 2B: Bilingual content + fallback ✅
+ *
+ * Architecture:
+ *   - Static content: .lang-en / .lang-kn CSS classes
+ *   - Dynamic content: njField(en, kn) helper function
+ *   - Categories: CATS array with nk field
+ *   - Future DB: title_en/title_kn, dept/dept_kn, etc.
  */
 
 const NJ_LANG_KEY = 'nj_lang';
@@ -20,13 +21,13 @@ function njGetLang() {
 function njSetLang(lang) {
   localStorage.setItem(NJ_LANG_KEY, lang);
   njApplyLang(lang);
+  // Re-render dynamic content if renderer exists
+  if (typeof njRerender === 'function') njRerender();
 }
 
 // Apply language to DOM
 function njApplyLang(lang) {
   document.documentElement.setAttribute('data-lang', lang);
-
-  // Update toggle button state
   const btnEn = document.getElementById('lang-btn-en');
   const btnKn = document.getElementById('lang-btn-kn');
   if (btnEn && btnKn) {
@@ -45,13 +46,31 @@ function njToggleLang(lang) {
   njSetLang(lang);
 }
 
-// Init on page load
-function njLangInit() {
-  const lang = njGetLang();
-  njApplyLang(lang);
+/**
+ * Core bilingual field helper
+ * Returns KN if lang=kn AND kn is non-empty, else EN
+ * @param {string} en - English value
+ * @param {string} kn - Kannada value (optional)
+ * @returns {string}
+ */
+function njField(en, kn) {
+  if (njGetLang() === 'kn' && kn && kn.trim() !== '') return kn;
+  return en || '';
 }
 
-// Auto-init
+/**
+ * Render bilingual text as HTML span pair
+ * Use when you want both stored but only one shown
+ */
+function njSpan(en, kn) {
+  return `<span class="lang-en">${en||''}</span>${kn?`<span class="lang-kn">${kn}</span>`:''}`;
+}
+
+// Init on page load
+function njLangInit() {
+  njApplyLang(njGetLang());
+}
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', njLangInit);
 } else {
