@@ -368,6 +368,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         <label>🎓 Tags / Eligibility (Comma separated)</label>
         <input type="text" id="f-tags" placeholder="10th Pass, 12th Pass, Graduate, Diploma">
         <div class="url-hint">Examples: 10th Pass, 12th Pass, Graduate, Post Graduate, Diploma, ITI, Engineering, MBA</div>
+        <input type="text" id="f-tags-kn" placeholder="ಪದವೀಧರ, ಬೆಂಗಳೂರು, ಕರ್ನಾಟಕ (ಕನ್ನಡದಲ್ಲಿ)" style="margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" title="Tags (Kannada)">
 
         <div class="fsec">📝 Job Description</div>
         <textarea id="f-desc" placeholder="Responsibilities, exam details, eligibility..."></textarea>
@@ -383,14 +384,17 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         <div class="fsec">🏆 Selection Process</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Stages: Written Exam / Physical Test / Interview / Document Verification / Merit List</div>
         <textarea id="f-sel-process" style="min-height:80px;" placeholder="Each stage on new line:&#10;Written Exam&#10;Physical Test&#10;Skill Test&#10;Interview&#10;Document Verification&#10;Merit List"></textarea>
+        <textarea id="f-sel-process-kn" style="min-height:60px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಹಂತ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;ಲಿಖಿತ ಪರೀಕ್ಷೆ&#10;ದೈಹಿಕ ಪರೀಕ್ಷೆ&#10;ಸಂದರ್ಶನ" title="Selection Process (Kannada)"></textarea>
 
         <div class="fsec" style="margin-top:20px;">📋 Required Documents</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Documents candidates must bring: Aadhaar, Marks Card, Caste Certificate, Photo, etc.</div>
         <textarea id="f-req-docs" style="min-height:100px;" placeholder="Each document on new line:&#10;SSLC / 10th Marks Card&#10;PUC / 12th Marks Card&#10;Degree Certificate&#10;Aadhaar Card&#10;Caste Certificate&#10;Income Certificate&#10;Passport Size Photo&#10;Signature"></textarea>
+        <textarea id="f-req-docs-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ದಾಖಲೆ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;SSLC / 10ನೇ ತರಗತಿ ಅಂಕಪಟ್ಟಿ&#10;ಆಧಾರ್ ಕಾರ್ಡ್&#10;ಜಾತಿ ಪ್ರಮಾಣಪತ್ರ" title="Required Documents (Kannada)"></textarea>
 
         <div class="fsec" style="margin-top:20px;">📝 How To Apply Steps</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Step-by-step application instructions: Visit website → Register → Fill form → Pay fee → Submit</div>
         <textarea id="f-hta" style="min-height:100px;" placeholder="Each step on new line:&#10;Visit official website&#10;Click New Registration&#10;Fill form and submit&#10;Pay fee&#10;Take printout"></textarea>
+        <textarea id="f-hta-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಹಂತ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್ ತೆರೆಯಿರಿ&#10;ನೋಂದಣಿ ಮಾಡಿ&#10;ಅರ್ಜಿ ಭರ್ತಿ ಮಾಡಿ" title="How To Apply (Kannada)"></textarea>
         <div class="url-hint">Har line ek step ban jaayega — visitors ko clearly samajh aayega</div>
 
         <div class="fbtns">
@@ -627,11 +631,13 @@ async function saveJob(){
     loc:document.getElementById('f-loc').value.trim()||null,
     seats:document.getElementById('f-seats-tba').checked?null:(document.getElementById('f-seats').value.trim()||null),
     salary:document.getElementById('f-sal-tba').checked?'To Be Announced':(document.getElementById('f-sal').value.trim()||null),
+    salary_kn:document.getElementById('f-sal-kn').value.trim()||null,
     age:document.getElementById('f-age').value.trim()||null,
     last_date:document.getElementById('f-ld-tba').checked?null:(document.getElementById('f-ld').value||null),
     start_date:document.getElementById('f-sd-tba').checked?null:(document.getElementById('f-sd-started').checked?new Date().toISOString().slice(0,10):(document.getElementById('f-sd').value||null)),
     start_status:document.getElementById('f-sd-started').checked?'started':(document.getElementById('f-sd-tba').checked?'tba':null),
     fee:document.getElementById('f-fee-tba').checked?'To Be Announced':(document.getElementById('f-fee').value.trim()||null),
+    fee_kn:document.getElementById('f-fee-kn')?document.getElementById('f-fee-kn').value.trim()||null:null,
     official_url:document.getElementById('f-url').value.trim()||null,
     apply_link:document.getElementById('f-apply-link').value.trim()||null,
     notif:document.getElementById('f-notif').value.trim()||null,
@@ -639,13 +645,18 @@ async function saveJob(){
     logo_url:document.getElementById('f-logo').value.trim()||null,
     cats:document.getElementById('f-cats').value.trim()||null,
     tags:document.getElementById('f-tags').value.trim()||null,
+    tags_kn:document.getElementById('f-tags-kn').value.trim()||null,
     description:document.getElementById('f-desc').value.trim()||null,
     skills:document.getElementById('f-skills').value.trim()||null,
+    skills_kn:document.getElementById('f-skills-kn').value.trim()||null,
     syllabus:document.getElementById('f-syllabus').value.trim()||null,
     syllabus_url:document.getElementById('f-syllabus-url').value.trim()||null,
     selection_process:document.getElementById('f-sel-process').value.trim()||null,
+    selection_process_kn:document.getElementById('f-sel-process-kn').value.trim()||null,
     required_docs:document.getElementById('f-req-docs').value.trim()||null,
+    required_docs_kn:document.getElementById('f-req-docs-kn').value.trim()||null,
     how_to_apply:document.getElementById('f-hta').value.trim()||null,
+    how_to_apply_kn:document.getElementById('f-hta-kn').value.trim()||null,
     bg:BGMAP[selCat]||'bg-gov',
   };
 
@@ -683,11 +694,13 @@ function editJob(id){
   document.getElementById('f-dept-kn').value=j.dept_kn||'';
   document.getElementById('f-loc').value=j.loc||'';
   document.getElementById('f-seats').value=j.seats||'';
-  document.getElementById('f-sal').value=j.salary||'';
+  document.getElementById('f-sal').value=j.salary===('To Be Announced')?'':j.salary||'';
+  document.getElementById('f-sal-kn').value=j.salary_kn||'';
   document.getElementById('f-age').value=j.age||'';
   document.getElementById('f-ld').value=j.last_date||'';
   document.getElementById('f-sd').value=j.start_date||'';
   document.getElementById('f-fee').value=j.fee||'';
+  if(document.getElementById('f-fee-kn'))document.getElementById('f-fee-kn').value=j.fee_kn||'';
   document.getElementById('f-url').value=j.official_url||'';
   document.getElementById('f-apply-link').value=j.apply_link||'';
   document.getElementById('f-notif').value=j.notif||'';
@@ -695,13 +708,18 @@ function editJob(id){
   document.getElementById('f-logo').value=j.logo_url||'';
   document.getElementById('f-cats').value=j.cats||'';
   document.getElementById('f-tags').value=j.tags||'';
+  document.getElementById('f-tags-kn').value=j.tags_kn||'';
   document.getElementById('f-desc').value=j.description||'';
   document.getElementById('f-skills').value=j.skills||'';
+  document.getElementById('f-skills-kn').value=j.skills_kn||'';
   document.getElementById('f-syllabus').value=j.syllabus||'';
   document.getElementById('f-syllabus-url').value=j.syllabus_url||'';
   document.getElementById('f-sel-process').value=j.selection_process||'';
+  document.getElementById('f-sel-process-kn').value=j.selection_process_kn||'';
   document.getElementById('f-req-docs').value=j.required_docs||'';
+  document.getElementById('f-req-docs-kn').value=j.required_docs_kn||'';
   document.getElementById('f-hta').value=j.how_to_apply||'';
+  document.getElementById('f-hta-kn').value=j.how_to_apply_kn||'';
 
   // Reset TBA checkboxes
   document.getElementById('f-ld-tba').checked=false;
@@ -746,7 +764,7 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-sel-process','f-req-docs','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-ld-tba','f-sd-tba','f-sd-started','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleStarted(false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
   selCat='karnataka';selStat='open';
