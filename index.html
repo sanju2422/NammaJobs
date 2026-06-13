@@ -100,6 +100,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .jm{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
 .pl{background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);color:#fff;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:4px;text-shadow:0 1px 3px rgba(0,0,0,0.2);}
 .pl-posts{background:linear-gradient(135deg,#4ade80,#22c55e);border-color:rgba(74,222,128,0.6);color:#1a1a2e !important;font-weight:800;}
+.pl-loc{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.2);}
 .pl-salary{background:linear-gradient(135deg,#4ade80,#22c55e);border-color:rgba(74,222,128,0.6);color:#1a1a2e !important;font-weight:800;}
 .pl-date{background:linear-gradient(135deg,#f87171,#ef4444);border-color:rgba(248,113,113,0.6);color:#1a1a2e !important;font-weight:800;}
 .pl-fee{background:rgba(180,120,255,0.3);border-color:rgba(180,120,255,0.55);}
@@ -872,6 +873,7 @@ function jCard(j){
       ${j.title_kn?`<div class="jt-kn">${j.title_kn}</div>`:''}
       <div class="jm">
         <span class="pl pl-posts">👥 ${j.seats?j.seats+' Posts':'Posts TBA'}</span>
+        ${j.loc?`<span class="pl pl-loc">📍 ${njField(j.loc,j.loc_kn)}</span>`:''}
         ${j.salary?`<span class="pl pl-salary">💰 ${njGetLang()==='kn'?'ವೇತನ':'Salary'}: ${njField(j.salary,j.salary_kn)}</span>`:''}
         ${startBadge}
         ${showDate}
@@ -907,13 +909,19 @@ function jListCard(j){
   </div>`;
 }
 
+// Called by lang.js when language changes — re-renders all dynamic content
+function njRerender(){
+  if(typeof renderCats==='function') renderCats();
+  if(typeof renderJobs==='function') renderJobs();
+  if(typeof renderSidebar==='function') renderSidebar();
+}
 function renderCats(){
   const counts={};
   allJobs.forEach(j=>{counts[j.cat]=(counts[j.cat]||0)+1;});
   document.getElementById('cats-grid').innerHTML=CATS.map(c=>`
     <div class="cb ${cf===c.v?'on':''}" onclick="filtCat('${c.v}')">
       <div class="cb-icon">${c.i}</div>
-      <div class="cb-txt">${c.n}</div>
+      <div class="cb-txt">${njGetLang()==="kn"&&c.nk?c.nk:c.n}</div>
       ${(c.v==='all'?allJobs.length:(counts[c.v]||0))>0?`<div class="cb-cnt">${c.v==='all'?allJobs.length:(counts[c.v]||0)} jobs</div>`:''}
     </div>
   `).join('');
