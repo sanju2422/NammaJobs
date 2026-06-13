@@ -599,9 +599,14 @@ const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 const headers={'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`};
 
 const CATS=[
-  {v:'all',n:'All Jobs',i:'🌟'},{v:'karnataka',n:'Karnataka',i:'🏛️'},{v:'central',n:'Central',i:'🇮🇳'},
-  {v:'railway',n:'Railway',i:'🚂'},{v:'bank',n:'Bank',i:'🏦'},{v:'police',n:'Police',i:'👮'},
-  {v:'teacher',n:'Teacher',i:'📚'},{v:'private',n:'Private',i:'🏢'},
+  {v:'all',     n:'All Jobs',  nk:'ಎಲ್ಲಾ ಉದ್ಯೋಗ',          i:'🌟'},
+  {v:'karnataka',n:'Karnataka',nk:'ಕರ್ನಾಟಕ',               i:'🏛️'},
+  {v:'central', n:'Central',   nk:'ಕೇಂದ್ರ',                i:'🇮🇳'},
+  {v:'railway', n:'Railway',   nk:'ರೈಲ್ವೆ',                i:'🚂'},
+  {v:'bank',    n:'Bank',      nk:'ಬ್ಯಾಂಕ್',               i:'🏦'},
+  {v:'police',  n:'Police',    nk:'ಪೊಲೀಸ್',                i:'👮'},
+  {v:'teacher', n:'Teacher',   nk:'ಶಿಕ್ಷಕ',                i:'📚'},
+  {v:'private', n:'Private',   nk:'ಖಾಸಗಿ',                 i:'🏢'},
 ];
 
 const DEPT_LOGOS={
@@ -867,7 +872,7 @@ function jCard(j){
       ${j.title_kn?`<div class="jt-kn">${j.title_kn}</div>`:''}
       <div class="jm">
         <span class="pl pl-posts">👥 ${j.seats?j.seats+' Posts':'Posts TBA'}</span>
-        ${j.salary?`<span class="pl pl-salary">💰 Salary: ${j.salary}</span>`:''}
+        ${j.salary?`<span class="pl pl-salary">💰 ${njGetLang()==='kn'?'ವೇತನ':'Salary'}: ${njField(j.salary,j.salary_kn)}</span>`:''}
         ${startBadge}
         ${showDate}
       </div>
