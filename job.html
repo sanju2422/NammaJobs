@@ -513,7 +513,7 @@ function renderJob(j){
         ${j.description?`
         <div class="card">
           <div class="card-title">About this Job</div>
-          <div style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${j.description}</div>
+          <div style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${njField(j.description,j.description_kn)}</div>
         </div>`:''}
 
         ${j.cats?`

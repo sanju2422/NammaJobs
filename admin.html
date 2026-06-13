@@ -296,22 +296,25 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
           <div><label>Department (ಕನ್ನಡ)</label><input type="text" id="f-dept-kn" placeholder="ಕರ್ನಾಟಕ ಲೋಕಸೇವಾ ಆಯೋಗ" style="font-family:var(--fkn);"></div>
         </div>
 
-        <label>Location</label>
-        <input type="text" id="f-loc" placeholder="Bangalore, All India">
+        <div class="row2">
+          <div><label>Location (English)</label><input type="text" id="f-loc" placeholder="Bangalore, All India"></div>
+          <div><label>Location (ಕನ್ನಡ)</label><input type="text" id="f-loc-kn" placeholder="ಬೆಂಗಳೂರು, ಅಖಿಲ ಭಾರತ" style="font-family:var(--fkn);"></div>
+        </div>
 
         <label>Total Vacancies</label>
         <input type="text" id="f-seats" placeholder="120 (Karnataka 26, Central 94)">
         <label class="tba-row">
           <input type="checkbox" id="f-seats-tba" onchange="toggleSeatsTBA(this.checked)">
-          <span class="tba-label">⚠️ Vacancies abhi confirm nahi hai (To Be Announced)</span>
+          <span class="tba-label">⚠️ Vacancies not yet confirmed (To Be Announced)</span>
         </label>
 
         <label style="margin-top:14px;">Salary / Pay Scale</label>
         <input type="text" id="f-sal" placeholder="₹35,400-1,12,400">
         <label class="tba-row">
           <input type="checkbox" id="f-sal-tba" onchange="toggleSalTBA(this.checked)">
-          <span class="tba-label">⚠️ Salary abhi confirm nahi hai (To Be Announced)</span>
+          <span class="tba-label">⚠️ Salary not yet confirmed (To Be Announced)</span>
         </label>
+        <input type="text" id="f-sal-kn" placeholder="₹35,400-1,12,400 (ಕನ್ನಡದಲ್ಲಿ — optional)" style="margin-top:6px;font-family:var(--fkn);" title="Salary in Kannada">
 
         <label>Age Limit</label>
         <input type="text" id="f-age" placeholder="18-35 years">
@@ -321,11 +324,11 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         <input type="date" id="f-sd">
         <label class="tba-row">
           <input type="checkbox" id="f-sd-tba" onchange="toggleTBA('f-sd',this.checked);if(this.checked)document.getElementById('f-sd-started').checked=false;">
-          <span class="tba-label">⚠️ Start Date abhi confirm nahi hai (To Be Announced)</span>
+          <span class="tba-label">⚠️ Start Date not yet confirmed (To Be Announced)</span>
         </label>
         <label class="tba-row" style="background:rgba(76,217,100,0.12);border-color:rgba(76,217,100,0.3);">
           <input type="checkbox" id="f-sd-started" onchange="toggleStarted(this.checked)" style="accent-color:#4cd964;">
-          <span class="tba-label" style="color:#86efac;">✅ Already Started (date confirm nahi but apply shuru ho gaya hai)</span>
+          <span class="tba-label" style="color:#86efac;">✅ Already Started – Applications are open (exact date not confirmed)</span>
         </label>
 
         <!-- LAST DATE with TBA -->
@@ -333,7 +336,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         <input type="date" id="f-ld">
         <label class="tba-row">
           <input type="checkbox" id="f-ld-tba" onchange="toggleTBA('f-ld',this.checked)">
-          <span class="tba-label">⚠️ Last Date abhi confirm nahi hai (To Be Announced)</span>
+          <span class="tba-label">⚠️ Last Date not yet confirmed (To Be Announced)</span>
         </label>
 
         <!-- APPLICATION FEE with TBA -->
@@ -341,16 +344,17 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         <input type="text" id="f-fee" placeholder="Gen: ₹500 | SC/ST: ₹250">
         <label class="tba-row">
           <input type="checkbox" id="f-fee-tba" onchange="toggleFeeTBA(this.checked)">
-          <span class="tba-label">⚠️ Application Fee abhi confirm nahi hai (To Be Announced)</span>
+          <span class="tba-label">⚠️ Application Fee not yet confirmed (To Be Announced)</span>
         </label>
+        <input type="text" id="f-fee-kn" placeholder="Gen: ₹500 | SC/ST: ₹250 (ಕನ್ನಡದಲ್ಲಿ — optional)" style="margin-top:6px;font-family:var(--fkn);" title="Fee in Kannada">
 
         <div class="fsec">🌐 Official Website Link</div>
         <input type="url" id="f-url" placeholder="https://kpsc.kar.nic.in">
-        <div class="url-hint">⚠️ Yeh URL "Visit Official Website" button pe click karne pe khulega</div>
+        <div class="url-hint">⚠️ This URL opens when user clicks "Visit Official Website" button</div>
 
         <div class="fsec">📋 Apply Now Link (Direct Apply Page)</div>
         <input type="url" id="f-apply-link" placeholder="https://kpsc.kar.nic.in/apply">
-        <div class="url-hint">⚠️ Yeh URL "Apply Now" button pe click karne pe khulega (agar alag page ho)</div>
+        <div class="url-hint">⚠️ This URL opens when user clicks "Apply Now" button (if different from official site)</div>
 
         <div class="fsec">📋 Government Job Details</div>
         <div class="row2">
@@ -360,21 +364,25 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
 
         <label>🖼️ Company Logo URL (Optional)</label>
         <input type="url" id="f-logo" placeholder="https://i.postimg.cc/abc123/logo.png">
-        <div class="url-hint">📤 Postimages.org ya Wikipedia se logo ka direct URL paste karo. Agar daloge to logo dikhega, warna icon emoji dikhega.</div>
+        <div class="url-hint">📤 Paste direct image URL from Postimages.org or Wikipedia. Logo will show if provided, otherwise icon emoji will display.</div>
 
         <label>Category-wise Vacancies</label>
         <input type="text" id="f-cats" placeholder="SC-24, ST-12, OBC-32, Gen-52">
 
-        <label>🎓 Tags / Eligibility (Comma separated)</label>
+        <label>🎓 Tags / Eligibility (English, Comma separated)</label>
         <input type="text" id="f-tags" placeholder="10th Pass, 12th Pass, Graduate, Diploma">
         <div class="url-hint">Examples: 10th Pass, 12th Pass, Graduate, Post Graduate, Diploma, ITI, Engineering, MBA</div>
+        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">Tags / Eligibility (ಕನ್ನಡ)</label>
         <input type="text" id="f-tags-kn" placeholder="ಪದವೀಧರ, ಬೆಂಗಳೂರು, ಕರ್ನಾಟಕ (ಕನ್ನಡದಲ್ಲಿ)" style="margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" title="Tags (Kannada)">
 
         <div class="fsec">📝 Job Description</div>
-        <textarea id="f-desc" placeholder="Responsibilities, exam details, eligibility..."></textarea>
+        <textarea id="f-desc" placeholder="Responsibilities, exam details, eligibility..." style="min-height:80px;"></textarea>
+        <textarea id="f-desc-kn" placeholder="ಜವಾಬ್ದಾರಿಗಳು, ಪರೀಕ್ಷೆ ವಿವರಗಳು, ಅರ್ಹತೆ... (ಕನ್ನಡದಲ್ಲಿ — optional)" style="min-height:60px;margin-top:6px;font-family:var(--fkn);" title="Job Description (Kannada)"></textarea>
 
-        <label>Qualifications / Skills</label>
-        <input type="text" id="f-skills" placeholder="B.E Civil, Kannada knowledge, 2yr experience">
+        <div class="row2">
+          <div><label>Qualifications / Skills (English)</label><input type="text" id="f-skills" placeholder="B.E Civil, Kannada knowledge, 2yr experience"></div>
+          <div><label>Qualifications / Skills (ಕನ್ನಡ)</label><input type="text" id="f-skills-kn" placeholder="ಎಂಜಿನಿಯರಿಂಗ್, ಕನ್ನಡ ಜ್ಞಾನ..." style="font-family:var(--fkn);"></div>
+        </div>
 
         <div class="fsec">📚 Syllabus (Optional)</div>
         <textarea id="f-syllabus" style="min-height:80px;" placeholder="Exam subjects:&#10;General Knowledge, Reasoning, Mathematics..."></textarea>
@@ -383,19 +391,25 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
 
         <div class="fsec">🏆 Selection Process</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Stages: Written Exam / Physical Test / Interview / Document Verification / Merit List</div>
+        <label style="font-size:12px;color:rgba(255,255,255,0.6);">Selection Process (English)</label>
         <textarea id="f-sel-process" style="min-height:80px;" placeholder="Each stage on new line:&#10;Written Exam&#10;Physical Test&#10;Skill Test&#10;Interview&#10;Document Verification&#10;Merit List"></textarea>
+        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">Selection Process (ಕನ್ನಡ)</label>
         <textarea id="f-sel-process-kn" style="min-height:60px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಹಂತ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;ಲಿಖಿತ ಪರೀಕ್ಷೆ&#10;ದೈಹಿಕ ಪರೀಕ್ಷೆ&#10;ಸಂದರ್ಶನ" title="Selection Process (Kannada)"></textarea>
 
         <div class="fsec" style="margin-top:20px;">📋 Required Documents</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Documents candidates must bring: Aadhaar, Marks Card, Caste Certificate, Photo, etc.</div>
+        <label style="font-size:12px;color:rgba(255,255,255,0.6);">Required Documents (English)</label>
         <textarea id="f-req-docs" style="min-height:100px;" placeholder="Each document on new line:&#10;SSLC / 10th Marks Card&#10;PUC / 12th Marks Card&#10;Degree Certificate&#10;Aadhaar Card&#10;Caste Certificate&#10;Income Certificate&#10;Passport Size Photo&#10;Signature"></textarea>
+        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">Required Documents (ಕನ್ನಡ)</label>
         <textarea id="f-req-docs-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ದಾಖಲೆ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;SSLC / 10ನೇ ತರಗತಿ ಅಂಕಪಟ್ಟಿ&#10;ಆಧಾರ್ ಕಾರ್ಡ್&#10;ಜಾತಿ ಪ್ರಮಾಣಪತ್ರ" title="Required Documents (Kannada)"></textarea>
 
         <div class="fsec" style="margin-top:20px;">📝 How To Apply Steps</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Step-by-step application instructions: Visit website → Register → Fill form → Pay fee → Submit</div>
+        <label style="font-size:12px;color:rgba(255,255,255,0.6);">How To Apply (English)</label>
         <textarea id="f-hta" style="min-height:100px;" placeholder="Each step on new line:&#10;Visit official website&#10;Click New Registration&#10;Fill form and submit&#10;Pay fee&#10;Take printout"></textarea>
+        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">How To Apply (ಕನ್ನಡ)</label>
         <textarea id="f-hta-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಹಂತ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್ ತೆರೆಯಿರಿ&#10;ನೋಂದಣಿ ಮಾಡಿ&#10;ಅರ್ಜಿ ಭರ್ತಿ ಮಾಡಿ" title="How To Apply (Kannada)"></textarea>
-        <div class="url-hint">Har line ek step ban jaayega — visitors ko clearly samajh aayega</div>
+        <div class="url-hint">Each line becomes a numbered step — clearly visible to job seekers</div>
 
         <div class="fbtns">
           <button class="fbtn fb-pub" id="pub-btn" onclick="saveJob()">
@@ -629,6 +643,7 @@ async function saveJob(){
     dept,
     dept_kn:document.getElementById('f-dept-kn').value.trim()||null,
     loc:document.getElementById('f-loc').value.trim()||null,
+    loc_kn:document.getElementById('f-loc-kn')?document.getElementById('f-loc-kn').value.trim()||null:null,
     seats:document.getElementById('f-seats-tba').checked?null:(document.getElementById('f-seats').value.trim()||null),
     salary:document.getElementById('f-sal-tba').checked?'To Be Announced':(document.getElementById('f-sal').value.trim()||null),
     salary_kn:document.getElementById('f-sal-kn').value.trim()||null,
@@ -647,6 +662,7 @@ async function saveJob(){
     tags:document.getElementById('f-tags').value.trim()||null,
     tags_kn:document.getElementById('f-tags-kn').value.trim()||null,
     description:document.getElementById('f-desc').value.trim()||null,
+    description_kn:document.getElementById('f-desc-kn')?document.getElementById('f-desc-kn').value.trim()||null:null,
     skills:document.getElementById('f-skills').value.trim()||null,
     skills_kn:document.getElementById('f-skills-kn').value.trim()||null,
     syllabus:document.getElementById('f-syllabus').value.trim()||null,
@@ -693,6 +709,7 @@ function editJob(id){
   document.getElementById('f-dept').value=j.dept||'';
   document.getElementById('f-dept-kn').value=j.dept_kn||'';
   document.getElementById('f-loc').value=j.loc||'';
+  if(document.getElementById('f-loc-kn'))document.getElementById('f-loc-kn').value=j.loc_kn||'';
   document.getElementById('f-seats').value=j.seats||'';
   document.getElementById('f-sal').value=j.salary===('To Be Announced')?'':j.salary||'';
   document.getElementById('f-sal-kn').value=j.salary_kn||'';
@@ -710,6 +727,7 @@ function editJob(id){
   document.getElementById('f-tags').value=j.tags||'';
   document.getElementById('f-tags-kn').value=j.tags_kn||'';
   document.getElementById('f-desc').value=j.description||'';
+  if(document.getElementById('f-desc-kn'))document.getElementById('f-desc-kn').value=j.description_kn||'';
   document.getElementById('f-skills').value=j.skills||'';
   document.getElementById('f-skills-kn').value=j.skills_kn||'';
   document.getElementById('f-syllabus').value=j.syllabus||'';
@@ -764,7 +782,7 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-ld-tba','f-sd-tba','f-sd-started','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleStarted(false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
   selCat='karnataka';selStat='open';
