@@ -655,13 +655,18 @@ async function load(){
       .then(jobs=>{allJobs=jobs;renderSidebar(job,allJobs);})
       .catch(()=>{});
 
-    renderJob(job);
+    window._njJob = job; renderJob(job);
   }catch(e){
     document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Could not load. Please check connection.</div>';
   }
 }
 
 load();
+// Called by lang.js when user switches language
+function njRerender(){
+  if(window._njJob) renderJob(window._njJob);
+}
+
 </script>
 </body>
 </html>
