@@ -338,7 +338,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
         <button class="lang-toggle-btn lang-active" id="lang-btn-en" onclick="njToggleLang('en')">EN</button>
         <button class="lang-toggle-btn" id="lang-btn-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
       </div>
-      <button class="tbtn primary" id="top-apply" onclick="scrollToApply()">Apply Now ↗</button>
+      <button class="tbtn primary" id="top-apply" onclick="scrollToApply()">${njGetLang()==='kn'?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now'} ↗</button>
     </div>
   </div>
 </header>
@@ -437,10 +437,10 @@ function copyLink(){
 }
 
 function badgeForJob(j,dl){
-  if(j.status==='soon')return `<div class="hero-badge hb-soon">◐ Coming Soon</div>`;
-  if(j.status==='closed')return `<div class="hero-badge hb-closed">○ Closed</div>`;
-  if(dl!==null && dl>=0 && dl<=5)return `<div class="hero-badge hb-soon">⚡ ${dl===0?'Last Day Today':dl+' days left'}</div>`;
-  return `<div class="hero-badge hb-open">✓ Open – Apply Now</div>`;
+  if(j.status==='soon')return `<div class="hero-badge hb-soon">◐ ${njGetLang()==='kn'?'ಶೀಘ್ರದಲ್ಲೇ':'Coming Soon'}</div>`;
+  if(j.status==='closed')return `<div class="hero-badge hb-closed">○ ${njGetLang()==='kn'?'ಮುಚ್ಚಲಾಗಿದೆ':'Closed'}</div>`;
+  if(dl!==null && dl>=0 && dl<=5)return `<div class="hero-badge hb-soon">⚡ ${dl===0?(njGetLang()==='kn'?'ಇಂದು ಕೊನೆಯ ದಿನ':'Last Day Today'):dl+(njGetLang()==='kn'?' ದಿನಗಳು ಉಳಿದಿವೆ':' days left')}</div>`;
+  return `<div class="hero-badge hb-open">✓ ${njGetLang()==='kn'?'ತೆರೆದಿದೆ – ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Open – Apply Now'}</div>`;
 }
 
 function renderJob(j){
@@ -464,8 +464,7 @@ function renderJob(j){
       ${heroLogoHtml}
       <div class="hero-content">
         ${badgeForJob(j,dl)}
-        <h1>${j.title_en||''}</h1>
-        ${j.title_kn?`<div class="hero-h1-kn">${j.title_kn}</div>`:''}
+        <h1>${njField(j.title_en,j.title_kn)||''}</h1>
         <div class="hero-dept">${j.dept||''}</div>
         ${j.dept_kn?`<div class="hero-dept-kn">${j.dept_kn}</div>`:''}
       </div>
@@ -474,22 +473,22 @@ function renderJob(j){
     <div class="main-grid">
       <div>
         <div class="card">
-          <div class="card-title">Job Overview</div>
+          <div class="card-title">${njGetLang()==="kn"?"ಉದ್ಯೋಗ ಅವಲೋಕನ":"Job Overview"}</div>
           <table class="info-table">
             <tr><td>${njGetLang()==='kn'?'ಸಂಸ್ಥೆ':'Organization'}</td><td>${njField(j.dept,j.dept_kn)||'—'}</td></tr>
-            <tr><td>Post Name</td><td>${j.title_en||'—'}</td></tr>
+            <tr><td>${njGetLang()==='kn'?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name'}</td><td>${njField(j.title_en,j.title_kn)||'—'}</td></tr>
             <tr><td>${njGetLang()==='kn'?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies'}</td><td><strong>${njField(j.seats||'0',j.seats_kn)}</strong></td></tr>
             ${j.salary?`<tr><td>${njGetLang()==='kn'?'ವೇತನ':'Pay Scale / Salary'}</td><td>${njField(j.salary,j.salary_kn)}</td></tr>`:''}
             ${j.age?`<tr><td>${njGetLang()==='kn'?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit'}</td><td>${njField(j.age,j.age_kn)}</td></tr>`:''}
             ${j.skills?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತೆ':'Qualification'}</td><td>${njField(j.skills,j.skills_kn)}</td></tr>`:''}
-            ${j.tags?`<tr><td>Eligibility Tags</td><td>${j.tags.split(',').map(t=>`<span style="display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;margin:2px 4px 2px 0;">🎓 ${t.trim()}</span>`).join('')}</td></tr>`:''}
-            <tr><td>Location</td><td>${j.loc||'Karnataka'}</td></tr>
-            ${j.fee?`<tr><td>Application Fee</td><td><strong>${j.fee}</strong></td></tr>`:''}
-            ${j.notif?`<tr><td>Notification No.</td><td>${j.notif}</td></tr>`:''}
-            ${j.start_status==='started'?`<tr><td>Apply From</td><td><strong style="color:#4ade80;">✅ Already Started</strong></td></tr>`:(j.start_date?`<tr><td>Apply From</td><td><strong style="color:#4ade80;">📅 ${fmtDate(j.start_date)}</strong></td></tr>`:'')}
-            ${j.last_date?`<tr><td>Last Date</td><td><strong style="color:${isExpiring?'#ff5757':'#c4b5fd'};">📅 ${fmtDate(j.last_date)}</strong></td></tr>`:''}
-            ${j.official_url?`<tr><td>Official Website</td><td><a href="${j.official_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">🌐 Visit Official Website ↗</a></td></tr>`:''}
-            ${j.apply_link?`<tr><td>Apply Link</td><td><a href="${j.apply_link}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#1a1a2e !important;text-decoration:none;">📋 Apply Now ↗</a></td></tr>`:''}
+            ${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags)?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags'}</td><td>${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags).split(',').map(t=>`<span style="display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;margin:2px 4px 2px 0;">🎓 ${t.trim()}</span>`).join('')}</td></tr>`:''}
+            <tr><td>${njGetLang()==='kn'?'ಸ್ಥಳ':'Location'}</td><td>${njField(j.loc,j.loc_kn)||(njGetLang()==='kn'?'ಕರ್ನಾಟಕ':'Karnataka')}</td></tr>
+            ${j.fee?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee'}</td><td><strong>${njField(j.fee,j.fee_kn)}</strong></td></tr>`:''}
+            ${j.notif?`<tr><td>${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.'}</td><td>${j.notif}</td></tr>`:''}
+            ${j.start_status==='started'?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><strong style="color:#4ade80;">✅ ${njGetLang()==='kn'?'ಈಗಾಗಲೇ ಪ್ರಾರಂಭವಾಗಿದೆ':'Already Started'}</strong></td></tr>`:(j.start_date?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><strong style="color:#4ade80;">📅 ${fmtDate(j.start_date)}</strong></td></tr>`:'')}
+            ${j.last_date?`<tr><td>${njGetLang()==='kn'?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date'}</td><td><strong style="color:${isExpiring?'#ff5757':'#c4b5fd'};">📅 ${fmtDate(j.last_date)}</strong></td></tr>`:''}
+            ${j.official_url?`<tr><td>${njGetLang()==='kn'?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್':'Official Website'}</td><td><a href="${j.official_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">🌐 ${njGetLang()==='kn'?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಭೇಟಿ ನೀಡಿ':'Visit Official Website'} ↗</a></td></tr>`:''}
+            ${j.apply_link?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಲಿಂಕ್':'Apply Link'}</td><td><a href="${j.apply_link}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#1a1a2e !important;text-decoration:none;">📋 ${njGetLang()==='kn'?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now'} ↗</a></td></tr>`:''}
           </table>
         </div>
 
@@ -518,18 +517,18 @@ function renderJob(j){
 
         ${j.description?`
         <div class="card">
-          <div class="card-title">About this Job</div>
+          <div class="card-title">${njGetLang()==="kn"?"ಈ ಉದ್ಯೋಗದ ಬಗ್ಗೆ":"About this Job"}</div>
           <div style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${njField(j.description,j.description_kn)}</div>
         </div>`:''}
 
         ${j.cats?`
         <div class="card">
-          <div class="card-title">Category-wise Vacancies</div>
+          <div class="card-title">${njGetLang()==="kn"?"ವರ್ಗವಾರು ಹುದ್ದೆಗಳು":"Category-wise Vacancies"}</div>
           <table class="cat-tbl">
-            <thead><tr><th>Category</th><th>Vacancies</th></tr></thead>
+            <thead><tr><th>${njGetLang()==='kn'?'ವರ್ಗ':'Category'}</th><th>${njGetLang()==='kn'?'ಹುದ್ದೆಗಳು':'Vacancies'}</th></tr></thead>
             <tbody>
               ${j.cats.split(',').map(c=>{const p=c.trim().split('-');return `<tr><td>${p[0]||''}</td><td><strong>${p[1]||''}</strong></td></tr>`;}).join('')}
-              <tr><td><strong>Total</strong></td><td><strong>${j.seats||0}</strong></td></tr>
+              <tr><td><strong>${njGetLang()==='kn'?'ಒಟ್ಟು':'Total'}</strong></td><td><strong>${njField(j.seats||'0',j.seats_kn)}</strong></td></tr>
             </tbody>
           </table>
         </div>`:''}
@@ -559,7 +558,7 @@ function renderJob(j){
 
         ${j.syllabus?`
         <div class="card">
-          <div class="card-title">Exam Syllabus</div>
+          <div class="card-title">${njGetLang()==="kn"?"ಪರೀಕ್ಷಾ ಪಠ್ಯಕ್ರಮ":"Exam Syllabus"}</div>
           <div style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${j.syllabus}</div>
           ${j.syllabus_url?`<div style="margin-top:12px;"><a href="${j.syllabus_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:13px;padding:10px 20px;">📄 Download Syllabus PDF ↗</a></div>`:''}
         </div>`:''}
@@ -579,12 +578,12 @@ function renderJob(j){
           <p>Click below to go to the official application portal</p>
           <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
             ${j.official_url?`<a href="${j.official_url}" target="_blank" class="btn-apply-main">🌐 Visit Official Website ↗</a>`:''}
-            ${j.apply_link?`<a href="${j.apply_link}" target="_blank" class="btn-apply-main" style="background:linear-gradient(135deg,#4ade80,#22c55e);color:#1a1a2e !important;">📋 Apply Now ↗</a>`:''}
+            ${j.apply_link?`<a href="${j.apply_link}" target="_blank" class="btn-apply-main" style="background:linear-gradient(135deg,#4ade80,#22c55e);color:#1a1a2e !important;">📋 ${njGetLang()==='kn'?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now'} ↗</a>`:''}
           </div>
         </div>`:''}
 
         <div class="card">
-          <div class="card-title">Share this Job</div>
+          <div class="card-title">${njGetLang()==="kn"?"ಈ ಉದ್ಯೋಗವನ್ನು ಹಂಚಿಕೊಳ್ಳಿ":"Share this Job"}</div>
           <div class="share-row">
             <button class="share-btn sb-wa" onclick="shareWA()">📱 WhatsApp</button>
             <button class="share-btn sb-tg" onclick="shareTG()">✈️ Telegram</button>
@@ -610,12 +609,12 @@ function renderSidebar(currentJob,jobs){
 
   let html='';
   if(latest.length){
-    html+=`<div class="card"><div class="card-title">Latest Jobs</div>`;
+    html+=`<div class="card"><div class="card-title">${njGetLang()==="kn"?"ಇತ್ತೀಚಿನ ಉದ್ಯೋಗಗಳು":"Latest Jobs"}</div>`;
     html+=latest.map((j,i)=>`
       <div class="sb-list-item" onclick="window.location.href='job.html?job=${j.id}'">
         <div class="sl-num">${i+1}</div>
         <div>
-          <div class="sl-title">${j.title_en||''}</div>
+          <div class="sl-title">${njField(j.title_en,j.title_kn)||''}</div>
           <div class="sl-meta">${j.dept||''} · ${j.seats||0} Posts</div>
         </div>
       </div>
@@ -624,13 +623,13 @@ function renderSidebar(currentJob,jobs){
   }
 
   if(ddls.length){
-    html+=`<div class="card"><div class="card-title">Last Date Approaching</div>`;
+    html+=`<div class="card"><div class="card-title">${njGetLang()==="kn"?"ಅಂತಿಮ ದಿನಾಂಕ ಸಮೀಪಿಸುತ್ತಿದೆ":"Last Date Approaching"}</div>`;
     html+=ddls.map(j=>{
       const d=new Date(j.last_date);
       return `<div class="dd-item" onclick="window.location.href='job.html?job=${j.id}'">
         <div class="dd-box"><div class="dd-day">${d.getDate()}</div><div class="dd-mo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div>
         <div>
-          <div class="sl-title">${j.title_en||''}</div>
+          <div class="sl-title">${njField(j.title_en,j.title_kn)||''}</div>
           <div class="sl-meta">${j.dept||''} · ${j.seats||0} Posts</div>
         </div>
       </div>`;

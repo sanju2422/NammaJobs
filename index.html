@@ -720,10 +720,10 @@ function fmtDate(d){
 }
 
 function statusBadge(s,dl){
-  if(s==='soon')return`<span class="status-badge sb-soon">◐ Coming Soon</span>`;
-  if(s==='closed')return`<span class="status-badge sb-closed">○ Closed</span>`;
-  if(dl!==null&&dl>=0&&dl<=5)return`<span class="status-badge sb-expiring">⚡ ${dl===0?'Last Day Today':dl+' days left'}</span>`;
-  return`<span class="status-badge sb-open">✓ Open – Apply Now</span>`;
+  if(s==='soon')return`<span class="status-badge sb-soon">◐ ${njGetLang()==='kn'?'ಶೀಘ್ರದಲ್ಲೇ':'Coming Soon'}</span>`;
+  if(s==='closed')return`<span class="status-badge sb-closed">○ ${njGetLang()==='kn'?'ಮುಚ್ಚಲಾಗಿದೆ':'Closed'}</span>`;
+  if(dl!==null&&dl>=0&&dl<=5)return`<span class="status-badge sb-expiring">⚡ ${dl===0?(njGetLang()==='kn'?'ಇಂದು ಕೊನೆಯ ದಿನ':'Last Day Today'):dl+(njGetLang()==='kn'?' ದಿನಗಳು ಉಳಿದಿವೆ':' days left')}</span>`;
+  return`<span class="status-badge sb-open">✓ ${njGetLang()==='kn'?'ತೆರೆದಿದೆ – ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Open – Apply Now'}</span>`;
 }
 
 function getJobUrl(id){return`job.html?job=${id}`;}
@@ -757,8 +757,7 @@ function notifCard(item, type){
     <div class="ji" style="background:linear-gradient(135deg,${color},rgba(0,0,0,0.05));border-bottom-color:${borderColor};">
       <div class="dlogo"><span class="dlogo-emoji">${icon}</span></div>
       <div class="iw">
-        <div class="dn">${item.dept||'Notification'}</div>
-        ${item.dept_kn?`<div class="dn-kn">${item.dept_kn}</div>`:''}
+        <div class="dn">${njField(item.dept,item.dept_kn)||(njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ':'Notification')}</div>
       </div>
     </div>
     <div class="jb">
@@ -838,15 +837,15 @@ function jCard(j){
   const url=getJobUrl(j.id);
 
   let actionBtn;
-  if(isOpen){actionBtn=`<a class="btn-card bc-details" href="${getJobUrl(j.id)}" onclick="event.stopPropagation();" style="text-decoration:none;">Job Details →</a>`;}
-  else if(j.status==='soon'){actionBtn=`<button class="btn-card bc-soon">Coming Soon</button>`;}
-  else{actionBtn=`<button class="btn-card bc-closed">Closed</button>`;}
+  if(isOpen){actionBtn=`<a class="btn-card bc-details" href="${getJobUrl(j.id)}" onclick="event.stopPropagation();" style="text-decoration:none;">${njGetLang()==='kn'?'ಉದ್ಯೋಗ ವಿವರಗಳು →':'Job Details →'}</a>`;}
+  else if(j.status==='soon'){actionBtn=`<button class="btn-card bc-soon">${njGetLang()==='kn'?'ಶೀಘ್ರದಲ್ಲೇ':'Coming Soon'}</button>`;}
+  else{actionBtn=`<button class="btn-card bc-closed">${njGetLang()==='kn'?'ಮುಚ್ಚಲಾಗಿದೆ':'Closed'}</button>`;}
 
   // startBadge: Open jobs me start date ya already started dikhao
   let startBadge='';
   if(j.status==='open'||j.status===''){
     if(j.start_status==='started'){
-      startBadge=`<span class="pl pl-posts">✅ Already Started</span>`;
+      startBadge=`<span class="pl pl-posts">✅ ${njGetLang()==='kn'?'ಈಗಾಗಲೇ ಪ್ರಾರಂಭವಾಗಿದೆ':'Already Started'}</span>`;
     } else if(j.start_date){
       startBadge=`<span class="pl pl-tba">🗓️ Start: ${fmtDate(j.start_date)}</span>`;
     }
@@ -869,10 +868,9 @@ function jCard(j){
     </div>
     <div class="jb">
       <div class="jcat-row">${status}<span class="jcat">• ${(j.cat||'').toUpperCase()}</span></div>
-      <div class="jt">${j.title_en||''}</div>
-      ${j.title_kn?`<div class="jt-kn">${j.title_kn}</div>`:''}
+      <div class="jt">${njField(j.title_en,j.title_kn)||''}</div>
       <div class="jm">
-        <span class="pl pl-posts">👥 ${j.seats?j.seats+' Posts':'Posts TBA'}</span>
+        <span class="pl pl-posts">👥 ${j.seats?njField(j.seats,j.seats_kn)+(njGetLang()==='kn'?' ಹುದ್ದೆಗಳು':' Posts'):(njGetLang()==='kn'?'ಹುದ್ದೆಗಳು ಪ್ರಕಟಿಸಲಾಗುವುದು':'Posts TBA')}</span>
         ${j.loc?`<span class="pl pl-loc">📍 ${njField(j.loc,j.loc_kn)}</span>`:''}
         ${j.salary?`<span class="pl pl-salary">💰 ${njGetLang()==='kn'?'ವೇತನ':'Salary'}: ${njField(j.salary,j.salary_kn)}</span>`:''}
         ${startBadge}
@@ -909,9 +907,8 @@ function jListCard(j){
   return`<div class="jlc" onclick="window.location.href='${url}'">
     ${lico}
     <div class="jlb">
-      <div class="jlt">${j.title_en||''}</div>
-      ${j.title_kn?`<div class="jlt-kn">${j.title_kn}</div>`:''}
-      <div class="jld">${j.dept||''} · ${j.seats||0} Posts${j.last_date?' · '+fmtDate(j.last_date):''}</div>
+      <div class="jlt">${njField(j.title_en,j.title_kn)||''}</div>
+      <div class="jld">${njField(j.dept,j.dept_kn)||''} · ${njField(j.seats||'0',j.seats_kn)}${njGetLang()==='kn'?' ಹುದ್ದೆಗಳು':' Posts'}${j.last_date?' · '+fmtDate(j.last_date):''}</div>
     </div>
   </div>`;
 }
@@ -1016,7 +1013,7 @@ function renderAll(){
   document.getElementById('sb-top').innerHTML=topVacs.map((j,i)=>`
     <div class="sj" onclick="window.location.href='${getJobUrl(j.id)}'">
       <div class="sjn">${i+1}</div>
-      <div><div class="sjt">${j.title_en||''}</div><div class="sjm">${j.dept||''}${j.seats?' · '+j.seats+' Posts':''}</div></div>
+      <div><div class="sjt">${njField(j.title_en,j.title_kn)||''}</div><div class="sjm">${njField(j.dept,j.dept_kn)||''}${j.seats?' · '+njField(j.seats,j.seats_kn)+(njGetLang()==='kn'?' ಹುದ್ದೆಗಳು':' Posts'):''}</div></div>
     </div>
   `).join('');
 
@@ -1029,7 +1026,7 @@ function renderAll(){
     return`<div class="di" onclick="window.location.href='${getJobUrl(j.id)}'">
       <div class="dd"><div class="ddy">${d.getDate()}</div><div class="dmo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div>
       <div style="flex:1;min-width:0;">
-        <div class="dtt">${j.title_en||''}</div>
+        <div class="dtt">${njField(j.title_en,j.title_kn)||''}</div>
         <div class="dde">${j.dept||''}</div>
         <div style="font-size:10px;font-weight:800;color:${dl<=1?'#ff4444':dl<=3?'#ff8c00':'#f59e0b'};margin-top:3px;">${urgencyBadge}</div>
         <div style="display:flex;gap:5px;margin-top:6px;">
@@ -1050,7 +1047,7 @@ function renderAll(){
       <div class="sj" onclick="window.location.href='${getJobUrl(j.id)}'">
         <div class="sjn" style="background:rgba(150,150,150,0.4);">○</div>
         <div>
-          <div class="sjt">${j.title_en||''}</div>
+          <div class="sjt">${njField(j.title_en,j.title_kn)||''}</div>
           <div class="sjm">${j.dept||''} · Closed: ${fmtDate(j.last_date)}</div>
         </div>
       </div>
