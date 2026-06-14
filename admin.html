@@ -301,8 +301,10 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
           <div><label>Location (ಕನ್ನಡ)</label><input type="text" id="f-loc-kn" placeholder="ಬೆಂಗಳೂರು, ಅಖಿಲ ಭಾರತ" style="font-family:var(--fkn);"></div>
         </div>
 
-        <label>Total Vacancies</label>
-        <input type="text" id="f-seats" placeholder="120 (Karnataka 26, Central 94)">
+        <div class="row2">
+          <div><label>Total Vacancies (English)</label><input type="text" id="f-seats" placeholder="120 (Karnataka 26, Central 94)"></div>
+          <div><label>Total Vacancies (ಕನ್ನಡ)</label><input type="text" id="f-seats-kn" placeholder="೧೨೦ (ಕರ್ನಾಟಕ ೨೬, ಕೇಂದ್ರ ೯೪)" style="font-family:var(--fkn);"></div>
+        </div>
         <label class="tba-row">
           <input type="checkbox" id="f-seats-tba" onchange="toggleSeatsTBA(this.checked)">
           <span class="tba-label">⚠️ Vacancies not yet confirmed (To Be Announced)</span>
@@ -316,8 +318,10 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         </label>
         <input type="text" id="f-sal-kn" placeholder="₹35,400-1,12,400 (ಕನ್ನಡದಲ್ಲಿ — optional)" style="margin-top:6px;font-family:var(--fkn);" title="Salary in Kannada">
 
-        <label>Age Limit</label>
-        <input type="text" id="f-age" placeholder="18-35 years">
+        <div class="row2">
+          <div><label>Age Limit (English)</label><input type="text" id="f-age" placeholder="18-35 years"></div>
+          <div><label>Age Limit (ಕನ್ನಡ)</label><input type="text" id="f-age-kn" placeholder="೧೮-೩೫ ವರ್ಷಗಳು" style="font-family:var(--fkn);"></div>
+        </div>
 
         <!-- START DATE with TBA -->
         <label>Start Date (Apply From)</label>
@@ -645,9 +649,11 @@ async function saveJob(){
     loc:document.getElementById('f-loc').value.trim()||null,
     loc_kn:document.getElementById('f-loc-kn')?document.getElementById('f-loc-kn').value.trim()||null:null,
     seats:document.getElementById('f-seats-tba').checked?null:(document.getElementById('f-seats').value.trim()||null),
+    seats_kn:document.getElementById('f-seats-kn')?document.getElementById('f-seats-kn').value.trim()||null:null,
     salary:document.getElementById('f-sal-tba').checked?'To Be Announced':(document.getElementById('f-sal').value.trim()||null),
     salary_kn:document.getElementById('f-sal-kn').value.trim()||null,
     age:document.getElementById('f-age').value.trim()||null,
+    age_kn:document.getElementById('f-age-kn')?document.getElementById('f-age-kn').value.trim()||null:null,
     last_date:document.getElementById('f-ld-tba').checked?null:(document.getElementById('f-ld').value||null),
     start_date:document.getElementById('f-sd-tba').checked?null:(document.getElementById('f-sd-started').checked?new Date().toISOString().slice(0,10):(document.getElementById('f-sd').value||null)),
     start_status:document.getElementById('f-sd-started').checked?'started':(document.getElementById('f-sd-tba').checked?'tba':null),
@@ -711,9 +717,11 @@ function editJob(id){
   document.getElementById('f-loc').value=j.loc||'';
   if(document.getElementById('f-loc-kn'))document.getElementById('f-loc-kn').value=j.loc_kn||'';
   document.getElementById('f-seats').value=j.seats||'';
+  if(document.getElementById('f-seats-kn'))document.getElementById('f-seats-kn').value=j.seats_kn||'';
   document.getElementById('f-sal').value=j.salary===('To Be Announced')?'':j.salary||'';
   document.getElementById('f-sal-kn').value=j.salary_kn||'';
   document.getElementById('f-age').value=j.age||'';
+  if(document.getElementById('f-age-kn'))document.getElementById('f-age-kn').value=j.age_kn||'';
   document.getElementById('f-ld').value=j.last_date||'';
   document.getElementById('f-sd').value=j.start_date||'';
   document.getElementById('f-fee').value=j.fee||'';
@@ -782,7 +790,7 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-ld-tba','f-sd-tba','f-sd-started','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleStarted(false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
   selCat='karnataka';selStat='open';

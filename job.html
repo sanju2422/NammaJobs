@@ -478,9 +478,9 @@ function renderJob(j){
           <table class="info-table">
             <tr><td>${njGetLang()==='kn'?'ಸಂಸ್ಥೆ':'Organization'}</td><td>${njField(j.dept,j.dept_kn)||'—'}</td></tr>
             <tr><td>Post Name</td><td>${j.title_en||'—'}</td></tr>
-            <tr><td>Total Vacancies</td><td><strong>${j.seats||0}</strong></td></tr>
+            <tr><td>${njGetLang()==='kn'?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies'}</td><td><strong>${njField(j.seats||'0',j.seats_kn)}</strong></td></tr>
             ${j.salary?`<tr><td>${njGetLang()==='kn'?'ವೇತನ':'Pay Scale / Salary'}</td><td>${njField(j.salary,j.salary_kn)}</td></tr>`:''}
-            ${j.age?`<tr><td>Age Limit</td><td>${j.age}</td></tr>`:''}
+            ${j.age?`<tr><td>${njGetLang()==='kn'?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit'}</td><td>${njField(j.age,j.age_kn)}</td></tr>`:''}
             ${j.skills?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತೆ':'Qualification'}</td><td>${njField(j.skills,j.skills_kn)}</td></tr>`:''}
             ${j.tags?`<tr><td>Eligibility Tags</td><td>${j.tags.split(',').map(t=>`<span style="display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;margin:2px 4px 2px 0;">🎓 ${t.trim()}</span>`).join('')}</td></tr>`:''}
             <tr><td>Location</td><td>${j.loc||'Karnataka'}</td></tr>
