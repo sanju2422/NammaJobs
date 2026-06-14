@@ -862,8 +862,7 @@ function jCard(j){
     <div class="ji">
       ${deptLogoBlock(j)}
       <div class="iw">
-        <div class="dn">${j.dept||''}</div>
-        ${j.dept_kn?`<div class="dn-kn">${j.dept_kn}</div>`:''}
+        <div class="dn">${njField(j.dept,j.dept_kn)||''}</div>
       </div>
     </div>
     <div class="jb">
@@ -916,8 +915,8 @@ function jListCard(j){
 // Called by lang.js when language changes — re-renders all dynamic content
 function njRerender(){
   if(typeof renderCats==='function') renderCats();
-  if(typeof renderJobs==='function') renderJobs();
-  if(typeof renderSidebar==='function') renderSidebar();
+  if(typeof renderAll==='function') renderAll();
+  if(typeof renderNotifs==='function') renderNotifs();
 }
 function renderCats(){
   const counts={};

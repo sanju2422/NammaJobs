@@ -338,7 +338,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
         <button class="lang-toggle-btn lang-active" id="lang-btn-en" onclick="njToggleLang('en')">EN</button>
         <button class="lang-toggle-btn" id="lang-btn-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
       </div>
-      <button class="tbtn primary" id="top-apply" onclick="scrollToApply()">${njGetLang()==='kn'?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now'} ↗</button>
+      <button class="tbtn primary" id="top-apply" onclick="scrollToApply()">Apply Now ↗</button>
     </div>
   </div>
 </header>
@@ -431,7 +431,7 @@ function copyLink(){
   navigator.clipboard.writeText(window.location.href).then(()=>{
     const btn=document.getElementById('copy-btn');
     const orig=btn.innerHTML;
-    btn.innerHTML='✓ Copied!';
+    btn.innerHTML=njGetLang()==='kn'?'✓ ಕಾಪಿ ಆಗಿದೆ!':'✓ Copied!';
     setTimeout(()=>{btn.innerHTML=orig;},2000);
   });
 }
@@ -465,8 +465,7 @@ function renderJob(j){
       <div class="hero-content">
         ${badgeForJob(j,dl)}
         <h1>${njField(j.title_en,j.title_kn)||''}</h1>
-        <div class="hero-dept">${j.dept||''}</div>
-        ${j.dept_kn?`<div class="hero-dept-kn">${j.dept_kn}</div>`:''}
+        <div class="hero-dept">${njField(j.dept,j.dept_kn)||''}</div>
       </div>
     </div>
 
@@ -574,10 +573,10 @@ function renderJob(j){
 
         ${isOpen&&(j.official_url||j.apply_link)?`
         <div class="apply-box">
-          <h2>Ready to Apply?</h2>
-          <p>Click below to go to the official application portal</p>
+          <h2>${njGetLang()==='kn'?'ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಸಿದ್ಧರಿದ್ದೀರಾ?':'Ready to Apply?'}</h2>
+          <p>${njGetLang()==='kn'?'ಅಧಿಕೃತ ಅರ್ಜಿ ಪೋರ್ಟಲ್‌ಗೆ ಹೋಗಲು ಕೆಳಗೆ ಕ್ಲಿಕ್ ಮಾಡಿ':'Click below to go to the official application portal'}</p>
           <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-            ${j.official_url?`<a href="${j.official_url}" target="_blank" class="btn-apply-main">🌐 Visit Official Website ↗</a>`:''}
+            ${j.official_url?`<a href="${j.official_url}" target="_blank" class="btn-apply-main">🌐 ${njGetLang()==='kn'?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಭೇಟಿ ನೀಡಿ':'Visit Official Website'} ↗</a>`:''}
             ${j.apply_link?`<a href="${j.apply_link}" target="_blank" class="btn-apply-main" style="background:linear-gradient(135deg,#4ade80,#22c55e);color:#1a1a2e !important;">📋 ${njGetLang()==='kn'?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now'} ↗</a>`:''}
           </div>
         </div>`:''}
@@ -587,7 +586,7 @@ function renderJob(j){
           <div class="share-row">
             <button class="share-btn sb-wa" onclick="shareWA()">📱 WhatsApp</button>
             <button class="share-btn sb-tg" onclick="shareTG()">✈️ Telegram</button>
-            <button class="share-btn sb-cp" id="copy-btn" onclick="copyLink()">🔗 Copy Link</button>
+            <button class="share-btn sb-cp" id="copy-btn" onclick="copyLink()">🔗 ${njGetLang()==='kn'?'ಲಿಂಕ್ ಕಾಪಿ ಮಾಡಿ':'Copy Link'}</button>
           </div>
         </div>
       </div>
@@ -615,7 +614,7 @@ function renderSidebar(currentJob,jobs){
         <div class="sl-num">${i+1}</div>
         <div>
           <div class="sl-title">${njField(j.title_en,j.title_kn)||''}</div>
-          <div class="sl-meta">${j.dept||''} · ${j.seats||0} Posts</div>
+          <div class="sl-meta">${njField(j.dept,j.dept_kn)||''} · ${njField(j.seats||'0',j.seats_kn)}${njGetLang()==='kn'?' ಹುದ್ದೆಗಳು':' Posts'}</div>
         </div>
       </div>
     `).join('');
@@ -630,7 +629,7 @@ function renderSidebar(currentJob,jobs){
         <div class="dd-box"><div class="dd-day">${d.getDate()}</div><div class="dd-mo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div>
         <div>
           <div class="sl-title">${njField(j.title_en,j.title_kn)||''}</div>
-          <div class="sl-meta">${j.dept||''} · ${j.seats||0} Posts</div>
+          <div class="sl-meta">${njField(j.dept,j.dept_kn)||''} · ${njField(j.seats||'0',j.seats_kn)}${njGetLang()==='kn'?' ಹುದ್ದೆಗಳು':' Posts'}</div>
         </div>
       </div>`;
     }).join('');
@@ -661,6 +660,7 @@ async function load(){
       .catch(()=>{});
 
     window._njJob = job; renderJob(job);
+    updateStaticLangElements();
   }catch(e){
     document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Could not load. Please check connection.</div>';
   }
@@ -670,6 +670,13 @@ load();
 // Called by lang.js when user switches language
 function njRerender(){
   if(window._njJob) renderJob(window._njJob);
+  updateStaticLangElements();
+}
+
+// Update header elements that exist outside template literals
+function updateStaticLangElements(){
+  const topApply=document.getElementById('top-apply');
+  if(topApply) topApply.textContent=(njGetLang()==='kn'?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now')+' ↗';
 }
 
 </script>
