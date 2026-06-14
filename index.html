@@ -206,7 +206,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       </div>
     </div>
     <div class="hs">
-      <input type="text" id="srch" placeholder="Search jobs / ಉದ್ಯೋಗ ಹುಡುಕಿ..." oninput="onSearch()">
+      <input type="text" id="srch" placeholder="Search Jobs..." oninput="onSearch()">
     </div>
     <div class="hbtns">
       <a href="https://t.me/nammajobs_karnataka" target="_blank" class="tbtn" style="background:rgba(0,136,204,0.35);border-color:rgba(0,136,204,0.7);text-decoration:none;">✈️ Telegram</a>
@@ -917,6 +917,9 @@ function njRerender(){
   if(typeof renderCats==='function') renderCats();
   if(typeof renderAll==='function') renderAll();
   if(typeof renderNotifs==='function') renderNotifs();
+  // Update search placeholder
+  const srch=document.getElementById('srch');
+  if(srch) srch.placeholder=njGetLang()==='kn'?'ಉದ್ಯೋಗಗಳನ್ನು ಹುಡುಕಿ...':'Search Jobs...';
 }
 function renderCats(){
   const counts={};
@@ -931,6 +934,10 @@ function renderCats(){
 
   // Render tags filter (only standard eligibility tags)
   const STANDARD_TAGS = ['10th Pass', '12th Pass', 'Diploma', 'ITI', 'Graduate', 'Post Graduate', 'Engineering', 'MBA'];
+  const TAG_LABELS_KN = {
+    '10th Pass':'10ನೇ ತರಗತಿ', '12th Pass':'12ನೇ ತರಗತಿ', 'Diploma':'ಡಿಪ್ಲೊಮಾ', 'ITI':'ITI',
+    'Graduate':'ಪದವೀಧರ', 'Post Graduate':'ಸ್ನಾತಕೋತ್ತರ', 'Engineering':'ಇಂಜಿನಿಯರಿಂಗ್', 'MBA':'MBA'
+  };
   const allTags = new Set();
   allJobs.forEach(j=>{
     if(j.tags){
@@ -948,7 +955,7 @@ function renderCats(){
     const orderedTags = STANDARD_TAGS.filter(t => allTags.has(t));
     const tagsArr = ['all', ...orderedTags];
     document.getElementById('tags-grid').innerHTML=tagsArr.map(t=>`
-      <button class="tag-btn ${tagFilter===t?'on':''}" onclick="filtTag('${t.replace(/'/g,'')}')">${t==='all'?'🌟 All':'🎓 '+t}</button>
+      <button class="tag-btn ${tagFilter===t?'on':''}" onclick="filtTag('${t.replace(/'/g,'')}')">${t==='all'?(njGetLang()==='kn'?'🌟 ಎಲ್ಲಾ':'🌟 All'):'🎓 '+(njGetLang()==='kn'?(TAG_LABELS_KN[t]||t):t)}</button>
     `).join('');
   }
 }
@@ -1074,6 +1081,9 @@ async function init(){
     document.documentElement.setAttribute('data-theme','dark');
     document.getElementById('dmb').textContent='☀️';
   }
+  // Set search placeholder based on saved language
+  const srch=document.getElementById('srch');
+  if(srch) srch.placeholder=njGetLang()==='kn'?'ಉದ್ಯೋಗಗಳನ್ನು ಹುಡುಕಿ...':'Search Jobs...';
   try{
     allJobs=await fetchJobs();
     renderCats();
