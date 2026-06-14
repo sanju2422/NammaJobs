@@ -343,6 +343,12 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
           <span class="tba-label">⚠️ Last Date not yet confirmed (To Be Announced)</span>
         </label>
 
+        <!-- CUSTOM IMPORTANT DATES -->
+        <div class="fsec" style="margin-top:20px;">📅 Custom Important Dates (Optional)</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Add Walk-In Interview, Document Verification, Reporting Date, etc.</div>
+        <div id="custom-dates-list"></div>
+        <button type="button" onclick="addCustomDateRow()" style="background:var(--glass-bg);border:1.5px dashed var(--glass-border-strong);color:#c4b5fd;padding:10px 16px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px;width:100%;">➕ Add Custom Date</button>
+
         <!-- APPLICATION FEE with TBA -->
         <label style="margin-top:14px;">Application Fee</label>
         <input type="text" id="f-fee" placeholder="Gen: ₹500 | SC/ST: ₹250">
@@ -572,6 +578,49 @@ function toggleTBA(fieldId,checked){
     input.style.opacity='1';
   }
 }
+
+// ===== CUSTOM IMPORTANT DATES =====
+let customDateCounter=0;
+
+function addCustomDateRow(data){
+  data = data || {label_en:'',label_kn:'',date:''};
+  const id = 'cd-'+(customDateCounter++);
+  const wrap = document.createElement('div');
+  wrap.id = id;
+  wrap.style = 'background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;margin-bottom:8px;';
+  wrap.innerHTML = `
+    <div class="row2" style="margin-bottom:6px;">
+      <div><label style="font-size:11px;">Label (English)</label><input type="text" class="cd-label-en" placeholder="Walk-In Interview 1" value="${data.label_en||''}"></div>
+      <div><label style="font-size:11px;">Label (ಕನ್ನಡ)</label><input type="text" class="cd-label-kn" placeholder="ನೇರ ಸಂದರ್ಶನ 1" style="font-family:var(--fkn);" value="${data.label_kn||''}"></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:flex-end;">
+      <div style="flex:1;"><label style="font-size:11px;">Date</label><input type="date" class="cd-date" value="${data.date||''}"></div>
+      <button type="button" onclick="document.getElementById('${id}').remove()" style="background:rgba(239,68,68,0.2);border:1.5px solid rgba(239,68,68,0.4);color:#fca5a5;padding:9px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;height:38px;">🗑️</button>
+    </div>
+  `;
+  document.getElementById('custom-dates-list').appendChild(wrap);
+}
+
+function getCustomDates(){
+  const rows = document.querySelectorAll('#custom-dates-list > div');
+  const dates = [];
+  rows.forEach(row=>{
+    const label_en = row.querySelector('.cd-label-en').value.trim();
+    const label_kn = row.querySelector('.cd-label-kn').value.trim();
+    const date = row.querySelector('.cd-date').value;
+    if(label_en && date){
+      dates.push({label_en, label_kn, date});
+    }
+  });
+  return dates.length ? dates : null;
+}
+
+function loadCustomDates(customDates){
+  document.getElementById('custom-dates-list').innerHTML='';
+  if(customDates && Array.isArray(customDates)){
+    customDates.forEach(d=>addCustomDateRow(d));
+  }
+}
 function toggleFeeTBA(checked){
   const input=document.getElementById('f-fee');
   if(checked){
@@ -655,6 +704,7 @@ async function saveJob(){
     age:document.getElementById('f-age').value.trim()||null,
     age_kn:document.getElementById('f-age-kn')?document.getElementById('f-age-kn').value.trim()||null:null,
     last_date:document.getElementById('f-ld-tba').checked?null:(document.getElementById('f-ld').value||null),
+    custom_dates:getCustomDates(),
     start_date:document.getElementById('f-sd-tba').checked?null:(document.getElementById('f-sd-started').checked?new Date().toISOString().slice(0,10):(document.getElementById('f-sd').value||null)),
     start_status:document.getElementById('f-sd-started').checked?'started':(document.getElementById('f-sd-tba').checked?'tba':null),
     fee:document.getElementById('f-fee-tba').checked?'To Be Announced':(document.getElementById('f-fee').value.trim()||null),
@@ -723,6 +773,7 @@ function editJob(id){
   document.getElementById('f-age').value=j.age||'';
   if(document.getElementById('f-age-kn'))document.getElementById('f-age-kn').value=j.age_kn||'';
   document.getElementById('f-ld').value=j.last_date||'';
+  loadCustomDates(j.custom_dates);
   document.getElementById('f-sd').value=j.start_date||'';
   document.getElementById('f-fee').value=j.fee||'';
   if(document.getElementById('f-fee-kn'))document.getElementById('f-fee-kn').value=j.fee_kn||'';
@@ -749,6 +800,7 @@ function editJob(id){
 
   // Reset TBA checkboxes
   document.getElementById('f-ld-tba').checked=false;
+  document.getElementById('custom-dates-list').innerHTML='';
   document.getElementById('f-sd-tba').checked=(j.start_status==='tba');
   document.getElementById('f-sd-started').checked=(j.start_status==='started');
   document.getElementById('f-fee-tba').checked=(j.fee==='To Be Announced');

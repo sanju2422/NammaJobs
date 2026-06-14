@@ -877,6 +877,13 @@ function jCard(j){
         ${j.salary?`<span class="pl pl-salary">💰 ${njGetLang()==='kn'?'ವೇತನ':'Salary'}: ${njField(j.salary,j.salary_kn)}</span>`:''}
         ${startBadge}
         ${showDate}
+        ${(j.custom_dates&&Array.isArray(j.custom_dates)&&j.custom_dates.length)?(()=>{
+          const upcoming=j.custom_dates.filter(cd=>new Date(cd.date)>=new Date(new Date().toDateString())).sort((a,b)=>new Date(a.date)-new Date(b.date));
+          if(!upcoming.length) return '';
+          const cd=upcoming[0];
+          const label=njGetLang()==='kn'&&cd.label_kn?cd.label_kn:cd.label_en;
+          return `<span class="pl pl-tba">📅 ${label}: ${fmtDate(cd.date)}</span>`;
+        })():''}
       </div>
       
       <div class="jf">

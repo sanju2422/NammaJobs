@@ -493,20 +493,26 @@ function renderJob(j){
           </table>
         </div>
 
-        ${(j.last_date||j.start_date||j.start_status==='started')?`
+        ${(j.last_date||j.start_date||j.start_status==='started'||(j.custom_dates&&j.custom_dates.length))?`
         <div class="card">
-          <div class="card-title">Important Dates</div>
+          <div class="card-title">${njGetLang()==='kn'?'ಪ್ರಮುಖ ದಿನಾಂಕಗಳು':'Important Dates'}</div>
           <div class="dates-grid">
             ${j.start_status==='started'
-              ?`<div class="date-item start"><div class="date-label">Application Start</div><div class="date-val">✅ Already Started</div></div>`
+              ?`<div class="date-item start"><div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start'}</div><div class="date-val">✅ ${njGetLang()==='kn'?'ಈಗಾಗಲೇ ಪ್ರಾರಂಭವಾಗಿದೆ':'Already Started'}</div></div>`
               :(j.start_date
-              ?`<div class="date-item start"><div class="date-label">Application Start</div><div class="date-val">📅 ${fmtDate(j.start_date)}</div></div>`
-              :`<div class="date-item"><div class="date-label">Application Start</div><div class="date-val">${j.status==='soon'?'TBA':'Available Now'}</div></div>`)}
+              ?`<div class="date-item start"><div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start'}</div><div class="date-val">📅 ${fmtDate(j.start_date)}</div></div>`
+              :`<div class="date-item"><div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start'}</div><div class="date-val">${j.status==='soon'?'TBA':(njGetLang()==='kn'?'ಈಗಲೇ ಲಭ್ಯ':'Available Now')}</div></div>`)}
             <div class="date-item ${isExpiring?'highlight':''}">
-              <div class="date-label">Last Date to Apply</div>
+              <div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಅಂತಿಮ ದಿನಾಂಕ':'Last Date to Apply'}</div>
               <div class="date-val">${j.last_date?'📅 '+fmtDate(j.last_date):'<span style="color:rgba(255,255,255,0.7);">TBA</span>'}</div>
             </div>
-            ${dl!==null?`<div class="date-item ${isExpiring?'highlight':''}"><div class="date-label">Days Remaining</div><div class="date-val">${dl>=0?dl+' Days Left':'Expired'}</div></div>`:''}
+            ${dl!==null?`<div class="date-item ${isExpiring?'highlight':''}"><div class="date-label">${njGetLang()==='kn'?'ಬಾಕಿ ಇರುವ ದಿನಗಳು':'Days Remaining'}</div><div class="date-val">${dl>=0?dl+(njGetLang()==='kn'?' ದಿನಗಳು ಬಾಕಿ':' Days Left'):(njGetLang()==='kn'?'ಮುಕ್ತಾಯಗೊಂಡಿದೆ':'Expired')}</div></div>`:''}
+            ${(j.custom_dates&&Array.isArray(j.custom_dates))?j.custom_dates.map(cd=>`
+              <div class="date-item">
+                <div class="date-label">${njGetLang()==='kn'&&cd.label_kn?cd.label_kn:cd.label_en}</div>
+                <div class="date-val">📅 ${fmtDate(cd.date)}</div>
+              </div>
+            `).join(''):''}
           </div>
         </div>`:''}
 
