@@ -628,7 +628,7 @@ function toggleFeeTBA(checked){
     input.disabled=true;
     input.style.opacity='0.6';
   }else{
-    input.value='';
+    if(input.value==='To Be Announced')input.value='';
     input.disabled=false;
     input.style.opacity='1';
   }
@@ -651,7 +651,7 @@ function toggleSalTBA(checked){
     input.disabled=true;
     input.style.opacity='0.6';
   }else{
-    input.value='';
+    if(input.value==='To Be Announced')input.value='';
     input.disabled=false;
     input.style.opacity='1';
   }
