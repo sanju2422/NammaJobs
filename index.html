@@ -870,7 +870,7 @@ function jCard(j){
       <div class="jt">${njField(j.title_en,j.title_kn)||''}</div>
       <div class="jm">
         <span class="pl pl-posts">👥 ${j.seats?njField(j.seats,j.seats_kn)+(njGetLang()==='kn'?' ಹುದ್ದೆಗಳು':' Posts'):(njGetLang()==='kn'?'ಹುದ್ದೆಗಳು ಪ್ರಕಟಿಸಲಾಗುವುದು':'Posts TBA')}</span>
-        ${j.loc?`<span class="pl pl-loc">📍 ${njGetLang()==='kn'?'ಸ್ಥಳ':'Location'}: ${njField(j.loc,j.loc_kn)}</span>`:''}
+        ${j.loc?`<span class="pl pl-loc">${njGetLang()==='kn'?'ಸ್ಥಳ':'Location'}: ${njField(j.loc,j.loc_kn)}</span>`:''}
         ${j.salary?`<span class="pl pl-salary">💰 ${njGetLang()==='kn'?'ವೇತನ':'Salary'}: ${njField(j.salary,j.salary_kn)}</span>`:''}
         ${startBadge}
         ${showDate}
