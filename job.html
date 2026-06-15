@@ -193,10 +193,13 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 /* CATEGORY TABLE */
 .cat-tbl{width:100%;border-collapse:collapse;}
 .cat-tbl th{padding:10px;font-size:12px;color:rgba(255,255,255,0.85);font-weight:800;text-align:left;border-bottom:2px solid rgba(255,255,255,0.2);text-transform:uppercase;}
-.cat-tbl td{padding:10px;font-size:13px;color:#fff;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.1);}
+.cat-tbl td{padding:12px 10px;font-size:13px;color:#fff;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.1);}
+.cat-tbl tr:last-child td{border-top:2px solid rgba(255,255,255,0.2);border-bottom:none;}
 .cat-tbl strong{color:#c4b5fd;font-weight:800;}
-.fee-chip{display:block;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:6px 12px;font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;}
-.fee-chip:last-child{margin-bottom:0;}
+.fee-chip{display:block;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.14);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;}
+.fee-chip:last-child{margin-bottom:2px;}
+.info-table tr.fee-row td{border-bottom:none;}
+.info-table tr.fee-row + tr td{padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);}
 
 /* APPLY BOX */
 .apply-box{
@@ -484,8 +487,8 @@ function renderJob(j){
             ${j.skills?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತೆ':'Qualification'}</td><td>${njField(j.skills,j.skills_kn)}</td></tr>`:''}
             ${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags)?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags'}</td><td>${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags).split(',').map(t=>`<span style="display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;margin:2px 4px 2px 0;">🎓 ${t.trim()}</span>`).join('')}</td></tr>`:''}
             <tr><td>${njGetLang()==='kn'?'ಸ್ಥಳ':'Location'}</td><td>${njField(j.loc,j.loc_kn)||(njGetLang()==='kn'?'ಕರ್ನಾಟಕ':'Karnataka')}</td></tr>
-            ${j.fee?`<tr><td style="vertical-align:top;">${njGetLang()==='kn'?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee'}</td><td>${njField(j.fee,j.fee_kn).split('|').map(part=>`<div class="fee-chip">${part.trim()}</div>`).join('')}</td></tr>`:''}
-            ${j.notif?`<tr><td>${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.'}</td><td>${j.notif}</td></tr>`:''}
+            ${j.fee?`<tr class="fee-row"><td style="vertical-align:top;padding-top:16px;">${njGetLang()==='kn'?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee'}</td><td style="padding-top:16px;">${njField(j.fee,j.fee_kn).split('|').map(part=>`<div class="fee-chip">${part.trim()}</div>`).join('')}</td></tr>`:''}
+            ${j.notif?`<tr><td>${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.'}</td><td>${j.notif}${j.notif_url?` &nbsp; <a href="${j.notif_url}" target="_blank" style="color:#c4b5fd;font-weight:800;text-decoration:none;">📄 ${njGetLang()==='kn'?'PDF ನೋಡಿ':'View PDF'} ↗</a>`:''}</td></tr>`:''}
             ${j.start_status==='started'?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><strong style="color:#4ade80;">✅ ${njGetLang()==='kn'?'ಈಗಾಗಲೇ ಪ್ರಾರಂಭವಾಗಿದೆ':'Already Started'}</strong></td></tr>`:(j.start_date?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><strong style="color:#4ade80;">📅 ${fmtDate(j.start_date)}</strong></td></tr>`:'')}
             ${j.last_date?`<tr><td>${njGetLang()==='kn'?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date'}</td><td><strong style="color:${isExpiring?'#ff5757':'#c4b5fd'};">📅 ${fmtDate(j.last_date)}</strong></td></tr>`:''}
             ${j.official_url?`<tr><td>${njGetLang()==='kn'?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್':'Official Website'}</td><td><a href="${j.official_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">🌐 ${njGetLang()==='kn'?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಭೇಟಿ ನೀಡಿ':'Visit Official Website'} ↗</a></td></tr>`:''}
@@ -560,7 +563,7 @@ function renderJob(j){
         ${j.syllabus?`
         <div class="card">
           <div class="card-title">${njGetLang()==="kn"?"ಪರೀಕ್ಷಾ ಪಠ್ಯಕ್ರಮ":"Exam Syllabus"}</div>
-          <div style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${j.syllabus}</div>
+          <div style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${njField(j.syllabus,j.syllabus_kn)}</div>
           ${j.syllabus_url?`<div style="margin-top:12px;"><a href="${j.syllabus_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:13px;padding:10px 20px;">📄 Download Syllabus PDF ↗</a></div>`:''}
         </div>`:''}
 

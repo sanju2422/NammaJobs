@@ -395,9 +395,15 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         </div>
 
         <div class="fsec">📚 Syllabus (Optional)</div>
+        <label style="font-size:12px;color:rgba(255,255,255,0.6);">Syllabus (English)</label>
         <textarea id="f-syllabus" style="min-height:80px;" placeholder="Exam subjects:&#10;General Knowledge, Reasoning, Mathematics..."></textarea>
+        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">Syllabus (ಕನ್ನಡ)</label>
+        <textarea id="f-syllabus-kn" style="min-height:80px;font-family:var(--fkn);" placeholder="ಪರೀಕ್ಷಾ ವಿಷಯಗಳು:&#10;ಸಾಮಾನ್ಯ ಜ್ಞಾನ, ತಾರ್ಕಿಕತೆ, ಗಣಿತ..."></textarea>
         <label style="margin-top:8px;">Syllabus PDF Link (Official)</label>
         <input type="url" id="f-syllabus-url" placeholder="https://official-site.gov.in/syllabus.pdf">
+
+        <label style="margin-top:8px;">Notification PDF Link (Official)</label>
+        <input type="url" id="f-notif-url" placeholder="https://official-site.gov.in/notification.pdf">
 
         <div class="fsec">🏆 Selection Process</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Stages: Written Exam / Physical Test / Interview / Document Verification / Merit List</div>
@@ -722,7 +728,9 @@ async function saveJob(){
     skills:document.getElementById('f-skills').value.trim()||null,
     skills_kn:document.getElementById('f-skills-kn').value.trim()||null,
     syllabus:document.getElementById('f-syllabus').value.trim()||null,
+    syllabus_kn:document.getElementById('f-syllabus-kn')?document.getElementById('f-syllabus-kn').value.trim()||null:null,
     syllabus_url:document.getElementById('f-syllabus-url').value.trim()||null,
+    notif_url:document.getElementById('f-notif-url')?document.getElementById('f-notif-url').value.trim()||null:null,
     selection_process:document.getElementById('f-sel-process').value.trim()||null,
     selection_process_kn:document.getElementById('f-sel-process-kn').value.trim()||null,
     required_docs:document.getElementById('f-req-docs').value.trim()||null,
@@ -790,7 +798,9 @@ function editJob(id){
   document.getElementById('f-skills').value=j.skills||'';
   document.getElementById('f-skills-kn').value=j.skills_kn||'';
   document.getElementById('f-syllabus').value=j.syllabus||'';
+  if(document.getElementById('f-syllabus-kn'))document.getElementById('f-syllabus-kn').value=j.syllabus_kn||'';
   document.getElementById('f-syllabus-url').value=j.syllabus_url||'';
+  if(document.getElementById('f-notif-url'))document.getElementById('f-notif-url').value=j.notif_url||'';
   document.getElementById('f-sel-process').value=j.selection_process||'';
   document.getElementById('f-sel-process-kn').value=j.selection_process_kn||'';
   document.getElementById('f-req-docs').value=j.required_docs||'';
@@ -842,7 +852,7 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-ld-tba','f-sd-tba','f-sd-started','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleStarted(false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
   selCat='karnataka';selStat='open';
