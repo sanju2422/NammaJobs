@@ -682,7 +682,7 @@ function toast(type,msg){
 async function saveJob(){
   const ten=document.getElementById('f-ten').value.trim();
   const dept=document.getElementById('f-dept').value.trim();
-  if(!ten||!dept){toast('err','Title aur Department zaroori hai!');return;}
+  if(!ten||!dept){toast('err','Title and Department are required!');return;}
 
   const btn=document.getElementById('pub-btn');
   const sp=document.getElementById('pub-spin');
@@ -825,7 +825,7 @@ function editJob(id){
 function delJob(id){
   const j=allJobs.find(x=>x.id===id);
   document.getElementById('cf-ttl').textContent='Delete this job?';
-  document.getElementById('cf-msg').innerHTML=`<strong>${j?j.title_en:''}</strong><br>Yeh action permanent hai. Cannot be undone.`;
+  document.getElementById('cf-msg').innerHTML=`<strong>${j?j.title_en:''}</strong><br>This action is permanent. Cannot be undone.`;
   document.getElementById('cf-yes').onclick=async()=>{
     try{
       await fetch(`${SB_URL}/rest/v1/jobs?id=eq.${id}`,{method:'DELETE',headers:H});
@@ -944,7 +944,7 @@ function switchTab(tab){
 async function saveNotif(){
   const title=document.getElementById('n-title').value.trim();
   const url=document.getElementById('n-url').value.trim();
-  if(!title||!url){toast('err','Title aur URL zaroori hai!');return;}
+  if(!title||!url){toast('err','Title and URL are required!');return;}
 
   const btn=document.getElementById('notif-pub-btn');
   const sp=document.getElementById('notif-spin');
