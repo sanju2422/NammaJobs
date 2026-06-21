@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
 <meta charset="UTF-8">
+<script>(function(){var l=localStorage.getItem('nj_lang')||'en';document.documentElement.setAttribute('data-lang',l);})();</script>
+<style>[data-lang="en"] .kn{display:none !important;}[data-lang="kn"] .en{display:none !important;}.lang-toggle-wrap{display:flex;align-items:center;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.15);border-radius:12px;overflow:hidden;padding:2px;gap:2px;}.ltb{border:none;padding:5px 10px;border-radius:9px;font-size:11px;font-weight:800;cursor:pointer;}.ltb-en{background:linear-gradient(135deg,#FFD60A,#f59e0b);color:#1a1a2e;}.ltb-kn{background:transparent;color:rgba(255,255,255,0.6);}</style>
+<script src="lang.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Policy – Namma Jobs</title>
 <meta name="description" content="Privacy Policy for Namma Jobs - Karnataka Jobs Portal">
@@ -57,83 +60,139 @@ a:hover{color:#c4b5fd;}
       </div>
     </a>
     <a href="index.html" class="btn-back">← Back to Home</a>
+    <div class="lang-toggle-wrap">
+      <button id="lang-btn-en" class="ltb ltb-en" onclick="njToggleLang('en')">EN</button>
+      <button id="lang-btn-kn" class="ltb ltb-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
+    </div>
   </div>
 </header>
 
 <div class="container">
   <div class="card">
-    <h1>Privacy Policy</h1>
-    <div class="subtitle">Your privacy is important to us at Namma Jobs</div>
+    <h1 class="en">Privacy Policy</h1>
+    <h1 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಗೌಪ್ಯತಾ ನೀತಿ</h1>
+    <div class="subtitle en">Your privacy is important to us at Namma Jobs</div>
+    <div class="subtitle kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮ ಜಾಬ್ಸ್‌ನಲ್ಲಿ ನಿಮ್ಮ ಗೌಪ್ಯತೆ ನಮಗೆ ಮುಖ್ಯ</div>
 
-    <div class="last-updated">
-      📅 <strong>Last Updated:</strong> 1 May 2026
-    </div>
+    <div class="last-updated"><span class="en">📅 <strong>Last Updated:</strong> 1 May 2026</span><span class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">📅 <strong>ಕೊನೆಯ ನವೀಕರಣ:</strong> 1 ಮೇ 2026</span></div>
 
-    <p>At Namma Jobs (nammajobs.co.in), accessible from our website, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Namma Jobs and how we use it.</p>
+    <p class="en">At Namma Jobs (nammajobs.co.in), accessible from our website, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Namma Jobs and how we use it.</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮ ಜಾಬ್ಸ್ (nammajobs.co.in) ನಲ್ಲಿ, ನಮ್ಮ ಮುಖ್ಯ ಆದ್ಯತೆಗಳಲ್ಲಿ ಒಂದು ನಮ್ಮ ಸಂದರ್ಶಕರ ಗೌಪ್ಯತೆ. ಈ ಗೌಪ್ಯತಾ ನೀತಿ ದಾಖಲೆಯಲ್ಲಿ ನಾವು ಸಂಗ್ರಹಿಸುವ ಮಾಹಿತಿ ಮತ್ತು ಅದನ್ನು ಹೇಗೆ ಬಳಸುತ್ತೇವೆ ಎಂಬುದಿದೆ.</p>
 
-    <h2>📋 Information We Collect</h2>
-    <p>We do not require visitors to register or provide personal information to access our job listings. However, we may collect basic information automatically:</p>
+    <h2 class="en">📋 Information We Collect</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">📋 ನಾವು ಸಂಗ್ರಹಿಸುವ ಮಾಹಿತಿ</h2>
+    <p class="en">We do not require visitors to register or provide personal information to access our job listings. However, we may collect basic information automatically:</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮ ಉದ್ಯೋಗ ಪಟ್ಟಿಗಳನ್ನು ಪ್ರವೇಶಿಸಲು ಸಂದರ್ಶಕರು ನೋಂದಾಯಿಸಿಕೊಳ್ಳಬೇಕಾಗಿಲ್ಲ. ಆದಾಗ್ಯೂ, ನಾವು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮೂಲ ಮಾಹಿತಿ ಸಂಗ್ರಹಿಸಬಹುದು:</p>
     <ul>
-      <li><strong>Browser Information:</strong> Browser type, language, operating system</li>
-      <li><strong>Usage Data:</strong> Pages visited, time spent, click patterns</li>
-      <li><strong>Device Information:</strong> Device type (mobile/desktop)</li>
-      <li><strong>IP Address:</strong> For analytics and security purposes</li>
+      <li class="en"><strong>Browser Information:</strong> Browser type, language, operating system</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>ಬ್ರೌಸರ್ ಮಾಹಿತಿ:</strong> ಬ್ರೌಸರ್ ಪ್ರಕಾರ, ಭಾಷೆ, ಆಪರೇಟಿಂಗ್ ಸಿಸ್ಟಮ್</li>
+      <li class="en"><strong>Usage Data:</strong> Pages visited, time spent, click patterns</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>ಬಳಕೆ ಡೇಟಾ:</strong> ಭೇಟಿ ನೀಡಿದ ಪುಟಗಳು, ಕಳೆದ ಸಮಯ</li>
+      <li class="en"><strong>Device Information:</strong> Device type (mobile/desktop)</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>ಸಾಧನ ಮಾಹಿತಿ:</strong> ಸಾಧನ ಪ್ರಕಾರ (ಮೊಬೈಲ್/ಡೆಸ್ಕ್‌ಟಾಪ್)</li>
+      <li class="en"><strong>IP Address:</strong> For analytics and security purposes</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>IP ವಿಳಾಸ:</strong> ವಿಶ್ಲೇಷಣೆ ಮತ್ತು ಭದ್ರತೆಗಾಗಿ</li>
     </ul>
 
-    <h2>🍪 Cookies</h2>
-    <p>Like most websites, Namma Jobs uses cookies to improve user experience:</p>
+    <h2 class="en">🍪 Cookies</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">🍪 ಕುಕೀಗಳು</h2>
+    <p class="en">Like most websites, Namma Jobs uses cookies to improve user experience:</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಹೆಚ್ಚಿನ ವೆಬ್‌ಸೈಟ್‌ಗಳಂತೆ, ನಮ್ಮ ಜಾಬ್ಸ್ ಬಳಕೆದಾರ ಅನುಭವ ಸುಧಾರಿಸಲು ಕುಕೀಗಳನ್ನು ಬಳಸುತ್ತದೆ:</p>
     <ul>
-      <li>Theme preferences (Dark/Light mode)</li>
-      <li>Cached job data for faster loading</li>
-      <li>Anonymous analytics (Google Analytics)</li>
+      <li class="en">Theme preferences (Dark/Light mode)</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಥೀಮ್ ಆದ್ಯತೆಗಳು (ಡಾರ್ಕ್/ಲೈಟ್ ಮೋಡ್)</li>
+      <li class="en">Cached job data for faster loading</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ವೇಗವಾದ ಲೋಡಿಂಗ್‌ಗಾಗಿ ಕ್ಯಾಷ್ ಮಾಡಿದ ಉದ್ಯೋಗ ಡೇಟಾ</li>
+      <li class="en">Anonymous analytics (Google Analytics)</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಅನಾಮಧೇಯ ವಿಶ್ಲೇಷಣೆ (Google Analytics)</li>
     </ul>
-    <p>You can disable cookies through your browser settings if you prefer.</p>
+    <p class="en">You can disable cookies through your browser settings if you prefer.</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನೀವು ಬಯಸಿದರೆ ಬ್ರೌಸರ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಮೂಲಕ ಕುಕೀಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಬಹುದು.</p>
 
-    <h2>📊 Third-Party Services</h2>
-    <p>We use the following third-party services:</p>
+    <h2 class="en">📊 Third-Party Services</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">📊 ತೃತೀಯ-ಪಕ್ಷದ ಸೇವೆಗಳು</h2>
+    <p class="en">We use the following third-party services:</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಾವು ಈ ಕೆಳಗಿನ ತೃತೀಯ-ಪಕ್ಷ ಸೇವೆಗಳನ್ನು ಬಳಸುತ್ತೇವೆ:</p>
     <ul>
-      <li><strong>Supabase:</strong> Database for job listings</li>
-      <li><strong>Google Analytics:</strong> Website traffic analysis</li>
-      <li><strong>Google Search Console:</strong> Search performance tracking</li>
-      <li><strong>Google AdSense (Future):</strong> Display advertisements</li>
-    </ul>
-
-    <h2>📢 Advertisements</h2>
-    <p>In future, we may display third-party advertisements on our website. Third-party advertisers may use cookies and tracking technologies to deliver relevant ads. These advertisers may collect:</p>
-    <ul>
-      <li>IP address and browser type</li>
-      <li>Pages visited on our website</li>
-      <li>Geographic location</li>
-    </ul>
-    <p>We do not have access to or control over these cookies. Users can opt out of personalized ads through <a href="https://www.google.com/settings/ads" target="_blank">Google Ad Settings</a>.</p>
-
-    <h2>🔗 Job Information</h2>
-    <p>All job notifications, admit cards, and results posted on Namma Jobs are sourced from publicly available official government and private company websites. We provide:</p>
-    <ul>
-      <li>Direct links to official application portals</li>
-      <li>Verified information from official notifications</li>
-      <li>No collection of user applications or personal data</li>
+      <li class="en"><strong>Supabase:</strong> Database for job listings</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>Supabase:</strong> ಉದ್ಯೋಗ ಪಟ್ಟಿಗಳ ಡೇಟಾಬೇಸ್</li>
+      <li class="en"><strong>Google Analytics:</strong> Website traffic analysis</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>Google Analytics:</strong> ವೆಬ್‌ಸೈಟ್ ಟ್ರಾಫಿಕ್ ವಿಶ್ಲೇಷಣೆ</li>
+      <li class="en"><strong>Google Search Console:</strong> Search performance tracking</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>Google Search Console:</strong> ಹುಡುಕಾಟ ಕಾರ್ಯಕ್ಷಮತೆ ಟ್ರ್ಯಾಕಿಂಗ್</li>
+      <li class="en"><strong>Google AdSense (Future):</strong> Display advertisements</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>Google AdSense (ಭವಿಷ್ಯ):</strong> ಜಾಹೀರಾತು ಪ್ರದರ್ಶನ</li>
     </ul>
 
-    <h2>🛡️ Data Security</h2>
-    <p>We implement appropriate security measures to protect against unauthorized access. However, no method of transmission over the Internet is 100% secure.</p>
+    <h2 class="en">📢 Advertisements</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">📢 ಜಾಹೀರಾತು</h2>
+    <p class="en">In future, we may display third-party advertisements on our website. Third-party advertisers may use cookies and tracking technologies to deliver relevant ads. These advertisers may collect:</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಭವಿಷ್ಯದಲ್ಲಿ, ನಾವು ನಮ್ಮ ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ತೃತೀಯ-ಪಕ್ಷ ಜಾಹೀರಾತುಗಳನ್ನು ಪ್ರದರ್ಶಿಸಬಹುದು:</p>
+    <ul>
+      <li class="en">IP address and browser type</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">IP ವಿಳಾಸ ಮತ್ತು ಬ್ರೌಸರ್ ಪ್ರಕಾರ</li>
+      <li class="en">Pages visited on our website</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮ ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ಭೇಟಿ ನೀಡಿದ ಪುಟಗಳು</li>
+      <li class="en">Geographic location</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಭೌಗೋಳಿಕ ಸ್ಥಳ</li>
+    </ul>
+    <p class="en">We do not have access to or control over these cookies. Users can opt out of personalized ads through <a href="https://www.google.com/settings/ads" target="_blank">Google Ad Settings</a>.</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಈ ಕುಕೀಗಳ ಮೇಲೆ ನಮಗೆ ನಿಯಂತ್ರಣವಿಲ್ಲ. ಬಳಕೆದಾರರು <a href="https://www.google.com/settings/ads" target="_blank">Google Ad Settings</a> ಮೂಲಕ ವೈಯಕ್ತಿಕ ಜಾಹೀರಾತುಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಬಹುದು.</p>
 
-    <h2>👶 Children's Privacy</h2>
-    <p>Our website does not knowingly collect personal information from children under 13. If you believe a child has provided us information, please contact us.</p>
+    <h2 class="en">🔗 Job Information</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">🔗 ಉದ್ಯೋಗ ಮಾಹಿತಿ</h2>
+    <p class="en">All job notifications, admit cards, and results posted on Namma Jobs are sourced from publicly available official government and private company websites. We provide:</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮ ಜಾಬ್ಸ್‌ನಲ್ಲಿ ಪ್ರಕಟಿಸಲಾದ ಎಲ್ಲಾ ಉದ್ಯೋಗ ಅಧಿಸೂಚನೆಗಳನ್ನು ಅಧಿಕೃತ ಸರ್ಕಾರಿ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಂದ ತೆಗೆದುಕೊಳ್ಳಲಾಗಿದೆ.</p>
+    <ul>
+      <li class="en">Direct links to official application portals</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಅಧಿಕೃತ ಅರ್ಜಿ ಪೋರ್ಟಲ್‌ಗಳಿಗೆ ನೇರ ಲಿಂಕ್‌ಗಳು</li>
+      <li class="en">Verified information from official notifications</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಅಧಿಕೃತ ಅಧಿಸೂಚನೆಗಳಿಂದ ಪರಿಶೀಲಿತ ಮಾಹಿತಿ</li>
+      <li class="en">No collection of user applications or personal data</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಬಳಕೆದಾರ ಅರ್ಜಿಗಳು ಅಥವಾ ವೈಯಕ್ತಿಕ ಡೇಟಾ ಸಂಗ್ರಹಿಸಲಾಗುವುದಿಲ್ಲ</li>
+    </ul>
 
-    <h2>🔄 Policy Updates</h2>
-    <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated "Last Updated" date.</p>
+    <h2 class="en">🛡️ Data Security</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">🛡️ ಡೇಟಾ ಸುರಕ್ಷತೆ</h2>
+    <p class="en">We implement appropriate security measures to protect against unauthorized access. However, no method of transmission over the Internet is 100% secure.</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಅನಧಿಕೃತ ಪ್ರವೇಶದಿಂದ ರಕ್ಷಿಸಲು ನಾವು ಸೂಕ್ತ ಭದ್ರತಾ ಕ್ರಮಗಳನ್ನು ಅಳವಡಿಸಿದ್ದೇವೆ.</p>
 
-    <h2>📧 Contact Us</h2>
-    <p>If you have questions about this Privacy Policy, please contact us at:</p>
+    <h2 class="en">👶 Children's Privacy</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">👶 ಮಕ್ಕಳ ಗೌಪ್ಯತೆ</h2>
+    <p class="en">Our website does not knowingly collect personal information from children under 13. If you believe a child has provided us information, please contact us.</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮ ವೆಬ್‌ಸೈಟ್ 13 ವರ್ಷದೊಳಗಿನ ಮಕ್ಕಳಿಂದ ಮಾಹಿತಿ ಸಂಗ್ರಹಿಸುವುದಿಲ್ಲ.</p>
+
+    <h2 class="en">🔄 Policy Updates</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">🔄 ನೀತಿ ನವೀಕರಣಗಳು</h2>
+    <p class="en">We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated "Last Updated" date.</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಾವು ಈ ಗೌಪ್ಯತಾ ನೀತಿಯನ್ನು ಸಮಯದಿಂದ ಸಮಯಕ್ಕೆ ನವೀಕರಿಸಬಹುದು.</p>
+
+    <h2 class="en">📧 Contact Us</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">📧 ಸಂಪರ್ಕಿಸಿ</h2>
+    <p class="en">If you have questions about this Privacy Policy, please contact us at:</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಈ ಗೌಪ್ಯತಾ ನೀತಿ ಬಗ್ಗೆ ಪ್ರಶ್ನೆಗಳಿದ್ದರೆ, ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ:</p>
     <ul>
       <li>📧 Email: <a href="mailto:contact.nammajobs@gmail.com">contact.nammajobs@gmail.com</a></li>
       <li>🌐 Website: <a href="https://nammajobs.co.in">nammajobs.co.in</a></li>
       <li>✈️ Telegram: <a href="https://t.me/nammajobs_karnataka" target="_blank">@nammajobs_karnataka</a></li>
     </ul>
 
-    <p style="margin-top:30px;text-align:center;color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;">© 2026 Namma Jobs · nammajobs.co.in · Karnataka's Trusted Job Portal</p>
+    <p style="margin-top:30px;text-align:center;color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;"><span class="en">© 2026 Namma Jobs · nammajobs.co.in · Karnataka's Trusted Job Portal</span><span class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">© 2026 ನಮ್ಮ ಜಾಬ್ಸ್ · nammajobs.co.in · ಕರ್ನಾಟಕದ ವಿಶ್ವಾಸಾರ್ಹ ಉದ್ಯೋಗ ಪೋರ್ಟಲ್</span></p>
   </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  function updateBtns(lang){
+    var en=document.getElementById('lang-btn-en');
+    var kn=document.getElementById('lang-btn-kn');
+    if(!en||!kn)return;
+    if(lang==='kn'){en.style.background='transparent';en.style.color='rgba(255,255,255,0.6)';kn.style.background='linear-gradient(135deg,#FFD60A,#f59e0b)';kn.style.color='#1a1a2e';}
+    else{en.style.background='linear-gradient(135deg,#FFD60A,#f59e0b)';en.style.color='#1a1a2e';kn.style.background='transparent';kn.style.color='rgba(255,255,255,0.6)';}
+  }
+  updateBtns(localStorage.getItem('nj_lang')||'en');
+  var orig=window.njToggleLang;
+  window.njToggleLang=function(lang){if(orig)orig(lang);updateBtns(lang);};
+});
+</script>
 </body>
 </html>

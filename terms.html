@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
 <meta charset="UTF-8">
+<script>(function(){var l=localStorage.getItem('nj_lang')||'en';document.documentElement.setAttribute('data-lang',l);})();</script>
+<style>[data-lang="en"] .kn{display:none !important;}[data-lang="kn"] .en{display:none !important;}.lang-toggle-wrap{display:flex;align-items:center;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.15);border-radius:12px;overflow:hidden;padding:2px;gap:2px;}.ltb{border:none;padding:5px 10px;border-radius:9px;font-size:11px;font-weight:800;cursor:pointer;}.ltb-en{background:linear-gradient(135deg,#FFD60A,#f59e0b);color:#1a1a2e;}.ltb-kn{background:transparent;color:rgba(255,255,255,0.6);}</style>
+<script src="lang.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Terms & Conditions – Namma Jobs</title>
 <meta name="description" content="Terms and Conditions for using Namma Jobs website">
@@ -57,13 +60,18 @@ a{color:#a855f7;font-weight:700;text-decoration:none;}
       </div>
     </a>
     <a href="index.html" class="btn-back">← Back to Home</a>
+    <div class="lang-toggle-wrap">
+      <button id="lang-btn-en" class="ltb ltb-en" onclick="njToggleLang('en')">EN</button>
+      <button id="lang-btn-kn" class="ltb ltb-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
+    </div>
   </div>
 </header>
 
 <div class="container">
   <div class="card">
     <h1>Terms & Conditions</h1>
-    <div class="subtitle">Please read these terms carefully before using Namma Jobs</div>
+    <div class="subtitle en">Please read these terms carefully before using Namma Jobs</div>
+    <div class="subtitle kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮ ಜಾಬ್ಸ್ ಬಳಸುವ ಮೊದಲು ಈ ನಿಯಮಗಳನ್ನು ಎಚ್ಚರಿಕೆಯಿಂದ ಓದಿ</div>
 
     <div class="last-updated">
       📅 <strong>Last Updated:</strong> 1 May 2026
@@ -171,5 +179,19 @@ a{color:#a855f7;font-weight:700;text-decoration:none;}
     <p style="margin-top:30px;text-align:center;color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;">© 2026 Namma Jobs · By using this website, you agree to these terms</p>
   </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  function updateBtns(lang){
+    var en=document.getElementById('lang-btn-en');
+    var kn=document.getElementById('lang-btn-kn');
+    if(!en||!kn)return;
+    if(lang==='kn'){en.style.background='transparent';en.style.color='rgba(255,255,255,0.6)';kn.style.background='linear-gradient(135deg,#FFD60A,#f59e0b)';kn.style.color='#1a1a2e';}
+    else{en.style.background='linear-gradient(135deg,#FFD60A,#f59e0b)';en.style.color='#1a1a2e';kn.style.background='transparent';kn.style.color='rgba(255,255,255,0.6)';}
+  }
+  updateBtns(localStorage.getItem('nj_lang')||'en');
+  var orig=window.njToggleLang;
+  window.njToggleLang=function(lang){if(orig)orig(lang);updateBtns(lang);};
+});
+</script>
 </body>
 </html>
