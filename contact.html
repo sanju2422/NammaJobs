@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
 <meta charset="UTF-8">
+<script>(function(){var l=localStorage.getItem('nj_lang')||'en';document.documentElement.setAttribute('data-lang',l);})();</script>
+<style>[data-lang="en"] .kn{display:none !important;}[data-lang="kn"] .en{display:none !important;}.lang-toggle-wrap{display:flex;align-items:center;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.15);border-radius:12px;overflow:hidden;padding:2px;gap:2px;}.ltb{border:none;padding:5px 10px;border-radius:9px;font-size:11px;font-weight:800;cursor:pointer;}.ltb-en{background:linear-gradient(135deg,#FFD60A,#f59e0b);color:#1a1a2e;}.ltb-kn{background:transparent;color:rgba(255,255,255,0.6);}</style>
+<script src="lang.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact Us – Namma Jobs</title>
 <meta name="description" content="Contact Namma Jobs - Reach us via email, Telegram, or WhatsApp">
@@ -73,86 +76,103 @@ a{color:#a855f7;font-weight:700;text-decoration:none;}
       </div>
     </a>
     <a href="index.html" class="btn-back">← Back to Home</a>
+    <div class="lang-toggle-wrap">
+      <button id="lang-btn-en" class="ltb ltb-en" onclick="njToggleLang('en')">EN</button>
+      <button id="lang-btn-kn" class="ltb ltb-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
+    </div>
   </div>
 </header>
 
 <div class="container">
   <div class="hero">
-    <h1>📞 Contact Us</h1>
-    <p>ನಿಮ್ಮೊಂದಿಗೆ ಮಾತನಾಡಲು ನಾವು ಸಿದ್ಧರಿದ್ದೇವೆ · We'd love to hear from you</p>
+    <h1 class="en">📞 Contact Us</h1>
+    <h1 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">📞 ಸಂಪರ್ಕಿಸಿ</h1>
+    <p class="en">We'd love to hear from you</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಿಮ್ಮೊಂದಿಗೆ ಮಾತನಾಡಲು ನಾವು ಸಿದ್ಧರಿದ್ದೇವೆ</p>
   </div>
 
   <div class="contact-grid">
     <div class="contact-card">
       <div class="contact-icon">📧</div>
-      <div class="contact-title">Email Us</div>
-      <div class="contact-desc">For business, partnerships, or general queries</div>
+      <div class="contact-title en">Email Us</div><div class="contact-title kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಇಮೇಲ್ ಮಾಡಿ</div>
+      <div class="contact-desc en">For business, partnerships, or general queries</div><div class="contact-desc kn" style="font-family:'Noto Sans Kannada',sans-serif;">ವ್ಯವಹಾರ, ಸಹಭಾಗಿತ್ವ ಅಥವಾ ಸಾಮಾನ್ಯ ಪ್ರಶ್ನೆಗಳಿಗೆ</div>
       <a href="mailto:contact.nammajobs@gmail.com" class="contact-btn">Send Email →</a>
     </div>
 
     <div class="contact-card">
       <div class="contact-icon">✈️</div>
-      <div class="contact-title">Telegram</div>
-      <div class="contact-desc">Join our Telegram channel for instant job updates</div>
+      <div class="contact-title en">Telegram</div><div class="contact-title kn" style="font-family:'Noto Sans Kannada',sans-serif;">Telegram</div>
+      <div class="contact-desc en">Join our Telegram channel for instant job updates</div><div class="contact-desc kn" style="font-family:'Noto Sans Kannada',sans-serif;">ತಕ್ಷಣದ ಉದ್ಯೋಗ ನವೀಕರಣಗಳಿಗಾಗಿ ನಮ್ಮ Telegram ಚಾನಲ್ ಸೇರಿ</div>
       <a href="https://t.me/nammajobs_karnataka" target="_blank" class="contact-btn blue">Join Channel →</a>
     </div>
 
     <div class="contact-card">
       <div class="contact-icon">📱</div>
-      <div class="contact-title">WhatsApp</div>
-      <div class="contact-desc">Get notifications on WhatsApp channel</div>
+      <div class="contact-title en">WhatsApp</div><div class="contact-title kn" style="font-family:'Noto Sans Kannada',sans-serif;">WhatsApp</div>
+      <div class="contact-desc en">Get notifications on WhatsApp channel</div><div class="contact-desc kn" style="font-family:'Noto Sans Kannada',sans-serif;">WhatsApp ಚಾನಲ್‌ನಲ್ಲಿ ಅಧಿಸೂಚನೆಗಳನ್ನು ಪಡೆಯಿರಿ</div>
       <a href="https://whatsapp.com/channel/0029VbD5Hy5Au3aKeDdCB10L" target="_blank" class="contact-btn green">Join Channel →</a>
     </div>
   </div>
 
   <div class="info-card">
-    <h2>💡 What can you contact us about?</h2>
+    <h2 class="en">💡 What can you contact us about?</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">💡 ನಮ್ಮನ್ನು ಯಾವ ವಿಷಯದಲ್ಲಿ ಸಂಪರ್ಕಿಸಬಹುದು?</h2>
     <ul>
-      <li><strong>Job Submissions:</strong> Share new job notifications you found</li>
-      <li><strong>Corrections:</strong> Report incorrect information in any job listing</li>
-      <li><strong>Suggestions:</strong> Help us improve the website</li>
-      <li><strong>Partnerships:</strong> Business collaborations and tie-ups</li>
-      <li><strong>Advertising:</strong> Want to advertise on our platform?</li>
-      <li><strong>Technical Issues:</strong> Report bugs or website problems</li>
-      <li><strong>General Queries:</strong> Any other questions</li>
+      <li class="en"><strong>Job Submissions:</strong> Share new job notifications you found</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>ಉದ್ಯೋಗ ಸಲ್ಲಿಕೆ:</strong> ನೀವು ಕಂಡ ಹೊಸ ಉದ್ಯೋಗ ಅಧಿಸೂಚನೆಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ</li>
+      <li class="en"><strong>Corrections:</strong> Report incorrect information in any job listing</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>ತಿದ್ದುಪಡಿ:</strong> ಯಾವುದೇ ಉದ್ಯೋಗ ಪಟ್ಟಿಯಲ್ಲಿ ತಪ್ಪು ಮಾಹಿತಿ ವರದಿ ಮಾಡಿ</li>
+      <li class="en"><strong>Suggestions:</strong> Help us improve the website</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>ಸಲಹೆಗಳು:</strong> ವೆಬ್‌ಸೈಟ್ ಸುಧಾರಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡಿ</li>
+      <li class="en"><strong>Partnerships:</strong> Business collaborations and tie-ups</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>ಸಹಭಾಗಿತ್ವ:</strong> ವ್ಯವಹಾರ ಸಹಯೋಗ</li>
+      <li class="en"><strong>Advertising:</strong> Want to advertise on our platform?</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>ಜಾಹೀರಾತು:</strong> ನಮ್ಮ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ಜಾಹೀರಾತು ನೀಡಲು ಬಯಸುವಿರಾ?</li>
+      <li class="en"><strong>Technical Issues:</strong> Report bugs or website problems</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>ತಾಂತ್ರಿಕ ಸಮಸ್ಯೆಗಳು:</strong> ಬಗ್ ಅಥವಾ ವೆಬ್‌ಸೈಟ್ ಸಮಸ್ಯೆಗಳನ್ನು ವರದಿ ಮಾಡಿ</li>
+      <li class="en"><strong>General Queries:</strong> Any other questions</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>ಸಾಮಾನ್ಯ ಪ್ರಶ್ನೆಗಳು:</strong> ಇತರ ಯಾವುದೇ ಪ್ರಶ್ನೆಗಳು</li>
     </ul>
 
-    <h2>⏰ Response Time</h2>
-    <p>We typically respond to emails within <strong style="color:#FFD60A;">24-48 hours</strong>. For urgent queries, please reach out via Telegram or WhatsApp.</p>
+    <h2 class="en">⏰ Response Time</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">⏰ ಪ್ರತಿಕ್ರಿಯೆ ಸಮಯ</h2>
+    <p class="en">We typically respond to emails within <strong style="color:#FFD60A;">24-48 hours</strong>. For urgent queries, please reach out via Telegram or WhatsApp.</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಾವು ಸಾಮಾನ್ಯವಾಗಿ <strong style="color:#FFD60A;">24-48 ಗಂಟೆ</strong>ಗಳಲ್ಲಿ ಪ್ರತ್ಯುತ್ತರಿಸುತ್ತೇವೆ. ತುರ್ತು ಪ್ರಶ್ನೆಗಳಿಗೆ Telegram ಅಥವಾ WhatsApp ಮೂಲಕ ಸಂಪರ್ಕಿಸಿ.</p>
 
-    <h2>❓ Frequently Asked Questions</h2>
+    <h2 class="en">❓ Frequently Asked Questions</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">❓ ಆಗಾಗ್ಗೆ ಕೇಳಲಾಗುವ ಪ್ರಶ್ನೆಗಳು</h2>
 
     <div class="faq-item">
-      <div class="faq-q">Is Namma Jobs free to use?</div>
-      <div class="faq-a">Yes! 100% free. We never charge job seekers any fee.</div>
+      <div class="faq-q en">Is Namma Jobs free to use?</div><div class="faq-q kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮ ಜಾಬ್ಸ್ ಬಳಸಲು ಉಚಿತವೇ?</div>
+      <div class="faq-a en">Yes! 100% free. We never charge job seekers any fee.</div><div class="faq-a kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಹೌದು! 100% ಉಚಿತ. ನಾವು ಉದ್ಯೋಗಾರ್ಥಿಗಳಿಂದ ಯಾವುದೇ ಶುಲ್ಕ ವಿಧಿಸುವುದಿಲ್ಲ.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q">Do I need to register to apply for jobs?</div>
-      <div class="faq-a">No registration required on our site. Click any job's "Apply" button to go directly to the official government/company application portal.</div>
+      <div class="faq-q en">Do I need to register to apply for jobs?</div><div class="faq-q kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಉದ್ಯೋಗಕ್ಕೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ನೋಂದಣಿ ಅಗತ್ಯವಿದೆಯೇ?</div>
+      <div class="faq-a en">No registration required on our site. Click any job's "Apply" button to go directly to the official government/company application portal.</div><div class="faq-a kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮ ಸೈಟ್‌ನಲ್ಲಿ ನೋಂದಣಿ ಅಗತ್ಯವಿಲ್ಲ. ಯಾವುದೇ ಉದ್ಯೋಗದ "Apply" ಬಟನ್ ಒತ್ತಿ ಅಧಿಕೃತ ಪೋರ್ಟಲ್‌ಗೆ ಹೋಗಿ.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q">How do I get notified about new jobs?</div>
-      <div class="faq-a">Join our Telegram or WhatsApp channels for instant notifications. Daily new jobs are posted there.</div>
+      <div class="faq-q en">How do I get notified about new jobs?</div><div class="faq-q kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಹೊಸ ಉದ್ಯೋಗಗಳ ಬಗ್ಗೆ ಹೇಗೆ ತಿಳಿಯಬಹುದು?</div>
+      <div class="faq-a en">Join our Telegram or WhatsApp channels for instant notifications. Daily new jobs are posted there.</div><div class="faq-a kn" style="font-family:'Noto Sans Kannada',sans-serif;">ತಕ್ಷಣ ಅಧಿಸೂಚನೆಗಳಿಗಾಗಿ ನಮ್ಮ Telegram ಅಥವಾ WhatsApp ಚಾನಲ್ ಸೇರಿ.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q">Are these jobs genuine?</div>
-      <div class="faq-a">Yes! All jobs are sourced from official government websites and verified company notifications. Direct apply links provided.</div>
+      <div class="faq-q en">Are these jobs genuine?</div><div class="faq-q kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಈ ಉದ್ಯೋಗಗಳು ನಿಜವಾದವೇ?</div>
+      <div class="faq-a en">Yes! All jobs are sourced from official government websites and verified company notifications. Direct apply links provided.</div><div class="faq-a kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಹೌದು! ಎಲ್ಲಾ ಉದ್ಯೋಗಗಳನ್ನು ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಂದ ಸಂಗ್ರಹಿಸಲಾಗಿದೆ.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q">Can I submit a job notification?</div>
-      <div class="faq-a">Yes! Email us with the job notification PDF or official link. We'll review and publish it.</div>
+      <div class="faq-q en">Can I submit a job notification?</div><div class="faq-q kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಾನು ಉದ್ಯೋಗ ಅಧಿಸೂಚನೆ ಸಲ್ಲಿಸಬಹುದೇ?</div>
+      <div class="faq-a en">Yes! Email us with the job notification PDF or official link. We'll review and publish it.</div><div class="faq-a kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಹೌದು! ಉದ್ಯೋಗ ಅಧಿಸೂಚನೆ PDF ಅಥವಾ ಅಧಿಕೃತ ಲಿಂಕ್ ಸಹಿತ ಇಮೇಲ್ ಮಾಡಿ.</div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q">I found wrong information in a job listing. How to fix?</div>
-      <div class="faq-a">Email us with the correct details. We'll update within 24 hours.</div>
+      <div class="faq-q en">I found wrong information in a job listing. How to fix?</div><div class="faq-q kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಉದ್ಯೋಗ ಪಟ್ಟಿಯಲ್ಲಿ ತಪ್ಪು ಮಾಹಿತಿ ಕಂಡಿದ್ದೇನೆ. ಹೇಗೆ ಸರಿಪಡಿಸಬಹುದು?</div>
+      <div class="faq-a en">Email us with the correct details. We'll update within 24 hours.</div><div class="faq-a kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಸರಿಯಾದ ವಿವರಗಳೊಂದಿಗೆ ಇಮೇಲ್ ಮಾಡಿ. ನಾವು 24 ಗಂಟೆಗಳಲ್ಲಿ ನವೀಕರಿಸುತ್ತೇವೆ.</div>
     </div>
 
-    <p style="margin-top:30px;text-align:center;color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;">© 2026 Namma Jobs · nammajobs.co.in · Karnataka's Trusted Job Portal</p>
+    <p style="margin-top:30px;text-align:center;color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;"><span class="en">© 2026 Namma Jobs · nammajobs.co.in · Karnataka's Trusted Job Portal</span><span class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">© 2026 ನಮ್ಮ ಜಾಬ್ಸ್ · nammajobs.co.in · ಕರ್ನಾಟಕದ ವಿಶ್ವಾಸಾರ್ಹ ಉದ್ಯೋಗ ಪೋರ್ಟಲ್</span></p>
   </div>
 </div>
 </body>

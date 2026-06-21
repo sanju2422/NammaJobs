@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
 <meta charset="UTF-8">
+<script>(function(){var l=localStorage.getItem('nj_lang')||'en';document.documentElement.setAttribute('data-lang',l);})();</script>
+<style>[data-lang="en"] .kn{display:none !important;}[data-lang="kn"] .en{display:none !important;}.lang-toggle-wrap{display:flex;align-items:center;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.15);border-radius:12px;overflow:hidden;padding:2px;gap:2px;}.ltb{border:none;padding:5px 10px;border-radius:9px;font-size:11px;font-weight:800;cursor:pointer;}.ltb-en{background:linear-gradient(135deg,#FFD60A,#f59e0b);color:#1a1a2e;}.ltb-kn{background:transparent;color:rgba(255,255,255,0.6);}</style>
+<script src="lang.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About Us – Namma Jobs</title>
 <meta name="description" content="About Namma Jobs - Karnataka's Trusted Job Portal for Government and Private jobs">
@@ -70,6 +73,10 @@ a{color:#a855f7;font-weight:700;text-decoration:none;}
       </div>
     </a>
     <a href="index.html" class="btn-back">← Back to Home</a>
+    <div class="lang-toggle-wrap">
+      <button id="lang-btn-en" class="ltb ltb-en" onclick="njToggleLang('en')">EN</button>
+      <button id="lang-btn-kn" class="ltb ltb-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
+    </div>
   </div>
 </header>
 
@@ -77,86 +84,111 @@ a{color:#a855f7;font-weight:700;text-decoration:none;}
   <div class="card">
     <div class="hero-section">
       <div class="big-logo"><img src="NammaJobs.png" alt="Namma Jobs"></div>
-      <h1>About Namma Jobs</h1>
+      <h1 class="en">About Namma Jobs</h1>
+      <h1 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮ ಜಾಬ್ಸ್ ಬಗ್ಗೆ</h1>
       <div class="tagline">ನಮ್ಮ <span>ಜಾಬ್ಸ್</span></div>
-      <div class="subtitle">Karnataka's Trusted Job Portal · ಕರ್ನಾಟಕದ ವಿಶ್ವಾಸಾರ್ಹ ಉದ್ಯೋಗ ಪೋರ್ಟಲ್</div>
+      <div class="subtitle en">Karnataka's Trusted Job Portal</div>
+      <div class="subtitle kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಕರ್ನಾಟಕದ ವಿಶ್ವಾಸಾರ್ಹ ಉದ್ಯೋಗ ಪೋರ್ಟಲ್</div>
     </div>
 
-    <h2>🎯 Our Mission</h2>
-    <p>Namma Jobs (nammajobs.co.in) is a dedicated job notification portal serving the people of Karnataka. Our mission is to provide timely, accurate, and verified information about Government jobs, Private jobs, Banking jobs, Railway jobs, Teaching positions, Police recruitment, and more.</p>
-    <p>We believe every job seeker in Karnataka deserves easy access to genuine employment opportunities — without hidden fees, spam, or fake notifications.</p>
+    <h2 class="en">🎯 Our Mission</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">🎯 ನಮ್ಮ ಧ್ಯೇಯ</h2>
+    <p class="en">Namma Jobs (nammajobs.co.in) is a dedicated job notification portal serving the people of Karnataka. Our mission is to provide timely, accurate, and verified information about Government jobs, Private jobs, Banking jobs, Railway jobs, Teaching positions, Police recruitment, and more.</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮ ಜಾಬ್ಸ್ ಕರ್ನಾಟಕದ ಜನರಿಗೆ ಸೇವೆ ಸಲ್ಲಿಸುವ ಉದ್ಯೋಗ ಅಧಿಸೂಚನೆ ಪೋರ್ಟಲ್. ಸರ್ಕಾರಿ, ಖಾಸಗಿ, ಬ್ಯಾಂಕಿಂಗ್, ರೈಲ್ವೆ, ಶಿಕ್ಷಣ ಮತ್ತು ಪೊಲೀಸ್ ನೇಮಕಾತಿ ಬಗ್ಗೆ ನಿಖರ ಮಾಹಿತಿ ನೀಡುವುದು ನಮ್ಮ ಧ್ಯೇಯ.</p>
+    <p class="en">We believe every job seeker in Karnataka deserves easy access to genuine employment opportunities — without hidden fees, spam, or fake notifications.</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಕರ್ನಾಟಕದ ಪ್ರತಿ ಉದ್ಯೋಗಾರ್ಥಿಗೆ ನಿಜವಾದ ಉದ್ಯೋಗ ಅವಕಾಶಗಳಿಗೆ ಸುಲಭ ಪ್ರವೇಶ ದೊರಕಬೇಕು — ಯಾವುದೇ ಶುಲ್ಕ ಅಥವಾ ನಕಲಿ ಅಧಿಸೂಚನೆಗಳಿಲ್ಲದೆ.</p>
 
-    <h2>✨ What We Offer</h2>
+    <h2 class="en">✨ What We Offer</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">✨ ನಾವು ಏನು ನೀಡುತ್ತೇವೆ</h2>
     <div class="feature-grid">
       <div class="feature">
         <div class="feature-icon">💼</div>
-        <div class="feature-title">Latest Job Notifications</div>
-        <div class="feature-desc">Daily updates on Karnataka Government & Central Government jobs</div>
+        <div class="feature-title en">Latest Job Notifications</div><div class="feature-title kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಇತ್ತೀಚಿನ ಉದ್ಯೋಗ ಅಧಿಸೂಚನೆಗಳು</div>
+        <div class="feature-desc en">Daily updates on Karnataka Government & Central Government jobs</div><div class="feature-desc kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಕರ್ನಾಟಕ ಮತ್ತು ಕೇಂದ್ರ ಸರ್ಕಾರಿ ಉದ್ಯೋಗಗಳ ದೈನಂದಿನ ನವೀಕರಣ</div>
       </div>
       <div class="feature">
         <div class="feature-icon">🎓</div>
-        <div class="feature-title">Admit Cards</div>
-        <div class="feature-desc">Quick access to exam admit cards and hall tickets</div>
+        <div class="feature-title en">Admit Cards</div><div class="feature-title kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಪ್ರವೇಶ ಪತ್ರಗಳು</div>
+        <div class="feature-desc en">Quick access to exam admit cards and hall tickets</div><div class="feature-desc kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಪರೀಕ್ಷೆಯ ಪ್ರವೇಶ ಪತ್ರಗಳಿಗೆ ತ್ವರಿತ ಪ್ರವೇಶ</div>
       </div>
       <div class="feature">
         <div class="feature-icon">📊</div>
-        <div class="feature-title">Results</div>
-        <div class="feature-desc">Latest exam results and merit lists</div>
+        <div class="feature-title en">Results</div><div class="feature-title kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಫಲಿತಾಂಶಗಳು</div>
+        <div class="feature-desc en">Latest exam results and merit lists</div><div class="feature-desc kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಇತ್ತೀಚಿನ ಪರೀಕ್ಷಾ ಫಲಿತಾಂಶಗಳು</div>
       </div>
       <div class="feature">
         <div class="feature-icon">🛠️</div>
-        <div class="feature-title">Image Tools</div>
-        <div class="feature-desc">Free image resizer, compressor for job applications</div>
+        <div class="feature-title en">Image Tools</div><div class="feature-title kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಚಿತ್ರ ಸಾಧನಗಳು</div>
+        <div class="feature-desc en">Free image resizer, compressor for job applications</div><div class="feature-desc kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಉದ್ಯೋಗ ಅರ್ಜಿಗಾಗಿ ಉಚಿತ ಚಿತ್ರ ಸಾಧನಗಳು</div>
       </div>
       <div class="feature">
         <div class="feature-icon">🌐</div>
-        <div class="feature-title">Bilingual Support</div>
-        <div class="feature-desc">Information in both English and Kannada</div>
+        <div class="feature-title en">Bilingual Support</div><div class="feature-title kn" style="font-family:'Noto Sans Kannada',sans-serif;">ದ್ವಿಭಾಷಾ ಬೆಂಬಲ</div>
+        <div class="feature-desc en">Information in both English and Kannada</div><div class="feature-desc kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಇಂಗ್ಲಿಷ್ ಮತ್ತು ಕನ್ನಡ ಎರಡರಲ್ಲೂ ಮಾಹಿತಿ</div>
       </div>
       <div class="feature">
         <div class="feature-icon">📱</div>
-        <div class="feature-title">Mobile Friendly</div>
-        <div class="feature-desc">Optimized for mobile and desktop</div>
+        <div class="feature-title en">Mobile Friendly</div><div class="feature-title kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಮೊಬೈಲ್ ಸ್ನೇಹಿ</div>
+        <div class="feature-desc en">Optimized for mobile and desktop</div><div class="feature-desc kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಮೊಬೈಲ್ ಮತ್ತು ಡೆಸ್ಕ್‌ಟಾಪ್‌ಗಾಗಿ ಅನುಕೂಲಿಸಲಾಗಿದೆ</div>
       </div>
     </div>
   </div>
 
   <div class="card">
-    <h2>📋 Why Choose Namma Jobs?</h2>
+    <h2 class="en">📋 Why Choose Namma Jobs?</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">📋 ನಮ್ಮ ಜಾಬ್ಸ್ ಏಕೆ ಆಯ್ಕೆ ಮಾಡಿ?</h2>
     <ul>
-      <li><strong>✅ Verified Information:</strong> All job notifications are sourced from official government websites</li>
-      <li><strong>✅ Direct Apply Links:</strong> One-click access to official application portals</li>
-      <li><strong>✅ No Hidden Fees:</strong> Completely free service for all job seekers</li>
-      <li><strong>✅ Daily Updates:</strong> New jobs added regularly</li>
-      <li><strong>✅ Bilingual:</strong> Available in English aur ಕನ್ನಡ</li>
+      <li class="en"><strong>✅ Verified Information:</strong> All job notifications are sourced from official government websites</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>✅ ಪರಿಶೀಲಿತ ಮಾಹಿತಿ:</strong> ಎಲ್ಲಾ ಉದ್ಯೋಗ ಅಧಿಸೂಚನೆಗಳನ್ನು ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಂದ ಸಂಗ್ರಹಿಸಲಾಗಿದೆ</li>
+      <li class="en"><strong>✅ Direct Apply Links:</strong> One-click access to official application portals</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>✅ ನೇರ ಅರ್ಜಿ ಲಿಂಕ್‌ಗಳು:</strong> ಅಧಿಕೃತ ಅರ್ಜಿ ಪೋರ್ಟಲ್‌ಗೆ ಒಂದೇ ಕ್ಲಿಕ್ ಪ್ರವೇಶ</li>
+      <li class="en"><strong>✅ No Hidden Fees:</strong> Completely free service for all job seekers</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>✅ ಯಾವುದೇ ಶುಲ್ಕವಿಲ್ಲ:</strong> ಎಲ್ಲಾ ಉದ್ಯೋಗಾರ್ಥಿಗಳಿಗೆ ಸಂಪೂರ್ಣ ಉಚಿತ ಸೇವೆ</li>
+      <li class="en"><strong>✅ Daily Updates:</strong> New jobs added regularly</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>✅ ದೈನಂದಿನ ನವೀಕರಣ:</strong> ಪ್ರತಿದಿನ ಹೊಸ ಉದ್ಯೋಗಗಳು ಸೇರ್ಪಡೆ</li>
+      <li class="en"><strong>✅ Bilingual:</strong> Available in English aur ಕನ್ನಡ</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>✅ ದ್ವಿಭಾಷಾ:</strong> ಇಂಗ್ಲಿಷ್ ಮತ್ತು ಕನ್ನಡದಲ್ಲಿ ಲಭ್ಯ</li>
       <li><strong>✅ Fast & Clean:</strong> Modern, fast-loading website</li>
-      <li><strong>✅ Privacy Focused:</strong> No registration required, no spam emails</li>
+      <li class="en"><strong>✅ Privacy Focused:</strong> No registration required, no spam emails</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;"><strong>✅ ಗೌಪ್ಯತೆ:</strong> ನೋಂದಣಿ ಅಗತ್ಯವಿಲ್ಲ, ಸ್ಪ್ಯಾಮ್ ಇಮೇಲ್ ಇಲ್ಲ</li>
     </ul>
 
-    <h2>🎯 Our Categories</h2>
+    <h2 class="en">🎯 Our Categories</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">🎯 ನಮ್ಮ ವರ್ಗಗಳು</h2>
     <ul>
-      <li>🏛️ <strong>Karnataka Government</strong> — KPSC, KSP, BBMP, PWD, etc.</li>
-      <li>🇮🇳 <strong>Central Government</strong> — UPSC, SSC, etc.</li>
-      <li>🚂 <strong>Railway Jobs</strong> — RRB, IRFC, Indian Railways</li>
-      <li>🏦 <strong>Banking</strong> — SBI, RBI, PNB, IBPS</li>
-      <li>👮 <strong>Police</strong> — Karnataka Police, CISF, CRPF</li>
-      <li>📚 <strong>Teaching</strong> — School and college teaching positions</li>
-      <li>🏢 <strong>Private Sector</strong> — Companies and PSUs</li>
+      <li class="en">🏛️ <strong>Karnataka Government</strong> — KPSC, KSP, BBMP, PWD, etc.</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">🏛️ <strong>ಕರ್ನಾಟಕ ಸರ್ಕಾರ</strong> — KPSC, KSP, BBMP, PWD ಇತ್ಯಾದಿ</li>
+      <li class="en">🇮🇳 <strong>Central Government</strong> — UPSC, SSC, etc.</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">🇮🇳 <strong>ಕೇಂದ್ರ ಸರ್ಕಾರ</strong> — UPSC, SSC ಇತ್ಯಾದಿ</li>
+      <li class="en">🚂 <strong>Railway Jobs</strong> — RRB, IRFC, Indian Railways</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">🚂 <strong>ರೈಲ್ವೆ ಉದ್ಯೋಗ</strong> — RRB, IRFC, ಭಾರತೀಯ ರೈಲ್ವೆ</li>
+      <li class="en">🏦 <strong>Banking</strong> — SBI, RBI, PNB, IBPS</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">🏦 <strong>ಬ್ಯಾಂಕಿಂಗ್</strong> — SBI, RBI, PNB, IBPS</li>
+      <li class="en">👮 <strong>Police</strong> — Karnataka Police, CISF, CRPF</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">👮 <strong>ಪೊಲೀಸ್</strong> — ಕರ್ನಾಟಕ ಪೊಲೀಸ್, CISF, CRPF</li>
+      <li class="en">📚 <strong>Teaching</strong> — School and college teaching positions</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">📚 <strong>ಶಿಕ್ಷಣ</strong> — ಶಾಲೆ ಮತ್ತು ಕಾಲೇಜು ಶಿಕ್ಷಕ ಹುದ್ದೆಗಳು</li>
+      <li class="en">🏢 <strong>Private Sector</strong> — Companies and PSUs</li>
+      <li class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">🏢 <strong>ಖಾಸಗಿ ವಲಯ</strong> — ಕಂಪನಿಗಳು ಮತ್ತು PSU ಗಳು</li>
     </ul>
 
-    <h2>📍 Based in Karnataka</h2>
-    <p>Namma Jobs is proudly based in Karnataka, India. We understand the local job market and the unique needs of Karnataka job seekers. From Bengaluru to Belagavi, Mysuru to Mangaluru — we serve job seekers across all 31 districts of Karnataka.</p>
+    <h2 class="en">📍 Based in Karnataka</h2>
+    <h2 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">📍 ಕರ್ನಾಟಕ ಆಧಾರಿತ</h2>
+    <p class="en">Namma Jobs is proudly based in Karnataka, India. We understand the local job market and the unique needs of Karnataka job seekers. From Bengaluru to Belagavi, Mysuru to Mangaluru — we serve job seekers across all 31 districts of Karnataka.</p>
+    <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮ ಜಾಬ್ಸ್ ಕರ್ನಾಟಕದಲ್ಲಿ ನೆಲೆಗೊಂಡಿದೆ. ಬೆಂಗಳೂರಿನಿಂದ ಬೆಳಗಾವಿ, ಮೈಸೂರಿನಿಂದ ಮಂಗಳೂರು — ಕರ್ನಾಟಕದ 31 ಜಿಲ್ಲೆಗಳ ಎಲ್ಲಾ ಉದ್ಯೋಗಾರ್ಥಿಗಳಿಗೆ ಸೇವೆ ನೀಡುತ್ತೇವೆ.</p>
 
     <div class="cta-box">
-      <h3>🚀 Join Our Community</h3>
-      <p>Get instant job notifications on Telegram and WhatsApp</p>
+      <h3 class="en">🚀 Join Our Community</h3>
+      <h3 class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">🚀 ನಮ್ಮ ಸಮುದಾಯಕ್ಕೆ ಸೇರಿ</h3>
+      <p class="en">Get instant job notifications on Telegram and WhatsApp</p>
+      <p class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">Telegram ಮತ್ತು WhatsApp ನಲ್ಲಿ ತಕ್ಷಣ ಉದ್ಯೋಗ ಅಧಿಸೂಚನೆ ಪಡೆಯಿರಿ</p>
       <div class="cta-btns">
-        <a href="https://t.me/nammajobs_karnataka" target="_blank" class="cta-btn">✈️ Join Telegram</a>
-        <a href="https://whatsapp.com/channel/0029VbD5Hy5Au3aKeDdCB10L" target="_blank" class="cta-btn">📱 Join WhatsApp</a>
+        <a href="https://t.me/nammajobs_karnataka" target="_blank" class="cta-btn en">✈️ Join Telegram</a><a href="https://t.me/nammajobs_karnataka" target="_blank" class="cta-btn kn" style="font-family:'Noto Sans Kannada',sans-serif;">✈️ Telegram ಸೇರಿ</a>
+        <a href="https://whatsapp.com/channel/0029VbD5Hy5Au3aKeDdCB10L" target="_blank" class="cta-btn en">📱 Join WhatsApp</a><a href="https://whatsapp.com/channel/0029VbD5Hy5Au3aKeDdCB10L" target="_blank" class="cta-btn kn" style="font-family:'Noto Sans Kannada',sans-serif;">📱 WhatsApp ಸೇರಿ</a>
       </div>
     </div>
 
-    <p style="margin-top:30px;text-align:center;color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;">Namma Jobs is an independent job information portal and is not affiliated with any government agency.</p>
+    <p style="margin-top:30px;text-align:center;color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;"><span class="en">© 2026 Namma Jobs · Made with ❤️ for Karnataka Job Seekers</span><span class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">© 2026 ನಮ್ಮ ಜಾಬ್ಸ್ · ಕರ್ನಾಟಕ ಉದ್ಯೋಗಾರ್ಥಿಗಳಿಗಾಗಿ ❤️ ನಿಂದ ತಯಾರಿಸಲಾಗಿದೆ</span></p>
   </div>
 </div>
 </body>
