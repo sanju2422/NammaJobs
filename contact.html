@@ -175,5 +175,35 @@ a{color:#a855f7;font-weight:700;text-decoration:none;}
     <p style="margin-top:30px;text-align:center;color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;"><span class="en">© 2026 Namma Jobs · nammajobs.co.in · Karnataka's Trusted Job Portal</span><span class="kn" style="font-family:'Noto Sans Kannada',sans-serif;">© 2026 ನಮ್ಮ ಜಾಬ್ಸ್ · nammajobs.co.in · ಕರ್ನಾಟಕದ ವಿಶ್ವಾಸಾರ್ಹ ಉದ್ಯೋಗ ಪೋರ್ಟಲ್</span></p>
   </div>
 </div>
+
+<script>
+// Override njApplyLang to also update button visual state on these pages
+document.addEventListener('DOMContentLoaded', function(){
+  function updateBtns(lang){
+    var en = document.getElementById('lang-btn-en');
+    var kn = document.getElementById('lang-btn-kn');
+    if(!en || !kn) return;
+    if(lang === 'kn'){
+      en.style.background = 'transparent';
+      en.style.color = 'rgba(255,255,255,0.6)';
+      kn.style.background = 'linear-gradient(135deg,#FFD60A,#f59e0b)';
+      kn.style.color = '#1a1a2e';
+    } else {
+      en.style.background = 'linear-gradient(135deg,#FFD60A,#f59e0b)';
+      en.style.color = '#1a1a2e';
+      kn.style.background = 'transparent';
+      kn.style.color = 'rgba(255,255,255,0.6)';
+    }
+  }
+  // Apply on load
+  updateBtns(localStorage.getItem('nj_lang')||'en');
+  // Hook into toggle
+  var origToggle = window.njToggleLang;
+  window.njToggleLang = function(lang){
+    if(origToggle) origToggle(lang);
+    updateBtns(lang);
+  };
+});
+</script>
 </body>
 </html>
