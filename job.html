@@ -200,6 +200,17 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .fee-chip:last-child{margin-bottom:2px;}
 .info-table tr.fee-row td{border-bottom:none;}
 .info-table tr.fee-row + tr td{padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);}
+/* ===== Structured sub-tables / chips for Job Details (display only) ===== */
+.sub-tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:2px;}
+.sub-tbl{width:100%;border-collapse:collapse;min-width:160px;}
+.sub-tbl th{padding:7px 10px;font-size:11px;color:rgba(255,255,255,0.8);font-weight:800;text-align:left;border-bottom:1.5px solid rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:.3px;}
+.sub-tbl td{padding:8px 10px;font-size:13px;color:#fff;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.08);}
+.sub-tbl tr:last-child td{border-bottom:none;}
+.sub-tbl strong{color:#c4b5fd;font-weight:800;}
+.fee-nil{color:#4ade80;font-weight:800;}
+.qual-wrap{display:flex;flex-wrap:wrap;gap:8px;}
+.qual-chip{display:inline-block;background:rgba(59,130,246,0.22);border:1.5px solid rgba(59,130,246,0.45);color:#fff;padding:5px 12px;border-radius:14px;font-size:12.5px;font-weight:700;line-height:1.5;}
+@media(max-width:600px){.sub-tbl th,.sub-tbl td{padding:7px 8px;font-size:12px;}.qual-chip{font-size:12px;padding:5px 10px;}}
 
 /* APPLY BOX */
 .apply-box{
@@ -448,6 +459,69 @@ function badgeForJob(j,dl){
   return `<div class="hero-badge hb-open">✓ ${njGetLang()==='kn'?'ತೆರೆದಿದೆ – ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Open – Apply Now'}</div>`;
 }
 
+function njSplitEntries(raw){
+  var parts=String(raw).split(/[|;\n]+/).map(function(x){return x.trim();}).filter(Boolean);
+  var entries=[]; parts.forEach(function(p){p.split(',').forEach(function(seg){entries.push(seg);});});
+  return entries;
+}
+function njKV(raw,dashOK){
+  if(!raw) return [];
+  var delim=dashOK?/^(.*?)\s*[:=\-\u2013]\s*(.+)$/:/^(.*?)\s*[:=]\s*(.+)$/;
+  var segs=njSplitEntries(raw),out=[];
+  segs.forEach(function(seg){
+    seg=seg.trim(); if(!seg) return;
+    var m=seg.match(delim);
+    if(m){out.push({k:m[1].trim(),v:m[2].trim()});}
+    else if(out.length){out[out.length-1].v+=', '+seg;}
+    else{out.push({k:seg,v:''});}
+  });
+  return out;
+}
+function njEsc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function njFeeFmt(v){
+  if(!v) return '\u2014';
+  var t=v.trim();
+  if(/^(nil|free|no fee|n\/a|na|-)$/i.test(t)||t==='0') return '<span class="fee-nil">'+njEsc(t==='0'?'Nil':t)+'</span>';
+  if(/^[0-9][0-9,]*$/.test(t)) return '\u20b9 '+njEsc(t);
+  if(/^(rs\.?|inr|\u20b9)\s*[0-9]/i.test(t)) return njEsc(t.replace(/^rs\.?\s*/i,'\u20b9 ').replace(/^inr\s*/i,'\u20b9 '));
+  return njEsc(t);
+}
+function njFeeCell(raw){
+  if(!raw) return '\u2014';
+  var kv=njKV(raw,false);
+  if(kv.length&&kv.every(function(p){return p.v!=='';})){
+    var h=njGetLang()==='kn'?['\u0cb5\u0cb0\u0ccd\u0c97','\u0cb6\u0cc1\u0cb2\u0ccd\u0c95']:['Category','Fee'];
+    return '<div class="sub-tbl-wrap"><table class="sub-tbl"><thead><tr><th>'+h[0]+'</th><th>'+h[1]+'</th></tr></thead><tbody>'+
+      kv.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><strong>'+njFeeFmt(p.v)+'</strong></td></tr>';}).join('')+'</tbody></table></div>';
+  }
+  return String(raw).split('|').map(function(part){return '<div class="fee-chip">'+njEsc(part.trim())+'</div>';}).join('');
+}
+function njCatRows(raw){
+  var kv=njKV(raw,true);
+  if(!kv.length) return '<tr><td colspan="2">'+njEsc(raw)+'</td></tr>';
+  return kv.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><strong>'+njEsc(p.v||'\u2014')+'</strong></td></tr>';}).join('');
+}
+function njAgeCell(raw){
+  if(!raw) return '\u2014';
+  var kv=njKV(raw,false);
+  if(kv.length>=2&&kv.every(function(p){return p.v!=='';})){
+    var h=njGetLang()==='kn'?['\u0cb5\u0cb0\u0ccd\u0c97','\u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0cc1']:['Category','Age'];
+    return '<div class="sub-tbl-wrap"><table class="sub-tbl"><thead><tr><th>'+h[0]+'</th><th>'+h[1]+'</th></tr></thead><tbody>'+
+      kv.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><strong>'+njEsc(p.v)+'</strong></td></tr>';}).join('')+'</tbody></table></div>';
+  }
+  return njEsc(raw);
+}
+function njQualCell(raw){
+  if(!raw) return '\u2014';
+  var t=String(raw).trim(),items=null;
+  if(/[|;\n]/.test(t)){items=t.split(/[|;\n]+/);}
+  else{
+    var cp=t.split(',').map(function(x){return x.trim();}).filter(Boolean);
+    if(cp.length>1&&cp.every(function(x){return x.split(/\s+/).length<=3;})) items=cp;
+  }
+  if(items) return '<div class="qual-wrap">'+items.map(function(x){x=x.trim();return x?'<span class="qual-chip">\ud83c\udf93 '+njEsc(x)+'</span>':'';}).join('')+'</div>';
+  return njEsc(t);
+}
 function renderJob(j){
   const dl=daysLeft(j.last_date);
   const isOpen=j.status==='open';
@@ -483,11 +557,11 @@ function renderJob(j){
             <tr><td>${njGetLang()==='kn'?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name'}</td><td>${njField(j.title_en,j.title_kn)||'—'}</td></tr>
             <tr><td>${njGetLang()==='kn'?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies'}</td><td><strong>${njField(j.seats||'0',j.seats_kn)}</strong></td></tr>
             ${j.salary?`<tr><td>${njGetLang()==='kn'?'ವೇತನ':'Pay Scale / Salary'}</td><td>${njField(j.salary,j.salary_kn)}</td></tr>`:''}
-            ${j.age?`<tr><td>${njGetLang()==='kn'?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit'}</td><td>${njField(j.age,j.age_kn)}</td></tr>`:''}
-            ${j.skills?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತೆ':'Qualification'}</td><td>${njField(j.skills,j.skills_kn)}</td></tr>`:''}
+            ${j.age?`<tr><td>${njGetLang()==='kn'?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit'}</td><td>${njAgeCell(njField(j.age,j.age_kn))}</td></tr>`:''}
+            ${j.skills?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತೆ':'Qualification'}</td><td>${njQualCell(njField(j.skills,j.skills_kn))}</td></tr>`:''}
             ${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags)?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags'}</td><td>${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags).split(',').map(t=>`<span style="display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;margin:2px 4px 2px 0;">🎓 ${t.trim()}</span>`).join('')}</td></tr>`:''}
             <tr><td>${njGetLang()==='kn'?'ಸ್ಥಳ':'Location'}</td><td>${njField(j.loc,j.loc_kn)||(njGetLang()==='kn'?'ಕರ್ನಾಟಕ':'Karnataka')}</td></tr>
-            ${j.fee?`<tr class="fee-row"><td style="vertical-align:top;padding-top:16px;">${njGetLang()==='kn'?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee'}</td><td style="padding-top:16px;">${njField(j.fee,j.fee_kn).split('|').map(part=>`<div class="fee-chip">${part.trim()}</div>`).join('')}</td></tr>`:''}
+            ${j.fee?`<tr class="fee-row"><td style="vertical-align:top;padding-top:16px;">${njGetLang()==='kn'?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee'}</td><td style="padding-top:16px;">${njFeeCell(njField(j.fee,j.fee_kn))}</td></tr>`:''}
             ${j.notif?`<tr><td>${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.'}</td><td>${j.notif}${j.notif_url?`<div style="margin-top:8px;"><a href="${j.notif_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">📄 ${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ PDF':'Notification PDF'} ↗</a></div>`:''}</td></tr>`:''}
             ${j.start_status==='started'?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><strong style="color:#4ade80;">✅ ${njGetLang()==='kn'?'ಈಗಾಗಲೇ ಪ್ರಾರಂಭವಾಗಿದೆ':'Already Started'}</strong></td></tr>`:(j.start_date?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><strong style="color:#4ade80;">📅 ${fmtDate(j.start_date)}</strong></td></tr>`:'')}
             ${j.last_date?`<tr><td>${njGetLang()==='kn'?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date'}</td><td><strong style="color:${isExpiring?'#ff5757':'#c4b5fd'};">📅 ${fmtDate(j.last_date)}</strong></td></tr>`:''}
@@ -531,7 +605,7 @@ function renderJob(j){
           <div style="overflow-x:auto;"><table class="cat-tbl">
             <thead><tr><th>${njGetLang()==='kn'?'ವರ್ಗ':'Category'}</th><th>${njGetLang()==='kn'?'ಹುದ್ದೆಗಳು':'Vacancies'}</th></tr></thead>
             <tbody>
-              ${j.cats.split(',').map(c=>{const p=c.trim().split('-');return `<tr><td>${p[0]||''}</td><td><strong>${p[1]||''}</strong></td></tr>`;}).join('')}
+              ${njCatRows(njField(j.cats,j.cats_kn))}
               <tr><td><strong>${njGetLang()==='kn'?'ಒಟ್ಟು':'Total'}</strong></td><td><strong>${njField(j.seats||'0',j.seats_kn)}</strong></td></tr>
             </tbody>
           </table></div>
