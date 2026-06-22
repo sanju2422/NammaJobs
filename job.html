@@ -220,6 +220,9 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .sim-info{min-width:0;}
 .sim-badge{display:inline-block;font-size:10px;font-weight:800;color:#c4b5fd;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
 @media(max-width:640px){.sim-grid{grid-template-columns:1fr;}}
+/* ===== Transparent outline boxes for value / content areas (display only) ===== */
+.vbox{display:inline-block;background:transparent;border:1.5px solid var(--glass-border);border-radius:10px;padding:6px 12px;max-width:100%;}
+.vbox-sec{background:transparent;border:1.5px solid var(--glass-border);border-radius:12px;padding:14px;}
 
 /* APPLY BOX */
 .apply-box{
@@ -562,18 +565,18 @@ function renderJob(j){
         <div class="card">
           <div class="card-title">${njGetLang()==="kn"?"ಉದ್ಯೋಗ ಅವಲೋಕನ":"Job Overview"}</div>
           <table class="info-table">
-            <tr><td>${njGetLang()==='kn'?'ಸಂಸ್ಥೆ':'Organization'}</td><td>${njField(j.dept,j.dept_kn)||'—'}</td></tr>
-            <tr><td>${njGetLang()==='kn'?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name'}</td><td>${njField(j.title_en,j.title_kn)||'—'}</td></tr>
-            <tr><td>${njGetLang()==='kn'?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies'}</td><td><strong>${njField(j.seats||'0',j.seats_kn)}</strong></td></tr>
-            ${j.salary?`<tr><td>${njGetLang()==='kn'?'ವೇತನ':'Pay Scale / Salary'}</td><td>${njField(j.salary,j.salary_kn)}</td></tr>`:''}
-            ${j.age?`<tr><td>${njGetLang()==='kn'?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit'}</td><td>${njAgeCell(njField(j.age,j.age_kn))}</td></tr>`:''}
-            ${j.skills?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತೆ':'Qualification'}</td><td>${njQualCell(njField(j.skills,j.skills_kn))}</td></tr>`:''}
-            ${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags)?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags'}</td><td>${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags).split(',').map(t=>`<span style="display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;margin:2px 4px 2px 0;">🎓 ${t.trim()}</span>`).join('')}</td></tr>`:''}
-            <tr><td>${njGetLang()==='kn'?'ಸ್ಥಳ':'Location'}</td><td>${njField(j.loc,j.loc_kn)||(njGetLang()==='kn'?'ಕರ್ನಾಟಕ':'Karnataka')}</td></tr>
-            ${j.fee?`<tr class="fee-row"><td style="vertical-align:top;padding-top:16px;">${njGetLang()==='kn'?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee'}</td><td style="padding-top:16px;">${njFeeCell(njField(j.fee,j.fee_kn))}</td></tr>`:''}
-            ${j.notif?`<tr><td>${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.'}</td><td>${j.notif}${j.notif_url?`<div style="margin-top:8px;"><a href="${j.notif_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">📄 ${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ PDF':'Notification PDF'} ↗</a></div>`:''}</td></tr>`:''}
-            ${j.start_status==='started'?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><strong style="color:#4ade80;">✅ ${njGetLang()==='kn'?'ಈಗಾಗಲೇ ಪ್ರಾರಂಭವಾಗಿದೆ':'Already Started'}</strong></td></tr>`:(j.start_date?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><strong style="color:#4ade80;">📅 ${fmtDate(j.start_date)}</strong></td></tr>`:'')}
-            ${j.last_date?`<tr><td>${njGetLang()==='kn'?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date'}</td><td><strong style="color:${isExpiring?'#ff5757':'#c4b5fd'};">📅 ${fmtDate(j.last_date)}</strong></td></tr>`:''}
+            <tr><td>${njGetLang()==='kn'?'ಸಂಸ್ಥೆ':'Organization'}</td><td><span class="vbox">${njField(j.dept,j.dept_kn)||'—'}</span></td></tr>
+            <tr><td>${njGetLang()==='kn'?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name'}</td><td><span class="vbox">${njField(j.title_en,j.title_kn)||'—'}</span></td></tr>
+            <tr><td>${njGetLang()==='kn'?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies'}</td><td><span class="vbox"><strong>${njField(j.seats||'0',j.seats_kn)}</strong></span></td></tr>
+            ${j.salary?`<tr><td>${njGetLang()==='kn'?'ವೇತನ':'Pay Scale / Salary'}</td><td><span class="vbox">${njField(j.salary,j.salary_kn)}</span></td></tr>`:''}
+            ${j.age?`<tr><td>${njGetLang()==='kn'?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit'}</td><td><span class="vbox">${njAgeCell(njField(j.age,j.age_kn))}</span></td></tr>`:''}
+            ${j.skills?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತೆ':'Qualification'}</td><td><span class="vbox">${njQualCell(njField(j.skills,j.skills_kn))}</span></td></tr>`:''}
+            ${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags)?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags'}</td><td><span class="vbox">${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags).split(',').map(t=>`<span style="display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;margin:2px 4px 2px 0;">🎓 ${t.trim()}</span>`).join('')}</span></td></tr>`:''}
+            <tr><td>${njGetLang()==='kn'?'ಸ್ಥಳ':'Location'}</td><td><span class="vbox">${njField(j.loc,j.loc_kn)||(njGetLang()==='kn'?'ಕರ್ನಾಟಕ':'Karnataka')}</span></td></tr>
+            ${j.fee?`<tr class="fee-row"><td style="vertical-align:top;padding-top:16px;">${njGetLang()==='kn'?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee'}</td><td style="padding-top:16px;"><span class="vbox">${njFeeCell(njField(j.fee,j.fee_kn))}</span></td></tr>`:''}
+            ${j.notif?`<tr><td>${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.'}</td><td><span class="vbox">${j.notif}</span>${j.notif_url?`<div style="margin-top:8px;"><a href="${j.notif_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">📄 ${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ PDF':'Notification PDF'} ↗</a></div>`:''}</td></tr>`:''}
+            ${j.start_status==='started'?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><span class="vbox"><strong style="color:#4ade80;">✅ ${njGetLang()==='kn'?'ಈಗಾಗಲೇ ಪ್ರಾರಂಭವಾಗಿದೆ':'Already Started'}</strong></span></td></tr>`:(j.start_date?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><span class="vbox"><strong style="color:#4ade80;">📅 ${fmtDate(j.start_date)}</strong></span></td></tr>`:'')}
+            ${j.last_date?`<tr><td>${njGetLang()==='kn'?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date'}</td><td><span class="vbox"><strong style="color:${isExpiring?'#ff5757':'#c4b5fd'};">📅 ${fmtDate(j.last_date)}</strong></span></td></tr>`:''}
             ${j.official_url?`<tr><td>${njGetLang()==='kn'?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್':'Official Website'}</td><td><a href="${j.official_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">🌐 ${njGetLang()==='kn'?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಭೇಟಿ ನೀಡಿ':'Visit Official Website'} ↗</a></td></tr>`:''}
             ${j.apply_link?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಲಿಂಕ್':'Apply Link'}</td><td><a href="${j.apply_link}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#1a1a2e !important;text-decoration:none;">📋 ${njGetLang()==='kn'?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now'} ↗</a></td></tr>`:''}
           </table>
@@ -605,13 +608,13 @@ function renderJob(j){
         ${j.description?`
         <div class="card">
           <div class="card-title">${njGetLang()==="kn"?"ಈ ಉದ್ಯೋಗದ ಬಗ್ಗೆ":"About this Job"}</div>
-          <div style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${njField(j.description,j.description_kn)}</div>
+          <div class="vbox-sec" style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${njField(j.description,j.description_kn)}</div>
         </div>`:''}
 
         ${j.cats?`
         <div class="card">
           <div class="card-title">${njGetLang()==="kn"?"ವರ್ಗವಾರು ಹುದ್ದೆಗಳು":"Category-wise Vacancies"}</div>
-          <div style="overflow-x:auto;"><table class="cat-tbl">
+          <div class="vbox-sec" style="overflow-x:auto;"><table class="cat-tbl">
             <thead><tr><th>${njGetLang()==='kn'?'ವರ್ಗ':'Category'}</th><th>${njGetLang()==='kn'?'ಹುದ್ದೆಗಳು':'Vacancies'}</th></tr></thead>
             <tbody>
               ${njCatRows(njField(j.cats,j.cats_kn))}
@@ -646,7 +649,7 @@ function renderJob(j){
         ${j.syllabus?`
         <div class="card">
           <div class="card-title">${njGetLang()==="kn"?"ಪರೀಕ್ಷಾ ಪಠ್ಯಕ್ರಮ":"Exam Syllabus"}</div>
-          <div style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${njField(j.syllabus,j.syllabus_kn)}</div>
+          <div class="vbox-sec" style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${njField(j.syllabus,j.syllabus_kn)}</div>
           ${j.syllabus_url?`<div style="margin-top:12px;"><a href="${j.syllabus_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:13px;padding:10px 20px;">📄 Download Syllabus PDF ↗</a></div>`:''}
         </div>`:''}
 
