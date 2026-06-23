@@ -435,25 +435,46 @@ function scrollToApply(){document.getElementById('apply-section')?.scrollIntoVie
 
 function shareWA(){
   const url=window.location.href;
+  const title=njField(job.title_en,job.title_kn);
+  const desc=njField(job.description,job.description_kn);
   let txt;
   if(job.status==='soon'){
-    const sd=job.start_date?`📅 Starting From: ${fmtDate(job.start_date)}`:'📅 Start Date: Coming Soon';
-    txt=`🔜 *Coming Soon!*\n\n📋 *${job.title_en}*\n\n${sd}\n🔗 ${url}\n\n— Namma Jobs`;
+    const sd=job.start_date
+      ?`📅 ${njGetLang()==='kn'?'ಪ್ರಾರಂಭ ದಿನಾಂಕ':'Starting From'}: ${fmtDate(job.start_date)}`
+      :`📅 ${njGetLang()==='kn'?'ಪ್ರಾರಂಭ ದಿನಾಂಕ: ಶೀಘ್ರದಲ್ಲೇ':'Start Date: Coming Soon'}`;
+    txt=`🔜 *${njGetLang()==='kn'?'ಶೀಘ್ರದಲ್ಲೇ!':'Coming Soon!'}*\n\n📋 *${title}*${desc?'\n\n'+desc.slice(0,200):''}\n\n${sd}\n🔗 ${url}\n\n— Namma Jobs`;
   } else {
-    txt=`🎯 *${job.title_en}*\n\nApply: ${url}\n\n— Namma Jobs`;
+    txt=`🎯 *${title}*${desc?'\n\n'+desc.slice(0,200):''}\n\n${njGetLang()==='kn'?'ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply'}: ${url}\n\n— Namma Jobs`;
   }
   window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
 }
 function shareTG(){
   const url=window.location.href;
+  const title=njField(job.title_en,job.title_kn);
+  const desc=njField(job.description,job.description_kn);
   let txt;
   if(job.status==='soon'){
-    const sd=job.start_date?`📅 Starting From: ${fmtDate(job.start_date)}`:'📅 Start Date: Coming Soon';
-    txt=`🔜 Coming Soon!\n\n📋 ${job.title_en}\n\n${sd}\n\n— Namma Jobs`;
+    const sd=job.start_date
+      ?`📅 ${njGetLang()==='kn'?'ಪ್ರಾರಂಭ ದಿನಾಂಕ':'Starting From'}: ${fmtDate(job.start_date)}`
+      :`📅 ${njGetLang()==='kn'?'ಪ್ರಾರಂಭ ದಿನಾಂಕ: ಶೀಘ್ರದಲ್ಲೇ':'Start Date: Coming Soon'}`;
+    txt=`🔜 ${njGetLang()==='kn'?'ಶೀಘ್ರದಲ್ಲೇ!':'Coming Soon!'}\n\n📋 ${title}${desc?'\n\n'+desc.slice(0,200):''}\n\n${sd}\n\n— Namma Jobs`;
   } else {
-    txt=job.title_en;
+    txt=`${title}${desc?'\n\n'+desc.slice(0,200):''}`;
   }
   window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(txt)}`,'_blank');
+}
+function shareNative(){
+  const title=njField(job.title_en,job.title_kn);
+  const desc=njField(job.description,job.description_kn);
+  if(navigator.share){
+    navigator.share({
+      title:title,
+      text:desc?desc.slice(0,200):'',
+      url:window.location.href
+    }).catch(()=>{});
+  } else {
+    copyLink();
+  }
 }
 function copyLink(){
   navigator.clipboard.writeText(window.location.href).then(()=>{
@@ -680,6 +701,7 @@ function renderJob(j){
             <button class="share-btn sb-wa" onclick="shareWA()">📱 WhatsApp</button>
             <button class="share-btn sb-tg" onclick="shareTG()">✈️ Telegram</button>
             <button class="share-btn sb-cp" id="copy-btn" onclick="copyLink()">🔗 ${njGetLang()==='kn'?'ಲಿಂಕ್ ಕಾಪಿ ಮಾಡಿ':'Copy Link'}</button>
+            <button class="share-btn sb-cp" onclick="shareNative()">📤 ${njGetLang()==='kn'?'ಹಂಚಿಕೊಳ್ಳಿ':'Share'}</button>
           </div>
         </div>
       </div>
