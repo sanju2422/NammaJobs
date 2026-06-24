@@ -862,34 +862,40 @@ async function fetchNotifs(){
   }catch(e){return [];}
 }
 
-function shareUrgentWA(id,title,days,lastDate){
+function shareUrgentWA(id,title_en,title_kn,days,lastDate){
+  const title=njField(title_en,title_kn);
   const url=window.location.origin+'/'+getJobUrl(id);
   const urgency=days===0?'🔴 URGENT | Last Day Today!':days===1?'🔴 URGENT | Last 1 Day Remaining!':days<=3?`🟠 URGENT | Last ${days} Days Remaining!`:`⚠️ Last ${days} Days Remaining`;
   const txt=`${urgency}\n\n📋 *${title}*\n\n📅 Last Date: ${fmtDate(lastDate)}\n🔗 Apply: ${url}\n\n— Namma Jobs`;
   window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
 }
-function shareUrgentTG(id,title,days,lastDate){
+function shareUrgentTG(id,title_en,title_kn,days,lastDate){
+  const title=njField(title_en,title_kn);
   const url=window.location.origin+'/'+getJobUrl(id);
   const urgency=days===0?'🔴 URGENT | Last Day Today!':days===1?'🔴 URGENT | Last 1 Day Remaining!':days<=3?`🟠 URGENT | Last ${days} Days Remaining!`:`⚠️ Last ${days} Days Remaining`;
   const txt=`${urgency}\n\n📋 ${title}\n\n📅 Last Date: ${fmtDate(lastDate)}\n\n— Namma Jobs`;
   window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(txt)}`,'_blank');
 }
-function shareWA(id,title){
+function shareWA(id,title_en,title_kn){
+  const title=njField(title_en,title_kn);
   const url=window.location.origin+'/'+getJobUrl(id);
   const txt=`🎯 *${title}*\n\nApply: ${url}\n\n— Namma Jobs`;
   window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
 }
-function shareTG(id,title){
+function shareTG(id,title_en,title_kn){
+  const title=njField(title_en,title_kn);
   const url=window.location.origin+'/'+getJobUrl(id);
   window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,'_blank');
 }
-function shareCSWA(id,title,startDate){
+function shareCSWA(id,title_en,title_kn,startDate){
+  const title=njField(title_en,title_kn);
   const url=window.location.origin+'/'+getJobUrl(id);
   const sd=startDate?`📅 Starting From: ${fmtDate(startDate)}`:'📅 Start Date: Coming Soon';
   const txt=`🔜 *Coming Soon!*\n\n📋 *${title}*\n\n${sd}\n🔗 ${url}\n\n— Namma Jobs`;
   window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
 }
-function shareCSTG(id,title,startDate){
+function shareCSTG(id,title_en,title_kn,startDate){
+  const title=njField(title_en,title_kn);
   const url=window.location.origin+'/'+getJobUrl(id);
   const sd=startDate?`📅 Starting From: ${fmtDate(startDate)}`:'📅 Start Date: Coming Soon';
   const txt=`🔜 Coming Soon!\n\n📋 ${title}\n\n${sd}\n\n— Namma Jobs`;
@@ -909,6 +915,7 @@ function jCard(j){
   const isOpen=j.status==='open';
   const status=statusBadge(j.status,dl);
   const safeTitle=(j.title_en||'').replace(/['"]/g,'');
+  const safeTitleKn=(j.title_kn||'').replace(/['"]/g,'');
   const url=getJobUrl(j.id);
 
   let actionBtn;
@@ -960,11 +967,11 @@ function jCard(j){
       
       <div class="jf">
         ${j.status==='soon'?`
-        <button class="btn-card bc-wa" onclick="event.stopPropagation();shareCSWA('${j.id}','${safeTitle}','${j.start_date||''}')">📱 WhatsApp</button>
-        <button class="btn-card bc-tg" onclick="event.stopPropagation();shareCSTG('${j.id}','${safeTitle}','${j.start_date||''}')">✈️ Telegram</button>
+        <button class="btn-card bc-wa" onclick="event.stopPropagation();shareCSWA('${j.id}','${safeTitle}','${safeTitleKn}','${j.start_date||''}')">📱 WhatsApp</button>
+        <button class="btn-card bc-tg" onclick="event.stopPropagation();shareCSTG('${j.id}','${safeTitle}','${safeTitleKn}','${j.start_date||''}')">✈️ Telegram</button>
         `:`
-        <button class="btn-card bc-wa" onclick="event.stopPropagation();shareWA('${j.id}','${safeTitle}')">📱 WhatsApp</button>
-        <button class="btn-card bc-tg" onclick="event.stopPropagation();shareTG('${j.id}','${safeTitle}')">✈️ Telegram</button>
+        <button class="btn-card bc-wa" onclick="event.stopPropagation();shareWA('${j.id}','${safeTitle}','${safeTitleKn}')">📱 WhatsApp</button>
+        <button class="btn-card bc-tg" onclick="event.stopPropagation();shareTG('${j.id}','${safeTitle}','${safeTitleKn}')">✈️ Telegram</button>
         `}
         ${actionBtn}
       </div>
@@ -1104,6 +1111,7 @@ function renderAll(){
     const dl=daysLeft(j.last_date);
     const urgencyBadge=dl===0?'🔴 Last Day!':dl===1?'🔴 URGENT | Last 1 Day':dl<=3?`🟠 URGENT | Last ${dl} Days`:`⚠️ Last ${dl} Days`;
     const safeTitle=(j.title_en||'').replace(/'/g,"\'");
+    const safeTitleKn=(j.title_kn||'').replace(/'/g,"\'");
     return`<div class="di" onclick="window.location.href='${getJobUrl(j.id)}'">
       <div class="dd"><div class="ddy">${d.getDate()}</div><div class="dmo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div>
       <div style="flex:1;min-width:0;">
@@ -1111,8 +1119,8 @@ function renderAll(){
         <div class="dde">${j.dept||''}</div>
         <div style="font-size:10px;font-weight:800;color:${dl<=1?'#ff4444':dl<=3?'#ff8c00':'#f59e0b'};margin-top:3px;">${urgencyBadge}</div>
         <div style="display:flex;gap:5px;margin-top:6px;">
-          <button class="btn-card bc-wa" onclick="event.stopPropagation();shareUrgentWA('${j.id}','${safeTitle}',${dl},'${j.last_date}')" style="font-size:10px;padding:3px 7px;">📱 WhatsApp</button>
-          <button class="btn-card bc-tg" onclick="event.stopPropagation();shareUrgentTG('${j.id}','${safeTitle}',${dl},'${j.last_date}')" style="font-size:10px;padding:3px 7px;">✈️ Telegram</button>
+          <button class="btn-card bc-wa" onclick="event.stopPropagation();shareUrgentWA('${j.id}','${safeTitle}','${safeTitleKn}',${dl},'${j.last_date}')" style="font-size:10px;padding:3px 7px;">📱 WhatsApp</button>
+          <button class="btn-card bc-tg" onclick="event.stopPropagation();shareUrgentTG('${j.id}','${safeTitle}','${safeTitleKn}',${dl},'${j.last_date}')" style="font-size:10px;padding:3px 7px;">✈️ Telegram</button>
         </div>
       </div>
     </div>`;
