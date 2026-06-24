@@ -379,7 +379,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
         <button class="lang-toggle-btn lang-active" id="lang-btn-en" onclick="njToggleLang('en')">EN</button>
         <button class="lang-toggle-btn" id="lang-btn-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
       </div>
-      <button class="tbtn primary" id="top-apply" onclick="scrollToApply()">Apply Now ↗</button>
+      <button class="tbtn primary" id="top-apply" onclick="scrollToApply()">Apply ↗</button>
     </div>
   </div>
 </header>
@@ -854,7 +854,7 @@ function njRerender(){
 // Update header elements that exist outside template literals
 function updateStaticLangElements(){
   const topApply=document.getElementById('top-apply');
-  if(topApply) topApply.textContent=(njGetLang()==='kn'?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now')+' ↗';
+  if(topApply) topApply.textContent=(njGetLang()==='kn'?'ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply')+' ↗';
 }
 
 </script>
