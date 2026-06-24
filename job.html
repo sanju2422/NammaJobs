@@ -344,6 +344,8 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .lang-toggle-btn:hover:not(.lang-active){color:#fff;background:var(--glass-bg-dark);}
 /* Back button: full label on desktop, compact "← Back" on mobile + tablet */
 .back-btn .back-short{display:none;}
+/* Top-right Apply button: full label+arrow on desktop, compact label on mobile+tablet */
+#top-apply .ta-short{display:none;}
 @media(max-width:1024px){
   .back-btn .back-full{display:none;}
   .back-btn .back-short{display:inline;}
@@ -354,6 +356,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   .lang-toggle-btn{padding:7px 13px;font-size:13px;line-height:1.25;border-radius:10px;white-space:nowrap;}
   #lang-btn-kn{font-family:'Noto Sans Kannada',sans-serif;font-size:13px;letter-spacing:.2px;}
   .lang-toggle-btn.lang-active{box-shadow:0 2px 10px rgba(255,214,10,0.5);}
+  /* Compact the green Apply button to match Back / language toggle width */
+  #top-apply .ta-full,#top-apply .ta-arrow{display:none;}
+  #top-apply .ta-short{display:inline;}
+  #top-apply{padding:9px 14px;font-size:13px;white-space:nowrap;}
 }
 [data-lang="en"] .lang-kn{display:none !important;}
 [data-lang="kn"] .lang-en{display:none !important;}
@@ -379,7 +385,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
         <button class="lang-toggle-btn lang-active" id="lang-btn-en" onclick="njToggleLang('en')">EN</button>
         <button class="lang-toggle-btn" id="lang-btn-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
       </div>
-      <button class="tbtn primary" id="top-apply" onclick="scrollToApply()">Apply ↗</button>
+      <button class="tbtn primary" id="top-apply" onclick="scrollToApply()"><span class="ta-short">Apply</span><span class="ta-full">Apply</span><span class="ta-arrow"> ↗</span></button>
     </div>
   </div>
 </header>
@@ -854,7 +860,12 @@ function njRerender(){
 // Update header elements that exist outside template literals
 function updateStaticLangElements(){
   const topApply=document.getElementById('top-apply');
-  if(topApply) topApply.textContent=(njGetLang()==='kn'?'ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply')+' ↗';
+  if(topApply){
+    const kn=njGetLang()==='kn';
+    topApply.innerHTML='<span class="ta-short">'+(kn?'ಅರ್ಜಿ':'Apply')+'</span>'
+      +'<span class="ta-full">'+(kn?'ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply')+'</span>'
+      +'<span class="ta-arrow"> ↗</span>';
+  }
 }
 
 </script>
