@@ -163,6 +163,20 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .lang-toggle-btn{background:transparent;border:none;color:rgba(255,255,255,0.6);padding:5px 10px;border-radius:9px;font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .2s;line-height:1;}
 .lang-toggle-btn.lang-active{background:linear-gradient(135deg,#FFD60A,#f59e0b);color:#1a1a2e;box-shadow:0 2px 8px rgba(255,214,10,0.4);}
 .lang-toggle-btn:hover:not(.lang-active){color:#fff;background:var(--glass-bg-dark);}
+/* Mobile + Tablet language toggle (right of search bar) — hidden on desktop */
+.lang-toggle-mobile{display:none;}
+@media(max-width:1024px){
+  .hs{display:flex;align-items:center;gap:8px;}
+  .hs input{flex:1 1 auto;width:auto;min-width:0;}
+  .hbtns .lang-toggle{display:none;}
+  .lang-toggle-mobile{
+    display:flex;flex:0 0 auto;align-items:center;white-space:nowrap;
+    background:var(--glass-bg);border:2px solid var(--glass-border);
+    border-radius:12px;overflow:visible;padding:2px;gap:2px;
+  }
+  .lang-toggle-mobile .lang-toggle-btn{padding:6px 10px;font-size:12px;line-height:1.2;white-space:nowrap;}
+  .lang-toggle-mobile #lang-btn-kn-m{font-family:'Noto Sans Kannada',sans-serif;}
+}
 /* Content visibility by language */
 [data-lang="en"] .lang-kn{display:none !important;}
 [data-lang="kn"] .lang-en{display:none !important;}
@@ -207,6 +221,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
     </div>
     <div class="hs">
       <input type="text" id="srch" placeholder="Search Jobs..." oninput="onSearch()">
+      <div class="lang-toggle lang-toggle-mobile">
+        <button class="lang-toggle-btn lang-active" id="lang-btn-en-m" onclick="njToggleLang('en')">EN</button>
+        <button class="lang-toggle-btn" id="lang-btn-kn-m" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
+      </div>
     </div>
     <div class="hbtns">
       <a href="https://t.me/nammajobs_karnataka" target="_blank" class="tbtn" style="background:rgba(0,136,204,0.35);border-color:rgba(0,136,204,0.7);text-decoration:none;">✈️ Telegram</a>
