@@ -28,17 +28,13 @@ function njSetLang(lang) {
 // Apply language to DOM
 function njApplyLang(lang) {
   document.documentElement.setAttribute('data-lang', lang);
-  const btnEn = document.getElementById('lang-btn-en');
-  const btnKn = document.getElementById('lang-btn-kn');
-  if (btnEn && btnKn) {
-    if (lang === 'kn') {
-      btnEn.classList.remove('lang-active');
-      btnKn.classList.add('lang-active');
-    } else {
-      btnKn.classList.remove('lang-active');
-      btnEn.classList.add('lang-active');
-    }
-  }
+  // Sync EVERY language button (desktop header + mobile/tablet search-bar toggle).
+  // Uses id prefixes so any toggle (lang-btn-en, lang-btn-en-m, ...) stays in sync
+  // with the single shared language state — no separate state is created.
+  const enBtns = document.querySelectorAll('[id^="lang-btn-en"]');
+  const knBtns = document.querySelectorAll('[id^="lang-btn-kn"]');
+  enBtns.forEach(function (b) { b.classList.toggle('lang-active', lang !== 'kn'); });
+  knBtns.forEach(function (b) { b.classList.toggle('lang-active', lang === 'kn'); });
 }
 
 // Toggle between EN and KN
