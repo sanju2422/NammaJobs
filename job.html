@@ -589,15 +589,44 @@ function njCatRows(raw){
   if(!kv.length) return '<tr><td colspan="2">'+njEsc(raw)+'</td></tr>';
   return kv.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><strong>'+njEsc(p.v||'\u2014')+'</strong></td></tr>';}).join('');
 }
+// Smart Age Limit parser. Detects category-wise ages from plain pasted admin text
+// (e.g. "Maximum 50 Years (UR) Maximum 53 Years (OBC-NCL) Age Relaxation as per Government Rules")
+// and renders a Category / Age Limit table — same style as the Fee & Category-wise tables.
+function njAgeRows(raw){
+  var t=String(raw).replace(/\r/g,' ').replace(/\s+/g,' ').trim();
+  if(!t) return {rows:[],table:false};
+
+  // 1) Structured "Category: value | Category = value"
+  var kv=njKV(t,false);
+  if(kv.length>=2&&kv.every(function(p){return p.v!=='';})) return {rows:kv,table:true};
+
+  // 2) Plain text "VALUE (CATEGORY)" units, e.g. "Maximum 50 Years (UR)".
+  var rows=[],re=/([^()]+?)\s*\(([^)]+)\)/g,m;
+  while((m=re.exec(t))!==null){
+    var val=m[1].replace(/^[\s,;:.\u2013\-]+/,'').replace(/^(maximum|max\.?|upto|up\s?to|minimum|min\.?)\s+/i,'').trim();
+    var cat=m[2].trim();
+    if(cat&&cat.length<=40&&val) rows.push({k:cat,v:val});
+  }
+
+  // 3) "Age Relaxation ..." trailer (no parentheses required).
+  var rel=t.match(/age\s*relax[a-z]*\s*(?:is\s+|[:\-\u2013]\s*)?(.+?)\s*$/i);
+  if(rel&&rel[1]){
+    var rv=rel[1].trim().replace(/[).]+$/,'');
+    if(rv&&rv.length<=80&&!/^\(/.test(rv)) rows.push({k:(njGetLang()==='kn'?'\u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0cbf\u0ca8 \u0cb8\u0ca1\u0cbf\u0cb2\u0cbf\u0c95\u0cc6':'Age Relaxation'),v:rv});
+  }
+
+  if(rows.length>=1) return {rows:rows,table:true};
+  return {rows:[],table:false};
+}
 function njAgeCell(raw){
   if(!raw) return '\u2014';
-  var kv=njKV(raw,false);
-  if(kv.length>=2&&kv.every(function(p){return p.v!=='';})){
-    var h=njGetLang()==='kn'?['\u0cb5\u0cb0\u0ccd\u0c97','\u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0cc1']:['Category','Age'];
+  var r=njAgeRows(raw);
+  if(r.table&&r.rows.length){
+    var h=njGetLang()==='kn'?['\u0cb5\u0cb0\u0ccd\u0c97','\u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0cc1']:['Category','Age Limit'];
     return '<div class="sub-tbl-wrap"><table class="sub-tbl"><thead><tr><th>'+h[0]+'</th><th>'+h[1]+'</th></tr></thead><tbody>'+
-      kv.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><strong>'+njEsc(p.v)+'</strong></td></tr>';}).join('')+'</tbody></table></div>';
+      r.rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><strong>'+njEsc(p.v)+'</strong></td></tr>';}).join('')+'</tbody></table></div>';
   }
-  return njEsc(raw);
+  return njEsc(String(raw));
 }
 function njQualCell(raw){
   if(!raw) return '\u2014';
