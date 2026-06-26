@@ -459,6 +459,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
             <span id="pub-spin" class="spin"></span>
             <span>✓ Publish Job</span>
           </button>
+          <button class="fbtn" id="prev-btn" onclick="previewJob()" style="background:linear-gradient(135deg,#3b82f6,#2563eb);border-color:rgba(59,130,246,0.7);color:#fff;">👁️ Preview Job</button>
           <button class="fbtn fb-clr" onclick="clearForm()">✕ Clear</button>
         </div>
       </div>
@@ -713,33 +714,17 @@ async function uploadBanner(input,targetId){
   const path=`${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
   toast('ok','Uploading banner...');
   try{
-    // Upload into the public "job-banners" bucket. Folder/prefix = bucket name "job-banners/".
     const res=await fetch(`${SB_URL}/storage/v1/object/job-banners/${path}`,{
       method:'POST',
-      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':file.type,'x-upsert':'true','cache-control':'3600'},
+      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':file.type,'x-upsert':'true'},
       body:file
     });
-    if(!res.ok){
-      let detail='';
-      try{const j=await res.json();detail=j.message||j.error||'';}catch(_){try{detail=await res.text();}catch(__){detail='';}}
-      throw new Error(detail||('HTTP '+res.status));
-    }
-    // Save the PUBLIC URL into the field; saveJob() then persists it to Supabase (banner_en / banner_kn),
-    // and job.html renders it on the Job Details page.
+    if(!res.ok)throw new Error('upload failed');
     document.getElementById(targetId).value=`${SB_URL}/storage/v1/object/public/job-banners/${path}`;
     showBannerPreview(targetId);
     toast('ok','Banner uploaded!');
   }catch(e){
-    const msg=(e&&e.message)?String(e.message):'';
-    if(/bucket not found/i.test(msg)){
-      toast('err','Upload failed: "job-banners" bucket is missing. Run supabase_job_banners_setup.sql in Supabase, or paste a URL.');
-    }else if(/row-level security|rls|policy|permission|unauthorized|forbidden|violat/i.test(msg)){
-      toast('err','Upload failed: storage policy blocks upload. Run supabase_job_banners_setup.sql in Supabase, or paste a URL.');
-    }else if(/mime|content type|allowed/i.test(msg)){
-      toast('err','Upload failed: only JPG, PNG or WebP are allowed for the banner.');
-    }else{
-      toast('err','Upload failed'+(msg?': '+msg:'')+'. Create a public "job-banners" bucket or paste a URL.');
-    }
+    toast('err','Upload failed. Create a public "job-banners" bucket or paste a URL.');
   }finally{
     input.value='';
   }
@@ -760,15 +745,10 @@ function toast(type,msg){
 }
 
 // SAVE
-async function saveJob(){
+// Collect the current form into a job object (shared by Publish and Preview).
+function collectJob(){
   const ten=document.getElementById('f-ten').value.trim();
   const dept=document.getElementById('f-dept').value.trim();
-  if(!ten||!dept){toast('err','Title and Department are required!');return;}
-
-  const btn=document.getElementById('pub-btn');
-  const sp=document.getElementById('pub-spin');
-  btn.disabled=true;sp.style.display='inline-block';
-
   const job={
     cat:selCat,
     status:selStat,
@@ -820,6 +800,45 @@ async function saveJob(){
     tips_kn:document.getElementById('f-tips-kn')?document.getElementById('f-tips-kn').value.trim()||null:null,
     bg:BGMAP[selCat]||'bg-gov',
   };
+  return job;
+}
+
+// Warn about recommended fields that are empty before publishing.
+function njMissingFields(job){
+  const need=[
+    ['Title', job.title_en],
+    ['Banner (English)', job.banner_en],
+    ['Official Website', job.official_url],
+    ['Apply Link', job.apply_link],
+    ['Notification PDF', job.notif_url],
+  ];
+  return need.filter(x=>!x[1]||!String(x[1]).trim()).map(x=>x[0]);
+}
+
+// Preview the final Job Details page without saving to Supabase.
+function previewJob(){
+  const ten=document.getElementById('f-ten').value.trim();
+  if(!ten){toast('err','Add a Title before previewing.');return;}
+  const job=collectJob();
+  try{ sessionStorage.setItem('nj_preview_job',JSON.stringify(job)); }
+  catch(e){ toast('err','Could not open preview.'); return; }
+  window.open('job.html?preview=1','_blank');
+}
+
+async function saveJob(){
+  const ten=document.getElementById('f-ten').value.trim();
+  const dept=document.getElementById('f-dept').value.trim();
+  if(!ten||!dept){toast('err','Title and Department are required!');return;}
+
+  const job=collectJob();
+  const missing=njMissingFields(job);
+  if(missing.length){
+    if(!confirm('⚠️ These recommended fields are empty:\n\n• '+missing.join('\n• ')+'\n\nPublish anyway?')) return;
+  }
+
+  const btn=document.getElementById('pub-btn');
+  const sp=document.getElementById('pub-spin');
+  btn.disabled=true;sp.style.display='inline-block';
 
   try{
     let res;
