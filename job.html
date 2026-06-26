@@ -615,7 +615,7 @@ function njFeeCell(raw){
   if(r.table&&r.rows.length){
     var h=njGetLang()==='kn'?['\u0cb5\u0cb0\u0ccd\u0c97','\u0cb6\u0cc1\u0cb2\u0ccd\u0c95']:['Category','Fee'];
     return '<div class="sub-tbl-wrap"><table class="sub-tbl"><thead><tr><th>'+h[0]+'</th><th>'+h[1]+'</th></tr></thead><tbody>'+
-      r.rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><strong>'+njFeeFmt(p.v)+'</strong></td></tr>';}).join('')+'</tbody></table></div>';
+      r.rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="vbox"><strong>'+njFeeFmt(p.v)+'</strong></span></td></tr>';}).join('')+'</tbody></table></div>';
   }
   return String(raw).split('|').map(function(part){return '<div class="fee-chip">'+njEsc(part.trim())+'</div>';}).join('');
 }
@@ -659,7 +659,7 @@ function njAgeCell(raw){
   if(r.table&&r.rows.length){
     var h=njGetLang()==='kn'?['\u0cb5\u0cb0\u0ccd\u0c97','\u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0cc1']:['Category','Age Limit'];
     return '<div class="sub-tbl-wrap"><table class="sub-tbl"><thead><tr><th>'+h[0]+'</th><th>'+h[1]+'</th></tr></thead><tbody>'+
-      r.rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><strong>'+njEsc(p.v)+'</strong></td></tr>';}).join('')+'</tbody></table></div>';
+      r.rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="vbox"><strong>'+njEsc(p.v)+'</strong></span></td></tr>';}).join('')+'</tbody></table></div>';
   }
   return njEsc(String(raw));
 }
