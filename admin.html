@@ -63,7 +63,9 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .panel-hdr h2{font-family:var(--fhead);font-size:18px;font-weight:800;margin:0;display:flex;align-items:center;gap:8px;text-shadow:0 2px 6px rgba(0,0,0,0.3);}
 .panel-hdr p{font-size:12px;color:rgba(255,255,255,0.95);margin-top:3px;font-weight:600;}
 
-label{display:block;font-size:11px;font-weight:800;color:rgba(255,255,255,0.85);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;margin-top:14px;}
+label{display:block;font-size:11px;font-weight:800;color:#AEB8D4;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;margin-top:14px;}
+.banner-prev{margin-top:8px;}
+.banner-prev img{max-width:100%;max-height:140px;border-radius:12px;border:1.5px solid var(--glass-border);display:block;}
 
 input[type=text],input[type=number],input[type=url],input[type=date],input[type=email],input[type=password],textarea{
   width:100%;
@@ -375,6 +377,17 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         <label>🖼️ Company Logo URL (Optional)</label>
         <input type="url" id="f-logo" placeholder="https://i.postimg.cc/abc123/logo.png">
         <div class="url-hint">📤 Paste direct image URL from Postimages.org or Wikipedia. Logo will show if provided, otherwise icon emoji will display.</div>
+
+        <div class="fsec" style="margin-top:20px;">🖼️ Job Banner (Optional)</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Upload a banner (JPG, PNG or WebP) or paste a direct image URL. Shown on the Job Details page and used as the social-share preview image. Leave blank to use the default share image.</div>
+        <label style="font-size:12px;color:rgba(255,255,255,0.6);">English Banner</label>
+        <input type="url" id="f-banner-en" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-en')">
+        <input type="file" id="f-banner-en-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-en')" style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.7);">
+        <div id="f-banner-en-prev" class="banner-prev"></div>
+        <label style="margin-top:10px;font-size:12px;color:rgba(255,255,255,0.6);">Kannada Banner</label>
+        <input type="url" id="f-banner-kn" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-kn')">
+        <input type="file" id="f-banner-kn-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-kn')" style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.7);">
+        <div id="f-banner-kn-prev" class="banner-prev"></div>
 
         <label>Category-wise Vacancies</label>
         <input type="text" id="f-cats" placeholder="SC-24, ST-12, OBC-32, Gen-52">
@@ -690,6 +703,38 @@ function toggleStarted(checked){
 }
 
 // TOAST
+// BANNER: upload to Supabase Storage (public bucket "job-banners") or paste a URL
+async function uploadBanner(input,targetId){
+  const file=input.files&&input.files[0];
+  if(!file)return;
+  const ok=['image/jpeg','image/png','image/webp'];
+  if(ok.indexOf(file.type)<0){toast('err','Only JPG, PNG or WebP allowed');input.value='';return;}
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+  const path=`${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+  toast('ok','Uploading banner...');
+  try{
+    const res=await fetch(`${SB_URL}/storage/v1/object/job-banners/${path}`,{
+      method:'POST',
+      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':file.type,'x-upsert':'true'},
+      body:file
+    });
+    if(!res.ok)throw new Error('upload failed');
+    document.getElementById(targetId).value=`${SB_URL}/storage/v1/object/public/job-banners/${path}`;
+    showBannerPreview(targetId);
+    toast('ok','Banner uploaded!');
+  }catch(e){
+    toast('err','Upload failed. Create a public "job-banners" bucket or paste a URL.');
+  }finally{
+    input.value='';
+  }
+}
+function showBannerPreview(targetId){
+  const t=document.getElementById(targetId);
+  const prev=document.getElementById(targetId+'-prev');
+  if(!prev)return;
+  prev.innerHTML=(t&&t.value.trim())?`<img src="${t.value.trim()}" alt="banner preview" onerror="this.style.display='none';">`:'';
+}
+
 function toast(type,msg){
   const t=document.getElementById('toast');
   t.className='toast '+type;
@@ -734,6 +779,8 @@ async function saveJob(){
     notif:document.getElementById('f-notif').value.trim()||null,
     icon:document.getElementById('f-icon').value.trim()||'💼',
     logo_url:document.getElementById('f-logo').value.trim()||null,
+    banner_en:document.getElementById('f-banner-en')?document.getElementById('f-banner-en').value.trim()||null:null,
+    banner_kn:document.getElementById('f-banner-kn')?document.getElementById('f-banner-kn').value.trim()||null:null,
     cats:document.getElementById('f-cats').value.trim()||null,
     tags:document.getElementById('f-tags').value.trim()||null,
     tags_kn:document.getElementById('f-tags-kn').value.trim()||null,
@@ -808,6 +855,8 @@ function editJob(id){
   document.getElementById('f-notif').value=j.notif||'';
   document.getElementById('f-icon').value=j.icon||'';
   document.getElementById('f-logo').value=j.logo_url||'';
+  if(document.getElementById('f-banner-en')){document.getElementById('f-banner-en').value=j.banner_en||'';showBannerPreview('f-banner-en');}
+  if(document.getElementById('f-banner-kn')){document.getElementById('f-banner-kn').value=j.banner_kn||'';showBannerPreview('f-banner-kn');}
   document.getElementById('f-cats').value=j.cats||'';
   document.getElementById('f-tags').value=j.tags||'';
   document.getElementById('f-tags-kn').value=j.tags_kn||'';
@@ -874,7 +923,8 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-faq','f-faq-kn','f-tips','f-tips-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-faq','f-faq-kn','f-tips','f-tips-kn','f-banner-en','f-banner-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-banner-en','f-banner-kn'].forEach(id=>showBannerPreview(id));
   ['f-ld-tba','f-sd-tba','f-sd-started','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleStarted(false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
   selCat='karnataka';selStat='open';

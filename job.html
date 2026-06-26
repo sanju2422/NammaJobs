@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Job Details – Namma Jobs</title>
 <link rel="icon" type="image/png" href="NammaJobs.png">
+<!-- Open Graph / social share. og:image is updated to the current-language job banner at runtime; falls back to this default. -->
+<meta property="og:type" content="website">
+<meta property="og:image" id="og-image" content="https://www.nammajobs.co.in/NammaJobs.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" id="twitter-image" content="https://www.nammajobs.co.in/NammaJobs.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://akdfgycfigxshjboxwzp.supabase.co">
@@ -205,6 +210,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .tips-card{background:linear-gradient(135deg,rgba(255,214,10,0.14),rgba(245,158,11,0.07));border:1.5px solid rgba(255,214,10,0.42);border-radius:14px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;}
 .tips-ic{flex-shrink:0;font-size:24px;line-height:1.2;}
 .tips-body{color:rgba(255,255,255,0.92);font-size:14px;font-weight:500;line-height:1.7;white-space:pre-wrap;}
+
+/* JOB BANNER */
+.job-banner{margin-bottom:18px;border-radius:18px;overflow:hidden;border:2px solid var(--glass-border);box-shadow:var(--shadow);line-height:0;}
+.job-banner img{width:100%;height:auto;display:block;}
 
 /* CATEGORY TABLE */
 .cat-tbl{width:100%;border-collapse:collapse;}
@@ -611,7 +620,19 @@ function renderJob(j){
     if(topApply)topApply.style.display='none';
   }
 
+  // Bilingual banner: show the banner for the currently selected language only.
+  const banner=(njGetLang()==='kn'?(j.banner_kn||''):(j.banner_en||'')).trim();
+
+  // Open Graph image: use the current-language banner if uploaded, else the default share image.
+  const OG_DEFAULT='https://www.nammajobs.co.in/NammaJobs.png';
+  const ogImg=banner||OG_DEFAULT;
+  const ogEl=document.getElementById('og-image');
+  if(ogEl)ogEl.setAttribute('content',ogImg);
+  const twEl=document.getElementById('twitter-image');
+  if(twEl)twEl.setAttribute('content',ogImg);
+
   let html=`
+    ${banner?`<div class="job-banner"><img src="${banner}" alt="${njField(j.title_en,j.title_kn)||'Job'} banner" loading="lazy" onerror="this.parentElement.style.display='none';"></div>`:''}
     <div class="hero">
       ${heroLogoHtml}
       <div class="hero-content">
