@@ -580,23 +580,32 @@ function njFeeFmt(v){
 function njFeeRows(raw){
   var rawStr=String(raw);
   if(!rawStr.trim()) return {rows:[],table:false};
+  var t=rawStr.replace(/\r/g,' ').replace(/\s+/g,' ').trim();
+  var rows=[];
 
-  // 1) Structured "Category: value" / "Category = value" (real delimiters only; keep newlines).
-  if(/[:=]/.test(rawStr)){
-    var kv=njKV(rawStr,false);
-    if(kv.length>=1&&kv.every(function(p){return p.v!=='';})) return {rows:kv,table:true};
+  // 1) Colon/equals-delimited pairs: "Cat : value  Cat : value ..." on one line or many.
+  //    Value is captured up to the next "Category :" boundary, so it works for English (Nil)
+  //    and non-English values (e.g. Kannada "\u0cb6\u0cc1\u0cb2\u0ccd\u0c95 \u0c87\u0cb2\u0ccd\u0cb2") alike.
+  if(/[:=]/.test(t)){
+    var pairRe=/([^:=]+?)\s*[:=]\s*(\S+(?:\s+\S+)*?)(?=(?:\s+[^:=]+[:=])|\s*$)/g,pm;
+    while((pm=pairRe.exec(t))!==null){
+      var k=pm[1].replace(/^[\s|\u2013\-]+/,'').replace(/[\s|\u2013\-]+$/,'').trim();
+      var v=pm[2].replace(/[,\s]+$/,'').trim();
+      if(k&&v) rows.push({k:k,v:v});
+    }
+    if(rows.length>=1) return {rows:rows,table:true};
   }
 
-  // 2) Plain text "<category> <fee> <category> <fee> ...".
-  var t=rawStr.replace(/\r/g,' ').replace(/\s+/g,' ').trim();
+  // 2) Plain text with no colons: anchor on fee tokens, category = the preceding text.
   var feeRe=/(?:\u20b9|rs\.?|inr)\s?[0-9][0-9,]*(?:\/-|-)?|\b[0-9][0-9,]{1,}(?:\/-|-)?\b|\bnil\b|\bfree\b|\bexempt(?:ed)?\b|\bno\s*fee\b|\bn\/?a\b/ig;
-  var rows=[],last=0,m;
+  var last=0,m;
   while((m=feeRe.exec(t))!==null){
-    var cat=t.slice(last,m.index).replace(/^[\s:=\-\u2013]+/,'').replace(/[\s:=\-\u2013]+$/,'').trim();
+    var cat=t.slice(last,m.index).replace(/^[\s:=|\-\u2013]+/,'').replace(/[\s:=|\-\u2013]+$/,'').trim();
     if(cat) rows.push({k:cat,v:m[0].trim().replace(/[,]+$/,'').trim()});
     last=m.index+m[0].length;
   }
   if(rows.length>=1) return {rows:rows,table:true};
+
   return {rows:[],table:false};
 }
 function njFeeCell(raw){
