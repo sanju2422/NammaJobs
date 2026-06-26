@@ -190,6 +190,22 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 }
 .step-text{color:#fff;font-size:14px;font-weight:600;line-height:1.5;padding-top:5px;}
 
+/* FAQ ACCORDION */
+.faq-list{display:flex;flex-direction:column;gap:10px;}
+.faq-item{background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);border-radius:13px;overflow:hidden;}
+.faq-item.open{border-color:var(--glass-border-strong);}
+.faq-q{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;text-align:left;background:transparent;border:none;cursor:pointer;padding:14px 16px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;line-height:1.5;}
+.faq-q .faq-ic{flex-shrink:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--grad-pink);color:#fff;font-size:16px;font-weight:800;transition:transform 0.25s ease;box-shadow:0 4px 12px rgba(168,85,247,0.4);}
+.faq-item.open .faq-q .faq-ic{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.3s ease;}
+.faq-item.open .faq-a{max-height:1000px;}
+.faq-a-inner{padding:0 16px 15px;color:rgba(255,255,255,0.85);font-size:14px;font-weight:500;line-height:1.7;white-space:pre-wrap;}
+
+/* EXPERT TIPS */
+.tips-card{background:linear-gradient(135deg,rgba(255,214,10,0.14),rgba(245,158,11,0.07));border:1.5px solid rgba(255,214,10,0.42);border-radius:14px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;}
+.tips-ic{flex-shrink:0;font-size:24px;line-height:1.2;}
+.tips-body{color:rgba(255,255,255,0.92);font-size:14px;font-weight:500;line-height:1.7;white-space:pre-wrap;}
+
 /* CATEGORY TABLE */
 .cat-tbl{width:100%;border-collapse:collapse;}
 .cat-tbl th{padding:10px;font-size:12px;color:rgba(255,255,255,0.85);font-weight:800;text-align:left;border-bottom:2px solid rgba(255,255,255,0.2);text-transform:uppercase;}
@@ -574,6 +590,11 @@ function njQualCell(raw){
   if(items) return '<div class="qual-wrap">'+items.map(function(x){x=x.trim();return x?'<span class="qual-chip">\ud83c\udf93 '+njEsc(x)+'</span>':'';}).join('')+'</div>';
   return njEsc(t);
 }
+function njToggleFaq(btn){
+  var item=btn.closest('.faq-item');
+  if(item)item.classList.toggle('open');
+}
+
 function renderJob(j){
   const dl=daysLeft(j.last_date);
   const isOpen=j.status==='open';
@@ -701,6 +722,41 @@ function renderJob(j){
             `).join('')||`<div class="step"><div class="step-num">1</div><div class="step-text">Visit the official website and apply online before the last date.</div></div>`}
           </div>
         </div>
+
+        ${(function(){
+          var faq=njField(j.faq_en,j.faq_kn);
+          if(!faq||!faq.trim())return '';
+          var items=faq.split('\n').filter(function(s){return s.trim();}).map(function(line,i){
+            var parts=line.split('|');
+            var q=(parts[0]||'').trim();
+            var a=parts.slice(1).join('|').trim();
+            if(!q)return '';
+            return `<div class="faq-item${i===0?' open':''}">
+              <button type="button" class="faq-q" onclick="njToggleFaq(this)">
+                <span>${q}</span>
+                <span class="faq-ic">+</span>
+              </button>
+              ${a?`<div class="faq-a"><div class="faq-a-inner">${a}</div></div>`:''}
+            </div>`;
+          }).join('');
+          if(!items.trim())return '';
+          return `<div class="card">
+            <div class="card-title">${njGetLang()==='kn'?'❓ ಪದೇ ಪದೇ ಕೇಳಲಾಗುವ ಪ್ರಶ್ನೆಗಳು':'❓ Frequently Asked Questions'}</div>
+            <div class="faq-list">${items}</div>
+          </div>`;
+        })()}
+
+        ${(function(){
+          var tips=njField(j.tips_en,j.tips_kn);
+          if(!tips||!tips.trim())return '';
+          return `<div class="card">
+            <div class="card-title">${njGetLang()==='kn'?'💡 ನಮ್ಮ ಜಾಬ್ಸ್ ತಜ್ಞರ ಸಲಹೆಗಳು':'💡 NammaJobs Expert Tips'}</div>
+            <div class="tips-card">
+              <div class="tips-ic">💡</div>
+              <div class="tips-body">${tips}</div>
+            </div>
+          </div>`;
+        })()}
 
         <div id="similar-jobs-section"></div>
 

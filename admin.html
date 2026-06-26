@@ -427,6 +427,20 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         <textarea id="f-hta-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಹಂತ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್ ತೆರೆಯಿರಿ&#10;ನೋಂದಣಿ ಮಾಡಿ&#10;ಅರ್ಜಿ ಭರ್ತಿ ಮಾಡಿ" title="How To Apply (Kannada)"></textarea>
         <div class="url-hint">Each line becomes a numbered step — clearly visible to job seekers</div>
 
+        <div class="fsec" style="margin-top:20px;">❓ FAQ (Optional)</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">One FAQ per line. Separate question and answer with a vertical bar: <strong>Question | Answer</strong>. Leave blank to hide the FAQ section.</div>
+        <label style="font-size:12px;color:rgba(255,255,255,0.6);">FAQ (English)</label>
+        <textarea id="f-faq" style="min-height:100px;" placeholder="One per line — Question | Answer:&#10;Is there an application fee? | Yes, ₹500 for General and ₹250 for SC/ST.&#10;Can I apply from another state? | Yes, candidates from all states can apply.&#10;What is the selection process? | Written exam followed by an interview."></textarea>
+        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">FAQ (ಕನ್ನಡ)</label>
+        <textarea id="f-faq-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಸಾಲಿನಲ್ಲಿ ಒಂದು — ಪ್ರಶ್ನೆ | ಉತ್ತರ:&#10;ಅರ್ಜಿ ಶುಲ್ಕ ಇದೆಯೇ? | ಹೌದು, ಸಾಮಾನ್ಯ ವರ್ಗಕ್ಕೆ ₹500.&#10;ಬೇರೆ ರಾಜ್ಯದಿಂದ ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದೇ? | ಹೌದು, ಎಲ್ಲಾ ರಾಜ್ಯಗಳ ಅಭ್ಯರ್ಥಿಗಳು ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದು." title="FAQ (Kannada)"></textarea>
+
+        <div class="fsec" style="margin-top:20px;">💡 NammaJobs Expert Tips (Optional)</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">A short highlighted tip card shown on the job page. Leave blank to hide the Expert Tips section.</div>
+        <label style="font-size:12px;color:rgba(255,255,255,0.6);">Expert Tips (English)</label>
+        <textarea id="f-tips" style="min-height:90px;" placeholder="e.g. Apply at least 3 days before the last date to avoid server load. Keep scanned copies of all documents ready before starting the form."></textarea>
+        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">Expert Tips (ಕನ್ನಡ)</label>
+        <textarea id="f-tips-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಉದಾ. ಸರ್ವರ್ ಒತ್ತಡ ತಪ್ಪಿಸಲು ಕೊನೆಯ ದಿನಾಂಕಕ್ಕಿಂತ ಕನಿಷ್ಠ 3 ದಿನ ಮುಂಚೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ." title="Expert Tips (Kannada)"></textarea>
+
         <div class="fbtns">
           <button class="fbtn fb-pub" id="pub-btn" onclick="saveJob()">
             <span id="pub-spin" class="spin"></span>
@@ -737,6 +751,10 @@ async function saveJob(){
     required_docs_kn:document.getElementById('f-req-docs-kn').value.trim()||null,
     how_to_apply:document.getElementById('f-hta').value.trim()||null,
     how_to_apply_kn:document.getElementById('f-hta-kn').value.trim()||null,
+    faq_en:document.getElementById('f-faq')?document.getElementById('f-faq').value.trim()||null:null,
+    faq_kn:document.getElementById('f-faq-kn')?document.getElementById('f-faq-kn').value.trim()||null:null,
+    tips_en:document.getElementById('f-tips')?document.getElementById('f-tips').value.trim()||null:null,
+    tips_kn:document.getElementById('f-tips-kn')?document.getElementById('f-tips-kn').value.trim()||null:null,
     bg:BGMAP[selCat]||'bg-gov',
   };
 
@@ -807,6 +825,10 @@ function editJob(id){
   document.getElementById('f-req-docs-kn').value=j.required_docs_kn||'';
   document.getElementById('f-hta').value=j.how_to_apply||'';
   document.getElementById('f-hta-kn').value=j.how_to_apply_kn||'';
+  if(document.getElementById('f-faq'))document.getElementById('f-faq').value=j.faq_en||'';
+  if(document.getElementById('f-faq-kn'))document.getElementById('f-faq-kn').value=j.faq_kn||'';
+  if(document.getElementById('f-tips'))document.getElementById('f-tips').value=j.tips_en||'';
+  if(document.getElementById('f-tips-kn'))document.getElementById('f-tips-kn').value=j.tips_kn||'';
 
   // Reset TBA checkboxes
   document.getElementById('f-ld-tba').checked=false;
@@ -852,7 +874,7 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-faq','f-faq-kn','f-tips','f-tips-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-ld-tba','f-sd-tba','f-sd-started','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleStarted(false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
   selCat='karnataka';selStat='open';
