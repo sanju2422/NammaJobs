@@ -63,7 +63,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .panel-hdr h2{font-family:var(--fhead);font-size:18px;font-weight:800;margin:0;display:flex;align-items:center;gap:8px;text-shadow:0 2px 6px rgba(0,0,0,0.3);}
 .panel-hdr p{font-size:12px;color:rgba(255,255,255,0.95);margin-top:3px;font-weight:600;}
 
-label{display:block;font-size:11px;font-weight:800;color:#AEB8D4;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;margin-top:14px;}
+label{display:block;font-size:11px;font-weight:800;color:#4ade80;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;margin-top:14px;}
 .banner-prev{margin-top:8px;}
 .banner-prev img{max-width:100%;max-height:140px;border-radius:12px;border:1.5px solid var(--glass-border);display:block;}
 
@@ -380,11 +380,11 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
 
         <div class="fsec" style="margin-top:20px;">🖼️ Job Banner (Optional)</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Upload a banner (JPG, PNG or WebP) or paste a direct image URL. Shown on the Job Details page and used as the social-share preview image. Leave blank to use the default share image.</div>
-        <label style="font-size:12px;color:rgba(255,255,255,0.6);">English Banner</label>
+        <label style="font-size:12px;color:#4ade80;">English Banner</label>
         <input type="url" id="f-banner-en" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-en')">
         <input type="file" id="f-banner-en-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-en')" style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.7);">
         <div id="f-banner-en-prev" class="banner-prev"></div>
-        <label style="margin-top:10px;font-size:12px;color:rgba(255,255,255,0.6);">Kannada Banner</label>
+        <label style="margin-top:10px;font-size:12px;color:#4ade80;">Kannada Banner</label>
         <input type="url" id="f-banner-kn" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-kn')">
         <input type="file" id="f-banner-kn-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-kn')" style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.7);">
         <div id="f-banner-kn-prev" class="banner-prev"></div>
@@ -395,7 +395,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         <label>🎓 Tags / Eligibility (English, Comma separated)</label>
         <input type="text" id="f-tags" placeholder="10th Pass, 12th Pass, Graduate, Diploma">
         <div class="url-hint">Examples: 10th Pass, 12th Pass, Graduate, Post Graduate, Diploma, ITI, Engineering, MBA</div>
-        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">Tags / Eligibility (ಕನ್ನಡ)</label>
+        <label style="margin-top:6px;font-size:12px;color:#4ade80;">Tags / Eligibility (ಕನ್ನಡ)</label>
         <input type="text" id="f-tags-kn" placeholder="ಪದವೀಧರ, ಬೆಂಗಳೂರು, ಕರ್ನಾಟಕ (ಕನ್ನಡದಲ್ಲಿ)" style="margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" title="Tags (Kannada)">
 
         <div class="fsec">📝 Job Description</div>
@@ -408,9 +408,9 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
         </div>
 
         <div class="fsec">📚 Syllabus (Optional)</div>
-        <label style="font-size:12px;color:rgba(255,255,255,0.6);">Syllabus (English)</label>
+        <label style="font-size:12px;color:#4ade80;">Syllabus (English)</label>
         <textarea id="f-syllabus" style="min-height:80px;" placeholder="Exam subjects:&#10;General Knowledge, Reasoning, Mathematics..."></textarea>
-        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">Syllabus (ಕನ್ನಡ)</label>
+        <label style="margin-top:6px;font-size:12px;color:#4ade80;">Syllabus (ಕನ್ನಡ)</label>
         <textarea id="f-syllabus-kn" style="min-height:80px;font-family:var(--fkn);" placeholder="ಪರೀಕ್ಷಾ ವಿಷಯಗಳು:&#10;ಸಾಮಾನ್ಯ ಜ್ಞಾನ, ತಾರ್ಕಿಕತೆ, ಗಣಿತ..."></textarea>
         <label style="margin-top:8px;">Syllabus PDF Link (Official)</label>
         <input type="url" id="f-syllabus-url" placeholder="https://official-site.gov.in/syllabus.pdf">
@@ -420,38 +420,38 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
 
         <div class="fsec">🏆 Selection Process</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Stages: Written Exam / Physical Test / Interview / Document Verification / Merit List</div>
-        <label style="font-size:12px;color:rgba(255,255,255,0.6);">Selection Process (English)</label>
+        <label style="font-size:12px;color:#4ade80;">Selection Process (English)</label>
         <textarea id="f-sel-process" style="min-height:80px;" placeholder="Each stage on new line:&#10;Written Exam&#10;Physical Test&#10;Skill Test&#10;Interview&#10;Document Verification&#10;Merit List"></textarea>
-        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">Selection Process (ಕನ್ನಡ)</label>
+        <label style="margin-top:6px;font-size:12px;color:#4ade80;">Selection Process (ಕನ್ನಡ)</label>
         <textarea id="f-sel-process-kn" style="min-height:60px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಹಂತ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;ಲಿಖಿತ ಪರೀಕ್ಷೆ&#10;ದೈಹಿಕ ಪರೀಕ್ಷೆ&#10;ಸಂದರ್ಶನ" title="Selection Process (Kannada)"></textarea>
 
         <div class="fsec" style="margin-top:20px;">📋 Required Documents</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Documents candidates must bring: Aadhaar, Marks Card, Caste Certificate, Photo, etc.</div>
-        <label style="font-size:12px;color:rgba(255,255,255,0.6);">Required Documents (English)</label>
+        <label style="font-size:12px;color:#4ade80;">Required Documents (English)</label>
         <textarea id="f-req-docs" style="min-height:100px;" placeholder="Each document on new line:&#10;SSLC / 10th Marks Card&#10;PUC / 12th Marks Card&#10;Degree Certificate&#10;Aadhaar Card&#10;Caste Certificate&#10;Income Certificate&#10;Passport Size Photo&#10;Signature"></textarea>
-        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">Required Documents (ಕನ್ನಡ)</label>
+        <label style="margin-top:6px;font-size:12px;color:#4ade80;">Required Documents (ಕನ್ನಡ)</label>
         <textarea id="f-req-docs-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ದಾಖಲೆ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;SSLC / 10ನೇ ತರಗತಿ ಅಂಕಪಟ್ಟಿ&#10;ಆಧಾರ್ ಕಾರ್ಡ್&#10;ಜಾತಿ ಪ್ರಮಾಣಪತ್ರ" title="Required Documents (Kannada)"></textarea>
 
         <div class="fsec" style="margin-top:20px;">📝 How To Apply Steps</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Step-by-step application instructions: Visit website → Register → Fill form → Pay fee → Submit</div>
-        <label style="font-size:12px;color:rgba(255,255,255,0.6);">How To Apply (English)</label>
+        <label style="font-size:12px;color:#4ade80;">How To Apply (English)</label>
         <textarea id="f-hta" style="min-height:100px;" placeholder="Each step on new line:&#10;Visit official website&#10;Click New Registration&#10;Fill form and submit&#10;Pay fee&#10;Take printout"></textarea>
-        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">How To Apply (ಕನ್ನಡ)</label>
+        <label style="margin-top:6px;font-size:12px;color:#4ade80;">How To Apply (ಕನ್ನಡ)</label>
         <textarea id="f-hta-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಹಂತ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್ ತೆರೆಯಿರಿ&#10;ನೋಂದಣಿ ಮಾಡಿ&#10;ಅರ್ಜಿ ಭರ್ತಿ ಮಾಡಿ" title="How To Apply (Kannada)"></textarea>
         <div class="url-hint">Each line becomes a numbered step — clearly visible to job seekers</div>
 
         <div class="fsec" style="margin-top:20px;">❓ FAQ (Optional)</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">One FAQ per line. Separate question and answer with a vertical bar: <strong>Question | Answer</strong>. Leave blank to hide the FAQ section.</div>
-        <label style="font-size:12px;color:rgba(255,255,255,0.6);">FAQ (English)</label>
+        <label style="font-size:12px;color:#4ade80;">FAQ (English)</label>
         <textarea id="f-faq" style="min-height:100px;" placeholder="One per line — Question | Answer:&#10;Is there an application fee? | Yes, ₹500 for General and ₹250 for SC/ST.&#10;Can I apply from another state? | Yes, candidates from all states can apply.&#10;What is the selection process? | Written exam followed by an interview."></textarea>
-        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">FAQ (ಕನ್ನಡ)</label>
+        <label style="margin-top:6px;font-size:12px;color:#4ade80;">FAQ (ಕನ್ನಡ)</label>
         <textarea id="f-faq-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಸಾಲಿನಲ್ಲಿ ಒಂದು — ಪ್ರಶ್ನೆ | ಉತ್ತರ:&#10;ಅರ್ಜಿ ಶುಲ್ಕ ಇದೆಯೇ? | ಹೌದು, ಸಾಮಾನ್ಯ ವರ್ಗಕ್ಕೆ ₹500.&#10;ಬೇರೆ ರಾಜ್ಯದಿಂದ ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದೇ? | ಹೌದು, ಎಲ್ಲಾ ರಾಜ್ಯಗಳ ಅಭ್ಯರ್ಥಿಗಳು ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದು." title="FAQ (Kannada)"></textarea>
 
         <div class="fsec" style="margin-top:20px;">💡 NammaJobs Expert Tips (Optional)</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">A short highlighted tip card shown on the job page. Leave blank to hide the Expert Tips section.</div>
-        <label style="font-size:12px;color:rgba(255,255,255,0.6);">Expert Tips (English)</label>
+        <label style="font-size:12px;color:#4ade80;">Expert Tips (English)</label>
         <textarea id="f-tips" style="min-height:90px;" placeholder="e.g. Apply at least 3 days before the last date to avoid server load. Keep scanned copies of all documents ready before starting the form."></textarea>
-        <label style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);">Expert Tips (ಕನ್ನಡ)</label>
+        <label style="margin-top:6px;font-size:12px;color:#4ade80;">Expert Tips (ಕನ್ನಡ)</label>
         <textarea id="f-tips-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಉದಾ. ಸರ್ವರ್ ಒತ್ತಡ ತಪ್ಪಿಸಲು ಕೊನೆಯ ದಿನಾಂಕಕ್ಕಿಂತ ಕನಿಷ್ಠ 3 ದಿನ ಮುಂಚೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ." title="Expert Tips (Kannada)"></textarea>
 
         <div class="fbtns">
