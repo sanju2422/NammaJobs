@@ -622,7 +622,7 @@ function njFeeCell(raw){
 function njCatRows(raw){
   var kv=njKV(raw,true);
   if(!kv.length) return '<tr><td colspan="2">'+njEsc(raw)+'</td></tr>';
-  return kv.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><strong>'+njEsc(p.v||'\u2014')+'</strong></td></tr>';}).join('');
+  return kv.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="vbox"><strong>'+njEsc(p.v||'\u2014')+'</strong></span></td></tr>';}).join('');
 }
 // Smart Age Limit parser. Detects category-wise ages from plain pasted admin text
 // (e.g. "Maximum 50 Years (UR) Maximum 53 Years (OBC-NCL) Age Relaxation as per Government Rules")
@@ -801,7 +801,7 @@ function renderJob(j){
             <thead><tr><th>${njGetLang()==='kn'?'ವರ್ಗ':'Category'}</th><th>${njGetLang()==='kn'?'ಹುದ್ದೆಗಳು':'Vacancies'}</th></tr></thead>
             <tbody>
               ${njCatRows(njField(j.cats,j.cats_kn))}
-              <tr><td><strong>${njGetLang()==='kn'?'ಒಟ್ಟು':'Total'}</strong></td><td><strong>${njField(j.seats||'0',j.seats_kn)}</strong></td></tr>
+              <tr><td><strong>${njGetLang()==='kn'?'ಒಟ್ಟು':'Total'}</strong></td><td><span class="vbox"><strong>${njField(j.seats||'0',j.seats_kn)}</strong></span></td></tr>
             </tbody>
           </table></div>
         </div>`:''}
