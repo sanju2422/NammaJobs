@@ -574,13 +574,38 @@ function njFeeFmt(v){
   if(/^(rs\.?|inr|\u20b9)\s*[0-9]/i.test(t)) return njEsc(t.replace(/^rs\.?\s*/i,'\u20b9 ').replace(/^inr\s*/i,'\u20b9 '));
   return njEsc(t);
 }
+// Smart Application Fee parser. Detects category-wise fees from plain pasted admin text
+// (e.g. "General/OBC/EWS \u20b9118 SC/ST/PwBD/Ex-Servicemen Nil" or "Gen/OBC/EWS : \u20b9118")
+// and renders a Category / Fee table - same style as the Age Limit & Category-wise tables.
+function njFeeRows(raw){
+  var rawStr=String(raw);
+  if(!rawStr.trim()) return {rows:[],table:false};
+
+  // 1) Structured "Category: value" / "Category = value" (real delimiters only; keep newlines).
+  if(/[:=]/.test(rawStr)){
+    var kv=njKV(rawStr,false);
+    if(kv.length>=1&&kv.every(function(p){return p.v!=='';})) return {rows:kv,table:true};
+  }
+
+  // 2) Plain text "<category> <fee> <category> <fee> ...".
+  var t=rawStr.replace(/\r/g,' ').replace(/\s+/g,' ').trim();
+  var feeRe=/(?:\u20b9|rs\.?|inr)\s?[0-9][0-9,]*(?:\/-|-)?|\b[0-9][0-9,]{1,}(?:\/-|-)?\b|\bnil\b|\bfree\b|\bexempt(?:ed)?\b|\bno\s*fee\b|\bn\/?a\b/ig;
+  var rows=[],last=0,m;
+  while((m=feeRe.exec(t))!==null){
+    var cat=t.slice(last,m.index).replace(/^[\s:=\-\u2013]+/,'').replace(/[\s:=\-\u2013]+$/,'').trim();
+    if(cat) rows.push({k:cat,v:m[0].trim().replace(/[,]+$/,'').trim()});
+    last=m.index+m[0].length;
+  }
+  if(rows.length>=1) return {rows:rows,table:true};
+  return {rows:[],table:false};
+}
 function njFeeCell(raw){
   if(!raw) return '\u2014';
-  var kv=njKV(raw,false);
-  if(kv.length&&kv.every(function(p){return p.v!=='';})){
+  var r=njFeeRows(raw);
+  if(r.table&&r.rows.length){
     var h=njGetLang()==='kn'?['\u0cb5\u0cb0\u0ccd\u0c97','\u0cb6\u0cc1\u0cb2\u0ccd\u0c95']:['Category','Fee'];
     return '<div class="sub-tbl-wrap"><table class="sub-tbl"><thead><tr><th>'+h[0]+'</th><th>'+h[1]+'</th></tr></thead><tbody>'+
-      kv.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><strong>'+njFeeFmt(p.v)+'</strong></td></tr>';}).join('')+'</tbody></table></div>';
+      r.rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><strong>'+njFeeFmt(p.v)+'</strong></td></tr>';}).join('')+'</tbody></table></div>';
   }
   return String(raw).split('|').map(function(part){return '<div class="fee-chip">'+njEsc(part.trim())+'</div>';}).join('');
 }
