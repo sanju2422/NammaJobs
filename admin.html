@@ -713,17 +713,33 @@ async function uploadBanner(input,targetId){
   const path=`${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
   toast('ok','Uploading banner...');
   try{
+    // Upload into the public "job-banners" bucket. Folder/prefix = bucket name "job-banners/".
     const res=await fetch(`${SB_URL}/storage/v1/object/job-banners/${path}`,{
       method:'POST',
-      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':file.type,'x-upsert':'true'},
+      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':file.type,'x-upsert':'true','cache-control':'3600'},
       body:file
     });
-    if(!res.ok)throw new Error('upload failed');
+    if(!res.ok){
+      let detail='';
+      try{const j=await res.json();detail=j.message||j.error||'';}catch(_){try{detail=await res.text();}catch(__){detail='';}}
+      throw new Error(detail||('HTTP '+res.status));
+    }
+    // Save the PUBLIC URL into the field; saveJob() then persists it to Supabase (banner_en / banner_kn),
+    // and job.html renders it on the Job Details page.
     document.getElementById(targetId).value=`${SB_URL}/storage/v1/object/public/job-banners/${path}`;
     showBannerPreview(targetId);
     toast('ok','Banner uploaded!');
   }catch(e){
-    toast('err','Upload failed. Create a public "job-banners" bucket or paste a URL.');
+    const msg=(e&&e.message)?String(e.message):'';
+    if(/bucket not found/i.test(msg)){
+      toast('err','Upload failed: "job-banners" bucket is missing. Run supabase_job_banners_setup.sql in Supabase, or paste a URL.');
+    }else if(/row-level security|rls|policy|permission|unauthorized|forbidden|violat/i.test(msg)){
+      toast('err','Upload failed: storage policy blocks upload. Run supabase_job_banners_setup.sql in Supabase, or paste a URL.');
+    }else if(/mime|content type|allowed/i.test(msg)){
+      toast('err','Upload failed: only JPG, PNG or WebP are allowed for the banner.');
+    }else{
+      toast('err','Upload failed'+(msg?': '+msg:'')+'. Create a public "job-banners" bucket or paste a URL.');
+    }
   }finally{
     input.value='';
   }
