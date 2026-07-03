@@ -690,6 +690,15 @@ function njQualCell(raw){
   if(!items.length) items=[t];
   return '<div class="qual-wrap">'+items.map(function(x){return '<span class="qual-chip">\ud83c\udf93 '+njEsc(x)+'</span>';}).join('')+'</div>';
 }
+// Render comma-separated Post:Value pairs as individual chips (reuses the Tags chip UI).
+// Splits on comma/pipe/semicolon/newline but NOT on a comma inside a number (e.g. 29,200).
+function njPairCell(raw){
+  var t=String(raw==null?'':raw).replace(/\r/g,'').trim();
+  if(!t) return '\u2014';
+  var items=t.split(/\s*(?:[|;\n]|,(?!\d))\s*/).map(function(x){return x.trim();}).filter(Boolean);
+  if(!items.length) items=[t];
+  return '<div class="qual-wrap">'+items.map(function(x){return '<span class="qual-chip">'+njEsc(x)+'</span>';}).join('')+'</div>';
+}
 // Smart parser: ordered steps. Splits on newlines, numbered markers (1. 2) ), bullets, or | ; .
 function njSteps(raw){
   if(!raw) return [];
@@ -765,8 +774,8 @@ function renderJob(j){
           <table class="info-table">
             <tr><td>${njGetLang()==='kn'?'ಸಂಸ್ಥೆ':'Organization'}</td><td><span class="vbox">${njField(j.dept,j.dept_kn)||'—'}</span></td></tr>
             <tr><td>${njGetLang()==='kn'?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name'}</td><td><span class="vbox">${njField(j.title_en,j.title_kn)||'—'}</span></td></tr>
-            <tr><td>${njGetLang()==='kn'?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies'}</td><td><span class="vbox"><strong>${njField(j.seats||'0',j.seats_kn)}</strong></span></td></tr>
-            ${j.salary?`<tr><td>${njGetLang()==='kn'?'ವೇತನ':'Pay Scale / Salary'}</td><td><span class="vbox">${njField(j.salary,j.salary_kn)}</span></td></tr>`:''}
+            <tr><td>${njGetLang()==='kn'?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies'}</td><td><span class="vbox">${njPairCell(njField(j.seats||'0',j.seats_kn))}</span></td></tr>
+            ${j.salary?`<tr><td>${njGetLang()==='kn'?'ವೇತನ':'Pay Scale / Salary'}</td><td><span class="vbox">${njPairCell(njField(j.salary,j.salary_kn))}</span></td></tr>`:''}
             ${j.age?`<tr><td>${njGetLang()==='kn'?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit'}</td><td><span class="vbox">${njAgeCell(njField(j.age,j.age_kn))}</span></td></tr>`:''}
             ${j.skills?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತೆ':'Qualification'}</td><td><span class="vbox">${njQualCell(njField(j.skills,j.skills_kn))}</span></td></tr>`:''}
             ${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags)?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags'}</td><td><span class="vbox">${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags).split(',').map(t=>`<span style="display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;margin:2px 4px 2px 0;">🎓 ${t.trim()}</span>`).join('')}</span></td></tr>`:''}
@@ -816,7 +825,6 @@ function renderJob(j){
             <thead><tr><th>${njGetLang()==='kn'?'ವರ್ಗ':'Category'}</th><th>${njGetLang()==='kn'?'ಹುದ್ದೆಗಳು':'Vacancies'}</th></tr></thead>
             <tbody>
               ${njCatRows(njField(j.cats,j.cats_kn))}
-              <tr><td><strong>${njGetLang()==='kn'?'ಒಟ್ಟು':'Total'}</strong></td><td><span class="qual-chip">${njField(j.seats||'0',j.seats_kn)}</span></td></tr>
             </tbody>
           </table></div>
         </div>`:''}
