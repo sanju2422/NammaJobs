@@ -611,18 +611,18 @@ function njFeeRows(raw){
 }
 function njFeeCell(raw){
   if(!raw) return '\u2014';
-  var r=njFeeRows(raw);
-  if(r.table&&r.rows.length){
-    var h=njGetLang()==='kn'?['\u0cb5\u0cb0\u0ccd\u0c97','\u0cb6\u0cc1\u0cb2\u0ccd\u0c95']:['Category','Fee'];
-    return '<div class="sub-tbl-wrap"><table class="sub-tbl"><thead><tr><th>'+h[0]+'</th><th>'+h[1]+'</th></tr></thead><tbody>'+
-      r.rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="vbox"><strong>'+njFeeFmt(p.v)+'</strong></span></td></tr>';}).join('')+'</tbody></table></div>';
-  }
-  return String(raw).split('|').map(function(part){return '<div class="fee-chip">'+njEsc(part.trim())+'</div>';}).join('');
+  var t=String(raw).replace(/\r/g,'').trim();
+  if(!t) return '\u2014';
+  // Restore the multi-value chip renderer (same chips as Eligibility Tags / Qualification).
+  // Split into individual values and render each with the existing .qual-chip renderer.
+  var items=t.split(/\s*(?:[|;\n]|,)\s*/).map(function(x){return x.trim();}).filter(Boolean);
+  if(!items.length) items=[t];
+  return '<div class="qual-wrap">'+items.map(function(x){return '<span class="qual-chip">'+njEsc(x)+'</span>';}).join('')+'</div>';
 }
 function njCatRows(raw){
   var kv=njKV(raw,true);
   if(!kv.length) return '<tr><td colspan="2">'+njEsc(raw)+'</td></tr>';
-  return kv.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="vbox"><strong>'+njEsc(p.v||'\u2014')+'</strong></span></td></tr>';}).join('');
+  return kv.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="qual-chip">'+njEsc(p.v||'\u2014')+'</span></td></tr>';}).join('');
 }
 // Smart Age Limit parser. Detects category-wise ages from plain pasted admin text
 // (e.g. "Maximum 50 Years (UR) Maximum 53 Years (OBC-NCL) Age Relaxation as per Government Rules")
