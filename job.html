@@ -570,7 +570,7 @@ function njEsc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g
 function njFeeFmt(v){
   if(!v) return '\u2014';
   var t=v.trim();
-  if(/^(nil|free|no fee|n\/a|na|-)$/i.test(t)||t==='0') return '<span class="fee-nil">'+njEsc(t==='0'?'Nil':t)+'</span>';
+  if(/^(nil|free|no fee|no application fee|not applicable|exempt(?:ed)?|n\/a|na|-)$/i.test(t)||t==='0') return '<span class="fee-nil">'+njEsc(t==='0'?'Nil':t)+'</span>';
   if(/^[0-9][0-9,]*$/.test(t)) return '\u20b9 '+njEsc(t);
   if(/^(rs\.?|inr|\u20b9)\s*[0-9]/i.test(t)) return njEsc(t.replace(/^rs\.?\s*/i,'\u20b9 ').replace(/^inr\s*/i,'\u20b9 '));
   return njEsc(t);
@@ -579,50 +579,65 @@ function njFeeFmt(v){
 // (e.g. "General/OBC/EWS \u20b9118 SC/ST/PwBD/Ex-Servicemen Nil" or "Gen/OBC/EWS : \u20b9118")
 // and renders a Category / Fee table - same style as the Age Limit & Category-wise tables.
 function njFeeRows(raw){
-  var rawStr=String(raw);
-  if(!rawStr.trim()) return {rows:[],table:false};
-  var t=rawStr.replace(/\r/g,' ').replace(/\s+/g,' ').trim();
-  var rows=[];
-
-  // 1) Colon/equals-delimited pairs: "Cat : value  Cat : value ..." on one line or many.
-  //    Value is captured up to the next "Category :" boundary, so it works for English (Nil)
-  //    and non-English values (e.g. Kannada "\u0cb6\u0cc1\u0cb2\u0ccd\u0c95 \u0c87\u0cb2\u0ccd\u0cb2") alike.
-  if(/[:=]/.test(t)){
-    var pairRe=/([^:=]+?)\s*[:=]\s*(\S+(?:\s+\S+)*?)(?=(?:\s+[^:=]+[:=])|\s*$)/g,pm;
-    while((pm=pairRe.exec(t))!==null){
-      var k=pm[1].replace(/^[\s|\u2013\-]+/,'').replace(/[\s|\u2013\-]+$/,'').trim();
-      var v=pm[2].replace(/[,\s]+$/,'').trim();
-      if(k&&v) rows.push({k:k,v:v});
-    }
-    if(rows.length>=1) return {rows:rows,table:true};
+  var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
+  if(!t) return {rows:[],table:false};
+  // Intelligent parser: works for colon, dash, pipe, comma, space or mixed admin formats.
+  // It anchors on the FEE value token and treats the surrounding text as the category,
+  // so hyphens inside category names (e.g. "Ex-Servicemen") are never mis-split.
+  var FEE=/(?:\u20b9|rs\.?|inr)\s?[0-9](?:[0-9,]*[0-9])?(?:\s*\+\s*[0-9]+\s*%?\s*gst)?|no\s*(?:application\s*)?fee|\bnil\b|\bfree\b|\bexempt(?:ed)?\b|\bn\/?a\b/ig;
+  var NOTE=/\([^)]*(?:%|gst|incl|refund|after|exam|gateway|charge|portal|collect|\bvia\b|note|payable|through)[^)]*\)/ig;
+  var SENT=/\b(will|shall|after|before|refund\w*|appearing|candidate\w*|per official|notification|payable|through|paid|eligible|of the|as per)\b/i;
+  var CATWORD=/(gen\b|general|obc|ews|sc\b|st\b|pwd|pwbd|women|female|male|ex-?s|servicemen|transgender|minorit|ebc|cat-?|category|others|ur\b|unreserved|2a|2b|3a|3b|\ball\b)/i;
+  var SEP=/[|;\n]|,(?!\d)| {2,}|\.\s/;
+  function cleanCat(c){
+    var parts=String(c).split(SEP); c=parts[parts.length-1];
+    c=c.replace(/[()]/g,' ').replace(/\s*\/\s*/g,'/');
+    return c.replace(/\s+/g,' ').replace(/^[\s:\u2013\-=.,|]+|[\s:\u2013\-=.,|]+$/g,'');
   }
-
-  // 2) Plain text with no colons: anchor on fee tokens, category = the preceding text.
-  var feeRe=/(?:\u20b9|rs\.?|inr)\s?[0-9][0-9,]*(?:\/-|-)?|\b[0-9][0-9,]{1,}(?:\/-|-)?\b|\bnil\b|\bfree\b|\bexempt(?:ed)?\b|\bno\s*fee\b|\bn\/?a\b/ig;
-  var last=0,m;
-  while((m=feeRe.exec(t))!==null){
-    var cat=t.slice(last,m.index).replace(/^[\s:=|\-\u2013]+/,'').replace(/[\s:=|\-\u2013]+$/,'').trim();
-    if(cat) rows.push({k:cat,v:m[0].trim().replace(/[,]+$/,'').trim()});
-    last=m.index+m[0].length;
+  function goodCat(c){
+    if(!c||c.length>80||c.split(/\s+/).length>9) return false;
+    if(SENT.test(c)) return false;
+    return CATWORD.test(c)||(c.indexOf('/')>=0&&/[A-Za-z]/.test(c));
   }
-  if(rows.length>=1) return {rows:rows,table:true};
-
-  return {rows:[],table:false};
+  t=t.replace(NOTE,' ');
+  var out=[],seen={};
+  function push(k,v){v=String(v).trim().replace(/[.,]+$/,'');var key=k+'|'+v;if(goodCat(k)&&!seen[key]){seen[key]=1;out.push({k:k,v:v});}}
+  var VF=new RegExp('('+FEE.source+')\\s*\\(([^)]+)\\)','ig');
+  t=t.replace(VF,function(m,fee,cat){push(cleanCat(cat),fee);return '  ';});
+  FEE.lastIndex=0;var m,last=0;
+  while((m=FEE.exec(t))!==null){push(cleanCat(t.slice(last,m.index)),m[0]);last=m.index+m[0].length;}
+  return {rows:out,table:out.length>=1};
 }
 function njFeeCell(raw){
   if(!raw) return '\u2014';
-  var t=String(raw).replace(/\r/g,'').trim();
-  if(!t) return '\u2014';
-  // Restore the multi-value chip renderer (same chips as Eligibility Tags / Qualification).
-  // Split into individual values and render each with the existing .qual-chip renderer.
-  var items=t.split(/\s*(?:[|;\n]|,)\s*/).map(function(x){return x.trim();}).filter(Boolean);
-  if(!items.length) items=[t];
-  return '<div class="qual-wrap">'+items.map(function(x){return '<span class="qual-chip">'+njEsc(x)+'</span>';}).join('')+'</div>';
+  var r=njFeeRows(raw);
+  if(r.table&&r.rows.length){
+    var h=njGetLang()==='kn'?['\u0cb5\u0cb0\u0ccd\u0c97','\u0cb6\u0cc1\u0cb2\u0ccd\u0c95']:['Category','Fee'];
+    return '<div class="sub-tbl-wrap"><table class="sub-tbl"><thead><tr><th>'+h[0]+'</th><th>'+h[1]+'</th></tr></thead><tbody>'+
+      r.rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="qual-chip">'+njFeeFmt(p.v)+'</span></td></tr>';}).join('')+'</tbody></table></div>';
+  }
+  return String(raw).split(/\s*[|;\n,]\s*/).map(function(x){return x.trim();}).filter(Boolean).map(function(x){return '<span class="qual-chip">'+njEsc(x)+'</span>';}).join(' ');
 }
 function njCatRows(raw){
-  var kv=njKV(raw,true);
-  if(!kv.length) return '<tr><td colspan="2">'+njEsc(raw)+'</td></tr>';
-  return kv.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="qual-chip">'+njEsc(p.v||'\u2014')+'</span></td></tr>';}).join('');
+  var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
+  if(!t) return '<tr><td colspan="2">'+njEsc(raw)+'</td></tr>';
+  // Intelligent parser: accepts colon, dash, pipe, comma, semicolon, newline, space or mixed.
+  // Key/value is split on the FIRST colon (or a trailing "-<number>"), so hyphens inside
+  // category names (e.g. "Grade-I", "OBC-NCL") are preserved; thousands commas are kept.
+  var SEP=/\s*[\n|;]\s*|\s*,(?!\d)\s*|\s{2,}/;
+  var segs=t.split(SEP).map(function(x){return x.trim();}).filter(Boolean);
+  var rows=[];
+  segs.forEach(function(seg){
+    var k,v,ci=seg.indexOf(':');
+    if(ci>=0){k=seg.slice(0,ci);v=seg.slice(ci+1);}
+    else{var mm=seg.match(/^(.*?)[-\u2013]\s*([0-9][0-9,]*)\s*$/);if(mm){k=mm[1];v=mm[2];}else{k=seg;v='';}}
+    k=k.replace(/\s+/g,' ').trim();
+    var num=(String(v).match(/[0-9][0-9,]*/)||[''])[0];
+    if(/^total\b/i.test(k)) return;
+    if(num&&k.length>0&&k.length<=60) rows.push({k:k,v:num});
+  });
+  if(!rows.length) return '<tr><td colspan="2">'+njEsc(raw)+'</td></tr>';
+  return rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="qual-chip">'+njEsc(p.v)+'</span></td></tr>';}).join('');
 }
 // Smart Age Limit parser. Detects category-wise ages from plain pasted admin text
 // (e.g. "Maximum 50 Years (UR) Maximum 53 Years (OBC-NCL) Age Relaxation as per Government Rules")
@@ -667,11 +682,11 @@ function njQualCell(raw){
   if(!raw) return '\u2014';
   var t=String(raw).replace(/\r/g,'').trim();
   if(!t) return '\u2014';
-  // Always split into individual chips, even when the admin pastes plain text.
-  // Delimiters: | ; newline / , and the words "and" / "or" / "&".
-  var items=t.split(/\s*(?:[|;\n\/]|,|\sand\s|\sor\s|\s&\s)\s*/i)
-              .map(function(x){return x.replace(/^[-\u2013\u2022\*\s]+/,'').trim();})
-              .filter(Boolean);
+  // Same chip UI as Eligibility Tags. Intelligently split on any delimiter the admin uses:
+  // newline, pipe, semicolon or comma (or a mix). A value with no delimiter stays a single
+  // chip on purpose - most delimiter-less entries are full prose requirements, not lists.
+  var items=/[\n|;,]/.test(t)?t.split(/\s*[\n|;,]\s*/):[t];
+  items=items.map(function(x){return x.replace(/^[-\u2013\u2022*\s]+/,'').trim();}).filter(Boolean);
   if(!items.length) items=[t];
   return '<div class="qual-wrap">'+items.map(function(x){return '<span class="qual-chip">\ud83c\udf93 '+njEsc(x)+'</span>';}).join('')+'</div>';
 }
@@ -801,7 +816,7 @@ function renderJob(j){
             <thead><tr><th>${njGetLang()==='kn'?'ವರ್ಗ':'Category'}</th><th>${njGetLang()==='kn'?'ಹುದ್ದೆಗಳು':'Vacancies'}</th></tr></thead>
             <tbody>
               ${njCatRows(njField(j.cats,j.cats_kn))}
-              <tr><td><strong>${njGetLang()==='kn'?'ಒಟ್ಟು':'Total'}</strong></td><td><span class="vbox"><strong>${njField(j.seats||'0',j.seats_kn)}</strong></span></td></tr>
+              <tr><td><strong>${njGetLang()==='kn'?'ಒಟ್ಟು':'Total'}</strong></td><td><span class="qual-chip">${njField(j.seats||'0',j.seats_kn)}</span></td></tr>
             </tbody>
           </table></div>
         </div>`:''}
