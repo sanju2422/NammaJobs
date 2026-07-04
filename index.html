@@ -1549,12 +1549,19 @@ function njPostsTotal(s){
   if(s===null||s===undefined||s==='')return null;
   if(typeof s==='number')return s;
   s=String(s);
+  const parseNum=v=>{const n=parseInt(String(v).replace(/[^\d]/g,''),10);return isNaN(n)?null:n;};
+  // 1) An explicit official total / vacancy value always wins — use it directly (never re-summed).
+  const totalRe=/(?:grand\s*total|total\s*(?:no\.?\s*of\s*)?(?:vacanc\w*|posts?|seats?)?|vacanc\w*)\s*[:\-]?\s*([\d][\d,]*)/i;
+  const tm=s.match(totalRe);
+  if(tm){const v=parseNum(tm[1]);if(v!=null&&v>0)return v;}
+  // 2) No total given: sum the category-wise vacancies (label:number pairs) exactly once.
   if(s.indexOf(':')>-1){
-    const m=s.match(/:\s*([\d,]+)/g);
-    if(m&&m.length){let t=0;m.forEach(x=>{t+=parseInt(x.replace(/[^\d]/g,''),10)||0;});if(t>0)return t;}
+    const m=s.match(/:\s*([\d][\d,]*)/g);
+    if(m&&m.length){let t=0;m.forEach(x=>{t+=parseNum(x)||0;});if(t>0)return t;}
   }
-  const n=parseInt(s.replace(/[^\d]/g,''),10);
-  return isNaN(n)?null:n;
+  // 3) Fallback: the first standalone number. Never concatenate separate numbers.
+  const fm=s.match(/[\d][\d,]*/);
+  return fm?parseNum(fm[0]):null;
 }
 
 function njLatestCard(j){
