@@ -353,7 +353,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
    Matches reference: white stat/category cards, job list,
    light sidebar cards + bottom trust bar. Dark theme untouched.
    ============================================================ */
-.nj-light{background:#eef2f7;position:relative;z-index:1;color:#0f172a;padding:22px 0 6px;}
+.nj-light{background:#eef2f7;position:relative;z-index:1;color:#0f172a;padding:10px 0 6px;}
 .nj-light .lang-en,.nj-light .lang-kn{}
 /* ---- Stats row: white horizontal cards ---- */
 .nj-light .stats{max-width:1280px;margin:0 auto 14px;}
@@ -725,7 +725,7 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
     <div class="nj-hero-left">
       <h1 class="nj-hero-title"><span class="lang-en">Find Government Jobs,<br><span class="nj-hl">Build Your Future</span></span><span class="lang-kn">ಸರ್ಕಾರಿ ಉದ್ಯೋಗ ಹುಡುಕಿ,<br><span class="nj-hl">ನಿಮ್ಮ ಭವಿಷ್ಯ ರೂಪಿಸಿ</span></span></h1>
       <div class="nj-hero-sub"><span class="lang-en">Latest Government Jobs in Karnataka &amp; Across India</span><span class="lang-kn">ಕರ್ನಾಟಕ ಮತ್ತು ಭಾರತದಾದ್ಯಂತ ಇತ್ತೀಚಿನ ಸರ್ಕಾರಿ ಉದ್ಯೋಗಗಳು</span></div>
-      <div class="nj-hero-desc"><span class="lang-en">Daily Updates • Verified Notifications • Direct Apply • 100% Free</span><span class="lang-kn">ದೈನಂದಿನ ಮಾಹಿತಿ • ಪರಿಶೀಲಿತ ಅಧಿಸೂಚನೆ • ನೇರ ಅರ್ಜಿ • 100% ಉಚಿತ</span></div>
+      <div class="nj-hero-desc"><span class="lang-en">Daily Updates • Verified Notifications • Direct Apply</span><span class="lang-kn">ದೈನಂದಿನ ಮಾಹಿತಿ • ಪರಿಶೀಲಿತ ಅಧಿಸೂಚನೆ • ನೇರ ಅರ್ಜಿ</span></div>
       <div class="nj-search">
         <div class="nj-search-row">
           <div class="nj-search-field">
@@ -784,15 +784,6 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 </section>
 
 <div class="nj-light">
-<div class="stats">
-  <div class="stats-grid">
-    <div class="stat-item"><span class="stat-icon"><span class="live-dot"></span></span><div class="stat-tx"><div class="stat-label"><span class="lang-en">Live Jobs</span><span class="lang-kn">ಲೈವ್ ಉದ್ಯೋಗ</span></div><div class="stat-num" id="stat-live">0</div><div class="stat-cap"><span class="lang-en">Active Jobs</span><span class="lang-kn">ಸಕ್ರಿಯ ಉದ್ಯೋಗ</span></div></div></div>
-    <div class="stat-item"><span class="stat-icon">🏛️</span><div class="stat-tx"><div class="stat-label"><span class="lang-en">Karnataka Jobs</span><span class="lang-kn">ಕರ್ನಾಟಕ ಉದ್ಯೋಗ</span></div><div class="stat-num" id="stat-kar">0</div><div class="stat-cap"><span class="lang-en">Active Jobs</span><span class="lang-kn">ಸಕ್ರಿಯ ಉದ್ಯೋಗ</span></div></div></div>
-    <div class="stat-item"><span class="stat-icon">🇮🇳</span><div class="stat-tx"><div class="stat-label"><span class="lang-en">Central Jobs</span><span class="lang-kn">ಕೇಂದ್ರ ಉದ್ಯೋಗ</span></div><div class="stat-num" id="stat-cen">0</div><div class="stat-cap"><span class="lang-en">Active Jobs</span><span class="lang-kn">ಸಕ್ರಿಯ ಉದ್ಯೋಗ</span></div></div></div>
-    <div class="stat-item"><span class="stat-icon">🏢</span><div class="stat-tx"><div class="stat-label"><span class="lang-en">Private Jobs</span><span class="lang-kn">ಖಾಸಗಿ ಉದ್ಯೋಗ</span></div><div class="stat-num" id="stat-pri">0</div><div class="stat-cap"><span class="lang-en">Active Jobs</span><span class="lang-kn">ಸಕ್ರಿಯ ಉದ್ಯೋಗ</span></div></div></div>
-  </div>
-</div>
-
 <div class="cats-section">
   <div class="cats-grid" id="cats-grid"></div>
 </div>
@@ -1549,19 +1540,12 @@ function njPostsTotal(s){
   if(s===null||s===undefined||s==='')return null;
   if(typeof s==='number')return s;
   s=String(s);
-  const parseNum=v=>{const n=parseInt(String(v).replace(/[^\d]/g,''),10);return isNaN(n)?null:n;};
-  // 1) An explicit official total / vacancy value always wins — use it directly (never re-summed).
-  const totalRe=/(?:grand\s*total|total\s*(?:no\.?\s*of\s*)?(?:vacanc\w*|posts?|seats?)?|vacanc\w*)\s*[:\-]?\s*([\d][\d,]*)/i;
-  const tm=s.match(totalRe);
-  if(tm){const v=parseNum(tm[1]);if(v!=null&&v>0)return v;}
-  // 2) No total given: sum the category-wise vacancies (label:number pairs) exactly once.
   if(s.indexOf(':')>-1){
-    const m=s.match(/:\s*([\d][\d,]*)/g);
-    if(m&&m.length){let t=0;m.forEach(x=>{t+=parseNum(x)||0;});if(t>0)return t;}
+    const m=s.match(/:\s*([\d,]+)/g);
+    if(m&&m.length){let t=0;m.forEach(x=>{t+=parseInt(x.replace(/[^\d]/g,''),10)||0;});if(t>0)return t;}
   }
-  // 3) Fallback: the first standalone number. Never concatenate separate numbers.
-  const fm=s.match(/[\d][\d,]*/);
-  return fm?parseNum(fm[0]):null;
+  const n=parseInt(s.replace(/[^\d]/g,''),10);
+  return isNaN(n)?null:n;
 }
 
 function njLatestCard(j){
