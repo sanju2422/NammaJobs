@@ -582,44 +582,45 @@ html:not([data-theme=dark]) .ft [style*="rgba(255,255,255,0.1)"]{border-top-colo
 
 /* ============================================================
    LATEST JOBS CARD REDESIGN — homepage #jgrid only (njLatestCard)
-   Clean dividered rows matching the preview image.
+   Compact dividered rows matching the preview image.
    ============================================================ */
 .nj-light #jgrid{grid-template-columns:1fr;gap:0;}
 .nj-light #jgrid .jc.njl{
   display:flex;align-items:center;gap:20px;
-  padding:15px 20px;
+  padding:12px 20px;
   background:transparent !important;
   border:none !important;border-radius:0 !important;
   border-bottom:1px solid #eef2f7 !important;
   box-shadow:none !important;overflow:visible;
 }
 .nj-light #jgrid .jc.njl:last-child{border-bottom:none !important;}
-.nj-light #jgrid .jc.njl:hover{transform:none !important;background:#f8fafc !important;}
+.nj-light #jgrid .jc.njl:hover{transform:none !important;background:transparent !important;}
 
-/* logo */
-.nj-light #jgrid .njl-logo{flex:0 0 auto;display:flex;align-items:center;}
-.nj-light #jgrid .njl-logo .dlogo{width:50px;height:50px;min-width:50px;border-radius:50%;background:#fff;border:1px solid #e6ebf2;box-shadow:0 1px 4px rgba(15,23,42,0.08);padding:6px;margin:0;}
+/* logo: larger, centered in circle */
+.nj-light #jgrid .njl-logo{flex:0 0 auto;align-self:center;display:flex;align-items:center;justify-content:center;}
+.nj-light #jgrid .njl-logo .dlogo{width:54px;height:54px;min-width:54px;border-radius:50%;background:#fff;border:1px solid #e6ebf2;box-shadow:0 1px 4px rgba(15,23,42,0.08);padding:4px;margin:0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .nj-light #jgrid .njl-logo .dlogo img{width:100%;height:100%;object-fit:contain;border-radius:50%;}
-.nj-light #jgrid .njl-logo .dlogo-emoji{font-size:24px;}
+.nj-light #jgrid .njl-logo .dlogo-emoji{font-size:26px;line-height:1;}
 
-/* main text block */
-.nj-light #jgrid .njl-main{flex:1 1 auto;min-width:0;max-width:640px;margin-right:auto;}
-.nj-light #jgrid .njl-title{font-family:var(--fhead);font-size:15.5px;font-weight:800;line-height:1.3;letter-spacing:-0.2px;margin:0 0 3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.nj-light #jgrid .njl-dept{font-size:12.5px;font-weight:600;margin:0 0 8px;line-height:1.3;}
+/* main text block (capped width -> large gap on the right) */
+.nj-light #jgrid .njl-main{flex:1 1 auto;min-width:0;max-width:520px;margin-right:auto;}
+.nj-light #jgrid .njl-title{font-family:var(--fhead);font-size:15px;font-weight:800;line-height:1.3;letter-spacing:-0.2px;margin:0 0 2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.nj-light #jgrid .njl-dept{font-size:12.5px;font-weight:600;margin:0 0 6px;line-height:1.3;}
 .nj-light #jgrid .njl-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-.nj-light #jgrid .njl-loc{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;}
+.nj-light #jgrid .njl-loc{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;}
 .nj-light #jgrid .njl-posts{display:inline-flex;align-items:center;padding:3px 10px;border-radius:6px;font-size:11.5px;font-weight:700;}
+.nj-light #jgrid .njl-ico{width:14px;height:14px;flex:0 0 auto;}
 
-/* NEW badge + last date */
-.nj-light #jgrid .njl-side{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:112px;}
-.nj-light #jgrid .njl-new{display:inline-flex;align-items:center;padding:3px 9px;border-radius:5px;font-size:10px;font-weight:800;letter-spacing:0.04em;background:#16a34a;color:#fff;text-transform:uppercase;}
-.nj-light #jgrid .njl-date{display:flex;flex-direction:column;gap:1px;margin-top:3px;}
+/* NEW badge + last date (top aligned) */
+.nj-light #jgrid .njl-side{flex:0 0 auto;align-self:flex-start;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:118px;margin-top:1px;}
+.nj-light #jgrid .njl-new{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:800;letter-spacing:0.04em;background:#16a34a;color:#fff;text-transform:uppercase;}
+.nj-light #jgrid .njl-date{display:flex;flex-direction:column;gap:1px;margin-top:5px;}
 .nj-light #jgrid .njl-date-l{font-size:11px;font-weight:600;}
 .nj-light #jgrid .njl-date-v{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;}
 
-/* action button */
-.nj-light #jgrid .njl-action{flex:0 0 auto;}
-.nj-light #jgrid .njl-action .btn-card{flex:0 0 auto;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;white-space:nowrap;}
+/* action button (smaller, vertically centered) */
+.nj-light #jgrid .njl-action{flex:0 0 auto;align-self:center;}
+.nj-light #jgrid .njl-action .btn-card{flex:0 0 auto;padding:9px 18px;border-radius:8px;font-size:12.5px;font-weight:700;white-space:nowrap;}
 
 /* LIGHT colors */
 html:not([data-theme=dark]) .nj-light #jgrid .njl-title{color:#0f172a;text-shadow:none;}
@@ -631,7 +632,7 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 
 /* DARK colors */
 [data-theme=dark] .nj-light #jgrid .jc.njl{border-bottom-color:rgba(255,255,255,0.12) !important;}
-[data-theme=dark] .nj-light #jgrid .jc.njl:hover{background:rgba(255,255,255,0.05) !important;}
+[data-theme=dark] .nj-light #jgrid .jc.njl:hover{background:transparent !important;}
 [data-theme=dark] .nj-light #jgrid .njl-title{color:#fff;}
 [data-theme=dark] .nj-light #jgrid .njl-dept{color:rgba(255,255,255,0.75);}
 [data-theme=dark] .nj-light #jgrid .njl-loc{color:rgba(255,255,255,0.75);}
@@ -641,10 +642,10 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 
 /* Responsive */
 @media(max-width:640px){
-  .nj-light #jgrid .jc.njl{flex-wrap:wrap;gap:12px;padding:14px 16px;}
+  .nj-light #jgrid .jc.njl{flex-wrap:wrap;gap:12px;padding:12px 14px;}
   .nj-light #jgrid .njl-main{max-width:none;flex:1 1 100%;order:2;margin:0;}
   .nj-light #jgrid .njl-logo{order:1;}
-  .nj-light #jgrid .njl-side{order:3;min-width:0;flex-direction:row;align-items:center;gap:10px;}
+  .nj-light #jgrid .njl-side{order:3;min-width:0;flex-direction:row;align-items:center;gap:10px;margin-top:0;}
   .nj-light #jgrid .njl-date{flex-direction:row;gap:6px;margin-top:0;}
   .nj-light #jgrid .njl-action{order:4;margin-left:auto;}
 }
@@ -805,7 +806,7 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 
   <div class="nj-jobs-panel">
     <div class="latest-head">
-      <div class="sh">🔥 Latest Jobs</div>
+      <div class="sh">Latest Jobs</div>
       <div class="latest-sub">Verified Government Recruitment Updates</div>
     </div>
     <div class="jg" id="jgrid">
@@ -1544,10 +1545,26 @@ function jCard(j){
   </div>`;
 }
 
+function njPostsTotal(s){
+  if(s===null||s===undefined||s==='')return null;
+  if(typeof s==='number')return s;
+  s=String(s);
+  if(s.indexOf(':')>-1){
+    const m=s.match(/:\s*([\d,]+)/g);
+    if(m&&m.length){let t=0;m.forEach(x=>{t+=parseInt(x.replace(/[^\d]/g,''),10)||0;});if(t>0)return t;}
+  }
+  const n=parseInt(s.replace(/[^\d]/g,''),10);
+  return isNaN(n)?null:n;
+}
+
 function njLatestCard(j){
   const url=getJobUrl(j.id);
   const isOpen=j.status==='open';
-  const posts=j.seats?njField(j.seats,j.seats_kn)+(njGetLang()==='kn'?' \u0cb9\u0cc1\u0ca6\u0ccd\u0ca6\u0cc6\u0c97\u0cb3\u0cc1':' Posts'):(njGetLang()==='kn'?'\u0cb9\u0cc1\u0ca6\u0ccd\u0ca6\u0cc6\u0c97\u0cb3\u0cc1 \u0caa\u0ccd\u0cb0\u0c95\u0c9f\u0cbf\u0cb8\u0cb2\u0cbe\u0c97\u0cc1\u0cb5\u0cc1\u0ca6\u0cc1':'Posts TBA');
+  const tp=njPostsTotal(j.seats);
+  const postsWord=njGetLang()==='kn'?' \u0cb9\u0cc1\u0ca6\u0ccd\u0ca6\u0cc6\u0c97\u0cb3\u0cc1':' Posts';
+  const posts=(tp!=null)?tp.toLocaleString('en-IN')+postsWord:(njGetLang()==='kn'?'\u0cb9\u0cc1\u0ca6\u0ccd\u0ca6\u0cc6\u0c97\u0cb3\u0cc1 \u0caa\u0ccd\u0cb0\u0c95\u0c9f\u0cbf\u0cb8\u0cb2\u0cbe\u0c97\u0cc1\u0cb5\u0cc1\u0ca6\u0cc1':'Posts TBA');
+  const icoLoc='<svg class="njl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+  const icoCal='<svg class="njl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
   let actionBtn;
   if(isOpen){actionBtn=`<a class="btn-card bc-details" href="${url}" onclick="event.stopPropagation();" style="text-decoration:none;">${njGetLang()==='kn'?'\u0c89\u0ca6\u0ccd\u0caf\u0ccb\u0c97 \u0cb5\u0cbf\u0cb5\u0cb0\u0c97\u0cb3\u0cc1 \u2192':'Job Details \u2192'}</a>`;}
   else if(j.status==='soon'){actionBtn=`<button class="btn-card bc-soon">${njGetLang()==='kn'?'\u0cb6\u0cc0\u0c98\u0ccd\u0cb0\u0ca6\u0cb2\u0ccd\u0cb2\u0cc7':'Coming Soon'}</button>`;}
@@ -1558,13 +1575,13 @@ function njLatestCard(j){
       <div class="njl-title">${njField(j.title_en,j.title_kn)||''}</div>
       <div class="njl-dept">${njField(j.dept,j.dept_kn)||''}</div>
       <div class="njl-meta">
-        ${j.loc?`<span class="njl-loc">\ud83d\udccd ${njField(j.loc,j.loc_kn)}</span>`:''}
+        ${j.loc?`<span class="njl-loc">${icoLoc}<span>${njField(j.loc,j.loc_kn)}</span></span>`:''}
         <span class="njl-posts">${posts}</span>
       </div>
     </div>
     <div class="njl-side">
       <span class="njl-new">NEW</span>
-      ${j.last_date?`<div class="njl-date"><span class="njl-date-l">${njGetLang()==='kn'?'\u0c95\u0cca\u0ca8\u0cc6\u0caf \u0ca6\u0cbf\u0ca8\u0cbe\u0c82\u0c95':'Last Date'}</span><span class="njl-date-v">\ud83d\uddd3\ufe0f ${fmtDate(j.last_date)}</span></div>`:''}
+      ${j.last_date?`<div class="njl-date"><span class="njl-date-l">${njGetLang()==='kn'?'\u0c95\u0cca\u0ca8\u0cc6\u0caf \u0ca6\u0cbf\u0ca8\u0cbe\u0c82\u0c95':'Last Date'}</span><span class="njl-date-v">${icoCal}<span>${fmtDate(j.last_date)}</span></span></div>`:''}
     </div>
     <div class="njl-action">${actionBtn}</div>
   </div>`;
