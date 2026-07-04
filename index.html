@@ -208,6 +208,79 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 [data-lang="en"] .lang-kn{display:none !important;}
 [data-lang="kn"] .lang-en{display:none !important;}
 /* ===== END LANGUAGE TOGGLE ===== */
+
+/* ============================================================
+   STEP 3 — LATEST JOBS PREMIUM REDESIGN
+   Scoped strictly to the Latest Jobs section (#jgrid + .latest-head)
+   Styling & layout only. No JS / structure / other sections touched.
+   ============================================================ */
+
+/* ---- Section header ---- */
+.latest-head{display:flex;flex-direction:column;gap:4px;margin-bottom:22px;}
+.latest-head .sh{margin-bottom:0;font-size:24px;letter-spacing:-0.4px;}
+.latest-head .sh::before{height:28px;background:linear-gradient(180deg,#60a5fa,#2563eb);box-shadow:0 0 14px rgba(59,130,246,0.6);}
+.latest-sub{font-family:var(--fen);font-size:13px;font-weight:600;color:rgba(255,255,255,0.62);letter-spacing:0.02em;padding-left:16px;display:flex;align-items:center;gap:6px;}
+.latest-sub::before{content:'';width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,#4ade80 40%,transparent 42%);box-shadow:0 0 8px rgba(74,222,128,0.7);flex-shrink:0;}
+
+/* ---- Grid: 2-col desktop/tablet, 1-col mobile ---- */
+#jgrid{gap:22px;}
+
+/* ---- Premium glass card ---- */
+#jgrid .jc{
+  background:linear-gradient(160deg,rgba(255,255,255,0.09),rgba(255,255,255,0.028));
+  border:1.5px solid rgba(255,255,255,0.14);
+  border-radius:24px;
+  box-shadow:0 10px 34px rgba(4,12,40,0.45),inset 0 1px 0 rgba(255,255,255,0.10);
+  transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s ease,border-color .4s ease,background .4s ease;
+}
+#jgrid .jc::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;
+  background:radial-gradient(130% 120% at 50% -15%,rgba(96,165,250,0.16),transparent 55%);
+  opacity:0;transition:opacity .4s ease;
+}
+#jgrid .jc>*{position:relative;z-index:1;}
+#jgrid .jc:hover{
+  transform:translateY(-8px);
+  border-color:rgba(96,165,250,0.55);
+  background:linear-gradient(160deg,rgba(255,255,255,0.12),rgba(255,255,255,0.04));
+  box-shadow:0 24px 52px rgba(4,12,40,0.6),0 0 0 1px rgba(96,165,250,0.25),0 0 32px rgba(59,130,246,0.30);
+}
+#jgrid .jc:hover::before{opacity:1;}
+
+/* ---- Card header (logo + department) ---- */
+#jgrid .ji{padding:18px 18px 14px;gap:14px;background:linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.012));border-bottom:1px solid rgba(255,255,255,0.10);}
+#jgrid .dlogo{width:56px;height:56px;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,0.28);}
+#jgrid .dn{font-size:12.5px;letter-spacing:0.05em;color:rgba(255,255,255,0.92);}
+
+/* ---- Card body: spacing + typography ---- */
+#jgrid .jb{padding:16px 20px 20px;}
+#jgrid .jt{font-family:var(--fhead);font-size:16.5px;font-weight:800;line-height:1.35;letter-spacing:-0.2px;margin-bottom:8px;}
+
+/* ---- Premium badges ---- */
+#jgrid .jcat-row{gap:7px;margin-bottom:12px;}
+#jgrid .status-badge{padding:5px 11px;border-radius:999px;font-size:9.5px;letter-spacing:0.06em;box-shadow:0 2px 8px rgba(0,0,0,0.22);}
+#jgrid .jcat{padding:5px 11px;border-radius:999px;background:rgba(96,165,250,0.16);border:1px solid rgba(96,165,250,0.4);color:#bfdbfe;font-size:9.5px;letter-spacing:0.06em;}
+
+/* ---- Info pills ---- */
+#jgrid .jm{gap:7px;margin-bottom:16px;}
+#jgrid .pl{padding:5px 11px;border-radius:999px;font-size:11px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);}
+
+/* ---- Compact premium buttons ---- */
+#jgrid .jf{gap:8px;padding-top:14px;margin-top:6px;border-top:1px solid rgba(255,255,255,0.10);}
+#jgrid .btn-card{padding:8px 10px;border-radius:12px;font-size:11px;font-weight:800;border:none;letter-spacing:0.02em;transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;}
+#jgrid .btn-card:hover{transform:translateY(-2px);filter:brightness(1.08);}
+/* Positive / share = green gradient */
+#jgrid .bc-wa{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 5px 16px rgba(34,197,94,0.35);}
+#jgrid .bc-wa:hover{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 8px 22px rgba(34,197,94,0.5);}
+/* Details = blue gradient */
+#jgrid .bc-details{background:linear-gradient(135deg,#3b82f6,#2563eb) !important;border:none !important;color:#fff !important;text-shadow:0 1px 3px rgba(0,0,0,0.25) !important;box-shadow:0 5px 16px rgba(37,99,235,0.4);}
+#jgrid .bc-details:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,0.6);}
+#jgrid .bc-tg{background:linear-gradient(135deg,#38bdf8,#0ea5e9);box-shadow:0 5px 16px rgba(14,165,233,0.30);}
+#jgrid .bc-tg:hover{background:linear-gradient(135deg,#38bdf8,#0ea5e9);box-shadow:0 8px 22px rgba(14,165,233,0.48);}
+
+/* ---- Responsive: keep tablet 2-col, mobile 1-col ---- */
+@media(max-width:680px){#jgrid{grid-template-columns:1fr;gap:16px;}.latest-head .sh{font-size:21px;}}
+/* ===== END STEP 3 LATEST JOBS REDESIGN ===== */
 </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9037988612895250" crossorigin="anonymous"></script>
   <style>
@@ -311,7 +384,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 <div class="main">
 
   <div>
-    <div class="sh">🔥 Latest Jobs</div>
+    <div class="latest-head">
+      <div class="sh">🔥 Latest Jobs</div>
+      <div class="latest-sub">Verified Government Recruitment Updates</div>
+    </div>
     <div class="jg" id="jgrid">
       <div class="loading"><div class="spinner"></div><div>Loading jobs...</div></div>
     </div>
