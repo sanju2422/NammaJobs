@@ -587,20 +587,23 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 
 /* ---- Job Overview: individual info cards ---- */
 .ov-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:18px;}
-.oc{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;justify-content:center;gap:10px;min-width:0;}
-.oc-head{display:flex;align-items:center;gap:11px;}
+/* Consistent card rhythm: uniform 20px padding, top-aligned so every card reads
+   [icon] HEADING on the first row, then content flowing directly below with the
+   same vertical gap on every card. */
+.oc{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;align-items:flex-start;gap:14px;min-width:0;}
+.oc-head{display:flex;align-items:center;gap:11px;width:100%;}
 .oc-headtxt{min-width:0;}
 .oc-ic{width:38px;height:38px;border-radius:11px;background:var(--glass-bg-dark);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#c4b5fd;overflow:hidden;}
 .oc-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.65);line-height:1.3;}
 /* Secondary line under a card title (e.g. the Notification number) — clean, muted, no badge box. */
 .oc-sub{font-size:12.5px;font-weight:700;color:rgba(255,255,255,0.72);margin-top:3px;line-height:1.35;word-break:break-word;}
-.oc-val{font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;}
+.oc-val{font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;width:100%;}
 .oc-val .qual-wrap{margin-top:0;}
 .oc-val .sub-tbl-wrap{margin-top:0;}
 .oc.wide{grid-column:1 / -1;}
 .oc.oc-action .btn-apply-main{display:flex;width:100%;text-align:center;}
 /* Organization "type" subline (e.g. Government Organization) — muted, small. */
-.oc-orgtype{font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);margin-top:4px;line-height:1.35;}
+.oc-orgtype{font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);margin-top:6px;line-height:1.35;}
 /* Long values (Post Name / Organization): wrap naturally up to 4 lines, then ellipsis. */
 .oc-clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
 @media(max-width:640px){.ov-cards{grid-template-columns:1fr;}}
@@ -788,6 +791,19 @@ function njIc(n){
   return '<svg class="nj-ic" viewBox="0 0 24 24" '+attrs+' aria-hidden="true">'+s.p+'</svg>';
 }
 
+/* ===== TITLE-CASE FORMATTER (presentation only) =====
+   Capitalizes the first letter of each word in a value while leaving
+   ALL-CAPS / acronym tokens intact (RRB, KPSC, IIT, SC/ST, etc.) and
+   ignoring non-Latin scripts (Kannada etc.). Used only for display of the
+   Posts / category field — never mutates stored data or any other logic. */
+function njTitleCase(s){
+  if(s==null) return s;
+  return String(s).replace(/\S+/g,function(w){
+    if(/^[^a-z]*$/.test(w)) return w; // no lowercase letters → acronym / non-Latin → leave as-is
+    return w.charAt(0).toUpperCase()+w.slice(1).toLowerCase();
+  });
+}
+
 /* ===== UNIVERSAL ORGANIZATION LOGO RESOLVER (used ONLY by the hero now) ===== */
 var NJ_ORG_STOP={of:1,in:1,the:1,and:1,for:1,a:1,an:1,to:1};
 function njOrgTokens(s){
@@ -936,7 +952,7 @@ function njTotalSeats(raw){
 function overviewStripHtml(j){
   var kn=njGetLang()==='kn';
   var vac=njTotalSeats(njField(j.seats||'',j.seats_kn)); if(vac==='0')vac='';
-  var posts=njField(j.cat,j.cat_kn)||(kn?'ವಿವಿಧ':'Various');
+  var posts=njTitleCase(njField(j.cat,j.cat_kn)||(kn?'ವಿವಿಧ':'Various'));
   var locv=njField(j.loc,j.loc_kn);
   var mode=njField(j.apply_mode,j.apply_mode_kn)||(kn?'ಆನ್‌ಲೈನ್':'Online');
   return '<div class="ov-strip">'
@@ -1012,10 +1028,6 @@ function overviewCardsHtml(j){
   // --- Post Name: wraps naturally up to 4 lines, then ellipsis (never awkward cut). ---
   var postName=njField(j.title_en,j.title_kn)||'';
   if(postName) c+=ovCard(njIc('briefcase'), kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', '<span class="oc-clamp">'+njEsc(postName)+'</span>');
-
-  // --- Total Vacancies: ONLY the total number, never the category-wise breakdown. ---
-  var totalVac=njTotalSeats(njField(j.seats||'0',j.seats_kn));
-  c+=ovCard(njIc('users'), kn?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies', njEsc(totalVac));
 
   if(j.salary) c+=ovCard(njIc('wallet'),kn?'ವೇತನ':'Pay Scale / Salary', njSalaryCell(njField(j.salary,j.salary_kn)));
   // --- Location: wraps to multiple lines, never cut (no clamp / no ellipsis). ---
@@ -1310,7 +1322,7 @@ function renderJob(j){
         <h1>${njField(j.title_en,j.title_kn)||''}</h1>
         <div class="hero-chips">
           ${njField(j.dept,j.dept_kn)?`<span class="hero-chip">${njIc('building')} <span class="chip-txt">${njField(j.dept,j.dept_kn)}</span></span>`:''}
-          ${njField(j.cat,j.cat_kn)?`<span class="hero-chip">${njIc('tag')} <span class="chip-txt">${njField(j.cat,j.cat_kn)}</span></span>`:''}
+          ${njField(j.cat,j.cat_kn)?`<span class="hero-chip">${njIc('tag')} <span class="chip-txt">${njTitleCase(njField(j.cat,j.cat_kn))}</span></span>`:''}
           ${njField(j.loc,j.loc_kn)?`<span class="hero-chip">${njIc('map-pin')} <span class="chip-txt">${njField(j.loc,j.loc_kn)}</span></span>`:''}
         </div>
       </div>
