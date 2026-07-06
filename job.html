@@ -110,8 +110,6 @@
    official Dark Theme and must be preserved as-is.
    A future Light theme (default) only needs to override these tokens
    under a [data-theme="light"] selector — no rule rewrites required.
-   All components read from these tokens (directly or via the aliases).
-   Theme switch is intentionally NOT built yet (future phase).
    ============================================================ */
 :root{
   --bg:radial-gradient(ellipse at top,#1e3a8a 0%,#0c1f4a 40%,#061333 100%);
@@ -181,6 +179,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   font-size:50px;
   overflow:hidden;
 }
+.hero-logo img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;min-width:0;min-height:0;}
 .hero-content{flex:1;min-width:0;}
 .hero-badge{
   display:inline-flex;
@@ -334,9 +333,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 
 /* JOB BANNER */
 .job-banner{width:100%;margin-bottom:18px;border-radius:18px;overflow:hidden;border:2px solid var(--glass-border);box-shadow:var(--shadow);background:rgba(255,255,255,0.05);}
-/* Smart fit: any size/aspect is scaled DOWN to fit fully inside the box, centered, never cropped or distorted. */
 .job-banner img{width:100%;height:auto;display:block;}
-/* Desktop gets a slightly taller, balanced cap so the Job Overview still shows immediately below. */
 @media(min-width:769px){.job-banner{margin-bottom:14px;}}
 
 /* CATEGORY TABLE */
@@ -504,7 +501,6 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   .back-btn .back-full{display:none;}
   .back-btn .back-short{display:inline;}
   .back-btn{padding:9px 14px;font-size:13px;white-space:nowrap;}
-  /* Premium mobile/tablet language toggle — clearer spacing, alignment & visibility */
   .tbtns{gap:10px;align-items:center;}
   .lang-toggle{padding:3px;gap:4px;border-radius:13px;overflow:visible;flex:0 0 auto;align-self:center;}
   .lang-toggle-btn{padding:7px 13px;font-size:13px;line-height:1.25;border-radius:10px;white-space:nowrap;}
@@ -515,12 +511,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 [data-lang="kn"] .lang-en{display:none !important;}
 /* ===== END LANGUAGE TOGGLE ===== */
 
-/* ===== INLINE ICON SYSTEM =====================================
-   Feather/Lucide-style line icons + official brand marks, matching
-   the Home Page icon language (its search icon is the same stroke
-   style). All icons inherit currentColor so they adopt each button's
-   text color automatically — no new colors introduced.
-   =============================================================== */
+/* ===== INLINE ICON SYSTEM ===== */
 .nj-ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0;}
 .tbtn .nj-ic{width:15px;height:15px;}
 .footer-social a .nj-ic{width:16px;height:16px;}
@@ -536,22 +527,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .qual-chip .nj-ic{width:12px;height:12px;margin-right:4px;vertical-align:-0.1em;}
 .btn-apply-main .nj-ic{width:14px;height:14px;}
 
-/* ===== SHARED LOGO TILE IMAGE RULE ============================
-   ONE rule drives the <img> inside BOTH the hero logo tile and the
-   Organization card logo tile, so the two can never render
-   differently. Both tiles are plain white squares (no border) with
-   flex centering + overflow:hidden; the image scales to contain and
-   is centered. Only the tile SIZE differs between hero and card. */
-.hero-logo img,
-.oc-ic.has-logo img{
-  width:100%;height:100%;
-  object-fit:contain;
-  object-position:center;
-  display:block;
-}
-
-/* ===== DESKTOP LAYOUT REFINEMENT (match approved preview; desktop only, mobile untouched) =====
-   NOTE: sidebar is NOT sticky — it scrolls normally with the page. */
+/* ===== DESKTOP LAYOUT REFINEMENT ===== */
 @media(min-width:1025px){
   .container{padding:20px 16px 36px;}
   .main-grid{grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start;}
@@ -567,18 +543,13 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   .date-item{padding:13px 12px;}
   .steps{gap:10px;}
   .apply-box{padding:22px;margin-bottom:18px;}
-  /* Two-column blocks like the preview (How to Apply steps + Required Documents) */
   #apply-section .steps{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;}
   .req-docs{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;}
-  /* sidebar scrolls normally (no sticky) and top-aligns with the main column */
   #sidebar{align-self:start;}
 }
 
 /* ============================================================
    PREVIEW LAYOUT MATCH (structure / spacing / hierarchy only)
-   DARK PALETTE RETAINED. All new components read from the existing
-   theme tokens, so the future [data-theme="light"] override will
-   restyle them automatically — no rewrites needed.
    ============================================================ */
 
 /* ---- Header: search field + social cluster ---- */
@@ -593,7 +564,6 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 /* ---- Hero: chips + pinned Last Date box ---- */
 .hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
 .hero-chip{display:inline-flex;align-items:center;gap:6px;background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);color:#fff;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;min-width:0;max-width:100%;}
-/* Long organization chips truncate cleanly with an ellipsis; all chips keep equal height. */
 .hero-chip .chip-txt{display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:280px;vertical-align:bottom;}
 @media(max-width:768px){.hero-chips{justify-content:center;}.hero-chip .chip-txt{max-width:210px;}}
 .hero-lastdate{flex-shrink:0;align-self:flex-start;background:rgba(255,87,87,0.16);border:2px solid rgba(255,87,87,0.5);border-radius:14px;padding:12px 18px;text-align:center;min-width:150px;}
@@ -615,33 +585,24 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   .ov-item:nth-child(1),.ov-item:nth-child(2){border-bottom:1px solid var(--glass-border);}
 }
 
-/* ---- Job Overview: individual info cards (split from the single info-table) ----
-   Content is vertically CENTERED so short and tall cards feel equally filled with
-   balanced top/bottom whitespace — no card is shrunk, heights still auto-match per row.
-   Each card reuses the glass surface tokens so the future light theme restyles them. */
+/* ---- Job Overview: individual info cards ---- */
 .ov-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:18px;}
 .oc{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;justify-content:center;gap:10px;min-width:0;}
 .oc-head{display:flex;align-items:center;gap:11px;}
 .oc-headtxt{min-width:0;}
 .oc-ic{width:38px;height:38px;border-radius:11px;background:var(--glass-bg-dark);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#c4b5fd;overflow:hidden;}
-/* Organization card logo tile = the SAME white tile treatment as the hero logo:
-   white background, NO border, flex-centered, overflow hidden. Only the size and
-   corner radius differ (it's a small 38px tile). The <img> itself is driven by the
-   shared ".hero-logo img, .oc-ic.has-logo img" rule above, so the card renders the
-   logo pixel-identically to the hero — just scaled down. No border = no box-sizing
-   inset and no rounded-corner clipping that was cropping/offsetting small logos. */
-.oc-ic.has-logo{background:#fff;border:none;padding:5px;}
 .oc-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.65);line-height:1.3;}
-/* Secondary line under a card title (e.g. the Notification number) — clean, muted,
-   no badge box. Matches the premium restraint of the Apply / Official cards. */
+/* Secondary line under a card title (e.g. the Notification number) — clean, muted, no badge box. */
 .oc-sub{font-size:12.5px;font-weight:700;color:rgba(255,255,255,0.72);margin-top:3px;line-height:1.35;word-break:break-word;}
 .oc-val{font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;}
 .oc-val .qual-wrap{margin-top:0;}
 .oc-val .sub-tbl-wrap{margin-top:0;}
 .oc.wide{grid-column:1 / -1;}
-/* Action cards (Notification / Official Website / Apply Link): full-width buttons
-   using the existing site button component — consistent with the Home Page. */
 .oc.oc-action .btn-apply-main{display:flex;width:100%;text-align:center;}
+/* Organization "type" subline (e.g. Government Organization) — muted, small. */
+.oc-orgtype{font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);margin-top:4px;line-height:1.35;}
+/* Long values (Post Name / Organization): wrap naturally up to 4 lines, then ellipsis. */
+.oc-clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
 @media(max-width:640px){.ov-cards{grid-template-columns:1fr;}}
 
 /* ---- Action bar: 4 primary buttons (top + bottom) ---- */
@@ -796,12 +757,7 @@ const H={'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`};
 const NJ_WHATSAPP='https://whatsapp.com/channel/REPLACE_WITH_YOUR_WHATSAPP_CHANNEL';
 const NJ_TELEGRAM='https://t.me/REPLACE_WITH_YOUR_TELEGRAM_CHANNEL';
 
-/* ============================================================
-   INLINE ICON HELPER (presentation only)
-   Line icons follow the Home Page's feather/stroke style (its
-   search icon uses the same stroke set); WhatsApp/Telegram use the
-   official brand marks. All inherit currentColor. No emoji.
-   ============================================================ */
+/* ===== INLINE ICON HELPER (presentation only) ===== */
 var NJ_SVG={
   wa:{f:1,p:'<path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/>'},
   tg:{f:1,p:'<path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/>'},
@@ -832,14 +788,7 @@ function njIc(n){
   return '<svg class="nj-ic" viewBox="0 0 24 24" '+attrs+' aria-hidden="true">'+s.p+'</svg>';
 }
 
-/* ============================================================
-   UNIVERSAL ORGANIZATION LOGO RESOLVER  (data-driven, self-deriving)
-   ONE source of truth used by BOTH the hero logo and the
-   Organization card. Normalizes any org string then matches on
-   normalized phrase / collapsed form / auto-derived initials, so
-   abbreviations and full names resolve to one logo with no duplicate
-   entries. Adding a future org = one { u, a:[...] } row.
-   ============================================================ */
+/* ===== UNIVERSAL ORGANIZATION LOGO RESOLVER (used ONLY by the hero now) ===== */
 var NJ_ORG_STOP={of:1,in:1,the:1,and:1,for:1,a:1,an:1,to:1};
 function njOrgTokens(s){
   return String(s==null?'':s)
@@ -932,7 +881,6 @@ function daysLeft(ld){if(!ld)return null;const t=new Date();t.setHours(0,0,0,0);
 
 function scrollToShare(){document.getElementById('share-section')?.scrollIntoView({behavior:'smooth'});}
 
-/* Header search: hand off to the listing page (harmless if the param is ignored there). */
 function njSearch(e){
   e.preventDefault();
   var q=(document.getElementById('hdr-search-input')||{}).value||'';
@@ -941,25 +889,41 @@ function njSearch(e){
   return false;
 }
 
-/* Assign the (single-source) channel URLs onto any static or freshly-rendered link. */
 function njApplyChannelLinks(){
   document.querySelectorAll('[data-nj-wa]').forEach(function(a){a.href=NJ_WHATSAPP;});
   document.querySelectorAll('[data-nj-tg]').forEach(function(a){a.href=NJ_TELEGRAM;});
 }
 
-/* Shared logo-tile image renderer — used by BOTH the hero and the Organization card
-   so their rendering can never drift. Returns an <img> when a logo resolves,
-   otherwise the caller's fallback glyph. The tile CSS + the shared img rule
-   (.hero-logo img, .oc-ic.has-logo img) do the identical centering/scaling. */
+/* Hero logo tile renderer (hero only). Returns an <img> when a logo resolves,
+   otherwise the caller's fallback glyph. */
 function njLogoImg(logoUrl,altText,fallbackHtml){
   if(!logoUrl) return fallbackHtml;
-  return '<img src="'+logoUrl+'" alt="'+njEsc(altText||'')+'" onerror="this.onerror=null;var p=this.parentElement;p.classList.remove(\'has-logo\');p.innerHTML=\''+String(fallbackHtml).replace(/'/g,"\\'")+'\';">';
+  return '<img src="'+logoUrl+'" alt="'+njEsc(altText||'')+'" onerror="this.onerror=null;this.parentElement.innerHTML=\''+String(fallbackHtml).replace(/'/g,"\\'")+'\';">';
+}
+
+/* Extract ONLY the total vacancy count from any seats string, universally.
+   "53 (Junior Assistant:39...)" -> "53" ; "JA:39, Clerk:14" -> "53" (sum) ;
+   "Various" -> "Various". No hardcoding, no category text ever shown here. */
+function njTotalSeats(raw){
+  var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
+  if(!t) return '';
+  // 1) explicit leading total, e.g. "53" or "53 (breakdown...)" or "Total: 53"
+  var lead=t.match(/^\s*(?:total\s*[:\-]?\s*)?([0-9][0-9,]*)/i);
+  if(lead) return lead[1];
+  // 2) otherwise sum every numeric token found (category-wise with no leading total)
+  var nums=t.match(/[0-9][0-9,]*/g);
+  if(nums&&nums.length){
+    var sum=nums.reduce(function(a,b){return a+parseInt(b.replace(/,/g,''),10);},0);
+    if(sum>0) return String(sum);
+  }
+  // 3) non-numeric value (e.g. "Various") — show as-is
+  return t;
 }
 
 /* Full-width Job Overview stat strip (reads existing job fields). */
 function overviewStripHtml(j){
   var kn=njGetLang()==='kn';
-  var vac=njField(j.seats||'',j.seats_kn); if(vac==='0')vac='';
+  var vac=njTotalSeats(njField(j.seats||'',j.seats_kn)); if(vac==='0')vac='';
   var posts=njField(j.cat,j.cat_kn)||(kn?'ವಿವಿಧ':'Various');
   var locv=njField(j.loc,j.loc_kn);
   var mode=njField(j.apply_mode,j.apply_mode_kn)||(kn?'ಆನ್‌ಲೈನ್':'Online');
@@ -971,9 +935,7 @@ function overviewStripHtml(j){
     + '</div>';
 }
 
-/* ============================================================
-   UNIVERSAL SALARY / PAY-LEVEL RENDERER (RRB standard)
-   ============================================================ */
+/* ===== UNIVERSAL SALARY / PAY-LEVEL RENDERER (RRB standard) ===== */
 function njSalaryLevels(raw){
   var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
   if(!t) return [];
@@ -1003,9 +965,7 @@ function njSalaryCell(raw){
   return '<div class="qual-wrap">'+levels.map(function(x){return '<span class="qual-chip sal-chip">'+njEsc(x)+'</span>';}).join('')+'</div>';
 }
 
-/* ============================================================
-   JOB OVERVIEW — INDIVIDUAL CARDS (presentation helper, additive)
-   ============================================================ */
+/* ===== JOB OVERVIEW — INDIVIDUAL CARDS (presentation helper, additive) ===== */
 function ovCard(ic,label,valueHtml,opts){
   opts=opts||{};
   if(valueHtml==null) return '';
@@ -1026,21 +986,29 @@ function overviewCardsHtml(j){
   var isExpiring=isOpen&&dl!==null&&dl>=0&&dl<=5;
   var c='';
 
-  // --- Organization: SAME resolver + SAME shared tile renderer (njLogoImg) as the
-  //     hero, and now the SAME white tile treatment (no border) + SAME shared img
-  //     rule, so it renders the logo pixel-identically to the hero, just smaller.
+  // --- Organization: clean information layout, NO logo (hero already shows it).
+  //     Icon tile = building line icon (same as every other card). Value = org
+  //     name (wraps up to 4 lines, then ellipsis) + a muted "Government Organization"
+  //     subline. Standard for every organization; no empty logo space left behind.
   var orgName=njField(j.dept,j.dept_kn)||'';
   if(orgName){
-    var orgLogo=j.logo_url||getDeptLogo(j.dept);
-    var orgIc=njLogoImg(orgLogo, orgName, njIc('building'));
-    c+=ovCard(orgIc, kn?'ಸಂಸ್ಥೆ':'Organization', orgName, orgLogo?{icClass:'has-logo'}:undefined);
+    var orgVal='<span class="oc-clamp">'+njEsc(orgName)+'</span>'
+      +'<div class="oc-orgtype">'+(kn?'ಸರ್ಕಾರಿ ಸಂಸ್ಥೆ':'Government Organization')+'</div>';
+    c+=ovCard(njIc('building'), kn?'ಸಂಸ್ಥೆ':'Organization', orgVal);
   }
 
-  c+=ovCard(njIc('briefcase'),kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', njField(j.title_en,j.title_kn)||'');
-  c+=ovCard(njIc('users'),kn?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies', njPairCell(njField(j.seats||'0',j.seats_kn)));
+  // --- Post Name: wraps naturally up to 4 lines, then ellipsis (never awkward cut). ---
+  var postName=njField(j.title_en,j.title_kn)||'';
+  if(postName) c+=ovCard(njIc('briefcase'), kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', '<span class="oc-clamp">'+njEsc(postName)+'</span>');
+
+  // --- Total Vacancies: ONLY the total number, never the category-wise breakdown. ---
+  var totalVac=njTotalSeats(njField(j.seats||'0',j.seats_kn));
+  c+=ovCard(njIc('users'), kn?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies', njEsc(totalVac));
+
   if(j.salary) c+=ovCard(njIc('wallet'),kn?'ವೇತನ':'Pay Scale / Salary', njSalaryCell(njField(j.salary,j.salary_kn)));
-  if(njField(j.loc,j.loc_kn)) c+=ovCard(njIc('map-pin'),kn?'ಸ್ಥಳ':'Location', njField(j.loc,j.loc_kn));
-  if(njField(j.apply_mode,j.apply_mode_kn)) c+=ovCard(njIc('monitor'),kn?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode', njField(j.apply_mode,j.apply_mode_kn));
+  // --- Location: wraps to multiple lines, never cut (no clamp / no ellipsis). ---
+  if(njField(j.loc,j.loc_kn)) c+=ovCard(njIc('map-pin'),kn?'ಸ್ಥಳ':'Location', njEsc(njField(j.loc,j.loc_kn)));
+  if(njField(j.apply_mode,j.apply_mode_kn)) c+=ovCard(njIc('monitor'),kn?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode', njEsc(njField(j.apply_mode,j.apply_mode_kn)));
 
   if(j.age) c+=ovCard(njIc('user-check'),kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit', njAgeCell(njField(j.age,j.age_kn)), {wide:true});
   if(j.skills) c+=ovCard(njIc('graduation-cap'),kn?'ಅರ್ಹತೆ':'Qualification', njQualCell(njField(j.skills,j.skills_kn)), {wide:true});
@@ -1071,7 +1039,6 @@ function overviewCardsHtml(j){
   return '<div class="ov-cards">'+c+'</div>';
 }
 
-/* Horizontal 4-button action bar (Apply / Official / Download / Share). Self-hides empties. */
 function actionBarHtml(j){
   var kn=njGetLang()==='kn';
   var b='';
@@ -1116,14 +1083,8 @@ function shareNative(){
   const title=njField(job.title_en,job.title_kn);
   const desc=njField(job.description,job.description_kn);
   if(navigator.share){
-    navigator.share({
-      title:title,
-      text:desc?desc.slice(0,200):'',
-      url:window.location.href
-    }).catch(()=>{});
-  } else {
-    copyLink();
-  }
+    navigator.share({title:title,text:desc?desc.slice(0,200):'',url:window.location.href}).catch(()=>{});
+  } else { copyLink(); }
 }
 function copyLink(){
   navigator.clipboard.writeText(window.location.href).then(()=>{
@@ -1205,23 +1166,37 @@ function njFeeCell(raw){
   }
   return String(raw).split(/\s*[|;\n,]\s*/).map(function(x){return x.trim();}).filter(Boolean).map(function(x){return '<span class="qual-chip">'+njEsc(x)+'</span>';}).join(' ');
 }
+/* Category-wise vacancies → rows + an ALWAYS-present TOTAL row.
+   The total uses an explicit "Total: N" from the data when present; otherwise it
+   is the sum of the category numbers. Universal — no hardcoding. */
 function njCatRows(raw){
   var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
   if(!t) return '<tr><td colspan="2">'+njEsc(raw)+'</td></tr>';
   var SEP=/\s*[\n|;]\s*|\s*,(?!\d)\s*|\s{2,}/;
   var segs=t.split(SEP).map(function(x){return x.trim();}).filter(Boolean);
-  var rows=[];
+  var rows=[],explicitTotal=null;
   segs.forEach(function(seg){
     var k,v,ci=seg.indexOf(':');
     if(ci>=0){k=seg.slice(0,ci);v=seg.slice(ci+1);}
     else{var mm=seg.match(/^(.*?)[-\u2013]\s*([0-9][0-9,]*)\s*$/);if(mm){k=mm[1];v=mm[2];}else{k=seg;v='';}}
     k=k.replace(/\s+/g,' ').trim();
     var num=(String(v).match(/[0-9][0-9,]*/)||[''])[0];
-    if(/^total\b/i.test(k)) return;
+    if(/^total\b/i.test(k)){ if(num) explicitTotal=num; return; }
     if(num&&k.length>0&&k.length<=60) rows.push({k:k,v:num});
   });
   if(!rows.length) return '<tr><td colspan="2">'+njEsc(raw)+'</td></tr>';
-  return rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="qual-chip">'+njEsc(p.v)+'</span></td></tr>';}).join('');
+  var body=rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="qual-chip">'+njEsc(p.v)+'</span></td></tr>';}).join('');
+  // Always append a TOTAL row (explicit if given, else computed sum).
+  var totalShow=explicitTotal;
+  if(totalShow==null){
+    var sum=rows.reduce(function(a,r){return a+parseInt(String(r.v).replace(/,/g,''),10);},0);
+    if(sum>0) totalShow=String(sum);
+  }
+  if(totalShow!=null){
+    var totalLabel=njGetLang()==='kn'?'ಒಟ್ಟು':'Total';
+    body+='<tr><td><strong>'+totalLabel+'</strong></td><td><span class="qual-chip"><strong>'+njEsc(totalShow)+'</strong></span></td></tr>';
+  }
+  return body;
 }
 function njAgeRows(raw){
   var t=String(raw).replace(/\r/g,' ').replace(/\s+/g,' ').trim();
@@ -1296,7 +1271,7 @@ function renderJob(j){
   const isExpiring=isOpen&&dl!==null&&dl>=0&&dl<=5;
   const kn=njGetLang()==='kn';
 
-  // Hero logo — same resolver + same shared tile renderer as the Organization card.
+  // Hero logo — resolver + tile renderer (unchanged; hero is the single place a logo shows).
   const logo=j.logo_url||getDeptLogo(j.dept);
   const heroLogoHtml=`<div class="hero-logo">${njLogoImg(logo, j.dept, (j.icon||'💼'))}</div>`;
 
@@ -1498,8 +1473,8 @@ function renderSidebar(currentJob,jobs){
   glance+=gi(njIc('building'),kn?'ಸಂಸ್ಥೆ':'Organization',njField(currentJob.dept,currentJob.dept_kn));
   glance+=gi(njIc('briefcase'),kn?'ಹುದ್ದೆ':'Post Name',njField(currentJob.title_en,currentJob.title_kn));
   glance+=gi(njIc('map-pin'),kn?'ಸ್ಥಳ':'Location',njField(currentJob.loc,currentJob.loc_kn));
-  var vseats=njField(currentJob.seats||'',currentJob.seats_kn); if(vseats==='0')vseats='';
-  glance+=gi(njIc('users'),kn?'ಹುದ್ದೆಗಳು':'Vacancies', vseats?njPairCell(vseats):'');
+  var vseats=njTotalSeats(njField(currentJob.seats||'',currentJob.seats_kn)); if(vseats==='0')vseats='';
+  glance+=gi(njIc('users'),kn?'ಹುದ್ದೆಗಳು':'Vacancies', vseats?('<span class="qual-chip">'+njEsc(vseats)+'</span>'):'');
   glance+=gi(njIc('monitor'),kn?'ಅರ್ಜಿ ವಿಧಾನ':'Mode',njField(currentJob.apply_mode,currentJob.apply_mode_kn));
   glance+=gi(njIc('calendar'),kn?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date',currentJob.last_date?fmtDate(currentJob.last_date):'',true);
   if(glance){
@@ -1513,7 +1488,7 @@ function renderSidebar(currentJob,jobs){
         <div class="sl-num">${i+1}</div>
         <div>
           <div class="sl-title">${njField(j.title_en,j.title_kn)||''}</div>
-          <div class="sl-meta">${njField(j.dept,j.dept_kn)||''} · ${njField(j.seats||'0',j.seats_kn)}${kn?' ಹುದ್ದೆಗಳು':' Posts'}</div>
+          <div class="sl-meta">${njField(j.dept,j.dept_kn)||''} · ${njTotalSeats(njField(j.seats||'0',j.seats_kn))}${kn?' ಹುದ್ದೆಗಳು':' Posts'}</div>
         </div>
       </div>
     `).join('');
@@ -1528,7 +1503,7 @@ function renderSidebar(currentJob,jobs){
         <div class="dd-box"><div class="dd-day">${d.getDate()}</div><div class="dd-mo">${d.toLocaleString('default',{month:'short'}).toUpperCase()}</div></div>
         <div>
           <div class="sl-title">${njField(j.title_en,j.title_kn)||''}</div>
-          <div class="sl-meta">${njField(j.dept,j.dept_kn)||''} · ${njField(j.seats||'0',j.seats_kn)}${kn?' ಹುದ್ದೆಗಳು':' Posts'}</div>
+          <div class="sl-meta">${njField(j.dept,j.dept_kn)||''} · ${njTotalSeats(njField(j.seats||'0',j.seats_kn))}${kn?' ಹುದ್ದೆಗಳು':' Posts'}</div>
         </div>
       </div>`;
     }).join('');
@@ -1581,7 +1556,7 @@ function renderSimilarJobs(cur,jobs){
   var cards=list.map(function(j){
     var t=njField(j.title_en,j.title_kn)||'';
     var d=njField(j.dept,j.dept_kn)||'';
-    var seats=njField((j.seats||'0'),j.seats_kn);
+    var seats=njTotalSeats(njField((j.seats||'0'),j.seats_kn));
     var ic=j.icon||'\ud83d\udcbc';
     var badge=(j.cat||d||'').toString();
     return '<a class="sim-card" href="job.html?job='+encodeURIComponent(j.id)+'">'+
