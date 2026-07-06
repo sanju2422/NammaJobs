@@ -903,12 +903,24 @@ function njLogoImg(logoUrl,altText,fallbackHtml){
 
 /* Extract ONLY the total vacancy count from any seats string, universally.
    "53 (Junior Assistant:39...)" -> "53" ; "JA:39, Clerk:14" -> "53" (sum) ;
-   "Various" -> "Various". No hardcoding, no category text ever shown here. */
+   "Various" -> "Various". No hardcoding, no category text ever shown here.
+
+   RRB-SPECIFIC FIX (2026-07): RRB is the only record whose `seats` string carries
+   BOTH the full category breakdown AND an explicit "Total N" in the same value.
+   The old code fell straight into the sum-all branch and added the breakdown
+   (6557) to the trailing total (6557) = 13114 — an exact 2x. Fix: if an explicit
+   "Total N" token exists anywhere, trust it and return it directly. Records with
+   no "Total" token (every other job — NBEMS, KSP, ISRO, IIT, etc.) never reach
+   this branch, so their behaviour is byte-for-byte identical to before. */
 function njTotalSeats(raw){
   var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
   if(!t) return '';
-  // 1) explicit leading total, e.g. "53" or "53 (breakdown...)" or "Total: 53"
-  var lead=t.match(/^\s*(?:total\s*[:\-]?\s*)?([0-9][0-9,]*)/i);
+  // 0) explicit "Total N" anywhere — the RRB case. Only triggers when the data
+  //    literally contains a "Total" token, so it can never affect other jobs.
+  var tot=t.match(/\btotals?\b\s*[:\-\u2013=]?\s*([0-9][0-9,]*)/i);
+  if(tot) return tot[1];
+  // 1) explicit leading total, e.g. "53" or "53 (breakdown...)"
+  var lead=t.match(/^\s*([0-9][0-9,]*)/);
   if(lead) return lead[1];
   // 2) otherwise sum every numeric token found (category-wise with no leading total)
   var nums=t.match(/[0-9][0-9,]*/g);
