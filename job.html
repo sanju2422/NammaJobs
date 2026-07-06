@@ -583,6 +583,23 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   .ov-item:nth-child(1),.ov-item:nth-child(2){border-bottom:1px solid var(--glass-border);}
 }
 
+/* ---- Job Overview: individual info cards (split from the single info-table) ----
+   Each card reuses the glass surface tokens so the future light theme restyles
+   them automatically. Simple facts sit in an auto-fit grid; content-heavy fields
+   (Age Limit / Qualification / Eligibility / Application Fee) span the full width. */
+.ov-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:18px;}
+.oc{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:12px;min-width:0;}
+.oc-head{display:flex;align-items:center;gap:11px;}
+.oc-ic{width:38px;height:38px;border-radius:11px;background:var(--glass-bg-dark);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.oc-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.65);line-height:1.3;}
+.oc-val{font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;margin-top:auto;}
+.oc-val .qual-wrap{margin-top:0;}
+.oc-val .sub-tbl-wrap{margin-top:0;}
+.oc.wide{grid-column:1 / -1;}
+.oc.oc-action{justify-content:flex-start;}
+.oc.oc-action .oc-val{margin-top:2px;}
+@media(max-width:640px){.ov-cards{grid-template-columns:1fr;}}
+
 /* ---- Action bar: 4 primary buttons (top + bottom) ---- */
 .action-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
 .act-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:14px 12px;border-radius:14px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;border:2px solid;color:#fff;text-align:center;line-height:1.3;transition:transform .2s,box-shadow .2s;}
@@ -835,6 +852,76 @@ function overviewStripHtml(j){
     + '<div class="ov-item"><div class="ov-ic">📍</div><div class="ov-meta"><div class="ov-label">'+(kn?'ಉದ್ಯೋಗ ಸ್ಥಳ':'Job Location')+'</div><div class="ov-val">'+njEsc(locv||'—')+'</div></div></div>'
     + '<div class="ov-item"><div class="ov-ic">💻</div><div class="ov-meta"><div class="ov-label">'+(kn?'ಅರ್ಜಿ ವಿಧಾನ':'Application Mode')+'</div><div class="ov-val">'+njEsc(mode)+'</div></div></div>'
     + '</div>';
+}
+
+/* ============================================================
+   JOB OVERVIEW — INDIVIDUAL CARDS (presentation helper, additive)
+   Splits the former single info-table into modern glass cards.
+   IMPORTANT: this is display-only. It reuses the EXACT same field
+   mappings and parsers (njField, njPairCell, njAgeCell, njQualCell,
+   njFeeCell) as the original table — no parser behavior is changed,
+   no values are hardcoded. Every card is conditional on its data,
+   so any job that lacks a field simply won't render that card.
+   ============================================================ */
+// Small card builder. `valueHtml` may be plain text or already-parsed HTML.
+// Returns '' when there is no value so empty cards never appear.
+function ovCard(ic,label,valueHtml,opts){
+  opts=opts||{};
+  if(valueHtml==null) return '';
+  var v=String(valueHtml).trim();
+  if(!v||v==='\u2014') return '';
+  var cls='oc'+(opts.wide?' wide':'')+(opts.action?' oc-action':'');
+  return '<div class="'+cls+'">'
+    + '<div class="oc-head"><div class="oc-ic">'+ic+'</div><div class="oc-label">'+label+'</div></div>'
+    + '<div class="oc-val">'+valueHtml+'</div>'
+    + '</div>';
+}
+
+function overviewCardsHtml(j){
+  var kn=njGetLang()==='kn';
+  var dl=daysLeft(j.last_date);
+  var isOpen=j.status==='open';
+  var isExpiring=isOpen&&dl!==null&&dl>=0&&dl<=5;
+  var c='';
+
+  // --- Simple facts (same field mapping as the original table rows) ---
+  c+=ovCard('🏛️',kn?'ಸಂಸ್ಥೆ':'Organization', njField(j.dept,j.dept_kn)||'');
+  c+=ovCard('📋',kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', njField(j.title_en,j.title_kn)||'');
+  c+=ovCard('👥',kn?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies', njPairCell(njField(j.seats||'0',j.seats_kn)));
+  if(j.salary) c+=ovCard('💰',kn?'ವೇತನ':'Pay Scale / Salary', njPairCell(njField(j.salary,j.salary_kn)));
+  if(njField(j.loc,j.loc_kn)) c+=ovCard('📍',kn?'ಸ್ಥಳ':'Location', njField(j.loc,j.loc_kn));
+  if(njField(j.apply_mode,j.apply_mode_kn)) c+=ovCard('💻',kn?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode', njField(j.apply_mode,j.apply_mode_kn));
+
+  // --- Content-heavy fields (parsed via existing parsers) → full-width cards ---
+  if(j.age) c+=ovCard('🎂',kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit', njAgeCell(njField(j.age,j.age_kn)), {wide:true});
+  if(j.skills) c+=ovCard('🎓',kn?'ಅರ್ಹತೆ':'Qualification', njQualCell(njField(j.skills,j.skills_kn)), {wide:true});
+  var tags=(kn&&j.tags_kn?j.tags_kn:j.tags);
+  if(tags){
+    var tagHtml=tags.split(',').map(function(t){return '<span style="display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;margin:2px 4px 2px 0;">🎓 '+t.trim()+'</span>';}).join('');
+    c+=ovCard('🏷️',kn?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags', tagHtml, {wide:true});
+  }
+  if(j.fee) c+=ovCard('💳',kn?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee', njFeeCell(njField(j.fee,j.fee_kn)), {wide:true});
+
+  // --- Notification No. (+ optional PDF button, same markup as before) ---
+  if(j.notif){
+    var notifVal='<span class="vbox">'+j.notif+'</span>'
+      +(j.notif_url?'<div style="margin-top:10px;"><a href="'+j.notif_url+'" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">📄 '+(kn?'ಅಧಿಸೂಚನೆ PDF':'Notification PDF')+' ↗</a></div>':'');
+    c+=ovCard('📢',kn?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.', notifVal);
+  }
+
+  // --- Official Website (action card, same button markup as before) ---
+  if(j.official_url){
+    var offVal='<a href="'+j.official_url+'" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:8px 16px;color:#fff !important;text-decoration:none;">🌐 '+(kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಭೇಟಿ ನೀಡಿ':'Visit Official Website')+' ↗</a>';
+    c+=ovCard('🌐',kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್':'Official Website', offVal, {action:true});
+  }
+
+  // --- Apply Link (action card, green button, same markup as before) ---
+  if(j.apply_link){
+    var applyVal='<a href="'+j.apply_link+'" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:8px 16px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#1a1a2e !important;text-decoration:none;">📋 '+(kn?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now')+' ↗</a>';
+    c+=ovCard('📝',kn?'ಅರ್ಜಿ ಲಿಂಕ್':'Apply Link', applyVal, {action:true});
+  }
+
+  return '<div class="ov-cards">'+c+'</div>';
 }
 
 /* Horizontal 4-button action bar (Apply / Official / Download / Share). Self-hides empties. */
@@ -1154,26 +1241,7 @@ function renderJob(j){
 
     <div class="main-grid">
       <div>
-        <div class="card">
-          <div class="card-title">${njGetLang()==="kn"?"ಉದ್ಯೋಗ ಅವಲೋಕನ":"Job Overview"}</div>
-          <table class="info-table">
-            <tr><td>${njGetLang()==='kn'?'ಸಂಸ್ಥೆ':'Organization'}</td><td><span class="vbox">${njField(j.dept,j.dept_kn)||'—'}</span></td></tr>
-            <tr><td>${njGetLang()==='kn'?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name'}</td><td><span class="vbox">${njField(j.title_en,j.title_kn)||'—'}</span></td></tr>
-            <tr><td>${njGetLang()==='kn'?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies'}</td><td><span class="vbox">${njPairCell(njField(j.seats||'0',j.seats_kn))}</span></td></tr>
-            ${j.salary?`<tr><td>${njGetLang()==='kn'?'ವೇತನ':'Pay Scale / Salary'}</td><td><span class="vbox">${njPairCell(njField(j.salary,j.salary_kn))}</span></td></tr>`:''}
-            ${j.age?`<tr><td>${njGetLang()==='kn'?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit'}</td><td><span class="vbox">${njAgeCell(njField(j.age,j.age_kn))}</span></td></tr>`:''}
-            ${j.skills?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತೆ':'Qualification'}</td><td><span class="vbox">${njQualCell(njField(j.skills,j.skills_kn))}</span></td></tr>`:''}
-            ${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags)?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags'}</td><td><span class="vbox">${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags).split(',').map(t=>`<span style="display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;margin:2px 4px 2px 0;">🎓 ${t.trim()}</span>`).join('')}</span></td></tr>`:''}
-            ${njField(j.loc,j.loc_kn)?`<tr><td>${njGetLang()==='kn'?'ಸ್ಥಳ':'Location'}</td><td><span class="vbox">${njField(j.loc,j.loc_kn)}</span></td></tr>`:''}
-            ${njField(j.apply_mode,j.apply_mode_kn)?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode'}</td><td><span class="vbox">${njField(j.apply_mode,j.apply_mode_kn)}</span></td></tr>`:''}
-            ${j.fee?`<tr class="fee-row"><td style="vertical-align:top;padding-top:16px;">${njGetLang()==='kn'?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee'}</td><td style="padding-top:16px;"><span class="vbox">${njFeeCell(njField(j.fee,j.fee_kn))}</span></td></tr>`:''}
-            ${j.notif?`<tr><td>${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.'}</td><td><span class="vbox">${j.notif}</span>${j.notif_url?`<div style="margin-top:8px;"><a href="${j.notif_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">📄 ${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ PDF':'Notification PDF'} ↗</a></div>`:''}</td></tr>`:''}
-            ${j.start_status==='started'?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><span class="vbox"><strong style="color:#4ade80;">✅ ${njGetLang()==='kn'?'ಈಗಾಗಲೇ ಪ್ರಾರಂಭವಾಗಿದೆ':'Already Started'}</strong></span></td></tr>`:(j.start_date?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><span class="vbox"><strong style="color:#4ade80;">📅 ${fmtDate(j.start_date)}</strong></span></td></tr>`:'')}
-            ${j.last_date?`<tr><td>${njGetLang()==='kn'?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date'}</td><td><span class="vbox"><strong style="color:${isExpiring?'#ff5757':'#c4b5fd'};">📅 ${fmtDate(j.last_date)}</strong></span></td></tr>`:''}
-            ${j.official_url?`<tr><td>${njGetLang()==='kn'?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್':'Official Website'}</td><td><a href="${j.official_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">🌐 ${njGetLang()==='kn'?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಭೇಟಿ ನೀಡಿ':'Visit Official Website'} ↗</a></td></tr>`:''}
-            ${j.apply_link?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಲಿಂಕ್':'Apply Link'}</td><td><a href="${j.apply_link}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#1a1a2e !important;text-decoration:none;">📋 ${njGetLang()==='kn'?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now'} ↗</a></td></tr>`:''}
-          </table>
-        </div>
+        ${overviewCardsHtml(j)}
 
         ${(j.last_date||j.start_date||j.start_status==='started'||(j.custom_dates&&j.custom_dates.length))?`
         <div class="card">
