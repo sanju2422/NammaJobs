@@ -144,7 +144,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .htxt-en span{color:#FF3B30;}
 .htxt-kn{font-family:var(--fkn);font-size:12px;color:#FFD60A;font-weight:700;margin-top:2px;}
 .htxt-kn span{color:#FF3B30;}
-.tbtns{display:flex;gap:8px;}
+.tbtns{display:flex;gap:8px;align-items:center;}
 .tbtn{background:var(--glass-bg);backdrop-filter:blur(10px);border:2px solid var(--glass-border);color:#fff;padding:9px 14px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;display:flex;align-items:center;gap:6px;text-decoration:none;}
 .tbtn:hover{background:var(--glass-bg-dark);border-color:var(--glass-border-strong);}
 .tbtn.primary{background:linear-gradient(135deg,#4ade80,#22c55e);border-color:rgba(74,222,128,0.6);box-shadow:0 4px 14px rgba(74,222,128,0.4);color:#1a1a2e !important;}
@@ -358,7 +358,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .sub-tbl strong{color:#c4b5fd;font-weight:800;}
 .fee-nil{color:#4ade80;font-weight:800;}
 .qual-wrap{display:flex;flex-wrap:wrap;gap:8px;}
-.qual-chip{display:inline-flex;align-items:center;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;line-height:1.5;}
+.qual-chip{display:inline-flex;align-items:center;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;line-height:1.5;max-width:100%;}
+/* Salary / pay-level badges: same blue chip, but allow long pay-matrix text to wrap
+   cleanly inside the badge instead of overflowing (RRB standard, universal). */
+.sal-chip{white-space:normal;word-break:break-word;padding:5px 12px;}
 @media(max-width:600px){.sub-tbl th,.sub-tbl td{padding:7px 8px;font-size:12px;}.qual-chip{font-size:12px;padding:5px 10px;}}
 /* ===== Similar Jobs cards (display only; reuse glass card design) ===== */
 .sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:2px;}
@@ -573,25 +576,16 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .tbtn.social{padding:9px 12px;}
 @media(max-width:1024px){.hdr-search{display:none;}.social-lbl{display:none;}.tbtn.social{padding:9px 11px;}}
 
-/* ---- Breadcrumb bar ---- */
-.crumbs-bar{background:rgba(0,0,0,0.22);border-bottom:1px solid var(--glass-border);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
-.crumbs-wrap{max-width:1280px;margin:0 auto;padding:9px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.crumbs{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:12px;font-weight:700;color:rgba(255,255,255,0.7);min-width:0;}
-.crumbs a{color:rgba(255,255,255,0.7);text-decoration:none;transition:color .2s;}
-.crumbs a:hover{color:#fff;}
-.crumbs .sep{color:rgba(255,255,255,0.38);}
-.crumbs .current{color:#c4b5fd;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:340px;}
-.crumbs-back{color:rgba(255,255,255,0.85);font-size:12px;font-weight:800;text-decoration:none;white-space:nowrap;flex-shrink:0;}
-.crumbs-back:hover{color:#fff;}
-@media(max-width:600px){.crumbs .current{max-width:150px;}}
-
 /* ---- Hero: chips + pinned Last Date box ---- */
 .hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
-.hero-chip{display:inline-flex;align-items:center;gap:6px;background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);color:#fff;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;}
+.hero-chip{display:inline-flex;align-items:center;gap:6px;background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);color:#fff;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;min-width:0;max-width:100%;}
+/* Long organization chips truncate cleanly with an ellipsis; all chips keep equal height. */
+.hero-chip .chip-txt{display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:280px;vertical-align:bottom;}
+@media(max-width:768px){.hero-chips{justify-content:center;}.hero-chip .chip-txt{max-width:210px;}}
 .hero-lastdate{flex-shrink:0;align-self:flex-start;background:rgba(255,87,87,0.16);border:2px solid rgba(255,87,87,0.5);border-radius:14px;padding:12px 18px;text-align:center;min-width:150px;}
 .ld-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,0.85);margin-bottom:5px;display:flex;align-items:center;gap:5px;justify-content:center;}
 .ld-val{font-family:var(--fhead);font-size:17px;font-weight:800;color:#ff9a9a;}
-@media(max-width:768px){.hero-chips{justify-content:center;}.hero-lastdate{width:100%;}}
+@media(max-width:768px){.hero-lastdate{width:100%;}}
 
 /* ---- Job Overview strip: 4 quick stats ---- */
 .ov-strip{display:grid;grid-template-columns:repeat(4,1fr);background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);margin-bottom:18px;box-shadow:var(--shadow-soft);overflow:hidden;}
@@ -614,11 +608,12 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .ov-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:18px;}
 .oc{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;justify-content:center;gap:10px;min-width:0;}
 .oc-head{display:flex;align-items:center;gap:11px;}
-.oc-ic{width:38px;height:38px;border-radius:11px;background:var(--glass-bg-dark);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#c4b5fd;}
+.oc-ic{width:38px;height:38px;border-radius:11px;background:var(--glass-bg-dark);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#c4b5fd;overflow:hidden;}
 /* Organization card renders the official dept logo on a white tile — same treatment
-   as the site header logo (.hlogo) and Similar Jobs icon (.sim-ic). */
-.oc-ic.has-logo{background:#fff;padding:5px;overflow:hidden;}
-.oc-ic.has-logo img{width:100%;height:100%;object-fit:contain;}
+   as the site header logo (.hlogo) and Similar Jobs icon (.sim-ic): fixed size,
+   white bg, small padding, centered, contained. Consistent for EVERY department. */
+.oc-ic.has-logo{background:#fff;padding:5px;border-color:rgba(255,255,255,0.25);}
+.oc-ic.has-logo img{width:100%;height:100%;object-fit:contain;display:block;}
 .oc-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.65);line-height:1.3;}
 .oc-val{font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;}
 .oc-val .qual-wrap{margin-top:0;}
@@ -649,6 +644,8 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .glance-k{font-size:11px;font-weight:800;color:rgba(255,255,255,0.62);text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px;}
 .glance-v{font-size:13.5px;font-weight:700;color:#fff;line-height:1.35;}
 .glance-v.red{color:#ff9a9a;}
+.glance-v .qual-wrap{gap:6px;}
+.glance-v .qual-chip{font-size:11px;padding:2px 8px;}
 
 /* ---- Sidebar + footer: Stay Updated / channel buttons ---- */
 .stay-sub{font-size:12px;color:rgba(255,255,255,0.7);font-weight:600;margin:-6px 0 12px;line-height:1.5;}
@@ -701,16 +698,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       </div>
       <a class="tbtn social tbtn-tg" data-nj-tg href="#" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/></svg><span class="social-lbl">Telegram</span></a>
       <a class="tbtn social tbtn-wa" data-nj-wa href="#" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg><span class="social-lbl">WhatsApp</span></a>
+      <a class="tbtn back-btn" href="index.html"><span class="back-full">← Back to Jobs</span><span class="back-short">← Back</span></a>
     </div>
   </div>
 </header>
-
-<div class="crumbs-bar">
-  <div class="crumbs-wrap">
-    <nav class="crumbs" id="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a></nav>
-    <a class="crumbs-back" href="index.html">← Back to More Jobs</a>
-  </div>
-</div>
 
 <div class="container" id="main-content">
   <div class="loading-page">
@@ -837,6 +828,8 @@ const DEPT_LOGOS={
   'rbi':'https://upload.wikimedia.org/wikipedia/commons/9/9c/Reserve_Bank_of_India_logo.svg',
   'pnb':'https://upload.wikimedia.org/wikipedia/en/2/21/Punjab_National_Bank_logo.svg',
   'rrb':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
+  'railway recruitment board':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
+  'railway':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
   'indian railways':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
   'irfc':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
   'isro':'https://upload.wikimedia.org/wikipedia/commons/b/bd/Indian_Space_Research_Organisation_Logo.svg',
@@ -846,6 +839,8 @@ const DEPT_LOGOS={
   'india post':'https://upload.wikimedia.org/wikipedia/en/b/b0/India_Post_Logo.svg',
   'indian army':'https://upload.wikimedia.org/wikipedia/commons/4/4f/Indian_Army_Logo.svg',
   'territorial army':'https://upload.wikimedia.org/wikipedia/commons/4/4f/Indian_Army_Logo.svg',
+  'nbems':'https://upload.wikimedia.org/wikipedia/en/6/6d/National_Board_of_Examinations_Logo.png',
+  'national board of examinations':'https://upload.wikimedia.org/wikipedia/en/6/6d/National_Board_of_Examinations_Logo.png',
 };
 
 function getDeptLogo(d){
@@ -902,6 +897,37 @@ function overviewStripHtml(j){
 }
 
 /* ============================================================
+   UNIVERSAL SALARY / PAY-LEVEL RENDERER (RRB standard)
+   Splits any pay text into clean blue badges — one per level —
+   and lets long pay-matrix strings wrap inside a badge instead of
+   overflowing. Works for Railway/SSC/Bank/PSU/State/Central/Defence
+   and every future job. Presentation only; no parser behavior changed.
+   ============================================================ */
+function njSalaryLevels(raw){
+  var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
+  if(!t) return [];
+  // 1) explicit delimiters first: pipe / semicolon / newline / comma-not-in-number
+  var segs=t.split(/\s*(?:[|;\n]|,(?!\d))\s*/).map(function(x){return x.trim();}).filter(Boolean);
+  // 2) split a segment that still bundles several pay levels in plain text,
+  //    e.g. "Level-5 \u20b929,200 Level-2 \u20b919,900" -> two badges.
+  //    We split at whitespace that precedes a Level/Grade/GP/Pay-Level marker + number.
+  var LVL=/\s+(?=(?:pay\s*level|level|grade\s*pay|grade|gp|l)[-\s:]*\d)/i;
+  var out=[];
+  segs.forEach(function(s){
+    var pieces=s.split(LVL).map(function(x){return x.trim();}).filter(Boolean);
+    if(pieces.length>1){ pieces.forEach(function(p){out.push(p);}); }
+    else out.push(s);
+  });
+  return out.length?out:[t];
+}
+function njSalaryCell(raw){
+  if(!raw) return '\u2014';
+  var levels=njSalaryLevels(raw);
+  if(!levels.length) return '\u2014';
+  return '<div class="qual-wrap">'+levels.map(function(x){return '<span class="qual-chip sal-chip">'+njEsc(x)+'</span>';}).join('')+'</div>';
+}
+
+/* ============================================================
    JOB OVERVIEW — INDIVIDUAL CARDS (presentation helper, additive)
    Splits the former single info-table into modern glass cards.
    IMPORTANT: this is display-only. It reuses the EXACT same field
@@ -932,13 +958,18 @@ function overviewCardsHtml(j){
   var isExpiring=isOpen&&dl!==null&&dl>=0&&dl<=5;
   var c='';
 
-  // --- Organization: render the official dept logo (same logic as the hero /
-  //     Home Page listing). Falls back to a building line icon if no logo.
+  // --- Organization: ALWAYS render the official dept logo on the white tile,
+  //     using the same resolution logic as the hero / Home Page listing
+  //     (j.logo_url first, then the DEPT_LOGOS lookup). Only when neither
+  //     resolves (or the image fails to load) do we fall back to a line icon,
+  //     and in that case the tile drops the white background so it matches
+  //     every other card's icon tile. Consistent for every department.
   var orgName=njField(j.dept,j.dept_kn)||'';
   if(orgName){
     var orgLogo=j.logo_url||getDeptLogo(j.dept);
+    var fallbackIc=njIc('building').replace(/'/g,"\\'");
     var orgIc=orgLogo
-      ? '<img src="'+orgLogo+'" alt="'+njEsc(orgName)+'" onerror="this.parentElement.innerHTML=\''+njIc('building').replace(/'/g,"\\'")+'\';">'
+      ? '<img src="'+orgLogo+'" alt="'+njEsc(orgName)+'" onerror="this.onerror=null;var p=this.parentElement;p.classList.remove(\'has-logo\');p.innerHTML=\''+fallbackIc+'\';">'
       : njIc('building');
     c+=ovCard(orgIc, kn?'ಸಂಸ್ಥೆ':'Organization', orgName, orgLogo?{icClass:'has-logo'}:undefined);
   }
@@ -946,7 +977,8 @@ function overviewCardsHtml(j){
   // --- Simple facts (same field mapping as the original table rows) ---
   c+=ovCard(njIc('briefcase'),kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', njField(j.title_en,j.title_kn)||'');
   c+=ovCard(njIc('users'),kn?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies', njPairCell(njField(j.seats||'0',j.seats_kn)));
-  if(j.salary) c+=ovCard(njIc('wallet'),kn?'ವೇತನ':'Pay Scale / Salary', njPairCell(njField(j.salary,j.salary_kn)));
+  // Salary uses the universal pay-level badge renderer (RRB standard).
+  if(j.salary) c+=ovCard(njIc('wallet'),kn?'ವೇತನ':'Pay Scale / Salary', njSalaryCell(njField(j.salary,j.salary_kn)));
   if(njField(j.loc,j.loc_kn)) c+=ovCard(njIc('map-pin'),kn?'ಸ್ಥಳ':'Location', njField(j.loc,j.loc_kn));
   if(njField(j.apply_mode,j.apply_mode_kn)) c+=ovCard(njIc('monitor'),kn?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode', njField(j.apply_mode,j.apply_mode_kn));
 
@@ -1255,19 +1287,6 @@ function renderJob(j){
   setMeta('og-url',window.location.href);
   document.title=ogTitle+' \u2013 Namma Jobs';
 
-  // Breadcrumb (static bar, outside #main-content) — built from live job data.
-  const bc=document.getElementById('breadcrumb');
-  if(bc){
-    const homeTxt=kn?'ಮುಖಪುಟ':'Home';
-    const catName=njField(j.cat,j.cat_kn)||(kn?'ಉದ್ಯೋಗಗಳು':'Jobs');
-    const deptName=njField(j.dept,j.dept_kn)||'';
-    const titleName=njField(j.title_en,j.title_kn)||'';
-    bc.innerHTML='<a href="index.html">'+njEsc(homeTxt)+'</a>'
-      +'<span class="sep">›</span><a href="index.html">'+njEsc(catName)+'</a>'
-      +(deptName?'<span class="sep">›</span><span>'+njEsc(deptName)+'</span>':'')
-      +(titleName?'<span class="sep">›</span><span class="current">'+njEsc(titleName)+'</span>':'');
-  }
-
   let html=`
     ${banner?`<div class="job-banner"><img src="${banner}" alt="${njField(j.title_en,j.title_kn)||'Job'} banner" loading="lazy" onerror="this.parentElement.style.display='none';"></div>`:''}
     <div class="hero">
@@ -1276,9 +1295,9 @@ function renderJob(j){
         ${badgeForJob(j,dl)}
         <h1>${njField(j.title_en,j.title_kn)||''}</h1>
         <div class="hero-chips">
-          ${njField(j.dept,j.dept_kn)?`<span class="hero-chip">${njIc('building')} ${njField(j.dept,j.dept_kn)}</span>`:''}
-          ${njField(j.cat,j.cat_kn)?`<span class="hero-chip">${njIc('tag')} ${njField(j.cat,j.cat_kn)}</span>`:''}
-          ${njField(j.loc,j.loc_kn)?`<span class="hero-chip">${njIc('map-pin')} ${njField(j.loc,j.loc_kn)}</span>`:''}
+          ${njField(j.dept,j.dept_kn)?`<span class="hero-chip">${njIc('building')} <span class="chip-txt">${njField(j.dept,j.dept_kn)}</span></span>`:''}
+          ${njField(j.cat,j.cat_kn)?`<span class="hero-chip">${njIc('tag')} <span class="chip-txt">${njField(j.cat,j.cat_kn)}</span></span>`:''}
+          ${njField(j.loc,j.loc_kn)?`<span class="hero-chip">${njIc('map-pin')} <span class="chip-txt">${njField(j.loc,j.loc_kn)}</span></span>`:''}
         </div>
       </div>
       ${j.last_date?`<div class="hero-lastdate">
@@ -1453,7 +1472,9 @@ function renderSidebar(currentJob,jobs){
   glance+=gi(njIc('building'),kn?'ಸಂಸ್ಥೆ':'Organization',njField(currentJob.dept,currentJob.dept_kn));
   glance+=gi(njIc('briefcase'),kn?'ಹುದ್ದೆ':'Post Name',njField(currentJob.title_en,currentJob.title_kn));
   glance+=gi(njIc('map-pin'),kn?'ಸ್ಥಳ':'Location',njField(currentJob.loc,currentJob.loc_kn));
-  glance+=gi(njIc('users'),kn?'ಹುದ್ದೆಗಳು':'Vacancies',(function(){var s=njField(currentJob.seats||'',currentJob.seats_kn);return s==='0'?'':s;})());
+  // Vacancies rendered as blue badges (same style as the Vacancy card), not a long line.
+  var vseats=njField(currentJob.seats||'',currentJob.seats_kn); if(vseats==='0')vseats='';
+  glance+=gi(njIc('users'),kn?'ಹುದ್ದೆಗಳು':'Vacancies', vseats?njPairCell(vseats):'');
   glance+=gi(njIc('monitor'),kn?'ಅರ್ಜಿ ವಿಧಾನ':'Mode',njField(currentJob.apply_mode,currentJob.apply_mode_kn));
   glance+=gi(njIc('calendar'),kn?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date',currentJob.last_date?fmtDate(currentJob.last_date):'',true);
   if(glance){
