@@ -609,6 +609,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .ov-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:18px;}
 .oc{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;justify-content:center;gap:10px;min-width:0;}
 .oc-head{display:flex;align-items:center;gap:11px;}
+.oc-headtxt{min-width:0;}
 .oc-ic{width:38px;height:38px;border-radius:11px;background:var(--glass-bg-dark);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#c4b5fd;overflow:hidden;}
 /* Organization card renders the official dept logo on a white tile — same treatment
    as the site header logo (.hlogo) and Similar Jobs icon (.sim-ic): fixed square,
@@ -617,6 +618,9 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .oc-ic.has-logo{background:#fff;padding:5px;border-color:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .oc-ic.has-logo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;margin:auto;}
 .oc-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.65);line-height:1.3;}
+/* Secondary line under a card title (e.g. the Notification number) — clean, muted,
+   no badge box. Matches the premium restraint of the Apply / Official cards. */
+.oc-sub{font-size:12.5px;font-weight:700;color:rgba(255,255,255,0.72);margin-top:3px;line-height:1.35;word-break:break-word;}
 .oc-val{font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;}
 .oc-val .qual-wrap{margin-top:0;}
 .oc-val .sub-tbl-wrap{margin-top:0;}
@@ -814,42 +818,74 @@ function njIc(n){
   return '<svg class="nj-ic" viewBox="0 0 24 24" '+attrs+' aria-hidden="true">'+s.p+'</svg>';
 }
 
-const DEPT_LOGOS={
-  'kpsc':'https://upload.wikimedia.org/wikipedia/en/b/b9/Karnataka_Public_Service_Commission_logo.png',
-  'karnataka public service commission':'https://upload.wikimedia.org/wikipedia/en/b/b9/Karnataka_Public_Service_Commission_logo.png',
-  'ksp':'https://upload.wikimedia.org/wikipedia/en/6/6b/Karnataka_State_Police_Logo.png',
-  'karnataka state police':'https://upload.wikimedia.org/wikipedia/en/6/6b/Karnataka_State_Police_Logo.png',
-  'bbmp':'https://upload.wikimedia.org/wikipedia/en/1/1d/BBMP_logo.png',
-  'pwd':'https://upload.wikimedia.org/wikipedia/commons/5/5a/Karnataka_government_Logo.png',
-  'upsc':'https://upload.wikimedia.org/wikipedia/en/8/86/UPSC_Logo.png',
-  'union public service commission':'https://upload.wikimedia.org/wikipedia/en/8/86/UPSC_Logo.png',
-  'ssc':'https://upload.wikimedia.org/wikipedia/en/5/5b/Staff_Selection_Commission_of_India_Logo.png',
-  'staff selection commission':'https://upload.wikimedia.org/wikipedia/en/5/5b/Staff_Selection_Commission_of_India_Logo.png',
-  'sbi':'https://upload.wikimedia.org/wikipedia/en/5/58/SBI_logo.svg',
-  'state bank of india':'https://upload.wikimedia.org/wikipedia/en/5/58/SBI_logo.svg',
-  'rbi':'https://upload.wikimedia.org/wikipedia/commons/9/9c/Reserve_Bank_of_India_logo.svg',
-  'pnb':'https://upload.wikimedia.org/wikipedia/en/2/21/Punjab_National_Bank_logo.svg',
-  'rrb':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
-  'railway recruitment board':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
-  'railway':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
-  'indian railways':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
-  'irfc':'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg',
-  'isro':'https://upload.wikimedia.org/wikipedia/commons/b/bd/Indian_Space_Research_Organisation_Logo.svg',
-  'drdo':'https://upload.wikimedia.org/wikipedia/en/3/36/DRDO_Logo.png',
-  'bel':'https://upload.wikimedia.org/wikipedia/commons/b/b7/Bharat_Electronics_Logo.svg',
-  'bharat electronics':'https://upload.wikimedia.org/wikipedia/commons/b/b7/Bharat_Electronics_Logo.svg',
-  'india post':'https://upload.wikimedia.org/wikipedia/en/b/b0/India_Post_Logo.svg',
-  'indian army':'https://upload.wikimedia.org/wikipedia/commons/4/4f/Indian_Army_Logo.svg',
-  'territorial army':'https://upload.wikimedia.org/wikipedia/commons/4/4f/Indian_Army_Logo.svg',
-  'nbems':'https://upload.wikimedia.org/wikipedia/en/6/6d/National_Board_of_Examinations_Logo.png',
-  'national board of examinations':'https://upload.wikimedia.org/wikipedia/en/6/6d/National_Board_of_Examinations_Logo.png',
-};
-
+/* ============================================================
+   OFFICIAL ORGANIZATION LOGO RESOLVER (root-cause rebuild)
+   -----------------------------------------------------------
+   The old resolver did a naive lowercase substring lookup, so
+   real-world dept strings ("Railway Recruitment Boards", "RRBs",
+   "National Board of Examinations in Medical Sciences") frequently
+   failed to match a key.
+   This resolver:
+     • normalizes names (lowercase, strips punctuation & extra spaces)
+     • strips trailing plural "s" on every word (boards→board, rrbs→rrb)
+     • matches on full normalized phrase (either direction)
+     • matches on abbreviations/initials (RRB ⇄ Railway Recruitment Board)
+   Each organization lists its aliases (full names + abbreviations);
+   getDeptLogo returns ONE official logo for any of them. Hero card,
+   Organization card and anywhere else all call this same function, so
+   they always resolve to the identical logo.
+   ============================================================ */
+var NJ_ORG_LOGOS=[
+  {u:'https://upload.wikimedia.org/wikipedia/en/b/b9/Karnataka_Public_Service_Commission_logo.png', a:['kpsc','karnataka public service commission']},
+  {u:'https://upload.wikimedia.org/wikipedia/en/6/6b/Karnataka_State_Police_Logo.png', a:['ksp','karnataka state police','karnataka police']},
+  {u:'https://upload.wikimedia.org/wikipedia/en/1/1d/BBMP_logo.png', a:['bbmp','bruhat bengaluru mahanagara palike']},
+  {u:'https://upload.wikimedia.org/wikipedia/commons/5/5a/Karnataka_government_Logo.png', a:['pwd','public works department','karnataka pwd']},
+  {u:'https://upload.wikimedia.org/wikipedia/en/8/86/UPSC_Logo.png', a:['upsc','union public service commission']},
+  {u:'https://upload.wikimedia.org/wikipedia/en/5/5b/Staff_Selection_Commission_of_India_Logo.png', a:['ssc','staff selection commission','staff selection commission of india']},
+  {u:'https://upload.wikimedia.org/wikipedia/en/5/58/SBI_logo.svg', a:['sbi','state bank of india']},
+  {u:'https://upload.wikimedia.org/wikipedia/commons/9/9c/Reserve_Bank_of_India_logo.svg', a:['rbi','reserve bank of india']},
+  {u:'https://upload.wikimedia.org/wikipedia/en/2/21/Punjab_National_Bank_logo.svg', a:['pnb','punjab national bank']},
+  {u:'https://upload.wikimedia.org/wikipedia/en/8/8e/Institute_of_Banking_Personnel_Selection_Logo.svg', a:['ibps','institute of banking personnel selection']},
+  {u:'https://upload.wikimedia.org/wikipedia/en/5/54/Indian_Railways.svg', a:['rrb','railway recruitment board','railway recruitment boards','railway recruitment cell','rrc','railway','railways','indian railways','irfc','indian railway finance corporation']},
+  {u:'https://upload.wikimedia.org/wikipedia/commons/b/bd/Indian_Space_Research_Organisation_Logo.svg', a:['isro','indian space research organisation','indian space research organization']},
+  {u:'https://upload.wikimedia.org/wikipedia/en/3/36/DRDO_Logo.png', a:['drdo','defence research and development organisation','defence research and development organization']},
+  {u:'https://upload.wikimedia.org/wikipedia/commons/b/b7/Bharat_Electronics_Logo.svg', a:['bel','bharat electronics','bharat electronics limited']},
+  {u:'https://upload.wikimedia.org/wikipedia/en/b/b0/India_Post_Logo.svg', a:['india post','indian post','department of posts','postal circle','gds']},
+  {u:'https://upload.wikimedia.org/wikipedia/commons/4/4f/Indian_Army_Logo.svg', a:['indian army','army','territorial army']},
+  {u:'https://upload.wikimedia.org/wikipedia/en/6/6d/National_Board_of_Examinations_Logo.png', a:['nbems','nbe','national board of examinations','national board of examinations in medical sciences','natboard']}
+];
+// Normalize into a token array: lowercase, punctuation→space, drop trailing plural "s".
+function njNormTokens(s){
+  return String(s==null?'':s)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(function(w){return w.length>1?w.replace(/s$/,''):w;})
+    .filter(Boolean);
+}
+function njInitials(tok){return tok.map(function(w){return w.charAt(0);}).join('');}
 function getDeptLogo(d){
-  if(!d)return null;
-  const k=d.toLowerCase().trim();
-  if(DEPT_LOGOS[k])return DEPT_LOGOS[k];
-  for(const[key,v] of Object.entries(DEPT_LOGOS)){if(k.includes(key))return v;}
+  if(!d) return null;
+  var dt=njNormTokens(d); if(!dt.length) return null;
+  var dFull=dt.join(' '), dJoin=dt.join(''), dIni=njInitials(dt);
+  for(var i=0;i<NJ_ORG_LOGOS.length;i++){
+    var g=NJ_ORG_LOGOS[i];
+    for(var k=0;k<g.a.length;k++){
+      var at=njNormTokens(g.a[k]); if(!at.length) continue;
+      var aFull=at.join(' '), aJoin=at.join(''), aIni=njInitials(at);
+      // exact normalized phrase
+      if(dFull===aFull) return g.u;
+      // multi-word alias appearing inside the dept phrase (or vice-versa)
+      if(at.length>1 && (dFull.indexOf(aFull)>=0 || aFull.indexOf(dFull)>=0)) return g.u;
+      // identical collapsed form (handles spacing/punctuation-only differences)
+      if(dJoin===aJoin) return g.u;
+      // abbreviation ⇄ full name (RRB ⇄ Railway Recruitment Board)
+      if(dt.length>1 && dIni===aJoin) return g.u;       // dept is full name, alias is its abbreviation
+      if(at.length>1 && aIni===dJoin) return g.u;       // dept is abbreviation, alias is full name
+    }
+  }
   return null;
 }
 
@@ -954,14 +990,16 @@ function njSalaryCell(raw){
 // Small card builder. `valueHtml` may be plain text or already-parsed HTML.
 // Returns '' when there is no value so empty cards never appear.
 // opts.icClass lets a card style its icon tile (e.g. white logo tile).
+// opts.sub renders a clean secondary line under the label (no badge box).
 function ovCard(ic,label,valueHtml,opts){
   opts=opts||{};
   if(valueHtml==null) return '';
   var v=String(valueHtml).trim();
   if(!v||v==='\u2014') return '';
   var cls='oc'+(opts.wide?' wide':'')+(opts.action?' oc-action':'');
+  var headTxt='<div class="oc-headtxt"><div class="oc-label">'+label+'</div>'+(opts.sub?'<div class="oc-sub">'+opts.sub+'</div>':'')+'</div>';
   return '<div class="'+cls+'">'
-    + '<div class="oc-head"><div class="oc-ic'+(opts.icClass?' '+opts.icClass:'')+'">'+ic+'</div><div class="oc-label">'+label+'</div></div>'
+    + '<div class="oc-head"><div class="oc-ic'+(opts.icClass?' '+opts.icClass:'')+'">'+ic+'</div>'+headTxt+'</div>'
     + '<div class="oc-val">'+valueHtml+'</div>'
     + '</div>';
 }
@@ -974,11 +1012,11 @@ function overviewCardsHtml(j){
   var c='';
 
   // --- Organization: ALWAYS render the official dept logo on the white tile,
-  //     using the same resolution logic as the hero / Home Page listing
-  //     (j.logo_url first, then the DEPT_LOGOS lookup). Only when neither
-  //     resolves (or the image fails to load) do we fall back to a line icon,
-  //     and in that case the tile drops the white background so it matches
-  //     every other card's icon tile. Consistent for every department.
+  //     resolved via the normalized alias resolver (getDeptLogo) — same logic
+  //     used by the hero. j.logo_url wins if the admin set one explicitly.
+  //     Only when nothing resolves (or the image fails to load) do we fall back
+  //     to a line icon, and in that case the tile drops the white background so
+  //     it matches every other card's icon tile.
   var orgName=njField(j.dept,j.dept_kn)||'';
   if(orgName){
     var orgLogo=j.logo_url||getDeptLogo(j.dept);
@@ -1007,11 +1045,16 @@ function overviewCardsHtml(j){
   }
   if(j.fee) c+=ovCard(njIc('credit-card'),kn?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee', njFeeCell(njField(j.fee,j.fee_kn)), {wide:true});
 
-  // --- Notification No. (+ optional PDF button, same button component as before) ---
-  if(j.notif){
-    var notifVal='<span class="vbox">'+j.notif+'</span>'
-      +(j.notif_url?'<div style="margin-top:10px;"><a href="'+j.notif_url+'" target="_blank" class="btn-apply-main" style="font-size:12px;padding:8px 16px;color:#fff !important;text-decoration:none;">'+njIc('download')+(kn?'ಅಧಿಸೂಚನೆ PDF':'Notification PDF')+'</a></div>':'');
-    c+=ovCard(njIc('bell'),kn?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.', notifVal, {action:true});
+  // --- Notification (premium action card, matches Apply / Official Website / Share):
+  //     the notification NUMBER is now a clean secondary line under the title
+  //     (no separate badge), and the button is a full-width "View PDF" using the
+  //     exact same button component/size as the other action cards. Renders when
+  //     there's a number and/or a PDF url. ---
+  if(j.notif || j.notif_url){
+    var notifVal=j.notif_url
+      ? '<a href="'+j.notif_url+'" target="_blank" class="btn-apply-main" style="font-size:12px;padding:10px 16px;color:#fff !important;text-decoration:none;">'+njIc('file-text')+(kn?'PDF ವೀಕ್ಷಿಸಿ':'View PDF')+'</a>'
+      : (j.notif?njEsc(j.notif):'');
+    c+=ovCard(njIc('bell'),kn?'ಅಧಿಸೂಚನೆ':'Notification', notifVal, {action:!!j.notif_url, sub:(j.notif?njEsc(j.notif):'')});
   }
 
   // --- Official Website (action card, same button component as before) ---
