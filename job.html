@@ -106,11 +106,12 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 /* ============================================================
    THEME TOKENS
-   The values below define the CURRENT (DARK) theme.
-   A future Light theme (built from the approved preview) only needs to
-   override these tokens under a [data-theme="light"] selector — no rule
-   rewrites required. All components read from these tokens (directly or
-   via the back-compat aliases below).
+   The values below define the CURRENT (DARK) theme — this is the
+   official Dark Theme and must be preserved as-is.
+   A future Light theme (default) only needs to override these tokens
+   under a [data-theme="light"] selector — no rule rewrites required.
+   All components read from these tokens (directly or via the aliases).
+   Theme switch is intentionally NOT built yet (future phase).
    ============================================================ */
 :root{
   --bg:radial-gradient(ellipse at top,#1e3a8a 0%,#0c1f4a 40%,#061333 100%);
@@ -488,8 +489,6 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .lang-toggle-btn:hover:not(.lang-active){color:#fff;background:var(--glass-bg-dark);}
 /* Back button: full label on desktop, compact "← Back" on mobile + tablet */
 .back-btn .back-short{display:none;}
-/* Top-right Apply button: full label+arrow on desktop, compact label on mobile+tablet */
-#top-apply .ta-short{display:none;}
 @media(max-width:1024px){
   .back-btn .back-full{display:none;}
   .back-btn .back-short{display:inline;}
@@ -500,10 +499,6 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   .lang-toggle-btn{padding:7px 13px;font-size:13px;line-height:1.25;border-radius:10px;white-space:nowrap;}
   #lang-btn-kn{font-family:'Noto Sans Kannada',sans-serif;font-size:13px;letter-spacing:.2px;}
   .lang-toggle-btn.lang-active{box-shadow:0 2px 10px rgba(255,214,10,0.5);}
-  /* Compact the green Apply button to match Back / language toggle width */
-  #top-apply .ta-full,#top-apply .ta-arrow{display:none;}
-  #top-apply .ta-short{display:inline;}
-  #top-apply{padding:9px 14px;font-size:13px;white-space:nowrap;}
 }
 [data-lang="en"] .lang-kn{display:none !important;}
 [data-lang="kn"] .lang-en{display:none !important;}
@@ -591,6 +586,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .oc{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:12px;min-width:0;}
 .oc-head{display:flex;align-items:center;gap:11px;}
 .oc-ic{width:38px;height:38px;border-radius:11px;background:var(--glass-bg-dark);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+/* Organization card renders the official dept logo on a white tile — same treatment
+   as the site header logo (.hlogo) and Similar Jobs icon (.sim-ic). */
+.oc-ic.has-logo{background:#fff;padding:5px;overflow:hidden;}
+.oc-ic.has-logo img{width:100%;height:100%;object-fit:contain;}
 .oc-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.65);line-height:1.3;}
 .oc-val{font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;margin-top:auto;}
 .oc-val .qual-wrap{margin-top:0;}
@@ -598,6 +597,9 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .oc.wide{grid-column:1 / -1;}
 .oc.oc-action{justify-content:flex-start;}
 .oc.oc-action .oc-val{margin-top:2px;}
+/* Action cards (Notification / Official Website / Apply Link): full-width buttons
+   using the existing site button component — consistent with the Home Page. */
+.oc.oc-action .btn-apply-main{display:block;width:100%;text-align:center;}
 @media(max-width:640px){.ov-cards{grid-template-columns:1fr;}}
 
 /* ---- Action bar: 4 primary buttons (top + bottom) ---- */
@@ -671,8 +673,6 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       </div>
       <a class="tbtn social" data-nj-tg href="#" target="_blank" rel="noopener"><span>✈️</span><span class="social-lbl">Telegram</span></a>
       <a class="tbtn social" data-nj-wa href="#" target="_blank" rel="noopener"><span>📱</span><span class="social-lbl">WhatsApp</span></a>
-      <button class="tbtn social" type="button" onclick="njImageReader()" aria-label="Read job aloud"><span>🔊</span><span class="social-lbl">Reader</span></button>
-      <button class="tbtn primary" id="top-apply" onclick="scrollToApply()"><span class="ta-short">Apply</span><span class="ta-full">Apply</span><span class="ta-arrow"> ↗</span></button>
     </div>
   </div>
 </header>
@@ -680,7 +680,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 <div class="crumbs-bar">
   <div class="crumbs-wrap">
     <nav class="crumbs" id="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a></nav>
-    <a class="crumbs-back" href="index.html">← Back to Results</a>
+    <a class="crumbs-back" href="index.html">← Back to More Jobs</a>
   </div>
 </div>
 
@@ -805,7 +805,6 @@ function fmtDate(d){
 
 function daysLeft(ld){if(!ld)return null;const t=new Date();t.setHours(0,0,0,0);const d=new Date(ld);d.setHours(0,0,0,0);return Math.ceil((d-t)/86400000);}
 
-function scrollToApply(){document.getElementById('apply-section')?.scrollIntoView({behavior:'smooth'});}
 function scrollToShare(){document.getElementById('share-section')?.scrollIntoView({behavior:'smooth'});}
 
 /* Header search: hand off to the listing page (harmless if the param is ignored there). */
@@ -815,22 +814,6 @@ function njSearch(e){
   q=q.trim();
   window.location.href='index.html'+(q?('?search='+encodeURIComponent(q)):'');
   return false;
-}
-
-/* Read-aloud accessibility helper (uses the browser's speech engine; no external data). */
-function njImageReader(){
-  try{
-    if(!('speechSynthesis' in window)){return;}
-    var synth=window.speechSynthesis;
-    if(synth.speaking){synth.cancel();return;}
-    var j=window._njJob; if(!j)return;
-    var kn=njGetLang()==='kn';
-    var parts=[njField(j.title_en,j.title_kn),njField(j.dept,j.dept_kn),njField(j.description,j.description_kn)].filter(Boolean);
-    if(!parts.length)return;
-    var u=new SpeechSynthesisUtterance(parts.join('. '));
-    u.lang=kn?'kn-IN':'en-IN';
-    synth.speak(u);
-  }catch(e){}
 }
 
 /* Assign the (single-source) channel URLs onto any static or freshly-rendered link. */
@@ -865,6 +848,7 @@ function overviewStripHtml(j){
    ============================================================ */
 // Small card builder. `valueHtml` may be plain text or already-parsed HTML.
 // Returns '' when there is no value so empty cards never appear.
+// opts.icClass lets a card style its icon tile (e.g. white logo tile).
 function ovCard(ic,label,valueHtml,opts){
   opts=opts||{};
   if(valueHtml==null) return '';
@@ -872,7 +856,7 @@ function ovCard(ic,label,valueHtml,opts){
   if(!v||v==='\u2014') return '';
   var cls='oc'+(opts.wide?' wide':'')+(opts.action?' oc-action':'');
   return '<div class="'+cls+'">'
-    + '<div class="oc-head"><div class="oc-ic">'+ic+'</div><div class="oc-label">'+label+'</div></div>'
+    + '<div class="oc-head"><div class="oc-ic'+(opts.icClass?' '+opts.icClass:'')+'">'+ic+'</div><div class="oc-label">'+label+'</div></div>'
     + '<div class="oc-val">'+valueHtml+'</div>'
     + '</div>';
 }
@@ -884,8 +868,18 @@ function overviewCardsHtml(j){
   var isExpiring=isOpen&&dl!==null&&dl>=0&&dl<=5;
   var c='';
 
+  // --- Organization: render the official dept logo (same logic as the hero /
+  //     Home Page listing). Falls back to the job's own icon, then a building glyph.
+  var orgName=njField(j.dept,j.dept_kn)||'';
+  if(orgName){
+    var orgLogo=j.logo_url||getDeptLogo(j.dept);
+    var orgIc=orgLogo
+      ? '<img src="'+orgLogo+'" alt="'+njEsc(orgName)+'" onerror="this.parentElement.textContent=\''+(j.icon||'🏛️')+'\';">'
+      : (j.icon||'🏛️');
+    c+=ovCard(orgIc, kn?'ಸಂಸ್ಥೆ':'Organization', orgName, orgLogo?{icClass:'has-logo'}:undefined);
+  }
+
   // --- Simple facts (same field mapping as the original table rows) ---
-  c+=ovCard('🏛️',kn?'ಸಂಸ್ಥೆ':'Organization', njField(j.dept,j.dept_kn)||'');
   c+=ovCard('📋',kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', njField(j.title_en,j.title_kn)||'');
   c+=ovCard('👥',kn?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies', njPairCell(njField(j.seats||'0',j.seats_kn)));
   if(j.salary) c+=ovCard('💰',kn?'ವೇತನ':'Pay Scale / Salary', njPairCell(njField(j.salary,j.salary_kn)));
@@ -893,7 +887,7 @@ function overviewCardsHtml(j){
   if(njField(j.apply_mode,j.apply_mode_kn)) c+=ovCard('💻',kn?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode', njField(j.apply_mode,j.apply_mode_kn));
 
   // --- Content-heavy fields (parsed via existing parsers) → full-width cards ---
-  if(j.age) c+=ovCard('🎂',kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit', njAgeCell(njField(j.age,j.age_kn)), {wide:true});
+  if(j.age) c+=ovCard('⏳',kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit', njAgeCell(njField(j.age,j.age_kn)), {wide:true});
   if(j.skills) c+=ovCard('🎓',kn?'ಅರ್ಹತೆ':'Qualification', njQualCell(njField(j.skills,j.skills_kn)), {wide:true});
   var tags=(kn&&j.tags_kn?j.tags_kn:j.tags);
   if(tags){
@@ -905,19 +899,19 @@ function overviewCardsHtml(j){
   // --- Notification No. (+ optional PDF button, same markup as before) ---
   if(j.notif){
     var notifVal='<span class="vbox">'+j.notif+'</span>'
-      +(j.notif_url?'<div style="margin-top:10px;"><a href="'+j.notif_url+'" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">📄 '+(kn?'ಅಧಿಸೂಚನೆ PDF':'Notification PDF')+' ↗</a></div>':'');
-    c+=ovCard('📢',kn?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.', notifVal);
+      +(j.notif_url?'<div style="margin-top:10px;"><a href="'+j.notif_url+'" target="_blank" class="btn-apply-main" style="font-size:12px;padding:8px 16px;color:#fff !important;text-decoration:none;">📄 '+(kn?'ಅಧಿಸೂಚನೆ PDF':'Notification PDF')+' ↗</a></div>':'');
+    c+=ovCard('📅',kn?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.', notifVal, {action:true});
   }
 
-  // --- Official Website (action card, same button markup as before) ---
+  // --- Official Website (action card, same button component as before) ---
   if(j.official_url){
-    var offVal='<a href="'+j.official_url+'" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:8px 16px;color:#fff !important;text-decoration:none;">🌐 '+(kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಭೇಟಿ ನೀಡಿ':'Visit Official Website')+' ↗</a>';
+    var offVal='<a href="'+j.official_url+'" target="_blank" class="btn-apply-main" style="font-size:12px;padding:10px 16px;color:#fff !important;text-decoration:none;">🌐 '+(kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಭೇಟಿ ನೀಡಿ':'Visit Official Website')+' ↗</a>';
     c+=ovCard('🌐',kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್':'Official Website', offVal, {action:true});
   }
 
-  // --- Apply Link (action card, green button, same markup as before) ---
+  // --- Apply Link (action card, green button — same primary style as the site) ---
   if(j.apply_link){
-    var applyVal='<a href="'+j.apply_link+'" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:8px 16px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#1a1a2e !important;text-decoration:none;">📋 '+(kn?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now')+' ↗</a>';
+    var applyVal='<a href="'+j.apply_link+'" target="_blank" class="btn-apply-main" style="font-size:12px;padding:10px 16px;background:linear-gradient(135deg,#4ade80,#22c55e);border-color:rgba(74,222,128,0.6);box-shadow:0 4px 14px rgba(74,222,128,0.4);color:#1a1a2e !important;text-decoration:none;">📋 '+(kn?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now')+' ↗</a>';
     c+=ovCard('📝',kn?'ಅರ್ಜಿ ಲಿಂಕ್':'Apply Link', applyVal, {action:true});
   }
 
@@ -1179,12 +1173,6 @@ function renderJob(j){
   const heroLogoHtml=logo
     ?`<div class="hero-logo"><img src="${logo}" alt="${j.dept}" onerror="this.parentElement.innerHTML='${j.icon||'💼'}'"></div>`
     :`<div class="hero-logo">${j.icon||'💼'}</div>`;
-
-  const hideTopApply=!isOpen;
-  if(hideTopApply){
-    const topApply=document.getElementById('top-apply');
-    if(topApply)topApply.style.display='none';
-  }
 
   // On-page banner: show the banner for the currently selected language only (display only).
   const banner=(njGetLang()==='kn'?(j.banner_kn||''):(j.banner_en||'')).trim();
@@ -1541,7 +1529,7 @@ async function load(){
   if(params.get('preview')==='1'){
     try{
       const draft=JSON.parse(sessionStorage.getItem('nj_preview_job')||'null');
-      if(draft){ job=draft; window._njJob=job; renderJob(job); renderRelatedArticles(job); njApplyChannelLinks(); updateStaticLangElements(); return; }
+      if(draft){ job=draft; window._njJob=job; renderJob(job); renderRelatedArticles(job); njApplyChannelLinks(); return; }
     }catch(e){}
     document.getElementById('main-content').innerHTML='<div class="loading-page">\u26a0\ufe0f No preview data. Click \u201cPreview Job\u201d in the admin panel.</div>';
     return;
@@ -1567,7 +1555,6 @@ async function load(){
 
     window._njJob = job; renderJob(job); renderRelatedArticles(job);
     njApplyChannelLinks();
-    updateStaticLangElements();
   }catch(e){
     document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Could not load. Please check connection.</div>';
   }
@@ -1581,18 +1568,6 @@ function njRerender(){
   if(job && allJobs && allJobs.length) renderSidebar(job, allJobs);
   if(job && allJobs && allJobs.length) renderSimilarJobs(job, allJobs);
   njApplyChannelLinks();
-  updateStaticLangElements();
-}
-
-// Update header elements that exist outside template literals
-function updateStaticLangElements(){
-  const topApply=document.getElementById('top-apply');
-  if(topApply){
-    const kn=njGetLang()==='kn';
-    topApply.innerHTML='<span class="ta-short">'+(kn?'ಅರ್ಜಿ':'Apply')+'</span>'
-      +'<span class="ta-full">'+(kn?'ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply')+'</span>'
-      +'<span class="ta-arrow"> ↗</span>';
-  }
 }
 
 </script>
