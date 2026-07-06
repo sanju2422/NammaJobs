@@ -909,6 +909,8 @@ function renderJob(j){
 
         <div id="similar-jobs-section"></div>
 
+        <div id="related-articles-section"></div>
+
         ${isOpen&&(j.official_url||j.apply_link)?`
         <div class="apply-box">
           <h2>${njGetLang()==='kn'?'ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಸಿದ್ಧರಿದ್ದೀರಾ?':'Ready to Apply?'}</h2>
@@ -1027,6 +1029,43 @@ function renderSimilarJobs(cur,jobs){
   }).join('');
   box.innerHTML='<div class="card"><div class="card-title">'+title+'</div><div class="sim-grid">'+cards+'</div></div>';
 }
+/* ===== RELATED ARTICLES (dynamic, matched to the current job) ===== */
+var NJ_ARTICLES=[{"url": "sarkari-naukri-kaise-milti-hai.html", "icon": "🎯", "cat_en": "Career Guide", "cat_kn": "ವೃತ್ತಿ ಮಾರ್ಗದರ್ಶಿ", "title_en": "How to Get a Government Job – Complete Guide 2026", "title_kn": "ಸರ್ಕಾರಿ ನೌಕರಿ ಹೇಗೆ ಪಡೆಯುವುದು – ಸಂಪೂರ್ಣ ಮಾರ್ಗದರ್ಶಿ", "desc_en": "Step-by-step guide to get a government job in Karnataka. Learn about eligibility, exams, documents and application process.", "desc_kn": "ಕರ್ನಾಟಕದಲ್ಲಿ ಸರ್ಕಾರಿ ನೌಕರಿ ಪಡೆಯಲು ಅರ್ಹತೆ, ಪರೀಕ್ಷೆಗಳು, ದಾಖಲೆಗಳು ಮತ್ತು ಅರ್ಜಿ ಪ್ರಕ್ರಿಯೆಯ ಸಂಪೂರ್ಣ ಮಾರ್ಗದರ್ಶಿ.", "kw": ["government", "sarkari", "guide", "eligibility", "police", "railway", "central", "all"]}, {"url": "resume-kaise-banaye.html", "icon": "📄", "cat_en": "Resume Tips", "cat_kn": "ರೆಸ್ಯೂಮೆ ಸಲಹೆಗಳು", "title_en": "How to Build a Resume for Government Jobs – Tips 2026", "title_kn": "ಸರ್ಕಾರಿ ಕೆಲಸಕ್ಕಾಗಿ ರೆಸ್ಯೂಮೆ ಹೇಗೆ ತಯಾರಿಸುವುದು", "desc_en": "Learn how to write a perfect resume for government job applications. What to include, what to avoid, and free templates.", "desc_kn": "ಸರ್ಕಾರಿ ಉದ್ಯೋಗ ಅರ್ಜಿಗಾಗಿ ಉತ್ತಮ ರೆಸ್ಯೂಮೆ ಬರೆಯುವ ವಿಧಾನ — ಏನು ಸೇರಿಸಬೇಕು, ಏನು ತಪ್ಪಿಸಬೇಕು.", "kw": ["resume", "cv", "application", "interview", "private", "all"]}, {"url": "bank-job-taiyari.html", "icon": "🏦", "cat_en": "Exam Prep", "cat_kn": "ಪರೀಕ್ಷೆ ತಯಾರಿ", "title_en": "How to Prepare for Bank Job Exams – Complete Strategy 2026", "title_kn": "ಬ್ಯಾಂಕ್ ಉದ್ಯೋಗಕ್ಕೆ ಹೇಗೆ ತಯಾರಾಗುವುದು – ಸಂಪೂರ್ಣ ತಂತ್ರ", "desc_en": "Best strategy to crack bank exams like IBPS, SBI in 2026. Syllabus, books, time table and important tips.", "desc_kn": "2026ರಲ್ಲಿ IBPS, SBI ಬ್ಯಾಂಕ್ ಪರೀಕ್ಷೆಗಳನ್ನು ಗೆಲ್ಲಲು ಅತ್ಯುತ್ತಮ ತಂತ್ರ, ಪಠ್ಯಕ್ರಮ ಮತ್ತು ಪುಸ್ತಕಗಳು.", "kw": ["bank", "ibps", "sbi", "rbi", "po", "clerk", "finance", "banking", "exam"]}, {"url": "kpsc-exam-taiyari.html", "icon": "📝", "cat_en": "KPSC Guide", "cat_kn": "KPSC ಮಾರ್ಗದರ್ಶಿ", "title_en": "KPSC Exam Preparation Guide – How to Crack KPSC 2026", "title_kn": "KPSC ಪರೀಕ್ಷೆ ತಯಾರಿ ಮಾರ್ಗದರ್ಶಿ – KPSC 2026 ಹೇಗೆ ಗೆಲ್ಲುವುದು", "desc_en": "Complete preparation guide for KPSC Group A, B, C exams. Syllabus, previous papers, coaching tips and more.", "desc_kn": "KPSC ಗ್ರೂಪ್ A, B, C ಪರೀಕ್ಷೆಗಳಿಗೆ ಪಠ್ಯಕ್ರಮ, ಹಿಂದಿನ ಪ್ರಶ್ನೆ ಪತ್ರಿಕೆಗಳು ಮತ್ತು ತಯಾರಿ ಸಲಹೆಗಳೊಂದಿಗೆ ಸಂಪೂರ್ಣ ಮಾರ್ಗದರ್ಶಿ.", "kw": ["kpsc", "group", "psc", "karnataka", "state", "preliminary", "mains", "exam", "teacher", "teaching"]}, {"url": "sarkari-naukri-ke-fayde.html", "icon": "⭐", "cat_en": "Career Insight", "cat_kn": "ವೃತ್ತಿ ಒಳನೋಟ", "title_en": "Benefits of a Government Job – Why It's the Best Career Choice", "title_kn": "ಸರ್ಕಾರಿ ನೌಕರಿಯ ಪ್ರಯೋಜನಗಳು – ಸರ್ಕಾರಿ ಕೆಲಸ ಏಕೆ ಉತ್ತಮ", "desc_en": "Top benefits of government jobs – salary, pension, job security, work-life balance and more.", "desc_kn": "ಸರ್ಕಾರಿ ಕೆಲಸದ ಪ್ರಮುಖ ಪ್ರಯೋಜನಗಳು – ವೇತನ, ಪಿಂಚಣಿ, ಉದ್ಯೋಗ ಭದ್ರತೆ ಮತ್ತು ಕೆಲಸ-ಜೀವನ ಸಮತೋಲನ.", "kw": ["government", "benefits", "salary", "pension", "all"]}];
+function njRelatedArticles(j){
+  if(!j) return [];
+  var hay=[j.cat,j.category,j.dept,j.dept_kn,j.title_en,j.title_kn,j.tags,j.tags_kn,j.skills,j.loc,j.notif]
+    .filter(Boolean).join(' ').toLowerCase();
+  return NJ_ARTICLES.map(function(a){
+    var sc=0;
+    a.kw.forEach(function(k){ if(k==='all'){sc+=0.4;} else if(hay.indexOf(k)>-1){sc+=2;} });
+    return {a:a,sc:sc};
+  }).filter(function(x){return x.sc>0;})
+    .sort(function(a,b){return b.sc-a.sc;})
+    .slice(0,5).map(function(x){return x.a;});
+}
+function renderRelatedArticles(j){
+  var box=document.getElementById('related-articles-section');
+  if(!box) return;
+  var list=njRelatedArticles(j);
+  if(!list.length){ box.innerHTML=''; return; }
+  var kn=njGetLang()==='kn';
+  var title=kn?'\u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0ca4 \u0cb2\u0cc7\u0c96\u0ca8\u0c97\u0cb3\u0cc1':'Related Articles';
+  var read=kn?'\u0cb2\u0cc7\u0c96\u0ca8 \u0c93\u0ca6\u0cbf':'Read Article';
+  var cards=list.map(function(a){
+    var t=njEsc(kn?(a.title_kn||a.title_en):a.title_en);
+    var d=njEsc(kn?(a.desc_kn||a.desc_en):a.desc_en);
+    var c=njEsc(kn?(a.cat_kn||a.cat_en):a.cat_en);
+    return '<a class="sim-card" href="'+a.url+'">'+
+      '<div class="sim-ic">'+a.icon+'</div>'+
+      '<div class="sim-info">'+
+        (c?'<div class="sim-badge">'+c+'</div>':'')+
+        '<div class="sl-title">'+t+'</div>'+
+        '<div class="sl-meta">'+d+'</div>'+
+        '<span class="btn-apply-main" style="display:inline-block;font-size:11px;padding:6px 14px;margin-top:10px;color:#fff !important;text-decoration:none;">'+read+' \u2197</span>'+
+      '</div></a>';
+  }).join('');
+  box.innerHTML='<div class="card"><div class="card-title">\ud83d\udcda '+title+'</div><div class="sim-grid">'+cards+'</div></div>';
+}
 async function load(){
   const params=new URLSearchParams(window.location.search);
 
@@ -1034,7 +1073,7 @@ async function load(){
   if(params.get('preview')==='1'){
     try{
       const draft=JSON.parse(sessionStorage.getItem('nj_preview_job')||'null');
-      if(draft){ job=draft; window._njJob=job; renderJob(job); updateStaticLangElements(); return; }
+      if(draft){ job=draft; window._njJob=job; renderJob(job); renderRelatedArticles(job); updateStaticLangElements(); return; }
     }catch(e){}
     document.getElementById('main-content').innerHTML='<div class="loading-page">\u26a0\ufe0f No preview data. Click \u201cPreview Job\u201d in the admin panel.</div>';
     return;
@@ -1058,7 +1097,7 @@ async function load(){
       .then(jobs=>{allJobs=jobs;renderSidebar(job,allJobs);renderSimilarJobs(job,allJobs);})
       .catch(()=>{});
 
-    window._njJob = job; renderJob(job);
+    window._njJob = job; renderJob(job); renderRelatedArticles(job);
     updateStaticLangElements();
   }catch(e){
     document.getElementById('main-content').innerHTML='<div class="loading-page">⚠️ Could not load. Please check connection.</div>';
@@ -1069,6 +1108,7 @@ load();
 // Called by lang.js when user switches language
 function njRerender(){
   if(window._njJob) renderJob(window._njJob);
+  if(window._njJob) renderRelatedArticles(window._njJob);
   if(job && allJobs && allJobs.length) renderSimilarJobs(job, allJobs);
   updateStaticLangElements();
 }
