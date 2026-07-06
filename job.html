@@ -401,6 +401,26 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 [data-lang="en"] .lang-kn{display:none !important;}
 [data-lang="kn"] .lang-en{display:none !important;}
 /* ===== END LANGUAGE TOGGLE ===== */
+
+/* ===== DESKTOP LAYOUT REFINEMENT (match design preview; desktop only, mobile untouched) ===== */
+@media(min-width:1025px){
+  .container{padding:20px 16px 32px;}
+  .main-grid{grid-template-columns:1fr 340px;gap:24px;align-items:start;}
+  .hero{padding:22px 26px;margin-bottom:16px;gap:20px;}
+  .hero-logo{width:80px;height:80px;}
+  .hero h1{font-size:24px;margin-bottom:5px;}
+  .card{padding:18px 20px;margin-bottom:16px;}
+  .card-title{font-size:17px;margin-bottom:12px;}
+  .info-table td{padding:8px 6px;font-size:13.5px;}
+  .vbox{padding:4px 10px;}
+  .vbox-sec{padding:12px;}
+  .dates-grid{gap:10px;}
+  .date-item{padding:12px 12px;}
+  .steps{gap:8px;}
+  .apply-box{padding:20px;margin-bottom:16px;}
+  #sidebar{position:sticky;top:16px;align-self:start;}
+}
+
 </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9037988612895250" crossorigin="anonymous"></script>
 <script src="lang.js?v=2"></script>
