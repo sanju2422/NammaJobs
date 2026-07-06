@@ -779,7 +779,8 @@ function renderJob(j){
             ${j.age?`<tr><td>${njGetLang()==='kn'?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit'}</td><td><span class="vbox">${njAgeCell(njField(j.age,j.age_kn))}</span></td></tr>`:''}
             ${j.skills?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತೆ':'Qualification'}</td><td><span class="vbox">${njQualCell(njField(j.skills,j.skills_kn))}</span></td></tr>`:''}
             ${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags)?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags'}</td><td><span class="vbox">${(njGetLang()==='kn'&&j.tags_kn?j.tags_kn:j.tags).split(',').map(t=>`<span style="display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;margin:2px 4px 2px 0;">🎓 ${t.trim()}</span>`).join('')}</span></td></tr>`:''}
-            <tr><td>${njGetLang()==='kn'?'ಸ್ಥಳ':'Location'}</td><td><span class="vbox">${njField(j.loc,j.loc_kn)||(njGetLang()==='kn'?'ಕರ್ನಾಟಕ':'Karnataka')}</span></td></tr>
+            ${njField(j.loc,j.loc_kn)?`<tr><td>${njGetLang()==='kn'?'ಸ್ಥಳ':'Location'}</td><td><span class="vbox">${njField(j.loc,j.loc_kn)}</span></td></tr>`:''}
+            ${njField(j.apply_mode,j.apply_mode_kn)?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode'}</td><td><span class="vbox">${njField(j.apply_mode,j.apply_mode_kn)}</span></td></tr>`:''}
             ${j.fee?`<tr class="fee-row"><td style="vertical-align:top;padding-top:16px;">${njGetLang()==='kn'?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee'}</td><td style="padding-top:16px;"><span class="vbox">${njFeeCell(njField(j.fee,j.fee_kn))}</span></td></tr>`:''}
             ${j.notif?`<tr><td>${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.'}</td><td><span class="vbox">${j.notif}</span>${j.notif_url?`<div style="margin-top:8px;"><a href="${j.notif_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:12px;padding:6px 14px;color:#fff !important;text-decoration:none;">📄 ${njGetLang()==='kn'?'ಅಧಿಸೂಚನೆ PDF':'Notification PDF'} ↗</a></div>`:''}</td></tr>`:''}
             ${j.start_status==='started'?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><span class="vbox"><strong style="color:#4ade80;">✅ ${njGetLang()==='kn'?'ಈಗಾಗಲೇ ಪ್ರಾರಂಭವಾಗಿದೆ':'Already Started'}</strong></span></td></tr>`:(j.start_date?`<tr><td>${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Apply From'}</td><td><span class="vbox"><strong style="color:#4ade80;">📅 ${fmtDate(j.start_date)}</strong></span></td></tr>`:'')}
@@ -861,14 +862,15 @@ function renderJob(j){
           ${j.syllabus_url?`<div style="margin-top:12px;"><a href="${j.syllabus_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:13px;padding:10px 20px;">📄 Download Syllabus PDF ↗</a></div>`:''}
         </div>`:''}
 
+        ${njField(j.how_to_apply,j.how_to_apply_kn)?`
         <div class="card" id="apply-section">
           <div class="card-title">${njGetLang()==='kn'?'ಅರ್ಜಿ ಹೇಗೆ ಸಲ್ಲಿಸುವುದು':'How to Apply'}</div>
           <div class="steps">
-            ${njSteps(njField(j.how_to_apply||'',j.how_to_apply_kn)).map((s,i)=>`
+            ${njSteps(njField(j.how_to_apply,j.how_to_apply_kn)).map((s,i)=>`
               <div class="step"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>
-            `).join('')||`<div class="step"><div class="step-num">1</div><div class="step-text">Visit the official website and apply online before the last date.</div></div>`}
+            `).join('')}
           </div>
-        </div>
+        </div>`:''}
 
         ${(function(){
           var faq=njField(j.faq_en,j.faq_kn);
