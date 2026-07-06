@@ -357,8 +357,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .qual-wrap{display:flex;flex-wrap:wrap;gap:8px;}
 .qual-chip{display:inline-flex;align-items:center;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;line-height:1.5;max-width:100%;}
 /* Salary / pay-level badges: same blue chip, but allow long pay-matrix text to wrap
-   cleanly inside the badge instead of overflowing (RRB standard, universal). */
-.sal-chip{white-space:normal;word-break:break-word;padding:5px 12px;}
+   cleanly inside the badge instead of overflowing (RRB standard, universal).
+   Height is matched to the value line box and text is vertically centered so the
+   chip's first line sits on the SAME baseline as plain-text values (Location etc.). */
+.sal-chip{white-space:normal;word-break:break-word;padding:3px 12px;min-height:23px;line-height:1.4;}
 @media(max-width:600px){.sub-tbl th,.sub-tbl td{padding:7px 8px;font-size:12px;}.qual-chip{font-size:12px;padding:5px 10px;}}
 /* ===== Similar Jobs cards (display only; reuse glass card design) ===== */
 .sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:2px;}
@@ -585,11 +587,12 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   .ov-item:nth-child(1),.ov-item:nth-child(2){border-bottom:1px solid var(--glass-border);}
 }
 
-/* ---- Job Overview: individual info cards ---- */
+/* ---- Job Overview: individual info cards ----
+   ONE shared reusable info-card layout used by every card (Organization,
+   Post Name, Pay Scale / Salary, Location, Apply Mode, ...). Uniform 20px
+   padding, [icon] HEADING on row one, then a single shared value area that
+   begins at the same content baseline on every card. */
 .ov-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:18px;}
-/* Consistent card rhythm: uniform 20px padding, top-aligned so every card reads
-   [icon] HEADING on the first row, then content flowing directly below with the
-   same vertical gap on every card. */
 .oc{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;align-items:flex-start;gap:14px;min-width:0;}
 .oc-head{display:flex;align-items:center;gap:11px;width:100%;}
 .oc-headtxt{min-width:0;}
@@ -597,13 +600,20 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .oc-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.65);line-height:1.3;}
 /* Secondary line under a card title (e.g. the Notification number) — clean, muted, no badge box. */
 .oc-sub{font-size:12.5px;font-weight:700;color:rgba(255,255,255,0.72);margin-top:3px;line-height:1.35;word-break:break-word;}
-.oc-val{font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;width:100%;}
-.oc-val .qual-wrap{margin-top:0;}
-.oc-val .sub-tbl-wrap{margin-top:0;}
+/* SHARED VALUE AREA — one flush top-left origin, one vertical rhythm.
+   Plain text, org name + subtitle, and salary chips all begin here at the
+   same content baseline; multi-part values stack with a single uniform gap. */
+.oc-val{display:flex;flex-direction:column;align-items:flex-start;gap:8px;width:100%;font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;}
+.oc-val>*{margin:0;}
+/* Shared value-text element: identical typography + wrapping on every card. */
+.oc-text{width:100%;font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;}
+.oc-val .qual-wrap{width:100%;}
+.oc-val .sub-tbl-wrap{width:100%;}
 .oc.wide{grid-column:1 / -1;}
 .oc.oc-action .btn-apply-main{display:flex;width:100%;text-align:center;}
-/* Organization "type" subline (e.g. Government Organization) — muted, small. */
-.oc-orgtype{font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);margin-top:6px;line-height:1.35;}
+/* Organization "type" subline (e.g. Government Organization) — muted, small.
+   Spacing is inherited from the shared .oc-val gap so it matches every card. */
+.oc-orgtype{font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);line-height:1.35;}
 /* Long values (Post Name / Organization): wrap naturally up to 4 lines, then ellipsis. */
 .oc-clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
 @media(max-width:640px){.ov-cards{grid-template-columns:1fr;}}
@@ -993,7 +1003,10 @@ function njSalaryCell(raw){
   return '<div class="qual-wrap">'+levels.map(function(x){return '<span class="qual-chip sal-chip">'+njEsc(x)+'</span>';}).join('')+'</div>';
 }
 
-/* ===== JOB OVERVIEW — INDIVIDUAL CARDS (presentation helper, additive) ===== */
+/* ===== JOB OVERVIEW — INDIVIDUAL CARDS (presentation helper, additive) =====
+   ovCard() is the ONE shared reusable info-card layout. Every card renders as
+   [icon] HEADING (row one) then a single shared .oc-val value area, so icon,
+   heading, spacing and the value's starting baseline are identical everywhere. */
 function ovCard(ic,label,valueHtml,opts){
   opts=opts||{};
   if(valueHtml==null) return '';
@@ -1015,24 +1028,26 @@ function overviewCardsHtml(j){
   var c='';
 
   // --- Organization: clean information layout, NO logo (hero already shows it).
-  //     Icon tile = building line icon (same as every other card). Value = org
-  //     name (wraps up to 4 lines, then ellipsis) + a muted "Government Organization"
-  //     subline. Standard for every organization; no empty logo space left behind.
+  //     Value = org name (shared .oc-text, wraps up to 4 lines then ellipsis)
+  //     followed by the muted "Government Organization" subline. Both sit inside
+  //     the shared .oc-val, so they start at the same baseline as every card.
   var orgName=njField(j.dept,j.dept_kn)||'';
   if(orgName){
-    var orgVal='<span class="oc-clamp">'+njEsc(orgName)+'</span>'
+    var orgVal='<span class="oc-text oc-clamp">'+njEsc(orgName)+'</span>'
       +'<div class="oc-orgtype">'+(kn?'ಸರ್ಕಾರಿ ಸಂಸ್ಥೆ':'Government Organization')+'</div>';
     c+=ovCard(njIc('building'), kn?'ಸಂಸ್ಥೆ':'Organization', orgVal);
   }
 
-  // --- Post Name: wraps naturally up to 4 lines, then ellipsis (never awkward cut). ---
+  // --- Post Name: shared .oc-text; wraps naturally up to 4 lines, then ellipsis. ---
   var postName=njField(j.title_en,j.title_kn)||'';
-  if(postName) c+=ovCard(njIc('briefcase'), kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', '<span class="oc-clamp">'+njEsc(postName)+'</span>');
+  if(postName) c+=ovCard(njIc('briefcase'), kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', '<span class="oc-text oc-clamp">'+njEsc(postName)+'</span>');
 
+  // --- Pay Scale / Salary: chips (RRB standard). CSS aligns their first line to
+  //     the same content baseline as plain-text values. ---
   if(j.salary) c+=ovCard(njIc('wallet'),kn?'ವೇತನ':'Pay Scale / Salary', njSalaryCell(njField(j.salary,j.salary_kn)));
-  // --- Location: wraps to multiple lines, never cut (no clamp / no ellipsis). ---
-  if(njField(j.loc,j.loc_kn)) c+=ovCard(njIc('map-pin'),kn?'ಸ್ಥಳ':'Location', njEsc(njField(j.loc,j.loc_kn)));
-  if(njField(j.apply_mode,j.apply_mode_kn)) c+=ovCard(njIc('monitor'),kn?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode', njEsc(njField(j.apply_mode,j.apply_mode_kn)));
+  // --- Location: shared .oc-text; wraps to multiple lines, never cut. ---
+  if(njField(j.loc,j.loc_kn)) c+=ovCard(njIc('map-pin'),kn?'ಸ್ಥಳ':'Location', '<span class="oc-text">'+njEsc(njField(j.loc,j.loc_kn))+'</span>');
+  if(njField(j.apply_mode,j.apply_mode_kn)) c+=ovCard(njIc('monitor'),kn?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode', '<span class="oc-text">'+njEsc(njField(j.apply_mode,j.apply_mode_kn))+'</span>');
 
   if(j.age) c+=ovCard(njIc('user-check'),kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit', njAgeCell(njField(j.age,j.age_kn)), {wide:true});
   if(j.skills) c+=ovCard(njIc('graduation-cap'),kn?'ಅರ್ಹತೆ':'Qualification', njQualCell(njField(j.skills,j.skills_kn)), {wide:true});
