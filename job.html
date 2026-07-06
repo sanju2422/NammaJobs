@@ -145,9 +145,14 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .htxt-kn{font-family:var(--fkn);font-size:12px;color:#FFD60A;font-weight:700;margin-top:2px;}
 .htxt-kn span{color:#FF3B30;}
 .tbtns{display:flex;gap:8px;}
-.tbtn{background:var(--glass-bg);backdrop-filter:blur(10px);border:2px solid var(--glass-border);color:#fff;padding:9px 14px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;display:flex;align-items:center;gap:5px;text-decoration:none;}
+.tbtn{background:var(--glass-bg);backdrop-filter:blur(10px);border:2px solid var(--glass-border);color:#fff;padding:9px 14px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;display:flex;align-items:center;gap:6px;text-decoration:none;}
 .tbtn:hover{background:var(--glass-bg-dark);border-color:var(--glass-border-strong);}
 .tbtn.primary{background:linear-gradient(135deg,#4ade80,#22c55e);border-color:rgba(74,222,128,0.6);box-shadow:0 4px 14px rgba(74,222,128,0.4);color:#1a1a2e !important;}
+/* Brand-colored header social buttons (match Home Page Telegram/WhatsApp treatment) */
+.tbtn.tbtn-tg{background:linear-gradient(135deg,rgba(0,136,204,0.45),rgba(0,136,204,0.22));border-color:rgba(0,136,204,0.7);}
+.tbtn.tbtn-tg:hover{background:linear-gradient(135deg,rgba(0,136,204,0.65),rgba(0,136,204,0.38));border-color:rgba(0,136,204,0.9);box-shadow:0 6px 18px rgba(0,136,204,0.38);}
+.tbtn.tbtn-wa{background:linear-gradient(135deg,rgba(37,211,102,0.45),rgba(37,211,102,0.22));border-color:rgba(37,211,102,0.7);}
+.tbtn.tbtn-wa:hover{background:linear-gradient(135deg,rgba(37,211,102,0.65),rgba(37,211,102,0.38));border-color:rgba(37,211,102,0.9);box-shadow:0 6px 18px rgba(37,211,102,0.38);}
 
 .container{max-width:1280px;margin:0 auto;padding:24px 16px 40px;}
 
@@ -287,7 +292,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .date-item.start{border-color:rgba(76,217,100,0.4);background:rgba(76,217,100,0.12);}
 .date-item.highlight{background:rgba(255,87,87,0.18);border-color:rgba(255,87,87,0.5);}
 .date-label{font-size:10px;color:rgba(255,255,255,0.85);font-weight:800;text-transform:uppercase;margin-bottom:6px;letter-spacing:0.05em;}
-.date-val{font-family:var(--fhead);font-size:14px;color:#fff;font-weight:800;text-shadow:0 1px 3px rgba(0,0,0,0.2);}
+.date-val{font-family:var(--fhead);font-size:14px;color:#fff;font-weight:800;text-shadow:0 1px 3px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;gap:5px;}
 
 /* APPLY STEPS */
 .steps{display:flex;flex-direction:column;gap:10px;}
@@ -353,7 +358,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .sub-tbl strong{color:#c4b5fd;font-weight:800;}
 .fee-nil{color:#4ade80;font-weight:800;}
 .qual-wrap{display:flex;flex-wrap:wrap;gap:8px;}
-.qual-chip{display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;line-height:1.5;}
+.qual-chip{display:inline-flex;align-items:center;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;line-height:1.5;}
 @media(max-width:600px){.sub-tbl th,.sub-tbl td{padding:7px 8px;font-size:12px;}.qual-chip{font-size:12px;padding:5px 10px;}}
 /* ===== Similar Jobs cards (display only; reuse glass card design) ===== */
 .sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:2px;}
@@ -405,7 +410,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   box-shadow:0 8px 22px rgba(168,85,247,0.5);
   transition:all .25s;
   text-decoration:none;
-  display:inline-block;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
 }
 .btn-apply-main:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(168,85,247,0.7);}
 
@@ -423,7 +431,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:5px;
+  gap:6px;
   color:#fff;
   border:2px solid;
   transition:all .25s;
@@ -504,6 +512,27 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 [data-lang="kn"] .lang-en{display:none !important;}
 /* ===== END LANGUAGE TOGGLE ===== */
 
+/* ===== INLINE ICON SYSTEM =====================================
+   Feather/Lucide-style line icons + official brand marks, matching
+   the Home Page icon language (its search icon is the same stroke
+   style). All icons inherit currentColor so they adopt each button's
+   text color automatically — no new colors introduced.
+   =============================================================== */
+.nj-ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0;}
+.tbtn .nj-ic{width:15px;height:15px;}
+.footer-social a .nj-ic{width:16px;height:16px;}
+.stay-btn .nj-ic{width:16px;height:16px;}
+.ov-ic .nj-ic{width:20px;height:20px;}
+.oc-ic .nj-ic{width:19px;height:19px;}
+.hero-chip .nj-ic{width:14px;height:14px;}
+.ld-label .nj-ic{width:12px;height:12px;}
+.date-val .nj-ic{width:14px;height:14px;}
+.glance-ic .nj-ic{width:16px;height:16px;}
+.act-btn .nj-ic{width:18px;height:18px;}
+.share-btn .nj-ic{width:16px;height:16px;}
+.qual-chip .nj-ic{width:12px;height:12px;margin-right:4px;vertical-align:-0.1em;}
+.btn-apply-main .nj-ic{width:14px;height:14px;}
+
 /* ===== DESKTOP LAYOUT REFINEMENT (match approved preview; desktop only, mobile untouched) =====
    NOTE: sidebar is NOT sticky — it scrolls normally with the page. */
 @media(min-width:1025px){
@@ -538,7 +567,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 /* ---- Header: search field + social cluster ---- */
 .hdr-search{flex:1;max-width:440px;display:flex;align-items:center;gap:9px;background:var(--glass-bg);border:2px solid var(--glass-border);border-radius:12px;padding:8px 14px;transition:border-color .2s;}
 .hdr-search:focus-within{border-color:var(--glass-border-strong);}
-.hdr-search .s-ic{color:rgba(255,255,255,0.55);font-size:14px;flex-shrink:0;}
+.hdr-search .s-ic{color:rgba(255,255,255,0.55);font-size:14px;flex-shrink:0;display:flex;}
 .hdr-search input{flex:1;min-width:0;background:transparent;border:none;outline:none;color:#fff;font-family:inherit;font-size:13px;font-weight:600;}
 .hdr-search input::placeholder{color:rgba(255,255,255,0.5);}
 .tbtn.social{padding:9px 12px;}
@@ -568,7 +597,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .ov-strip{display:grid;grid-template-columns:repeat(4,1fr);background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);margin-bottom:18px;box-shadow:var(--shadow-soft);overflow:hidden;}
 .ov-item{display:flex;align-items:center;gap:13px;padding:18px 20px;border-right:1px solid var(--glass-border);min-width:0;}
 .ov-item:last-child{border-right:none;}
-.ov-ic{width:42px;height:42px;border-radius:12px;background:var(--glass-bg-dark);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.ov-ic{width:42px;height:42px;border-radius:12px;background:var(--glass-bg-dark);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;color:#c4b5fd;}
 .ov-meta{min-width:0;}
 .ov-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.68);margin-bottom:3px;}
 .ov-val{font-family:var(--fhead);font-size:15px;font-weight:800;color:#fff;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -579,32 +608,31 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 }
 
 /* ---- Job Overview: individual info cards (split from the single info-table) ----
-   Each card reuses the glass surface tokens so the future light theme restyles
-   them automatically. Simple facts sit in an auto-fit grid; content-heavy fields
-   (Age Limit / Qualification / Eligibility / Application Fee) span the full width. */
+   Content is vertically CENTERED so short and tall cards feel equally filled with
+   balanced top/bottom whitespace — no card is shrunk, heights still auto-match per row.
+   Each card reuses the glass surface tokens so the future light theme restyles them. */
 .ov-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:18px;}
-.oc{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;gap:12px;min-width:0;}
+.oc{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;justify-content:center;gap:10px;min-width:0;}
 .oc-head{display:flex;align-items:center;gap:11px;}
-.oc-ic{width:38px;height:38px;border-radius:11px;background:var(--glass-bg-dark);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.oc-ic{width:38px;height:38px;border-radius:11px;background:var(--glass-bg-dark);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#c4b5fd;}
 /* Organization card renders the official dept logo on a white tile — same treatment
    as the site header logo (.hlogo) and Similar Jobs icon (.sim-ic). */
 .oc-ic.has-logo{background:#fff;padding:5px;overflow:hidden;}
 .oc-ic.has-logo img{width:100%;height:100%;object-fit:contain;}
 .oc-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.65);line-height:1.3;}
-.oc-val{font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;margin-top:auto;}
+.oc-val{font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;}
 .oc-val .qual-wrap{margin-top:0;}
 .oc-val .sub-tbl-wrap{margin-top:0;}
 .oc.wide{grid-column:1 / -1;}
-.oc.oc-action{justify-content:flex-start;}
-.oc.oc-action .oc-val{margin-top:2px;}
 /* Action cards (Notification / Official Website / Apply Link): full-width buttons
    using the existing site button component — consistent with the Home Page. */
-.oc.oc-action .btn-apply-main{display:block;width:100%;text-align:center;}
+.oc.oc-action .btn-apply-main{display:flex;width:100%;text-align:center;}
 @media(max-width:640px){.ov-cards{grid-template-columns:1fr;}}
 
 /* ---- Action bar: 4 primary buttons (top + bottom) ---- */
 .action-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
-.act-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:14px 12px;border-radius:14px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;border:2px solid;color:#fff;text-align:center;line-height:1.3;transition:transform .2s,box-shadow .2s;}
+.act-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px 12px;border-radius:14px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;border:2px solid;color:#fff;text-align:center;line-height:1.3;transition:transform .2s,box-shadow .2s;}
+.act-btn .act-lbl{display:inline-flex;align-items:center;gap:6px;}
 .act-btn .act-sub{font-size:10px;font-weight:600;opacity:.85;}
 .act-btn:hover{transform:translateY(-2px);}
 .act-apply{background:linear-gradient(135deg,#4ade80,#22c55e);border-color:rgba(74,222,128,0.6);color:#0a1f12 !important;box-shadow:0 6px 18px rgba(74,222,128,0.35);}
@@ -617,7 +645,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .glance-list{display:flex;flex-direction:column;}
 .glance-item{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.1);}
 .glance-item:last-child{border-bottom:none;}
-.glance-ic{font-size:16px;flex-shrink:0;width:22px;text-align:center;line-height:1.4;}
+.glance-ic{flex-shrink:0;width:22px;display:flex;align-items:center;justify-content:center;line-height:1.4;color:#c4b5fd;margin-top:1px;}
 .glance-k{font-size:11px;font-weight:800;color:rgba(255,255,255,0.62);text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px;}
 .glance-v{font-size:13.5px;font-weight:700;color:#fff;line-height:1.35;}
 .glance-v.red{color:#ff9a9a;}
@@ -636,7 +664,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .fb-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
 .footer-blurb{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.65;font-weight:500;max-width:38ch;margin-bottom:16px;}
 .footer-social{display:flex;gap:10px;}
-.footer-social a{width:34px;height:34px;border-radius:10px;background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:15px;text-decoration:none;transition:all .2s;}
+.footer-social a{width:34px;height:34px;border-radius:10px;background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;transition:all .2s;}
 .footer-social a:hover{border-color:var(--glass-border-strong);transform:translateY(-2px);}
 .footer-col h4{font-family:var(--fhead);font-size:14px;font-weight:800;color:#fff;margin-bottom:15px;}
 .footer-col a{display:block;font-size:13px;color:rgba(255,255,255,0.7);text-decoration:none;font-weight:600;margin-bottom:9px;transition:color .2s;}
@@ -663,7 +691,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       </div>
     </a>
     <form class="hdr-search" onsubmit="return njSearch(event)" role="search">
-      <span class="s-ic">🔍</span>
+      <span class="s-ic"><svg class="nj-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
       <input type="text" id="hdr-search-input" placeholder="Search jobs by title, department, keyword..." aria-label="Search jobs">
     </form>
     <div class="tbtns">
@@ -671,8 +699,8 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
         <button class="lang-toggle-btn lang-active" id="lang-btn-en" onclick="njToggleLang('en')">EN</button>
         <button class="lang-toggle-btn" id="lang-btn-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
       </div>
-      <a class="tbtn social" data-nj-tg href="#" target="_blank" rel="noopener"><span>✈️</span><span class="social-lbl">Telegram</span></a>
-      <a class="tbtn social" data-nj-wa href="#" target="_blank" rel="noopener"><span>📱</span><span class="social-lbl">WhatsApp</span></a>
+      <a class="tbtn social tbtn-tg" data-nj-tg href="#" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/></svg><span class="social-lbl">Telegram</span></a>
+      <a class="tbtn social tbtn-wa" data-nj-wa href="#" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg><span class="social-lbl">WhatsApp</span></a>
     </div>
   </div>
 </header>
@@ -703,11 +731,11 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       </div>
       <div class="footer-blurb">Karnataka's No.1 Government Job Portal. Find the latest government jobs, admit cards, results and job alerts in one place.</div>
       <div class="footer-social">
-        <a data-nj-wa href="#" target="_blank" rel="noopener" title="WhatsApp">📱</a>
-        <a data-nj-tg href="#" target="_blank" rel="noopener" title="Telegram">✈️</a>
-        <a href="#" title="Facebook">📘</a>
-        <a href="#" title="YouTube">▶️</a>
-        <a href="#" title="Instagram">📸</a>
+        <a data-nj-wa href="#" target="_blank" rel="noopener" title="WhatsApp"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg></a>
+        <a data-nj-tg href="#" target="_blank" rel="noopener" title="Telegram"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/></svg></a>
+        <a href="#" title="Facebook"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V5h-3c-2.2 0-4 1.8-4 4v2H7v4h3v6h4v-6h2.6l.4-4H14V9c0-.6.4-1 1-1Z"/></svg></a>
+        <a href="#" title="YouTube"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.4-.43-5.02a2.6 2.6 0 0 0-1.83-1.84C19.13 4.7 12 4.7 12 4.7s-7.13 0-8.74.44A2.6 2.6 0 0 0 1.43 6.98 27 27 0 0 0 1 12a27 27 0 0 0 .43 5.02 2.6 2.6 0 0 0 1.83 1.84c1.61.44 8.74.44 8.74.44s7.13 0 8.74-.44a2.6 2.6 0 0 0 1.83-1.84C23 15.4 23 12 23 12ZM9.8 15.3V8.7l5.7 3.3-5.7 3.3Z"/></svg></a>
+        <a href="#" title="Instagram"><svg class="nj-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a>
       </div>
     </div>
     <div class="footer-col">
@@ -736,8 +764,8 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
     </div>
     <div class="footer-col footer-connect">
       <h4>Stay Connected</h4>
-      <a class="stay-btn stay-tg" data-nj-tg href="#" target="_blank" rel="noopener">✈️ Join Telegram Channel</a>
-      <a class="stay-btn stay-wa" data-nj-wa href="#" target="_blank" rel="noopener">📱 Join WhatsApp Channel</a>
+      <a class="stay-btn stay-tg" data-nj-tg href="#" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/></svg> Join Telegram Channel</a>
+      <a class="stay-btn stay-wa" data-nj-wa href="#" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg> Join WhatsApp Channel</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -756,6 +784,42 @@ const H={'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`};
 /* ===== CHANNEL LINKS — REPLACE THESE TWO PLACEHOLDER URLS WITH YOUR REAL CHANNELS ===== */
 const NJ_WHATSAPP='https://whatsapp.com/channel/REPLACE_WITH_YOUR_WHATSAPP_CHANNEL';
 const NJ_TELEGRAM='https://t.me/REPLACE_WITH_YOUR_TELEGRAM_CHANNEL';
+
+/* ============================================================
+   INLINE ICON HELPER (presentation only)
+   Line icons follow the Home Page's feather/stroke style (its
+   search icon uses the same stroke set); WhatsApp/Telegram use the
+   official brand marks. All inherit currentColor. No emoji.
+   ============================================================ */
+var NJ_SVG={
+  wa:{f:1,p:'<path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/>'},
+  tg:{f:1,p:'<path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/>'},
+  'map-pin':{p:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>'},
+  calendar:{p:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>'},
+  'calendar-check':{p:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18m-9.5 5 2 2 4-4"/>'},
+  clock:{p:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'},
+  users:{p:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>'},
+  briefcase:{p:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>'},
+  building:{p:'<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01"/>'},
+  wallet:{p:'<path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/><path d="M21 12a2 2 0 0 0-2-2h-4a2 2 0 0 0 0 4h4a2 2 0 0 0 2-2Z"/>'},
+  monitor:{p:'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>'},
+  'user-check':{p:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/>'},
+  'graduation-cap':{p:'<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1 2.7 2.5 6 2.5s6-1.5 6-2.5v-5"/>'},
+  tag:{p:'<path d="M12.6 2.6a2 2 0 0 0-1.4-.6H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.8 8.8a2 2 0 0 0 2.8 0l6.4-6.4a2 2 0 0 0 0-2.8Z"/><circle cx="7.5" cy="7.5" r="1.3"/>'},
+  'credit-card':{p:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>'},
+  bell:{p:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>'},
+  globe:{p:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18Z"/>'},
+  send:{p:'<path d="M22 2 11 13M22 2l-7 20-4-9-9-4Z"/>'},
+  download:{p:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>'},
+  link:{p:'<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>'},
+  share:{p:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5 8.6 10.5"/>'},
+  'file-text':{p:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h8M8 9h2"/>'}
+};
+function njIc(n){
+  var s=NJ_SVG[n]; if(!s) return '';
+  var attrs=s.f?'fill="currentColor"':'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+  return '<svg class="nj-ic" viewBox="0 0 24 24" '+attrs+' aria-hidden="true">'+s.p+'</svg>';
+}
 
 const DEPT_LOGOS={
   'kpsc':'https://upload.wikimedia.org/wikipedia/en/b/b9/Karnataka_Public_Service_Commission_logo.png',
@@ -830,10 +894,10 @@ function overviewStripHtml(j){
   var locv=njField(j.loc,j.loc_kn);
   var mode=njField(j.apply_mode,j.apply_mode_kn)||(kn?'ಆನ್‌ಲೈನ್':'Online');
   return '<div class="ov-strip">'
-    + '<div class="ov-item"><div class="ov-ic">👥</div><div class="ov-meta"><div class="ov-label">'+(kn?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies')+'</div><div class="ov-val">'+njEsc(vac||'—')+'</div></div></div>'
-    + '<div class="ov-item"><div class="ov-ic">📋</div><div class="ov-meta"><div class="ov-label">'+(kn?'ಹುದ್ದೆಗಳು':'Posts')+'</div><div class="ov-val">'+njEsc(posts)+'</div></div></div>'
-    + '<div class="ov-item"><div class="ov-ic">📍</div><div class="ov-meta"><div class="ov-label">'+(kn?'ಉದ್ಯೋಗ ಸ್ಥಳ':'Job Location')+'</div><div class="ov-val">'+njEsc(locv||'—')+'</div></div></div>'
-    + '<div class="ov-item"><div class="ov-ic">💻</div><div class="ov-meta"><div class="ov-label">'+(kn?'ಅರ್ಜಿ ವಿಧಾನ':'Application Mode')+'</div><div class="ov-val">'+njEsc(mode)+'</div></div></div>'
+    + '<div class="ov-item"><div class="ov-ic">'+njIc('users')+'</div><div class="ov-meta"><div class="ov-label">'+(kn?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies')+'</div><div class="ov-val">'+njEsc(vac||'—')+'</div></div></div>'
+    + '<div class="ov-item"><div class="ov-ic">'+njIc('briefcase')+'</div><div class="ov-meta"><div class="ov-label">'+(kn?'ಹುದ್ದೆಗಳು':'Posts')+'</div><div class="ov-val">'+njEsc(posts)+'</div></div></div>'
+    + '<div class="ov-item"><div class="ov-ic">'+njIc('map-pin')+'</div><div class="ov-meta"><div class="ov-label">'+(kn?'ಉದ್ಯೋಗ ಸ್ಥಳ':'Job Location')+'</div><div class="ov-val">'+njEsc(locv||'—')+'</div></div></div>'
+    + '<div class="ov-item"><div class="ov-ic">'+njIc('monitor')+'</div><div class="ov-meta"><div class="ov-label">'+(kn?'ಅರ್ಜಿ ವಿಧಾನ':'Application Mode')+'</div><div class="ov-val">'+njEsc(mode)+'</div></div></div>'
     + '</div>';
 }
 
@@ -869,50 +933,50 @@ function overviewCardsHtml(j){
   var c='';
 
   // --- Organization: render the official dept logo (same logic as the hero /
-  //     Home Page listing). Falls back to the job's own icon, then a building glyph.
+  //     Home Page listing). Falls back to a building line icon if no logo.
   var orgName=njField(j.dept,j.dept_kn)||'';
   if(orgName){
     var orgLogo=j.logo_url||getDeptLogo(j.dept);
     var orgIc=orgLogo
-      ? '<img src="'+orgLogo+'" alt="'+njEsc(orgName)+'" onerror="this.parentElement.textContent=\''+(j.icon||'🏛️')+'\';">'
-      : (j.icon||'🏛️');
+      ? '<img src="'+orgLogo+'" alt="'+njEsc(orgName)+'" onerror="this.parentElement.innerHTML=\''+njIc('building').replace(/'/g,"\\'")+'\';">'
+      : njIc('building');
     c+=ovCard(orgIc, kn?'ಸಂಸ್ಥೆ':'Organization', orgName, orgLogo?{icClass:'has-logo'}:undefined);
   }
 
   // --- Simple facts (same field mapping as the original table rows) ---
-  c+=ovCard('📋',kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', njField(j.title_en,j.title_kn)||'');
-  c+=ovCard('👥',kn?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies', njPairCell(njField(j.seats||'0',j.seats_kn)));
-  if(j.salary) c+=ovCard('💰',kn?'ವೇತನ':'Pay Scale / Salary', njPairCell(njField(j.salary,j.salary_kn)));
-  if(njField(j.loc,j.loc_kn)) c+=ovCard('📍',kn?'ಸ್ಥಳ':'Location', njField(j.loc,j.loc_kn));
-  if(njField(j.apply_mode,j.apply_mode_kn)) c+=ovCard('💻',kn?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode', njField(j.apply_mode,j.apply_mode_kn));
+  c+=ovCard(njIc('briefcase'),kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', njField(j.title_en,j.title_kn)||'');
+  c+=ovCard(njIc('users'),kn?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies', njPairCell(njField(j.seats||'0',j.seats_kn)));
+  if(j.salary) c+=ovCard(njIc('wallet'),kn?'ವೇತನ':'Pay Scale / Salary', njPairCell(njField(j.salary,j.salary_kn)));
+  if(njField(j.loc,j.loc_kn)) c+=ovCard(njIc('map-pin'),kn?'ಸ್ಥಳ':'Location', njField(j.loc,j.loc_kn));
+  if(njField(j.apply_mode,j.apply_mode_kn)) c+=ovCard(njIc('monitor'),kn?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode', njField(j.apply_mode,j.apply_mode_kn));
 
   // --- Content-heavy fields (parsed via existing parsers) → full-width cards ---
-  if(j.age) c+=ovCard('⏳',kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit', njAgeCell(njField(j.age,j.age_kn)), {wide:true});
-  if(j.skills) c+=ovCard('🎓',kn?'ಅರ್ಹತೆ':'Qualification', njQualCell(njField(j.skills,j.skills_kn)), {wide:true});
+  if(j.age) c+=ovCard(njIc('user-check'),kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit', njAgeCell(njField(j.age,j.age_kn)), {wide:true});
+  if(j.skills) c+=ovCard(njIc('graduation-cap'),kn?'ಅರ್ಹತೆ':'Qualification', njQualCell(njField(j.skills,j.skills_kn)), {wide:true});
   var tags=(kn&&j.tags_kn?j.tags_kn:j.tags);
   if(tags){
-    var tagHtml=tags.split(',').map(function(t){return '<span style="display:inline-block;background:rgba(59,130,246,0.3);border:1.5px solid rgba(59,130,246,0.5);color:#fff;padding:3px 10px;border-radius:14px;font-size:12px;font-weight:700;margin:2px 4px 2px 0;">🎓 '+t.trim()+'</span>';}).join('');
-    c+=ovCard('🏷️',kn?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags', tagHtml, {wide:true});
+    var tagHtml=tags.split(',').map(function(t){return '<span class="qual-chip">'+njIc('graduation-cap')+njEsc(t.trim())+'</span>';}).join(' ');
+    c+=ovCard(njIc('tag'),kn?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags', '<div class="qual-wrap">'+tagHtml+'</div>', {wide:true});
   }
-  if(j.fee) c+=ovCard('💳',kn?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee', njFeeCell(njField(j.fee,j.fee_kn)), {wide:true});
+  if(j.fee) c+=ovCard(njIc('credit-card'),kn?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee', njFeeCell(njField(j.fee,j.fee_kn)), {wide:true});
 
-  // --- Notification No. (+ optional PDF button, same markup as before) ---
+  // --- Notification No. (+ optional PDF button, same button component as before) ---
   if(j.notif){
     var notifVal='<span class="vbox">'+j.notif+'</span>'
-      +(j.notif_url?'<div style="margin-top:10px;"><a href="'+j.notif_url+'" target="_blank" class="btn-apply-main" style="font-size:12px;padding:8px 16px;color:#fff !important;text-decoration:none;">📄 '+(kn?'ಅಧಿಸೂಚನೆ PDF':'Notification PDF')+' ↗</a></div>':'');
-    c+=ovCard('📅',kn?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.', notifVal, {action:true});
+      +(j.notif_url?'<div style="margin-top:10px;"><a href="'+j.notif_url+'" target="_blank" class="btn-apply-main" style="font-size:12px;padding:8px 16px;color:#fff !important;text-decoration:none;">'+njIc('download')+(kn?'ಅಧಿಸೂಚನೆ PDF':'Notification PDF')+'</a></div>':'');
+    c+=ovCard(njIc('bell'),kn?'ಅಧಿಸೂಚನೆ ಸಂಖ್ಯೆ':'Notification No.', notifVal, {action:true});
   }
 
   // --- Official Website (action card, same button component as before) ---
   if(j.official_url){
-    var offVal='<a href="'+j.official_url+'" target="_blank" class="btn-apply-main" style="font-size:12px;padding:10px 16px;color:#fff !important;text-decoration:none;">🌐 '+(kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಭೇಟಿ ನೀಡಿ':'Visit Official Website')+' ↗</a>';
-    c+=ovCard('🌐',kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್':'Official Website', offVal, {action:true});
+    var offVal='<a href="'+j.official_url+'" target="_blank" class="btn-apply-main" style="font-size:12px;padding:10px 16px;color:#fff !important;text-decoration:none;">'+njIc('globe')+(kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಭೇಟಿ ನೀಡಿ':'Visit Official Website')+'</a>';
+    c+=ovCard(njIc('globe'),kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್':'Official Website', offVal, {action:true});
   }
 
-  // --- Apply Link (action card, green button — same primary style as the site) ---
+  // --- Apply Link (action card, green primary button — same style as the site) ---
   if(j.apply_link){
-    var applyVal='<a href="'+j.apply_link+'" target="_blank" class="btn-apply-main" style="font-size:12px;padding:10px 16px;background:linear-gradient(135deg,#4ade80,#22c55e);border-color:rgba(74,222,128,0.6);box-shadow:0 4px 14px rgba(74,222,128,0.4);color:#1a1a2e !important;text-decoration:none;">📋 '+(kn?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now')+' ↗</a>';
-    c+=ovCard('📝',kn?'ಅರ್ಜಿ ಲಿಂಕ್':'Apply Link', applyVal, {action:true});
+    var applyVal='<a href="'+j.apply_link+'" target="_blank" class="btn-apply-main" style="font-size:12px;padding:10px 16px;background:linear-gradient(135deg,#4ade80,#22c55e);border-color:rgba(74,222,128,0.6);box-shadow:0 4px 14px rgba(74,222,128,0.4);color:#1a1a2e !important;text-decoration:none;">'+njIc('send')+(kn?'ಈಗಲೇ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Now')+'</a>';
+    c+=ovCard(njIc('send'),kn?'ಅರ್ಜಿ ಲಿಂಕ್':'Apply Link', applyVal, {action:true});
   }
 
   return '<div class="ov-cards">'+c+'</div>';
@@ -922,10 +986,10 @@ function overviewCardsHtml(j){
 function actionBarHtml(j){
   var kn=njGetLang()==='kn';
   var b='';
-  if(j.apply_link) b+='<a class="act-btn act-apply" href="'+j.apply_link+'" target="_blank" rel="noopener">📋 '+(kn?'ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Online')+'<span class="act-sub">'+(kn?'ಅಧಿಕೃತ ಅರ್ಜಿ ಲಿಂಕ್':'Official Apply Link')+'</span></a>';
-  if(j.official_url) b+='<a class="act-btn act-official" href="'+j.official_url+'" target="_blank" rel="noopener">🌐 '+(kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್':'Official Website')+'<span class="act-sub">'+(kn?'ಮೂಲ ಜಾಲತಾಣ':'Visit site')+'</span></a>';
-  if(j.notif_url) b+='<a class="act-btn act-notif" href="'+j.notif_url+'" target="_blank" rel="noopener">📄 '+(kn?'ಅಧಿಸೂಚನೆ':'Download Notification')+'<span class="act-sub">PDF</span></a>';
-  b+='<button type="button" class="act-btn act-share" onclick="scrollToShare()">🔗 '+(kn?'ಹಂಚಿಕೊಳ್ಳಿ':'Share This Job')+'<span class="act-sub">WhatsApp · Telegram</span></button>';
+  if(j.apply_link) b+='<a class="act-btn act-apply" href="'+j.apply_link+'" target="_blank" rel="noopener"><span class="act-lbl">'+njIc('send')+(kn?'ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Online')+'</span><span class="act-sub">'+(kn?'ಅಧಿಕೃತ ಅರ್ಜಿ ಲಿಂಕ್':'Official Apply Link')+'</span></a>';
+  if(j.official_url) b+='<a class="act-btn act-official" href="'+j.official_url+'" target="_blank" rel="noopener"><span class="act-lbl">'+njIc('globe')+(kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್':'Official Website')+'</span><span class="act-sub">'+(kn?'ಮೂಲ ಜಾಲತಾಣ':'Visit site')+'</span></a>';
+  if(j.notif_url) b+='<a class="act-btn act-notif" href="'+j.notif_url+'" target="_blank" rel="noopener"><span class="act-lbl">'+njIc('download')+(kn?'ಅಧಿಸೂಚನೆ':'Download Notification')+'</span><span class="act-sub">PDF</span></a>';
+  b+='<button type="button" class="act-btn act-share" onclick="scrollToShare()"><span class="act-lbl">'+njIc('share')+(kn?'ಹಂಚಿಕೊಳ್ಳಿ':'Share This Job')+'</span><span class="act-sub">WhatsApp · Telegram</span></button>';
   return '<div class="action-bar">'+b+'</div>';
 }
 
@@ -1128,7 +1192,7 @@ function njQualCell(raw){
   var items=/[\n|;,]/.test(t)?t.split(/\s*[\n|;,]\s*/):[t];
   items=items.map(function(x){return x.replace(/^[-\u2013\u2022*\s]+/,'').trim();}).filter(Boolean);
   if(!items.length) items=[t];
-  return '<div class="qual-wrap">'+items.map(function(x){return '<span class="qual-chip">\ud83c\udf93 '+njEsc(x)+'</span>';}).join('')+'</div>';
+  return '<div class="qual-wrap">'+items.map(function(x){return '<span class="qual-chip">'+njIc('graduation-cap')+njEsc(x)+'</span>';}).join('')+'</div>';
 }
 // Render comma-separated Post:Value pairs as individual chips (reuses the Tags chip UI).
 // Splits on comma/pipe/semicolon/newline but NOT on a comma inside a number (e.g. 29,200).
@@ -1212,13 +1276,13 @@ function renderJob(j){
         ${badgeForJob(j,dl)}
         <h1>${njField(j.title_en,j.title_kn)||''}</h1>
         <div class="hero-chips">
-          ${njField(j.dept,j.dept_kn)?`<span class="hero-chip">🏛️ ${njField(j.dept,j.dept_kn)}</span>`:''}
-          ${njField(j.cat,j.cat_kn)?`<span class="hero-chip">🏷️ ${njField(j.cat,j.cat_kn)}</span>`:''}
-          ${njField(j.loc,j.loc_kn)?`<span class="hero-chip">📍 ${njField(j.loc,j.loc_kn)}</span>`:''}
+          ${njField(j.dept,j.dept_kn)?`<span class="hero-chip">${njIc('building')} ${njField(j.dept,j.dept_kn)}</span>`:''}
+          ${njField(j.cat,j.cat_kn)?`<span class="hero-chip">${njIc('tag')} ${njField(j.cat,j.cat_kn)}</span>`:''}
+          ${njField(j.loc,j.loc_kn)?`<span class="hero-chip">${njIc('map-pin')} ${njField(j.loc,j.loc_kn)}</span>`:''}
         </div>
       </div>
       ${j.last_date?`<div class="hero-lastdate">
-        <div class="ld-label">📅 ${kn?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date'}</div>
+        <div class="ld-label">${njIc('calendar')} ${kn?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date'}</div>
         <div class="ld-val" style="${isExpiring?'color:#ff6b6b;':''}">${fmtDate(j.last_date)}</div>
       </div>`:''}
     </div>
@@ -1236,19 +1300,19 @@ function renderJob(j){
           <div class="card-title">${njGetLang()==='kn'?'ಪ್ರಮುಖ ದಿನಾಂಕಗಳು':'Important Dates'}</div>
           <div class="dates-grid">
             ${j.start_status==='started'
-              ?`<div class="date-item start"><div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start'}</div><div class="date-val">✅ ${njGetLang()==='kn'?'ಈಗಾಗಲೇ ಪ್ರಾರಂಭವಾಗಿದೆ':'Already Started'}</div></div>`
+              ?`<div class="date-item start"><div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start'}</div><div class="date-val">${njIc('calendar-check')} ${njGetLang()==='kn'?'ಈಗಾಗಲೇ ಪ್ರಾರಂಭವಾಗಿದೆ':'Already Started'}</div></div>`
               :(j.start_date
-              ?`<div class="date-item start"><div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start'}</div><div class="date-val">📅 ${fmtDate(j.start_date)}</div></div>`
+              ?`<div class="date-item start"><div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start'}</div><div class="date-val">${njIc('calendar')} ${fmtDate(j.start_date)}</div></div>`
               :`<div class="date-item"><div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start'}</div><div class="date-val">${j.status==='soon'?'TBA':(njGetLang()==='kn'?'ಈಗಲೇ ಲಭ್ಯ':'Available Now')}</div></div>`)}
             <div class="date-item ${isExpiring?'highlight':''}">
               <div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಅಂತಿಮ ದಿನಾಂಕ':'Last Date to Apply'}</div>
-              <div class="date-val">${j.last_date?'📅 '+fmtDate(j.last_date):'<span style="color:rgba(255,255,255,0.7);">TBA</span>'}</div>
+              <div class="date-val">${j.last_date?njIc('calendar')+' '+fmtDate(j.last_date):'<span style="color:rgba(255,255,255,0.7);">TBA</span>'}</div>
             </div>
-            ${dl!==null?`<div class="date-item ${isExpiring?'highlight':''}"><div class="date-label">${njGetLang()==='kn'?'ಬಾಕಿ ಇರುವ ದಿನಗಳು':'Days Remaining'}</div><div class="date-val">${dl>=0?dl+(njGetLang()==='kn'?' ದಿನಗಳು ಬಾಕಿ':' Days Left'):(njGetLang()==='kn'?'ಮುಕ್ತಾಯಗೊಂಡಿದೆ':'Expired')}</div></div>`:''}
+            ${dl!==null?`<div class="date-item ${isExpiring?'highlight':''}"><div class="date-label">${njGetLang()==='kn'?'ಬಾಕಿ ಇರುವ ದಿನಗಳು':'Days Remaining'}</div><div class="date-val">${njIc('clock')} ${dl>=0?dl+(njGetLang()==='kn'?' ದಿನಗಳು ಬಾಕಿ':' Days Left'):(njGetLang()==='kn'?'ಮುಕ್ತಾಯಗೊಂಡಿದೆ':'Expired')}</div></div>`:''}
             ${(j.custom_dates&&Array.isArray(j.custom_dates))?j.custom_dates.map(cd=>`
               <div class="date-item">
                 <div class="date-label">${njGetLang()==='kn'&&cd.label_kn?cd.label_kn:cd.label_en}</div>
-                <div class="date-val">📅 ${fmtDate(cd.date)}</div>
+                <div class="date-val">${njIc('calendar')} ${fmtDate(cd.date)}</div>
               </div>
             `).join(''):''}
           </div>
@@ -1300,7 +1364,7 @@ function renderJob(j){
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;">
             ${njField(j.syllabus,j.syllabus_kn).split('\n').filter(function(l){return l.trim();}).map(function(l){return `<li style="display:flex;align-items:flex-start;gap:8px;color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;"><span style="flex-shrink:0;margin-top:2px;">•</span><span>${l.trim()}</span></li>`;}).join('')}
           </ul>
-          ${j.syllabus_url?`<div style="margin-top:12px;"><a href="${j.syllabus_url}" target="_blank" class="btn-apply-main" style="display:inline-block;font-size:13px;padding:10px 20px;">📄 Download Syllabus PDF ↗</a></div>`:''}
+          ${j.syllabus_url?`<div style="margin-top:12px;"><a href="${j.syllabus_url}" target="_blank" class="btn-apply-main" style="display:inline-flex;font-size:13px;padding:10px 20px;">${njIc('download')} Download Syllabus PDF</a></div>`:''}
         </div>`:''}
 
         ${njField(j.how_to_apply,j.how_to_apply_kn)?`
@@ -1357,10 +1421,10 @@ function renderJob(j){
         <div class="card" id="share-section">
           <div class="card-title">${njGetLang()==="kn"?"ಈ ಉದ್ಯೋಗವನ್ನು ಹಂಚಿಕೊಳ್ಳಿ":"Share this Job"}</div>
           <div class="share-row">
-            <button class="share-btn sb-wa" onclick="shareWA()">📱 WhatsApp</button>
-            <button class="share-btn sb-tg" onclick="shareTG()">✈️ Telegram</button>
-            <button class="share-btn sb-cp" id="copy-btn" onclick="copyLink()">🔗 ${njGetLang()==='kn'?'ಲಿಂಕ್ ಕಾಪಿ ಮಾಡಿ':'Copy Link'}</button>
-            <button class="share-btn sb-cp" onclick="shareNative()">📤 ${njGetLang()==='kn'?'ಹಂಚಿಕೊಳ್ಳಿ':'Share'}</button>
+            <button class="share-btn sb-wa" onclick="shareWA()">${njIc('wa')} WhatsApp</button>
+            <button class="share-btn sb-tg" onclick="shareTG()">${njIc('tg')} Telegram</button>
+            <button class="share-btn sb-cp" id="copy-btn" onclick="copyLink()">${njIc('link')} ${njGetLang()==='kn'?'ಲಿಂಕ್ ಕಾಪಿ ಮಾಡಿ':'Copy Link'}</button>
+            <button class="share-btn sb-cp" onclick="shareNative()">${njIc('share')} ${njGetLang()==='kn'?'ಹಂಚಿಕೊಳ್ಳಿ':'Share'}</button>
           </div>
         </div>
       </div>
@@ -1386,12 +1450,12 @@ function renderSidebar(currentJob,jobs){
   // At a Glance — quick facts pulled from the current job (matches preview sidebar).
   const gi=(ic,k,v,red)=>v?`<div class="glance-item"><div class="glance-ic">${ic}</div><div><div class="glance-k">${k}</div><div class="glance-v${red?' red':''}">${v}</div></div></div>`:'';
   let glance='';
-  glance+=gi('🏛️',kn?'ಸಂಸ್ಥೆ':'Organization',njField(currentJob.dept,currentJob.dept_kn));
-  glance+=gi('📋',kn?'ಹುದ್ದೆ':'Post Name',njField(currentJob.title_en,currentJob.title_kn));
-  glance+=gi('📍',kn?'ಸ್ಥಳ':'Location',njField(currentJob.loc,currentJob.loc_kn));
-  glance+=gi('👥',kn?'ಹುದ್ದೆಗಳು':'Vacancies',(function(){var s=njField(currentJob.seats||'',currentJob.seats_kn);return s==='0'?'':s;})());
-  glance+=gi('💻',kn?'ಅರ್ಜಿ ವಿಧಾನ':'Mode',njField(currentJob.apply_mode,currentJob.apply_mode_kn));
-  glance+=gi('📅',kn?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date',currentJob.last_date?fmtDate(currentJob.last_date):'',true);
+  glance+=gi(njIc('building'),kn?'ಸಂಸ್ಥೆ':'Organization',njField(currentJob.dept,currentJob.dept_kn));
+  glance+=gi(njIc('briefcase'),kn?'ಹುದ್ದೆ':'Post Name',njField(currentJob.title_en,currentJob.title_kn));
+  glance+=gi(njIc('map-pin'),kn?'ಸ್ಥಳ':'Location',njField(currentJob.loc,currentJob.loc_kn));
+  glance+=gi(njIc('users'),kn?'ಹುದ್ದೆಗಳು':'Vacancies',(function(){var s=njField(currentJob.seats||'',currentJob.seats_kn);return s==='0'?'':s;})());
+  glance+=gi(njIc('monitor'),kn?'ಅರ್ಜಿ ವಿಧಾನ':'Mode',njField(currentJob.apply_mode,currentJob.apply_mode_kn));
+  glance+=gi(njIc('calendar'),kn?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date',currentJob.last_date?fmtDate(currentJob.last_date):'',true);
   if(glance){
     html+=`<div class="card"><div class="card-title">${kn?'ಒಂದು ನೋಟದಲ್ಲಿ':'At a Glance'}</div><div class="glance-list">${glance}</div></div>`;
   }
@@ -1429,8 +1493,8 @@ function renderSidebar(currentJob,jobs){
   html+=`<div class="card">
     <div class="card-title">${kn?'ಅಪ್‌ಡೇಟ್ ಆಗಿರಿ':'Stay Updated'}</div>
     <div class="stay-sub">${kn?'ಹೊಸ ಉದ್ಯೋಗಗಳ ತಕ್ಷಣ ಅಲರ್ಟ್‌ಗಳನ್ನು ಪಡೆಯಿರಿ':'Get instant alerts for new jobs'}</div>
-    <a class="stay-btn stay-wa" href="${NJ_WHATSAPP}" target="_blank" rel="noopener">📱 ${kn?'WhatsApp ಚಾನೆಲ್ ಸೇರಿ':'Join WhatsApp Channel'}</a>
-    <a class="stay-btn stay-tg" href="${NJ_TELEGRAM}" target="_blank" rel="noopener">✈️ ${kn?'Telegram ಚಾನೆಲ್ ಸೇರಿ':'Join Telegram Channel'}</a>
+    <a class="stay-btn stay-wa" href="${NJ_WHATSAPP}" target="_blank" rel="noopener">${njIc('wa')} ${kn?'WhatsApp ಚಾನೆಲ್ ಸೇರಿ':'Join WhatsApp Channel'}</a>
+    <a class="stay-btn stay-tg" href="${NJ_TELEGRAM}" target="_blank" rel="noopener">${njIc('tg')} ${kn?'Telegram ಚಾನೆಲ್ ಸೇರಿ':'Join Telegram Channel'}</a>
   </div>`;
 
   sidebar.innerHTML=html;
