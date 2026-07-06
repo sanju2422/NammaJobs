@@ -179,8 +179,9 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   flex-shrink:0;
   box-shadow:0 8px 24px rgba(0,0,0,0.3);
   font-size:50px;
+  overflow:hidden;
 }
-.hero-logo img{width:100%;height:100%;object-fit:contain;}
+.hero-logo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;margin:auto;}
 .hero-content{flex:1;min-width:0;}
 .hero-badge{
   display:inline-flex;
@@ -610,10 +611,11 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .oc-head{display:flex;align-items:center;gap:11px;}
 .oc-ic{width:38px;height:38px;border-radius:11px;background:var(--glass-bg-dark);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#c4b5fd;overflow:hidden;}
 /* Organization card renders the official dept logo on a white tile — same treatment
-   as the site header logo (.hlogo) and Similar Jobs icon (.sim-ic): fixed size,
-   white bg, small padding, centered, contained. Consistent for EVERY department. */
-.oc-ic.has-logo{background:#fff;padding:5px;border-color:rgba(255,255,255,0.25);}
-.oc-ic.has-logo img{width:100%;height:100%;object-fit:contain;display:block;}
+   as the site header logo (.hlogo) and Similar Jobs icon (.sim-ic): fixed square,
+   white bg, small padding, perfectly centered, contained, never cropped. Consistent
+   for EVERY department regardless of logo aspect ratio. */
+.oc-ic.has-logo{background:#fff;padding:5px;border-color:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.oc-ic.has-logo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;margin:auto;}
 .oc-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.65);line-height:1.3;}
 .oc-val{font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;}
 .oc-val .qual-wrap{margin-top:0;}
@@ -908,17 +910,30 @@ function njSalaryLevels(raw){
   if(!t) return [];
   // 1) explicit delimiters first: pipe / semicolon / newline / comma-not-in-number
   var segs=t.split(/\s*(?:[|;\n]|,(?!\d))\s*/).map(function(x){return x.trim();}).filter(Boolean);
-  // 2) split a segment that still bundles several pay levels in plain text,
+  // 2) split a segment that still bundles several INDEPENDENT pay levels in plain text,
   //    e.g. "Level-5 \u20b929,200 Level-2 \u20b919,900" -> two badges.
   //    We split at whitespace that precedes a Level/Grade/GP/Pay-Level marker + number.
   var LVL=/\s+(?=(?:pay\s*level|level|grade\s*pay|grade|gp|l)[-\s:]*\d)/i;
-  var out=[];
+  // Connector words that make a following Level part of the SAME range, not a new
+  // level — so "Level-2 to Level-11" stays one badge (NBEMS), never splits on "to".
+  var CONNECT=/(?:\b(?:to|and|through|upto|up\s?to)\b|[-\u2013&/])\s*$/i;
+  var raw2=[];
   segs.forEach(function(s){
-    var pieces=s.split(LVL).map(function(x){return x.trim();}).filter(Boolean);
-    if(pieces.length>1){ pieces.forEach(function(p){out.push(p);}); }
-    else out.push(s);
+    var pieces=s.split(LVL);
+    var merged=[];
+    pieces.forEach(function(p){
+      p=p.trim(); if(!p) return;
+      // If the previous piece ends with a connector (to/and/through/-/&/…), this
+      // Level continues the same range — glue it back onto the previous badge.
+      if(merged.length && CONNECT.test(merged[merged.length-1])){
+        merged[merged.length-1]=merged[merged.length-1]+' '+p;
+      } else {
+        merged.push(p);
+      }
+    });
+    merged.forEach(function(m){raw2.push(m);});
   });
-  return out.length?out:[t];
+  return raw2.length?raw2:[t];
 }
 function njSalaryCell(raw){
   if(!raw) return '\u2014';
