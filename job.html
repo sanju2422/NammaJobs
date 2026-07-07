@@ -607,6 +607,16 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .oc-val>*{margin:0;}
 /* Shared value-text element: identical typography + wrapping on every card. */
 .oc-text{width:100%;font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;}
+/* SHARED OVERVIEW-CARD ARCHITECTURE (Organization, Post Name, Pay Scale, Location).
+   Every card's .oc-val holds ONE identical primary slot (.oc-primary) and an
+   OPTIONAL secondary slot (.oc-secondary). Because the primary slot is the same
+   block element with the same box origin on every card, the first content line
+   begins at the exact same vertical position regardless of what it contains
+   (plain text or salary chips). Typography mirrors .oc-text / .oc-orgtype so the
+   cards stay visually identical. */
+.oc-primary{width:100%;font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;}
+.oc-primary .qual-wrap{width:100%;}
+.oc-secondary{width:100%;font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);line-height:1.35;}
 .oc-val .qual-wrap{width:100%;}
 .oc-val .sub-tbl-wrap{width:100%;}
 .oc.wide{grid-column:1 / -1;}
@@ -1033,20 +1043,20 @@ function overviewCardsHtml(j){
   //     the shared .oc-val, so they start at the same baseline as every card.
   var orgName=njField(j.dept,j.dept_kn)||'';
   if(orgName){
-    var orgVal='<span class="oc-text oc-clamp">'+njEsc(orgName)+'</span>'
-      +'<div class="oc-orgtype">'+(kn?'ಸರ್ಕಾರಿ ಸಂಸ್ಥೆ':'Government Organization')+'</div>';
+    var orgVal='<div class="oc-primary oc-clamp">'+njEsc(orgName)+'</div>'
+      +'<div class="oc-secondary">'+(kn?'ಸರ್ಕಾರಿ ಸಂಸ್ಥೆ':'Government Organization')+'</div>';
     c+=ovCard(njIc('building'), kn?'ಸಂಸ್ಥೆ':'Organization', orgVal);
   }
 
   // --- Post Name: shared .oc-text; wraps naturally up to 4 lines, then ellipsis. ---
   var postName=njField(j.title_en,j.title_kn)||'';
-  if(postName) c+=ovCard(njIc('briefcase'), kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', '<span class="oc-text oc-clamp">'+njEsc(postName)+'</span>');
+  if(postName) c+=ovCard(njIc('briefcase'), kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', '<div class="oc-primary oc-clamp">'+njEsc(postName)+'</div>');
 
   // --- Pay Scale / Salary: chips (RRB standard). CSS aligns their first line to
   //     the same content baseline as plain-text values. ---
-  if(j.salary) c+=ovCard(njIc('wallet'),kn?'ವೇತನ':'Pay Scale / Salary', njSalaryCell(njField(j.salary,j.salary_kn)));
+  if(j.salary) c+=ovCard(njIc('wallet'),kn?'ವೇತನ':'Pay Scale / Salary', '<div class="oc-primary">'+njSalaryCell(njField(j.salary,j.salary_kn))+'</div>');
   // --- Location: shared .oc-text; wraps to multiple lines, never cut. ---
-  if(njField(j.loc,j.loc_kn)) c+=ovCard(njIc('map-pin'),kn?'ಸ್ಥಳ':'Location', '<span class="oc-text">'+njEsc(njField(j.loc,j.loc_kn))+'</span>');
+  if(njField(j.loc,j.loc_kn)) c+=ovCard(njIc('map-pin'),kn?'ಸ್ಥಳ':'Location', '<div class="oc-primary">'+njEsc(njField(j.loc,j.loc_kn))+'</div>');
   if(njField(j.apply_mode,j.apply_mode_kn)) c+=ovCard(njIc('monitor'),kn?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode', '<span class="oc-text">'+njEsc(njField(j.apply_mode,j.apply_mode_kn))+'</span>');
 
   if(j.age) c+=ovCard(njIc('user-check'),kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit', njAgeCell(njField(j.age,j.age_kn)), {wide:true});
