@@ -1,85 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-<!-- skill:chrome -->
-<style>
-/* Credit line — bottom-right */
-.design-ui-credit {
-  position: fixed;
-  bottom: 12px;
-  right: 12px;
-  font: 11px/1 system-ui, sans-serif;
-  color: rgba(128,128,128,0.5);
-  pointer-events: none;
-  z-index: 2147483647;
-  transition: opacity 0.4s ease;
-  user-select: none;
-  letter-spacing: 0.02em;
-}
-
-/* Hide chrome on touch devices */
-@media (hover: none) {
-  .design-ui-credit { display: none; }
-}
-
-/* Print fixes */
-@media print {
-  * {
-    transition: none !important;
-    animation: none !important;
-    box-shadow: none !important;
-  }
-  body {
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
-  .design-ui-credit { display: none !important; }
-}
-
-</style>
-<script>
-(function () {
-    // Design-ui pages are single compositions, so the whole body is editable.
-    function markEditable() {
-        document.body.classList.add('artifact-editable');
-    }
-
-    // Credit badge with idle-fade. Hover devices only.
-    function initChromeUI() {
-        if (!matchMedia('(hover: hover)').matches) return;
-
-        var credit = document.createElement('div');
-        credit.className = 'design-ui-credit';
-        credit.setAttribute('aria-hidden', 'true');
-        credit.innerHTML = '\u{1F49C} by ClickUp Brain';
-        document.body.appendChild(credit);
-
-        var timer = null;
-        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
-        fade(true);
-        var show = function () {
-            fade(false);
-            clearTimeout(timer);
-            timer = setTimeout(function () { fade(true); }, 3000);
-        };
-        document.addEventListener('mousemove', show);
-        show();
-    }
-
-    function init() {
-        markEditable();
-        initChromeUI();
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
-})();
-
-</script>
-<!-- /skill:chrome -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Job Details – Namma Jobs</title>
@@ -131,6 +52,117 @@
   --glass-border:var(--border);--glass-border-strong:var(--border-strong);
   --fen:'DM Sans',sans-serif;--fkn:'Noto Sans Kannada',sans-serif;--fhead:'Plus Jakarta Sans',sans-serif;
 }
+
+/* ============================================================
+   LIGHT THEME (default). Toggling to Dark restores the original
+   :root design. Only the theme layer is added; no other rules changed.
+   ============================================================ */
+[data-theme=light]{
+  --bg:#f3f6fb;--surface:#ffffff;--surface-2:#f8fafc;--surface-3:#eef2f7;
+  --border:#e6ebf2;--border-strong:#cbd5e1;--text:#0f172a;--text-muted:#475569;
+  --shadow:0 10px 30px rgba(15,23,42,0.10);--shadow-soft:0 4px 14px rgba(15,23,42,0.06);
+}
+[data-theme=light] body{color:var(--text);}
+[data-theme=light] .hdr{background:rgba(255,255,255,0.9);border-bottom:1px solid var(--border);box-shadow:0 2px 10px rgba(15,23,42,0.06);}
+[data-theme=light] .htxt-en,[data-theme=light] .htxt-kn{color:#0f2b5c;text-shadow:none;}
+[data-theme=light] .htxt-en span,[data-theme=light] .htxt-kn span{color:#e11d2a;}
+[data-theme=light] .tbtn:not(.primary):not(.tbtn-tg):not(.tbtn-wa){background:#f1f5f9;border-color:#e2e8f0;color:#1e293b;}
+[data-theme=light] .tbtn:not(.primary):not(.tbtn-tg):not(.tbtn-wa):hover{background:#e2e8f0;border-color:#cbd5e1;}
+[data-theme=light] .lang-toggle{background:#f1f5f9;border-color:#e2e8f0;}
+[data-theme=light] .lang-toggle-btn{color:#475569;}
+[data-theme=light] .lang-toggle-btn:hover:not(.lang-active){color:#0f2b5c;background:#e2e8f0;}
+[data-theme=light] .hdr-search input{background:#f1f5f9;border-color:#e2e8f0;color:#0f172a;}
+[data-theme=light] .hdr-search input::placeholder{color:#94a3b8;}
+[data-theme=light] .hdr-search .s-ic{color:#64748b;}
+[data-theme=light] .site-footer{background:#ffffff;border-top:1px solid var(--border);}
+[data-theme=light] .fee-chip{background:#f1f5f9;border-color:#e2e8f0;}
+[data-theme=light] .hero-chip{background:#f1f5f9;border-color:#e2e8f0;}
+[data-theme=light] .footer-social a{background:#f1f5f9;border-color:#e2e8f0;}
+[data-theme=light] .job-banner{background:#f1f5f9;}
+[data-theme=light] .act-share,[data-theme=light] .sb-cp{background:#f1f5f9;border-color:#e2e8f0;}
+[data-theme=light] .spinner{border-color:#dbe2ec;border-top-color:#6d28d9;}
+[data-theme=light] .hero h1{color:#0f172a;}
+[data-theme=light] .hero-h1-kn{color:#0f172a;}
+[data-theme=light] .hero-dept{color:#0f172a;}
+[data-theme=light] .hero-dept-kn{color:#334155;}
+[data-theme=light] .card-title{color:#0f172a;}
+[data-theme=light] .info-table td{color:#0f172a;}
+[data-theme=light] .info-table td:first-child{color:#334155;}
+[data-theme=light] .info-table strong{color:#6d28d9;}
+[data-theme=light] .info-table a{color:#7c3aed;}
+[data-theme=light] .info-table a:hover{color:#6d28d9;}
+[data-theme=light] .date-label{color:#0f172a;}
+[data-theme=light] .date-val{color:#0f172a;}
+[data-theme=light] .step-text{color:#0f172a;}
+[data-theme=light] .faq-q{color:#0f172a;}
+[data-theme=light] .faq-a-inner{color:#0f172a;}
+[data-theme=light] .tips-body{color:#0f172a;}
+[data-theme=light] .cat-tbl th{color:#0f172a;}
+[data-theme=light] .cat-tbl td{color:#0f172a;}
+[data-theme=light] .cat-tbl strong{color:#6d28d9;}
+[data-theme=light] .fee-chip{color:#0f172a;}
+[data-theme=light] .sub-tbl th{color:#334155;}
+[data-theme=light] .sub-tbl td{color:#0f172a;}
+[data-theme=light] .sub-tbl strong{color:#6d28d9;}
+[data-theme=light] .fee-nil{color:#15803d;}
+[data-theme=light] .qual-chip{color:#0f172a;}
+[data-theme=light] .sim-badge{color:#6d28d9;}
+[data-theme=light] .apply-box h2{color:#0f172a;}
+[data-theme=light] .apply-box p{color:#0f172a;}
+[data-theme=light] .share-btn{color:#0f172a;}
+[data-theme=light] .sl-title{color:#0f172a;}
+[data-theme=light] .sl-meta{color:#334155;}
+[data-theme=light] .dd-day{color:#0f172a;}
+[data-theme=light] .dd-mo{color:#0f172a;}
+[data-theme=light] .loading-page{color:#0f172a;}
+[data-theme=light] .hero-chip{color:#0f172a;}
+[data-theme=light] .ld-label{color:#0f172a;}
+[data-theme=light] .ld-val{color:#dc2626;}
+[data-theme=light] .ov-ic{color:#6d28d9;}
+[data-theme=light] .ov-label{color:#64748b;}
+[data-theme=light] .ov-val{color:#0f172a;}
+[data-theme=light] .oc-ic{color:#6d28d9;}
+[data-theme=light] .oc-label{color:#64748b;}
+[data-theme=light] .oc-sub{color:#334155;}
+[data-theme=light] .oc-val{color:#0f172a;}
+[data-theme=light] .oc-text{color:#0f172a;}
+[data-theme=light] .oc-orgtype{color:#64748b;}
+[data-theme=light] .jov-ic{color:#6d28d9;}
+[data-theme=light] .jov-title{color:#64748b;}
+[data-theme=light] .jov-primary{color:#0f172a;}
+[data-theme=light] .jov-secondary{color:#64748b;}
+[data-theme=light] .act-btn{color:#0f172a;}
+[data-theme=light] .glance-ic{color:#6d28d9;}
+[data-theme=light] .glance-k{color:#64748b;}
+[data-theme=light] .glance-v{color:#0f172a;}
+[data-theme=light] .glance-v.red{color:#dc2626;}
+[data-theme=light] .stay-sub{color:#334155;}
+[data-theme=light] .stay-btn{color:#0f172a;}
+[data-theme=light] .footer-blurb{color:#334155;}
+[data-theme=light] .footer-social a{color:#0f172a;}
+[data-theme=light] .footer-col h4{color:#0f172a;}
+[data-theme=light] .footer-col a{color:#334155;}
+[data-theme=light] .footer-col a:hover{color:#6d28d9;}
+[data-theme=light] .footer-bottom-wrap{color:#64748b;}
+[data-theme=light] #main-content [style*="rgba(255,255,255,0.98)"],
+[data-theme=light] #main-content [style*="rgba(255,255,255,0.95)"],
+[data-theme=light] #main-content [style*="rgba(255,255,255,0.92)"],
+[data-theme=light] #main-content [style*="rgba(255,255,255,0.9)"],
+[data-theme=light] #main-content [style*="rgba(255,255,255,0.85)"]{color:#0f172a !important;}
+[data-theme=light] #main-content [style*="rgba(255,255,255,0.8)"],
+[data-theme=light] #main-content [style*="rgba(255,255,255,0.75)"],
+[data-theme=light] #main-content [style*="rgba(255,255,255,0.7)"]{color:#334155 !important;}
+[data-theme=light] #main-content [style*="rgba(255,255,255,0.65)"],
+[data-theme=light] #main-content [style*="rgba(255,255,255,0.6)"],
+[data-theme=light] #main-content [style*="rgba(255,255,255,0.55)"],
+[data-theme=light] #main-content [style*="rgba(255,255,255,0.5)"]{color:#64748b !important;}
+[data-theme=light] #main-content [style*="color:#c4b5fd"]{color:#6d28d9 !important;}
+[data-theme=light] #main-content [style*="color:#a855f7"]{color:#7c3aed !important;}
+[data-theme=light] #main-content [style*="color:#4ade80"]{color:#15803d !important;}
+[data-theme=light] #main-content [style*="color:#93c5fd"]{color:#1d4ed8 !important;}
+.dmb{width:40px;height:40px;padding:0;display:flex;align-items:center;justify-content:center;font-size:16px;border-radius:12px;}
+.dmb:hover{transform:translateY(-2px) rotate(-18deg);}
+
 body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);background-attachment:fixed;color:var(--text);}
 .hdr{background:rgba(0,0,0,0.3);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:2px solid var(--glass-border);padding:14px 0;position:sticky;top:0;z-index:100;}
 .hwrap{max-width:1280px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:14px;justify-content:space-between;}
@@ -717,6 +749,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
         <button class="lang-toggle-btn lang-active" id="lang-btn-en" onclick="njToggleLang('en')">EN</button>
         <button class="lang-toggle-btn" id="lang-btn-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
       </div>
+      <button class="dmb tbtn" id="dmb" onclick="toggleDark()" aria-label="Toggle theme">🌙</button>
       <a class="tbtn social tbtn-tg" data-nj-tg href="#" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/></svg><span class="social-lbl">Telegram</span></a>
       <a class="tbtn social tbtn-wa" data-nj-wa href="#" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg><span class="social-lbl">WhatsApp</span></a>
       <a class="tbtn back-btn" href="index.html"><span class="back-full">← Back to Jobs</span><span class="back-short">← Back</span></a>
@@ -1719,6 +1752,24 @@ async function load(){
 }
 
 load();
+
+/* ---- Theme toggle: same localStorage key ('nj_theme') & behavior as index.html ---- */
+function toggleDark(){
+  const on=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',on?'light':'dark');
+  var b=document.getElementById('dmb'); if(b) b.textContent=on?'🌙':'☀️';
+  localStorage.setItem('nj_theme',on?'light':'dark');
+}
+(function(){
+  var saved=localStorage.getItem('nj_theme');
+  if(saved==='dark'){
+    document.documentElement.setAttribute('data-theme','dark');
+    var b=document.getElementById('dmb'); if(b) b.textContent='☀️';
+  }else{
+    document.documentElement.setAttribute('data-theme','light');
+    var b=document.getElementById('dmb'); if(b) b.textContent='🌙';
+  }
+})();
 function njRerender(){
   if(window._njJob) renderJob(window._njJob);
   if(window._njJob) renderRelatedArticles(window._njJob);
