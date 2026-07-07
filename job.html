@@ -749,9 +749,9 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
         <button class="lang-toggle-btn lang-active" id="lang-btn-en" onclick="njToggleLang('en')">EN</button>
         <button class="lang-toggle-btn" id="lang-btn-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
       </div>
-      <button class="dmb tbtn" id="dmb" onclick="toggleDark()" aria-label="Toggle theme">🌙</button>
       <a class="tbtn social tbtn-tg" data-nj-tg href="#" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/></svg><span class="social-lbl">Telegram</span></a>
       <a class="tbtn social tbtn-wa" data-nj-wa href="#" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg><span class="social-lbl">WhatsApp</span></a>
+      <button class="dmb tbtn" id="dmb" onclick="toggleDark()" aria-label="Toggle theme">🌙</button>
       <a class="tbtn back-btn" href="index.html"><span class="back-full">← Back to Jobs</span><span class="back-short">← Back</span></a>
     </div>
   </div>
@@ -1270,9 +1270,9 @@ function njFeeCell(raw){
   if(r.table&&r.rows.length){
     var h=njGetLang()==='kn'?['\u0cb5\u0cb0\u0ccd\u0c97','\u0cb6\u0cc1\u0cb2\u0ccd\u0c95']:['Category','Fee'];
     return '<div class="sub-tbl-wrap"><table class="sub-tbl"><thead><tr><th>'+h[0]+'</th><th>'+h[1]+'</th></tr></thead><tbody>'+
-      r.rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="qual-chip">'+njFeeFmt(p.v)+'</span></td></tr>';}).join('')+'</tbody></table></div>';
+      r.rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td>'+njFeeFmt(p.v)+'</td></tr>';}).join('')+'</tbody></table></div>';
   }
-  return String(raw).split(/\s*[|;\n,]\s*/).map(function(x){return x.trim();}).filter(Boolean).map(function(x){return '<span class="qual-chip">'+njEsc(x)+'</span>';}).join(' ');
+  return String(raw).split(/\s*[|;\n,]\s*/).map(function(x){return x.trim();}).filter(Boolean).map(function(x){return njEsc(x);}).join('<br>');
 }
 /* Category-wise vacancies → rows + an ALWAYS-present TOTAL row.
    The total uses an explicit "Total: N" from the data when present; otherwise it
@@ -1293,7 +1293,7 @@ function njCatRows(raw){
     if(num&&k.length>0&&k.length<=60) rows.push({k:k,v:num});
   });
   if(!rows.length) return '<tr><td colspan="2">'+njEsc(raw)+'</td></tr>';
-  var body=rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="qual-chip">'+njEsc(p.v)+'</span></td></tr>';}).join('');
+  var body=rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td>'+njEsc(p.v)+'</td></tr>';}).join('');
   // Always append a TOTAL row (explicit if given, else computed sum).
   var totalShow=explicitTotal;
   if(totalShow==null){
@@ -1302,7 +1302,7 @@ function njCatRows(raw){
   }
   if(totalShow!=null){
     var totalLabel=njGetLang()==='kn'?'ಒಟ್ಟು':'Total';
-    body+='<tr><td><strong>'+totalLabel+'</strong></td><td><span class="qual-chip"><strong>'+njEsc(totalShow)+'</strong></span></td></tr>';
+    body+='<tr><td><strong>'+totalLabel+'</strong></td><td><strong>'+njEsc(totalShow)+'</strong></td></tr>';
   }
   return body;
 }
