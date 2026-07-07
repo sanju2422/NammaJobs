@@ -616,19 +616,19 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .oc-orgtype{font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);line-height:1.35;}
 /* Long values (Post Name / Organization): wrap naturally up to 4 lines, then ellipsis. */
 .oc-clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
-/* ===== Overview info cards — brand-new clean component (Organization, Post Name, Pay Scale) =====
-   Uniform structure: [icon] LABEL row, then one content area = primary value (+ optional
-   secondary value). Visuals (glass bg, border, radius, shadow, icon chip, typography) are
-   identical to the surrounding cards so the rebuilt cards sit seamlessly in the same grid. */
-.ovc{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;align-items:flex-start;gap:14px;min-width:0;}
-.ovc-head{display:flex;align-items:center;gap:11px;width:100%;}
-.ovc-ic{width:38px;height:38px;border-radius:11px;background:var(--glass-bg-dark);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#c4b5fd;overflow:hidden;}
-.ovc-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.65);line-height:1.3;}
-.ovc-body{display:flex;flex-direction:column;align-items:flex-start;gap:8px;width:100%;}
-.ovc-primary{width:100%;font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;}
-.ovc-primary.ovc-clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
-.ovc-primary .qual-wrap{width:100%;}
-.ovc-secondary{width:100%;font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);line-height:1.35;}
+/* ===== Overview Cards — brand-new component (final). Organization / Post Name / Pay Scale only. =====
+   Every card uses the EXACT SAME structure: .jov > .jov-head (icon + title) + .jov-body (primary [+ secondary]).
+   Visuals match the page design language (glass, radius, colors, typography, shadows, spacing). */
+.jov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:18px;}
+.jov{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;align-items:flex-start;gap:14px;min-width:0;}
+.jov-head{display:flex;align-items:center;gap:11px;width:100%;}
+.jov-ic{width:38px;height:38px;border-radius:11px;background:var(--glass-bg-dark);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;color:#c4b5fd;overflow:hidden;}
+.jov-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.65);line-height:1.3;}
+.jov-body{display:flex;flex-direction:column;align-items:flex-start;gap:8px;width:100%;}
+.jov-primary{width:100%;font-size:15px;font-weight:700;color:#fff;line-height:1.5;word-break:break-word;}
+.jov-primary .qual-wrap{width:100%;}
+.jov-secondary{width:100%;font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);line-height:1.35;}
+@media(max-width:640px){.jov-grid{grid-template-columns:1fr;}}
 @media(max-width:640px){.ov-cards{grid-template-columns:1fr;}}
 
 /* ---- Action bar: 4 primary buttons (top + bottom) ---- */
@@ -636,10 +636,6 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .act-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px 12px;border-radius:14px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;border:2px solid;color:#fff;text-align:center;line-height:1.3;transition:transform .2s,box-shadow .2s;}
 .act-btn .act-lbl{display:inline-flex;align-items:center;gap:6px;}
 .act-btn .act-sub{font-size:10px;font-weight:600;opacity:.85;}
-/* Apply-Online button: balance the leading icon in the label with an equal-width trailing
-   spacer so the "Apply Online" text is centered in the button and the "Official Apply Link"
-   subtitle sits perfectly centered beneath it. No size/color/spacing/typography change. */
-.act-apply .act-lbl::after{content:'';flex:0 0 auto;width:18px;}
 .act-btn:hover{transform:translateY(-2px);}
 .act-apply{background:linear-gradient(135deg,#4ade80,#22c55e);border-color:rgba(74,222,128,0.6);color:#0a1f12 !important;box-shadow:0 6px 18px rgba(74,222,128,0.35);}
 .act-official{background:rgba(59,130,246,0.28);border-color:rgba(59,130,246,0.6);}
@@ -1037,21 +1033,31 @@ function ovCard(ic,label,valueHtml,opts){
     + '</div>';
 }
 
-/* Brand-new clean overview info-card. One uniform DOM for every card:
-   .ovc > .ovc-head (icon + label) + .ovc-body ( .ovc-primary [+ .ovc-secondary] ).
-   Does NOT reuse the old ovCard/.oc markup. */
-function ovInfoCard(ic,label,primaryHtml,secondaryHtml,opts){
-  opts=opts||{};
+/* ===== Overview Cards — brand-new component (final, standalone). =====
+   Renders ONLY three cards: Organization, Post Name, Pay Scale / Salary.
+   Identical DOM for every card. Does NOT use ovCard() or any .oc markup. */
+function jovCard(icon,title,primaryHtml,secondaryHtml){
   if(primaryHtml==null) return '';
   var pv=String(primaryHtml).trim();
   if(!pv||pv==='\u2014') return '';
-  var body='<div class="ovc-primary'+(opts.clamp?' ovc-clamp':'')+'">'+primaryHtml+'</div>';
+  var body='<div class="jov-primary">'+primaryHtml+'</div>';
   var sv=(secondaryHtml==null)?'':String(secondaryHtml).trim();
-  if(sv&&sv!=='\u2014') body+='<div class="ovc-secondary">'+secondaryHtml+'</div>';
-  return '<div class="ovc">'
-    +'<div class="ovc-head"><div class="ovc-ic">'+ic+'</div><div class="ovc-label">'+label+'</div></div>'
-    +'<div class="ovc-body">'+body+'</div>'
+  if(sv&&sv!=='\u2014') body+='<div class="jov-secondary">'+secondaryHtml+'</div>';
+  return '<div class="jov">'
+    +'<div class="jov-head"><div class="jov-ic">'+icon+'</div><div class="jov-title">'+title+'</div></div>'
+    +'<div class="jov-body">'+body+'</div>'
     +'</div>';
+}
+
+function njOverviewCards(j){
+  var kn=njGetLang()==='kn';
+  var cards='';
+  var orgName=njField(j.dept,j.dept_kn)||'';
+  if(orgName) cards+=jovCard(njIc('building'), kn?'ಸಂಸ್ಥೆ':'Organization', njEsc(orgName), (kn?'ಸರ್ಕಾರಿ ಸಂಸ್ಥೆ':'Government Organization'));
+  var postName=njField(j.title_en,j.title_kn)||'';
+  if(postName) cards+=jovCard(njIc('briefcase'), kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', njEsc(postName), '');
+  if(j.salary) cards+=jovCard(njIc('wallet'), kn?'ವೇತನ':'Pay Scale / Salary', njSalaryCell(njField(j.salary,j.salary_kn)), '');
+  return cards?('<div class="jov-grid">'+cards+'</div>'):'';
 }
 
 function overviewCardsHtml(j){
@@ -1061,23 +1067,8 @@ function overviewCardsHtml(j){
   var isExpiring=isOpen&&dl!==null&&dl>=0&&dl<=5;
   var c='';
 
-  // ===== Overview info cards — brand-new clean component (ovInfoCard) =====
-  // Kept: Organization, Post Name, Pay Scale / Salary.
-  // Removed: Location card (Job Location already appears in the top stats strip).
-
-  // --- Organization: primary = org name, secondary = "Government Organization". ---
-  var orgName=njField(j.dept,j.dept_kn)||'';
-  if(orgName){
-    c+=ovInfoCard(njIc('building'), kn?'ಸಂಸ್ಥೆ':'Organization', njEsc(orgName), (kn?'ಸರ್ಕಾರಿ ಸಂಸ್ಥೆ':'Government Organization'), {clamp:true});
-  }
-
-  // --- Post Name: primary = post title (no secondary). ---
-  var postName=njField(j.title_en,j.title_kn)||'';
-  if(postName) c+=ovInfoCard(njIc('briefcase'), kn?'ಹುದ್ದೆಯ ಹೆಸರು':'Post Name', njEsc(postName), '', {clamp:true});
-
-  // --- Pay Scale / Salary: primary = salary chips (salary renderer unchanged). ---
-  if(j.salary) c+=ovInfoCard(njIc('wallet'), kn?'ವೇತನ':'Pay Scale / Salary', njSalaryCell(njField(j.salary,j.salary_kn)), '');
-
+  // Organization, Post Name and Pay Scale / Salary are rendered by njOverviewCards(j) (new component).
+  // Location card removed (Job Location already appears in the top stats strip).
   if(njField(j.apply_mode,j.apply_mode_kn)) c+=ovCard(njIc('monitor'),kn?'ಅರ್ಜಿ ವಿಧಾನ':'Apply Mode', '<span class="oc-text">'+njEsc(njField(j.apply_mode,j.apply_mode_kn))+'</span>');
 
   if(j.age) c+=ovCard(njIc('user-check'),kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit', njAgeCell(njField(j.age,j.age_kn)), {wide:true});
@@ -1384,6 +1375,7 @@ function renderJob(j){
 
     <div class="main-grid">
       <div>
+        ${njOverviewCards(j)}
         ${overviewCardsHtml(j)}
 
         ${(j.last_date||j.start_date||j.start_status==='started'||(j.custom_dates&&j.custom_dates.length))?`
