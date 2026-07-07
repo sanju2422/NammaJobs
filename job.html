@@ -370,9 +370,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 
 /* CATEGORY TABLE */
 .cat-tbl{width:100%;border-collapse:collapse;}
-.cat-tbl th{padding:10px;font-size:12px;color:rgba(255,255,255,0.85);font-weight:800;text-align:left;border-bottom:2px solid rgba(255,255,255,0.2);text-transform:uppercase;}
-.cat-tbl td{padding:12px 10px;font-size:13px;color:#fff;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.1);}
-.cat-tbl tr:last-child td{border-top:2px solid rgba(255,255,255,0.2);border-bottom:none;}
+.cat-tbl th{padding:11px 12px;font-size:12px;color:rgba(255,255,255,0.85);font-weight:800;text-align:left;border-bottom:1px solid var(--border);text-transform:uppercase;}
+.cat-tbl td{padding:11px 12px;font-size:13px;color:#fff;font-weight:600;border-bottom:1px solid var(--border);}
+.cat-tbl th:last-child,.cat-tbl td:last-child{text-align:right;}
+.cat-tbl tr:last-child td{border-top:2px solid var(--border-strong);border-bottom:none;font-weight:800;}
 .cat-tbl strong{color:#c4b5fd;font-weight:800;}
 .fee-chip{display:block;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.14);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;}
 .fee-chip:last-child{margin-bottom:2px;}
@@ -381,8 +382,9 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 /* ===== Structured sub-tables / chips for Job Details (display only) ===== */
 .sub-tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:2px;}
 .sub-tbl{width:100%;border-collapse:collapse;min-width:160px;}
-.sub-tbl th{padding:7px 10px;font-size:11px;color:rgba(255,255,255,0.8);font-weight:800;text-align:left;border-bottom:1.5px solid rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:.3px;}
-.sub-tbl td{padding:8px 10px;font-size:13px;color:#fff;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.08);}
+.sub-tbl th{padding:9px 12px;font-size:11px;color:rgba(255,255,255,0.8);font-weight:800;text-align:left;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.3px;}
+.sub-tbl td{padding:9px 12px;font-size:13px;color:#fff;font-weight:600;border-bottom:1px solid var(--border);}
+.sub-tbl th:last-child,.sub-tbl td:last-child{text-align:right;}
 .sub-tbl tr:last-child td{border-bottom:none;}
 .sub-tbl strong{color:#c4b5fd;font-weight:800;}
 .fee-nil{color:#4ade80;font-weight:800;}
@@ -393,7 +395,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
    Height is matched to the value line box and text is vertically centered so the
    chip's first line sits on the SAME baseline as plain-text values (Location etc.). */
 .sal-chip{white-space:normal;word-break:break-word;padding:3px 12px;min-height:23px;line-height:1.4;}
-@media(max-width:600px){.sub-tbl th,.sub-tbl td{padding:7px 8px;font-size:12px;}.qual-chip{font-size:12px;padding:5px 10px;}}
+@media(max-width:600px){.sub-tbl th,.sub-tbl td,.cat-tbl th,.cat-tbl td{padding:9px 8px;font-size:12px;}.qual-chip{font-size:12px;padding:5px 10px;}}
 /* ===== Similar Jobs cards (display only; reuse glass card design) ===== */
 .sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:2px;}
 .sim-card{display:flex;gap:11px;align-items:flex-start;background:var(--glass-bg-light);border:1.5px solid var(--glass-border);border-radius:14px;padding:13px 14px;cursor:pointer;text-decoration:none;transition:all .2s;}
