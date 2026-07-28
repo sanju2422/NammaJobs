@@ -65,7 +65,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 
 label{display:block;font-size:11px;font-weight:800;color:#4ade80;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;margin-top:14px;}
 .banner-prev{margin-top:8px;}
-.banner-prev img{max-width:100%;max-height:140px;border-radius:12px;border:1.5px solid var(--glass-border);display:block;}
+.banner-prev img{max-width:100%;max-height:180px;border-radius:12px;border:1.5px solid var(--glass-border);display:block;}
+/* Framed live-preview area with an empty-state hint (populated by showBannerPreview). */
+.banner-prev-box{min-height:96px;display:flex;align-items:center;justify-content:center;padding:10px;background:var(--glass-bg);border:1.5px dashed var(--glass-border);border-radius:12px;}
+.banner-prev-box:empty::before{content:"Banner preview appears here";font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);}
 
 input[type=text],input[type=number],input[type=url],input[type=date],input[type=email],input[type=password],textarea{
   width:100%;
@@ -84,7 +87,7 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.5);font-weight
 input:focus,textarea:focus{background:rgba(255,255,255,0.15);border-color:rgba(168,85,247,0.6);}
 input[type=date]{color-scheme:dark;}
 
-textarea{min-height:90px;resize:vertical;line-height:1.5;}
+textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
 
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:600px){.row2{grid-template-columns:1fr;}}
@@ -92,7 +95,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
 .fsec{font-family:var(--fhead);font-size:14px;font-weight:800;color:#c4b5fd;margin-top:24px;margin-bottom:10px;padding-top:14px;border-top:1.5px solid rgba(255,255,255,0.12);display:flex;align-items:center;gap:8px;}
 .fsec:first-of-type{margin-top:8px;border-top:none;padding-top:0;}
 
-.url-hint{font-size:11px;color:rgba(255,193,7,0.95);margin-top:6px;font-weight:600;}
+.url-hint{font-size:11px;color:rgba(255,193,7,0.82);margin-top:6px;font-weight:500;line-height:1.5;}
 
 /* Category & Status buttons */
 .cat-grid,.st-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
@@ -117,10 +120,86 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
 .sto[data-v=soon].on{background:rgba(255,193,7,0.3);border-color:rgba(255,193,7,0.7);}
 .sto[data-v=closed].on{background:rgba(150,150,150,0.3);border-color:rgba(150,150,150,0.7);}
 
-/* TBA Checkbox */
-.tba-row{display:flex;align-items:center;gap:8px;margin-top:8px;padding:10px 12px;background:rgba(255,193,7,0.12);border:1.5px solid rgba(255,193,7,0.3);border-radius:10px;cursor:pointer;}
-.tba-row input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:#ffc107;flex-shrink:0;}
-.tba-label{font-size:12px;font-weight:700;color:#fde68a;flex:1;}
+/* ===== BASIC INFORMATION — professional card layout (UI only; logic unchanged) ===== */
+.bi-head{font-family:var(--fhead);font-size:15px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;margin:4px 0 14px;padding-bottom:12px;border-bottom:1.5px solid rgba(255,255,255,0.14);}
+.bi-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch;}
+.bi-card{display:flex;flex-direction:column;height:100%;background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);border-radius:14px;padding:16px;transition:border-color .25s,box-shadow .25s;}
+.bi-card:hover{border-color:var(--glass-border-strong);box-shadow:0 6px 18px rgba(0,0,0,0.18);}
+.bi-card.bi-span{grid-column:1 / -1;}
+/* Pin the TBA checkbox to the bottom of its card so cards in the same row align. */
+.bi-card>.tba-row:last-child{margin-top:auto;}
+.bi-card-hd{font-family:var(--fhead);font-size:12px;font-weight:800;color:#c4b5fd;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:7px;margin-bottom:12px;}
+.bi-card-hd .bi-ic{font-size:15px;line-height:1;}
+.bi-card label{margin-top:0;}
+.bi-card .cat-grid,.bi-card .st-grid{margin-bottom:0;}
+.bi-identity{display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:start;}
+.bi-logo-prev{align-items:center;gap:12px;margin-top:12px;padding:10px 12px;background:var(--glass-bg);border:1.5px solid var(--glass-border);border-radius:12px;}
+.bi-logo-prev img{width:52px;height:52px;object-fit:contain;background:#fff;border-radius:10px;padding:4px;flex-shrink:0;}
+.bi-logo-cap{font-size:11px;font-weight:700;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:.05em;}
+@media(max-width:820px){.bi-grid{grid-template-columns:1fr;}}
+@media(max-width:600px){.bi-identity{grid-template-columns:1fr;}}
+
+/* ===== CONTENT SECTIONS — professional card layout (UI only; logic unchanged) ===== */
+.bi-note{font-size:11px;color:rgba(255,255,255,0.55);font-weight:600;line-height:1.5;margin:2px 0 10px;}
+.bi-note strong{color:rgba(255,255,255,0.85);font-weight:800;}
+.bi-card-hd .bi-opt{font-weight:600;color:rgba(255,255,255,0.5);text-transform:none;letter-spacing:0;font-size:11px;}
+.bi-card textarea{min-height:150px;padding:12px 14px;}
+.bi-card .url-hint{margin-bottom:0;}
+
+/* ===== GLOBAL EN/KN PAIR ALIGNMENT (one reusable rule; UI only) =====
+   Every English/Kannada field lives in a .row2 grid cell as <label> + input.
+   Reserving a consistent label height and pinning the label text to the bottom
+   of that reserved box guarantees BOTH inputs in a pair start at the exact same
+   vertical position — even when one label wraps to two lines. Cards in a row
+   already stretch to equal height via .bi-grid{align-items:stretch}. */
+.row2>div{display:flex;flex-direction:column;}
+.row2 label{min-height:34px;display:flex;align-items:flex-end;margin-top:0;margin-bottom:8px;line-height:1.35;}
+/* Second label inside a stacked card (e.g. a Kannada label below the first input)
+   still needs its top spacing; only the paired top labels are pinned above. */
+.row2 label+*{margin-top:0;}
+
+/* ===== GLOBAL VISUAL RHYTHM (UI only; consistent spacing everywhere) ===== */
+/* Consistent card padding + radius across every card in the panel. */
+.bi-card{padding:18px;border-radius:14px;}
+/* Consistent label→input distance and equal input spacing everywhere. */
+.bi-card>label{margin-top:16px;}
+.bi-card>label:first-of-type{margin-top:0;}
+.bi-card .row2{margin-top:0;}
+/* Second stacked row inside a card keeps an even rhythm. */
+.bi-card .row2+.row2{margin-top:14px;}
+/* Helper text sits close to its field; lighter, easy to scan. */
+.bi-card .url-hint,.bi-card .bi-note{margin-bottom:0;}
+/* Equal, comfortable spacing between the section heading and its grid. */
+.bi-head{margin:22px 0 14px;}
+.bi-head:first-of-type{margin-top:4px;}
+
+/* ===== PREMIUM PUBLISH ACTION BAR (functionality unchanged) ===== */
+.pub-bar{background:linear-gradient(135deg,rgba(124,58,237,0.14),rgba(59,130,246,0.10));border-color:var(--glass-border-strong);}
+.pub-bar .fbtns{margin-top:0;padding-top:0;border-top:none;gap:14px;}
+.pub-bar .fbtn{padding:14px 20px;}
+
+/* TBA Checkbox — compact single-line premium row (UI only; logic unchanged) */
+.tba-row{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-top:6px;
+  padding:5px 10px;
+  min-height:26px;
+  background:rgba(255,193,7,0.08);
+  border:1px solid rgba(255,193,7,0.26);
+  border-radius:8px;
+  cursor:pointer;
+  transition:background .2s ease,border-color .2s ease;
+}
+.tba-row:hover{background:rgba(255,193,7,0.13);border-color:rgba(255,193,7,0.42);}
+.tba-row input[type=checkbox]{width:14px;height:14px;margin:0;cursor:pointer;accent-color:#ffc107;flex-shrink:0;}
+.tba-label{font-size:11px;font-weight:700;color:#fde68a;flex:1;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.01em;}
+/* Green "Already Started" variant — same compact geometry, green accent kept. */
+.tba-row.tba-started{background:rgba(76,217,100,0.08);border-color:rgba(76,217,100,0.26);}
+.tba-row.tba-started:hover{background:rgba(76,217,100,0.13);border-color:rgba(76,217,100,0.42);}
+.tba-row.tba-started input[type=checkbox]{accent-color:#4cd964;}
+.tba-row.tba-started .tba-label{color:#86efac;}
 
 /* Buttons */
 .fbtns{display:flex;gap:10px;margin-top:24px;padding-top:18px;border-top:1.5px solid rgba(255,255,255,0.12);}
@@ -278,190 +357,413 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
           <p id="fpsub">Fill details and publish to Supabase</p>
         </div>
 
-        <label>Job Category</label>
-        <div class="cat-grid" id="cat-grid"></div>
+        <div class="bi-head">📌 Basic Information</div>
+        <div class="bi-grid">
 
-        <label style="margin-top:18px;">Status</label>
-        <div class="st-grid">
-          <button class="sto" data-v="open" onclick="setStat('open',this)">● Open</button>
-          <button class="sto" data-v="soon" onclick="setStat('soon',this)">◐ Coming Soon</button>
-          <button class="sto" data-v="closed" onclick="setStat('closed',this)">○ Closed</button>
+          <!-- CARD 1: Recruitment Category -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🗂️</span> Recruitment Category</div>
+            <div class="cat-grid" id="cat-grid"></div>
+          </div>
+
+          <!-- CARD 2: Recruitment Status -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🚦</span> Recruitment Status</div>
+            <div class="st-grid">
+              <button class="sto" data-v="open" onclick="setStat('open',this)">● Open</button>
+              <button class="sto" data-v="soon" onclick="setStat('soon',this)">◐ Coming Soon</button>
+              <button class="sto" data-v="closed" onclick="setStat('closed',this)">○ Closed</button>
+            </div>
+          </div>
+
+          <!-- CARD 3: Job Title -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">💼</span> Job Title</div>
+            <div class="row2">
+              <div><label>Title (English) *</label><input type="text" id="f-ten" placeholder="e.g. Junior Engineer"></div>
+              <div><label>Title (ಕನ್ನಡ)</label><input type="text" id="f-tkn" placeholder="ಕಿರಿಯ ಎಂಜಿನಿಯರ್" style="font-family:var(--fkn);"></div>
+            </div>
+          </div>
+
+          <!-- CARD 4: Department -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">🏛️</span> Department</div>
+            <div class="row2">
+              <div><label>Department * (English)</label><input type="text" id="f-dept" placeholder="KPSC, PWD, SBI..."></div>
+              <div><label>Department (ಕನ್ನಡ)</label><input type="text" id="f-dept-kn" placeholder="ಕರ್ನಾಟಕ ಲೋಕಸೇವಾ ಆಯೋಗ" style="font-family:var(--fkn);"></div>
+            </div>
+          </div>
+
+          <!-- CARD 5: Location -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">📍</span> Location</div>
+            <div class="row2">
+              <div><label>Location (English)</label><input type="text" id="f-loc" placeholder="Bangalore, All India"></div>
+              <div><label>Location (ಕನ್ನಡ)</label><input type="text" id="f-loc-kn" placeholder="ಬೆಂಗಳೂರು, ಅಖಿಲ ಭಾರತ" style="font-family:var(--fkn);"></div>
+            </div>
+          </div>
+
+          <!-- CARD 6: Recruitment Details -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">🧾</span> Recruitment Details</div>
+            <div class="row2">
+              <div><label>Notification No.</label><input type="text" id="f-notif" placeholder="KPSC/2025/JE/01"></div>
+              <div><label>Advertisement No.</label><input type="text" id="f-adv-no-ui" placeholder="ADV/2025/12"></div>
+            </div>
+          </div>
+
+          <!-- CARD 7: Identity -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🪪</span> Identity</div>
+            <div class="bi-identity">
+              <div><label>Icon (Emoji)</label><input type="text" id="f-icon" placeholder="🏗️" maxlength="4"></div>
+              <div><label>🖼️ Official Logo URL (Optional)</label><input type="url" id="f-logo" placeholder="https://i.postimg.cc/abc123/logo.png" oninput="var _w=document.getElementById('f-logo-prev'),_i=document.getElementById('f-logo-prev-img'),_v=this.value.trim();if(_v){_i.src=_v;_w.style.display='flex';}else{_w.style.display='none';}"></div>
+            </div>
+            <div class="url-hint">📤 Paste direct image URL from Postimages.org or Wikipedia. Logo will show if provided, otherwise icon emoji will display.</div>
+            <div class="bi-logo-prev" id="f-logo-prev" style="display:none;">
+              <img id="f-logo-prev-img" alt="Logo preview" onerror="document.getElementById('f-logo-prev').style.display='none';">
+              <span class="bi-logo-cap">Live logo preview</span>
+            </div>
+          </div>
+
         </div>
 
-        <div class="row2" style="margin-top:14px;">
-          <div><label>Title (English) *</label><input type="text" id="f-ten" placeholder="e.g. Junior Engineer"></div>
-          <div><label>Title (ಕನ್ನಡ)</label><input type="text" id="f-tkn" placeholder="ಕಿರಿಯ ಎಂಜಿನಿಯರ್" style="font-family:var(--fkn);"></div>
+        <div class="bi-grid" style="margin-top:16px;">
+
+          <!-- VACANCIES -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">👥</span> Vacancies</div>
+            <div class="row2">
+              <div><label>Total Vacancies (English)</label><input type="text" id="f-seats" placeholder="120 (Karnataka 26, Central 94)"></div>
+              <div><label>Total Vacancies (ಕನ್ನಡ)</label><input type="text" id="f-seats-kn" placeholder="೧೨೦ (ಕರ್ನಾಟಕ ೨೬, ಕೇಂದ್ರ ೯೪)" style="font-family:var(--fkn);"></div>
+            </div>
+            <label class="tba-row">
+              <input type="checkbox" id="f-seats-tba" onchange="toggleSeatsTBA(this.checked)">
+              <span class="tba-label">⚠️ Vacancies TBA</span>
+            </label>
+          </div>
+
+          <!-- SALARY -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">💰</span> Salary</div>
+            <div class="row2">
+              <div><label>Salary / Pay Scale (English)</label><input type="text" id="f-sal" placeholder="₹35,400-1,12,400"></div>
+              <div><label>Salary / Pay Scale (ಕನ್ನಡ)</label><input type="text" id="f-sal-kn" placeholder="₹35,400-1,12,400 (ಕನ್ನಡದಲ್ಲಿ — optional)" style="font-family:var(--fkn);" title="Salary in Kannada"></div>
+            </div>
+            <label class="tba-row">
+              <input type="checkbox" id="f-sal-tba" onchange="toggleSalTBA(this.checked)">
+              <span class="tba-label">⚠️ Salary TBA</span>
+            </label>
+          </div>
+
+          <!-- AGE LIMIT -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">🎂</span> Age Limit</div>
+            <div class="row2">
+              <div><label>Age Limit (English)</label><input type="text" id="f-age" placeholder="18-35 years"></div>
+              <div><label>Age Limit (ಕನ್ನಡ)</label><input type="text" id="f-age-kn" placeholder="೧೮-೩೫ ವರ್ಷಗಳು" style="font-family:var(--fkn);"></div>
+            </div>
+          </div>
+
+          <!-- IMPORTANT DATES -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">📅</span> Important Dates</div>
+            <div class="row2">
+              <div>
+                <label>Start Date (Apply From)</label>
+                <input type="date" id="f-sd">
+              </div>
+              <div>
+                <label>Last Date</label>
+                <input type="date" id="f-ld">
+              </div>
+            </div>
+            <label class="tba-row">
+              <input type="checkbox" id="f-sd-tba" onchange="toggleTBA('f-sd',this.checked);if(this.checked)document.getElementById('f-sd-started').checked=false;">
+              <span class="tba-label">⚠️ Start Date TBA</span>
+            </label>
+            <label class="tba-row tba-started">
+              <input type="checkbox" id="f-sd-started" onchange="toggleStarted(this.checked)">
+              <span class="tba-label">✅ Already Started</span>
+            </label>
+            <label class="tba-row">
+              <input type="checkbox" id="f-ld-tba" onchange="toggleTBA('f-ld',this.checked)">
+              <span class="tba-label">⚠️ Last Date TBA</span>
+            </label>
+            <!-- Additional optional dates (UI only — not yet wired to save/parser/database). -->
+            <div class="fsec" style="margin-top:18px;">📅 Additional Dates (Optional)</div>
+            <div class="row2">
+              <div>
+                <label>Fee Payment Last Date</label>
+                <input type="date" id="f-fee-last-date">
+              </div>
+              <div>
+                <label>Exam Date</label>
+                <input type="date" id="f-exam-date">
+              </div>
+            </div>
+            <div class="row2" style="margin-top:14px;">
+              <div>
+                <label>Admit Card Date</label>
+                <input type="date" id="f-admit-card-date">
+              </div>
+              <div>
+                <label>Result Date</label>
+                <input type="date" id="f-result-date">
+              </div>
+            </div>
+            <div class="row2" style="margin-top:14px;">
+              <div>
+                <label>Document Verification Date</label>
+                <input type="date" id="f-doc-verify-date">
+              </div>
+              <div>
+                <label>Medical Examination Date</label>
+                <input type="date" id="f-medical-date">
+              </div>
+            </div>
+            <div class="row2" style="margin-top:14px;">
+              <div>
+                <label>Interview Date</label>
+                <input type="date" id="f-interview-date">
+              </div>
+              <div></div>
+            </div>
+            <div class="fsec" style="margin-top:18px;">📅 Custom Important Dates (Optional)</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Add Walk-In Interview, Document Verification, Reporting Date, etc.</div>
+            <div id="custom-dates-list"></div>
+            <button type="button" onclick="addCustomDateRow()" style="background:var(--glass-bg);border:1.5px dashed var(--glass-border-strong);color:#c4b5fd;padding:10px 16px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px;width:100%;">➕ Add Custom Date</button>
+          </div>
+
+          <!-- APPLICATION FEE -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">💳</span> Application Fee</div>
+            <div class="row2">
+              <div><label>Fee (English)</label><input type="text" id="f-fee" placeholder="Gen: ₹500 | SC/ST: ₹250"></div>
+              <div><label>Fee (ಕನ್ನಡ)</label><input type="text" id="f-fee-kn" placeholder="Gen: ₹500 | SC/ST: ₹250 (ಕನ್ನಡದಲ್ಲಿ — optional)" style="font-family:var(--fkn);" title="Fee in Kannada"></div>
+            </div>
+            <label class="tba-row">
+              <input type="checkbox" id="f-fee-tba" onchange="toggleFeeTBA(this.checked)">
+              <span class="tba-label">⚠️ Application Fee TBA</span>
+            </label>
+          </div>
+
+          <!-- JOB BANNER (single banner; used for both English & Kannada Job Details pages) -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🖼️</span> Job Banner</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Upload a banner (JPG, PNG or WebP) or paste a direct image URL. Shown on the Job Details page and used as the social-share preview image. The same banner is used for both English and Kannada pages. Leave blank to use the default share image.</div>
+            <div class="row2">
+              <div>
+                <label>Banner URL</label>
+                <input type="url" id="f-banner-en" placeholder="https://example.com/banner.jpg  (or upload →)" oninput="showBannerPreview('f-banner-en')">
+              </div>
+              <div>
+                <label>Upload Banner</label>
+                <input type="file" id="f-banner-en-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-en')" style="font-size:12px;color:rgba(255,255,255,0.7);padding:9px 14px;">
+              </div>
+            </div>
+            <label style="margin-top:14px;">🖼️ Live Banner Preview</label>
+            <div id="f-banner-en-prev" class="banner-prev banner-prev-box"></div>
+            <!-- Legacy Kannada banner fields retained (hidden) for 100% backward compatibility with existing save/edit/upload logic. -->
+            <div style="display:none;" aria-hidden="true">
+              <input type="url" id="f-banner-kn" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-kn')">
+              <input type="file" id="f-banner-kn-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-kn')">
+              <div id="f-banner-kn-prev" class="banner-prev"></div>
+            </div>
+          </div>
+
         </div>
 
-        <div class="row2">
-          <div><label>Department * (English)</label><input type="text" id="f-dept" placeholder="KPSC, PWD, SBI..."></div>
-          <div><label>Department (ಕನ್ನಡ)</label><input type="text" id="f-dept-kn" placeholder="ಕರ್ನಾಟಕ ಲೋಕಸೇವಾ ಆಯೋಗ" style="font-family:var(--fkn);"></div>
-        </div>
+        <!-- ===== CONTENT SECTIONS — professional card layout (UI only; logic unchanged) ===== -->
+        <div class="bi-head" style="margin-top:22px;">🗂️ Job Content</div>
+        <div class="bi-grid">
 
-        <div class="row2">
-          <div><label>Location (English)</label><input type="text" id="f-loc" placeholder="Bangalore, All India"></div>
-          <div><label>Location (ಕನ್ನಡ)</label><input type="text" id="f-loc-kn" placeholder="ಬೆಂಗಳೂರು, ಅಖಿಲ ಭಾರತ" style="font-family:var(--fkn);"></div>
-        </div>
+          <!-- 🏷 CATEGORY-WISE VACANCIES -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🏷️</span> Category-wise Vacancies</div>
+            <label>Category-wise Vacancies</label>
+            <input type="text" id="f-cats" placeholder="UR:120, OBC:45, SC:30, ST:12, EWS:18">
+            <div class="url-hint">Example: UR:120, OBC:45, SC:30, ST:12, EWS:18</div>
+          </div>
 
-        <div class="row2">
-          <div><label>Total Vacancies (English)</label><input type="text" id="f-seats" placeholder="120 (Karnataka 26, Central 94)"></div>
-          <div><label>Total Vacancies (ಕನ್ನಡ)</label><input type="text" id="f-seats-kn" placeholder="೧೨೦ (ಕರ್ನಾಟಕ ೨೬, ಕೇಂದ್ರ ೯೪)" style="font-family:var(--fkn);"></div>
-        </div>
-        <label class="tba-row">
-          <input type="checkbox" id="f-seats-tba" onchange="toggleSeatsTBA(this.checked)">
-          <span class="tba-label">⚠️ Vacancies not yet confirmed (To Be Announced)</span>
-        </label>
+          <!-- 🏷 TAGS / ELIGIBILITY -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🎓</span> Tags / Eligibility</div>
+            <label>Tags / Eligibility (English, Comma separated)</label>
+            <input type="text" id="f-tags" placeholder="Graduate, Diploma, ITI, Engineering, Karnataka Jobs">
+            <div class="url-hint">Tags are comma separated. Example: Graduate, Diploma, ITI, Engineering, Karnataka Jobs</div>
+            <label style="margin-top:12px;">Tags / Eligibility (ಕನ್ನಡ)</label>
+            <input type="text" id="f-tags-kn" placeholder="ಪದವೀಧರ, ಬೆಂಗಳೂರು, ಕರ್ನಾಟಕ (ಕನ್ನಡದಲ್ಲಿ)" style="font-family:'Noto Sans Kannada',sans-serif;" title="Tags (Kannada)">
+          </div>
 
-        <label style="margin-top:14px;">Salary / Pay Scale</label>
-        <input type="text" id="f-sal" placeholder="₹35,400-1,12,400">
-        <label class="tba-row">
-          <input type="checkbox" id="f-sal-tba" onchange="toggleSalTBA(this.checked)">
-          <span class="tba-label">⚠️ Salary not yet confirmed (To Be Announced)</span>
-        </label>
-        <input type="text" id="f-sal-kn" placeholder="₹35,400-1,12,400 (ಕನ್ನಡದಲ್ಲಿ — optional)" style="margin-top:6px;font-family:var(--fkn);" title="Salary in Kannada">
+          <!-- 📝 JOB DESCRIPTION -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">📝</span> Job Description</div>
+            <div class="row2">
+              <div>
+                <label>English</label>
+                <textarea id="f-desc" placeholder="Responsibilities, exam details, eligibility..." style="min-height:180px;"></textarea>
+              </div>
+              <div>
+                <label>ಕನ್ನಡ (Kannada)</label>
+                <textarea id="f-desc-kn" placeholder="ಜವಾಬ್ದಾರಿಗಳು, ಪರೀಕ್ಷೆ ವಿವರಗಳು, ಅರ್ಹತೆ... (ಕನ್ನಡದಲ್ಲಿ — optional)" style="min-height:180px;font-family:var(--fkn);" title="Job Description (Kannada)"></textarea>
+              </div>
+            </div>
+          </div>
 
-        <div class="row2">
-          <div><label>Age Limit (English)</label><input type="text" id="f-age" placeholder="18-35 years"></div>
-          <div><label>Age Limit (ಕನ್ನಡ)</label><input type="text" id="f-age-kn" placeholder="೧೮-೩೫ ವರ್ಷಗಳು" style="font-family:var(--fkn);"></div>
-        </div>
+          <!-- 🎓 QUALIFICATIONS / SKILLS -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🎓</span> Qualifications / Skills</div>
+            <div class="row2">
+              <div>
+                <label>Qualifications / Skills (English)</label>
+                <textarea id="f-skills" placeholder="B.E Civil, Kannada knowledge, 2yr experience" style="min-height:140px;"></textarea>
+              </div>
+              <div>
+                <label>Qualifications / Skills (ಕನ್ನಡ)</label>
+                <textarea id="f-skills-kn" placeholder="ಎಂಜಿನಿಯರಿಂಗ್, ಕನ್ನಡ ಜ್ಞಾನ..." style="min-height:140px;font-family:var(--fkn);"></textarea>
+              </div>
+            </div>
+          </div>
 
-        <!-- START DATE with TBA -->
-        <label>Start Date (Apply From)</label>
-        <input type="date" id="f-sd">
-        <label class="tba-row">
-          <input type="checkbox" id="f-sd-tba" onchange="toggleTBA('f-sd',this.checked);if(this.checked)document.getElementById('f-sd-started').checked=false;">
-          <span class="tba-label">⚠️ Start Date not yet confirmed (To Be Announced)</span>
-        </label>
-        <label class="tba-row" style="background:rgba(76,217,100,0.12);border-color:rgba(76,217,100,0.3);">
-          <input type="checkbox" id="f-sd-started" onchange="toggleStarted(this.checked)" style="accent-color:#4cd964;">
-          <span class="tba-label" style="color:#86efac;">✅ Already Started – Applications are open (exact date not confirmed)</span>
-        </label>
+          <!-- 📚 SYLLABUS -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">📚</span> Syllabus <span class="bi-opt">(Optional)</span></div>
+            <div class="row2">
+              <div>
+                <label>Syllabus (English)</label>
+                <textarea id="f-syllabus" style="min-height:150px;" placeholder="Exam subjects:&#10;General Knowledge, Reasoning, Mathematics..."></textarea>
+              </div>
+              <div>
+                <label>Syllabus (ಕನ್ನಡ)</label>
+                <textarea id="f-syllabus-kn" style="min-height:150px;font-family:var(--fkn);" placeholder="ಪರೀಕ್ಷಾ ವಿಷಯಗಳು:&#10;ಸಾಮಾನ್ಯ ಜ್ಞಾನ, ತಾರ್ಕಿಕತೆ, ಗಣಿತ..."></textarea>
+              </div>
+            </div>
+          </div>
 
-        <!-- LAST DATE with TBA -->
-        <label style="margin-top:14px;">Last Date</label>
-        <input type="date" id="f-ld">
-        <label class="tba-row">
-          <input type="checkbox" id="f-ld-tba" onchange="toggleTBA('f-ld',this.checked)">
-          <span class="tba-label">⚠️ Last Date not yet confirmed (To Be Announced)</span>
-        </label>
+          <!-- 📄 OFFICIAL DOCUMENTS -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">📄</span> Official Documents</div>
+            <label>Official Notification PDF</label>
+            <input type="url" id="f-notif-url" placeholder="https://official-site.gov.in/notification.pdf">
+            <!-- Legacy Syllabus PDF field removed from the UI but retained (hidden) for 100% backward compatibility with existing save/edit/preview logic. -->
+            <div style="display:none;" aria-hidden="true">
+              <input type="url" id="f-syllabus-url" placeholder="https://official-site.gov.in/syllabus.pdf">
+            </div>
+          </div>
 
-        <!-- CUSTOM IMPORTANT DATES -->
-        <div class="fsec" style="margin-top:20px;">📅 Custom Important Dates (Optional)</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Add Walk-In Interview, Document Verification, Reporting Date, etc.</div>
-        <div id="custom-dates-list"></div>
-        <button type="button" onclick="addCustomDateRow()" style="background:var(--glass-bg);border:1.5px dashed var(--glass-border-strong);color:#c4b5fd;padding:10px 16px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px;width:100%;">➕ Add Custom Date</button>
+          <!-- 🔗 OFFICIAL LINKS -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🔗</span> Official Links</div>
+            <div class="row2">
+              <div>
+                <label>🌐 Official Website</label>
+                <input type="url" id="f-url" placeholder="https://kpsc.kar.nic.in">
+                <div class="url-hint">⚠️ This URL opens when user clicks "Visit Official Website" button</div>
+              </div>
+              <div>
+                <label>📋 Apply Online Link</label>
+                <input type="url" id="f-apply-link" placeholder="https://kpsc.kar.nic.in/apply">
+                <div class="url-hint">⚠️ This URL opens when user clicks "Apply Now" button (if different from official site)</div>
+              </div>
+            </div>
+          </div>
 
-        <!-- APPLICATION FEE with TBA -->
-        <label style="margin-top:14px;">Application Fee</label>
-        <input type="text" id="f-fee" placeholder="Gen: ₹500 | SC/ST: ₹250">
-        <label class="tba-row">
-          <input type="checkbox" id="f-fee-tba" onchange="toggleFeeTBA(this.checked)">
-          <span class="tba-label">⚠️ Application Fee not yet confirmed (To Be Announced)</span>
-        </label>
-        <input type="text" id="f-fee-kn" placeholder="Gen: ₹500 | SC/ST: ₹250 (ಕನ್ನಡದಲ್ಲಿ — optional)" style="margin-top:6px;font-family:var(--fkn);" title="Fee in Kannada">
+          <!-- 🏆 SELECTION PROCESS -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🏆</span> Selection Process</div>
+            <div class="bi-note">Stages: Written Exam / Physical Test / Interview / Document Verification / Merit List</div>
+            <div class="row2">
+              <div>
+                <label>Selection Process (English)</label>
+                <textarea id="f-sel-process" style="min-height:180px;" placeholder="Each stage on new line:&#10;Written Exam&#10;Physical Test&#10;Skill Test&#10;Interview&#10;Document Verification&#10;Merit List"></textarea>
+              </div>
+              <div>
+                <label>Selection Process (ಕನ್ನಡ)</label>
+                <textarea id="f-sel-process-kn" style="min-height:180px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಹಂತ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;ಲಿಖಿತ ಪರೀಕ್ಷೆ&#10;ದೈಹಿಕ ಪರೀಕ್ಷೆ&#10;ಸಂದರ್ಶನ" title="Selection Process (Kannada)"></textarea>
+              </div>
+            </div>
+          </div>
 
-        <div class="fsec">🌐 Official Website Link</div>
-        <input type="url" id="f-url" placeholder="https://kpsc.kar.nic.in">
-        <div class="url-hint">⚠️ This URL opens when user clicks "Visit Official Website" button</div>
+          <!-- 📋 REQUIRED DOCUMENTS -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">📋</span> Required Documents</div>
+            <div class="bi-note">Documents candidates must bring: Aadhaar, Marks Card, Caste Certificate, Photo, etc.</div>
+            <div class="row2">
+              <div>
+                <label>Required Documents (English)</label>
+                <textarea id="f-req-docs" style="min-height:200px;" placeholder="Each document on new line:&#10;SSLC / 10th Marks Card&#10;PUC / 12th Marks Card&#10;Degree Certificate&#10;Aadhaar Card&#10;Caste Certificate&#10;Income Certificate&#10;Passport Size Photo&#10;Signature"></textarea>
+              </div>
+              <div>
+                <label>Required Documents (ಕನ್ನಡ)</label>
+                <textarea id="f-req-docs-kn" style="min-height:200px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ದಾಖಲೆ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;SSLC / 10ನೇ ತರಗತಿ ಅಂಕಪಟ್ಟಿ&#10;ಆಧಾರ್ ಕಾರ್ಡ್&#10;ಜಾತಿ ಪ್ರಮಾಣಪತ್ರ" title="Required Documents (Kannada)"></textarea>
+              </div>
+            </div>
+          </div>
 
-        <div class="fsec">📋 Apply Now Link (Direct Apply Page)</div>
-        <input type="url" id="f-apply-link" placeholder="https://kpsc.kar.nic.in/apply">
-        <div class="url-hint">⚠️ This URL opens when user clicks "Apply Now" button (if different from official site)</div>
+          <!-- 📝 HOW TO APPLY -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">📝</span> How To Apply</div>
+            <div class="bi-note">Step-by-step application instructions: Visit website → Register → Fill form → Pay fee → Submit</div>
+            <div class="row2">
+              <div>
+                <label>How To Apply (English)</label>
+                <textarea id="f-hta" style="min-height:190px;" placeholder="Each step on new line:&#10;Visit official website&#10;Click New Registration&#10;Fill form and submit&#10;Pay fee&#10;Take printout"></textarea>
+              </div>
+              <div>
+                <label>How To Apply (ಕನ್ನಡ)</label>
+                <textarea id="f-hta-kn" style="min-height:190px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಹಂತ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್ ತೆರೆಯಿರಿ&#10;ನೋಂದಣಿ ಮಾಡಿ&#10;ಅರ್ಜಿ ಭರ್ತಿ ಮಾಡಿ" title="How To Apply (Kannada)"></textarea>
+              </div>
+            </div>
+            <div class="url-hint" style="margin-top:10px;">Each line becomes a numbered step — clearly visible to job seekers</div>
+          </div>
 
-        <div class="fsec">📋 Government Job Details</div>
-        <div class="row2">
-          <div><label>Notification No.</label><input type="text" id="f-notif" placeholder="KPSC/2025/JE/01"></div>
-          <div><label>Icon (Emoji)</label><input type="text" id="f-icon" placeholder="🏗️" maxlength="4"></div>
-        </div>
+          <!-- ❓ FAQ -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">❓</span> FAQ <span class="bi-opt">(Optional)</span></div>
+            <div class="bi-note">One FAQ per line. Separate question and answer with a vertical bar: <strong>Question | Answer</strong>. Leave blank to hide the FAQ section.</div>
+            <div class="row2">
+              <div>
+                <label>FAQ (English)</label>
+                <textarea id="f-faq" style="min-height:200px;" placeholder="One per line — Question | Answer:&#10;Is there an application fee? | Yes, ₹500 for General and ₹250 for SC/ST.&#10;Can I apply from another state? | Yes, candidates from all states can apply.&#10;What is the selection process? | Written exam followed by an interview."></textarea>
+              </div>
+              <div>
+                <label>FAQ (ಕನ್ನಡ)</label>
+                <textarea id="f-faq-kn" style="min-height:200px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಸಾಲಿನಲ್ಲಿ ಒಂದು — ಪ್ರಶ್ನೆ | ಉತ್ತರ:&#10;ಅರ್ಜಿ ಶುಲ್ಕ ಇದೆಯೇ? | ಹೌದು, ಸಾಮಾನ್ಯ ವರ್ಗಕ್ಕೆ ₹500.&#10;ಬೇರೆ ರಾಜ್ಯದಿಂದ ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದೇ? | ಹೌದು, ಎಲ್ಲಾ ರಾಜ್ಯಗಳ ಅಭ್ಯರ್ಥಿಗಳು ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದು." title="FAQ (Kannada)"></textarea>
+              </div>
+            </div>
+          </div>
 
-        <label>🖼️ Company Logo URL (Optional)</label>
-        <input type="url" id="f-logo" placeholder="https://i.postimg.cc/abc123/logo.png">
-        <div class="url-hint">📤 Paste direct image URL from Postimages.org or Wikipedia. Logo will show if provided, otherwise icon emoji will display.</div>
+          <!-- 💡 EXPERT TIPS -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">💡</span> Expert Tips <span class="bi-opt">(Optional)</span></div>
+            <div class="bi-note">A short highlighted tip card shown on the job page. Leave blank to hide the Expert Tips section.</div>
+            <div class="row2">
+              <div>
+                <label>Expert Tips (English)</label>
+                <textarea id="f-tips" style="min-height:150px;" placeholder="e.g. Apply at least 3 days before the last date to avoid server load. Keep scanned copies of all documents ready before starting the form."></textarea>
+              </div>
+              <div>
+                <label>Expert Tips (ಕನ್ನಡ)</label>
+                <textarea id="f-tips-kn" style="min-height:150px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಉದಾ. ಸರ್ವರ್ ಒತ್ತಡ ತಪ್ಪಿಸಲು ಕೊನೆಯ ದಿನಾಂಕಕ್ಕಿಂತ ಕನಿಷ್ಠ 3 ದಿನ ಮುಂಚೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ." title="Expert Tips (Kannada)"></textarea>
+              </div>
+            </div>
+          </div>
 
-        <div class="fsec" style="margin-top:20px;">🖼️ Job Banner (Optional)</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Upload a banner (JPG, PNG or WebP) or paste a direct image URL. Shown on the Job Details page and used as the social-share preview image. Leave blank to use the default share image.</div>
-        <label style="font-size:12px;color:#4ade80;">English Banner</label>
-        <input type="url" id="f-banner-en" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-en')">
-        <input type="file" id="f-banner-en-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-en')" style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.7);">
-        <div id="f-banner-en-prev" class="banner-prev"></div>
-        <label style="margin-top:10px;font-size:12px;color:#4ade80;">Kannada Banner</label>
-        <input type="url" id="f-banner-kn" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-kn')">
-        <input type="file" id="f-banner-kn-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-kn')" style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.7);">
-        <div id="f-banner-kn-prev" class="banner-prev"></div>
+          <!-- 🚀 PUBLISH -->
+          <div class="bi-card bi-span pub-bar">
+            <div class="bi-card-hd"><span class="bi-ic">🚀</span> Publish</div>
+            <div class="fbtns">
+              <button class="fbtn fb-pub" id="pub-btn" onclick="saveJob()">
+                <span id="pub-spin" class="spin"></span>
+                <span>✓ Publish Job</span>
+              </button>
+              <button class="fbtn" id="prev-btn" onclick="previewJob()" style="background:linear-gradient(135deg,#3b82f6,#2563eb);border-color:rgba(59,130,246,0.7);color:#fff;">👁️ Preview Job</button>
+              <button class="fbtn fb-clr" onclick="clearForm()">✕ Clear</button>
+            </div>
+          </div>
 
-        <label>Category-wise Vacancies</label>
-        <input type="text" id="f-cats" placeholder="SC-24, ST-12, OBC-32, Gen-52">
-
-        <label>🎓 Tags / Eligibility (English, Comma separated)</label>
-        <input type="text" id="f-tags" placeholder="10th Pass, 12th Pass, Graduate, Diploma">
-        <div class="url-hint">Examples: 10th Pass, 12th Pass, Graduate, Post Graduate, Diploma, ITI, Engineering, MBA</div>
-        <label style="margin-top:6px;font-size:12px;color:#4ade80;">Tags / Eligibility (ಕನ್ನಡ)</label>
-        <input type="text" id="f-tags-kn" placeholder="ಪದವೀಧರ, ಬೆಂಗಳೂರು, ಕರ್ನಾಟಕ (ಕನ್ನಡದಲ್ಲಿ)" style="margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" title="Tags (Kannada)">
-
-        <div class="fsec">📝 Job Description</div>
-        <textarea id="f-desc" placeholder="Responsibilities, exam details, eligibility..." style="min-height:80px;"></textarea>
-        <textarea id="f-desc-kn" placeholder="ಜವಾಬ್ದಾರಿಗಳು, ಪರೀಕ್ಷೆ ವಿವರಗಳು, ಅರ್ಹತೆ... (ಕನ್ನಡದಲ್ಲಿ — optional)" style="min-height:60px;margin-top:6px;font-family:var(--fkn);" title="Job Description (Kannada)"></textarea>
-
-        <div class="row2">
-          <div><label>Qualifications / Skills (English)</label><input type="text" id="f-skills" placeholder="B.E Civil, Kannada knowledge, 2yr experience"></div>
-          <div><label>Qualifications / Skills (ಕನ್ನಡ)</label><input type="text" id="f-skills-kn" placeholder="ಎಂಜಿನಿಯರಿಂಗ್, ಕನ್ನಡ ಜ್ಞಾನ..." style="font-family:var(--fkn);"></div>
-        </div>
-
-        <div class="fsec">📚 Syllabus (Optional)</div>
-        <label style="font-size:12px;color:#4ade80;">Syllabus (English)</label>
-        <textarea id="f-syllabus" style="min-height:80px;" placeholder="Exam subjects:&#10;General Knowledge, Reasoning, Mathematics..."></textarea>
-        <label style="margin-top:6px;font-size:12px;color:#4ade80;">Syllabus (ಕನ್ನಡ)</label>
-        <textarea id="f-syllabus-kn" style="min-height:80px;font-family:var(--fkn);" placeholder="ಪರೀಕ್ಷಾ ವಿಷಯಗಳು:&#10;ಸಾಮಾನ್ಯ ಜ್ಞಾನ, ತಾರ್ಕಿಕತೆ, ಗಣಿತ..."></textarea>
-        <label style="margin-top:8px;">Syllabus PDF Link (Official)</label>
-        <input type="url" id="f-syllabus-url" placeholder="https://official-site.gov.in/syllabus.pdf">
-
-        <label style="margin-top:8px;">Notification PDF Link (Official)</label>
-        <input type="url" id="f-notif-url" placeholder="https://official-site.gov.in/notification.pdf">
-
-        <div class="fsec">🏆 Selection Process</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Stages: Written Exam / Physical Test / Interview / Document Verification / Merit List</div>
-        <label style="font-size:12px;color:#4ade80;">Selection Process (English)</label>
-        <textarea id="f-sel-process" style="min-height:80px;" placeholder="Each stage on new line:&#10;Written Exam&#10;Physical Test&#10;Skill Test&#10;Interview&#10;Document Verification&#10;Merit List"></textarea>
-        <label style="margin-top:6px;font-size:12px;color:#4ade80;">Selection Process (ಕನ್ನಡ)</label>
-        <textarea id="f-sel-process-kn" style="min-height:60px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಹಂತ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;ಲಿಖಿತ ಪರೀಕ್ಷೆ&#10;ದೈಹಿಕ ಪರೀಕ್ಷೆ&#10;ಸಂದರ್ಶನ" title="Selection Process (Kannada)"></textarea>
-
-        <div class="fsec" style="margin-top:20px;">📋 Required Documents</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Documents candidates must bring: Aadhaar, Marks Card, Caste Certificate, Photo, etc.</div>
-        <label style="font-size:12px;color:#4ade80;">Required Documents (English)</label>
-        <textarea id="f-req-docs" style="min-height:100px;" placeholder="Each document on new line:&#10;SSLC / 10th Marks Card&#10;PUC / 12th Marks Card&#10;Degree Certificate&#10;Aadhaar Card&#10;Caste Certificate&#10;Income Certificate&#10;Passport Size Photo&#10;Signature"></textarea>
-        <label style="margin-top:6px;font-size:12px;color:#4ade80;">Required Documents (ಕನ್ನಡ)</label>
-        <textarea id="f-req-docs-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ದಾಖಲೆ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;SSLC / 10ನೇ ತರಗತಿ ಅಂಕಪಟ್ಟಿ&#10;ಆಧಾರ್ ಕಾರ್ಡ್&#10;ಜಾತಿ ಪ್ರಮಾಣಪತ್ರ" title="Required Documents (Kannada)"></textarea>
-
-        <div class="fsec" style="margin-top:20px;">📝 How To Apply Steps</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Step-by-step application instructions: Visit website → Register → Fill form → Pay fee → Submit</div>
-        <label style="font-size:12px;color:#4ade80;">How To Apply (English)</label>
-        <textarea id="f-hta" style="min-height:100px;" placeholder="Each step on new line:&#10;Visit official website&#10;Click New Registration&#10;Fill form and submit&#10;Pay fee&#10;Take printout"></textarea>
-        <label style="margin-top:6px;font-size:12px;color:#4ade80;">How To Apply (ಕನ್ನಡ)</label>
-        <textarea id="f-hta-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಹಂತ ಹೊಸ ಸಾಲಿನಲ್ಲಿ:&#10;ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್ ತೆರೆಯಿರಿ&#10;ನೋಂದಣಿ ಮಾಡಿ&#10;ಅರ್ಜಿ ಭರ್ತಿ ಮಾಡಿ" title="How To Apply (Kannada)"></textarea>
-        <div class="url-hint">Each line becomes a numbered step — clearly visible to job seekers</div>
-
-        <div class="fsec" style="margin-top:20px;">❓ FAQ (Optional)</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">One FAQ per line. Separate question and answer with a vertical bar: <strong>Question | Answer</strong>. Leave blank to hide the FAQ section.</div>
-        <label style="font-size:12px;color:#4ade80;">FAQ (English)</label>
-        <textarea id="f-faq" style="min-height:100px;" placeholder="One per line — Question | Answer:&#10;Is there an application fee? | Yes, ₹500 for General and ₹250 for SC/ST.&#10;Can I apply from another state? | Yes, candidates from all states can apply.&#10;What is the selection process? | Written exam followed by an interview."></textarea>
-        <label style="margin-top:6px;font-size:12px;color:#4ade80;">FAQ (ಕನ್ನಡ)</label>
-        <textarea id="f-faq-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಪ್ರತಿ ಸಾಲಿನಲ್ಲಿ ಒಂದು — ಪ್ರಶ್ನೆ | ಉತ್ತರ:&#10;ಅರ್ಜಿ ಶುಲ್ಕ ಇದೆಯೇ? | ಹೌದು, ಸಾಮಾನ್ಯ ವರ್ಗಕ್ಕೆ ₹500.&#10;ಬೇರೆ ರಾಜ್ಯದಿಂದ ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದೇ? | ಹೌದು, ಎಲ್ಲಾ ರಾಜ್ಯಗಳ ಅಭ್ಯರ್ಥಿಗಳು ಅರ್ಜಿ ಸಲ್ಲಿಸಬಹುದು." title="FAQ (Kannada)"></textarea>
-
-        <div class="fsec" style="margin-top:20px;">💡 NammaJobs Expert Tips (Optional)</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">A short highlighted tip card shown on the job page. Leave blank to hide the Expert Tips section.</div>
-        <label style="font-size:12px;color:#4ade80;">Expert Tips (English)</label>
-        <textarea id="f-tips" style="min-height:90px;" placeholder="e.g. Apply at least 3 days before the last date to avoid server load. Keep scanned copies of all documents ready before starting the form."></textarea>
-        <label style="margin-top:6px;font-size:12px;color:#4ade80;">Expert Tips (ಕನ್ನಡ)</label>
-        <textarea id="f-tips-kn" style="min-height:80px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif;" placeholder="ಉದಾ. ಸರ್ವರ್ ಒತ್ತಡ ತಪ್ಪಿಸಲು ಕೊನೆಯ ದಿನಾಂಕಕ್ಕಿಂತ ಕನಿಷ್ಠ 3 ದಿನ ಮುಂಚೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ." title="Expert Tips (Kannada)"></textarea>
-
-        <div class="fbtns">
-          <button class="fbtn fb-pub" id="pub-btn" onclick="saveJob()">
-            <span id="pub-spin" class="spin"></span>
-            <span>✓ Publish Job</span>
-          </button>
-          <button class="fbtn" id="prev-btn" onclick="previewJob()" style="background:linear-gradient(135deg,#3b82f6,#2563eb);border-color:rgba(59,130,246,0.7);color:#fff;">👁️ Preview Job</button>
-          <button class="fbtn fb-clr" onclick="clearForm()">✕ Clear</button>
-        </div>
+        </div><!-- end Job Content bi-grid -->
       </div>
 
       <!-- JOBS LIST PANEL -->
