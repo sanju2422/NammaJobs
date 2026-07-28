@@ -919,6 +919,19 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 @media(max-width:900px){.sel-illus{display:none;}}
 @media(min-width:1025px){#selection-section .check-list{grid-template-columns:1fr;}}
 
+/* Premium list-card style for Application Fee & Age Limit — one clean row per
+   category, small coloured indicator dot, consistent with the page. Responsive. */
+.kv-list{display:flex;flex-direction:column;gap:10px;}
+.kv-row{display:flex;align-items:center;gap:12px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:13px 16px;transition:transform .18s,box-shadow .18s,border-color .18s;}
+.kv-row:hover{transform:translateY(-1px);box-shadow:var(--shadow-soft);border-color:var(--border-strong);}
+.kv-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.kv-key{flex:1;min-width:0;font-size:14px;font-weight:700;color:var(--text);line-height:1.4;word-break:break-word;}
+.kv-val{flex-shrink:0;font-family:var(--fhead);font-size:14px;font-weight:800;color:var(--text);text-align:right;line-height:1.4;}
+@media(max-width:480px){
+  .kv-row{flex-wrap:wrap;}
+  .kv-val{width:100%;text-align:left;padding-left:23px;}
+}
+
 </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9037988612895250" crossorigin="anonymous"></script>
 <script src="lang.js?v=2"></script>
@@ -1436,6 +1449,20 @@ function njFeeFmt(v){
   if(/^(rs\.?|inr|\u20b9)\s*[0-9]/i.test(t)) return njEsc(t.replace(/^rs\.?\s*/i,'\u20b9 ').replace(/^inr\s*/i,'\u20b9 '));
   return njEsc(t);
 }
+/* ===== PREMIUM LIST-CARD RENDERER (category \u2192 value) =====
+   One clean row per category with a small coloured indicator dot (a distinct
+   colour per row, cycled). Used by Application Fee and Age Limit. Presentation
+   only \u2014 parsing/data/logic unchanged. */
+var NJ_KV_DOTS=['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ef4444','#06b6d4','#ec4899','#f97316','#14b8a6'];
+function njKvList(rows,valFmt){
+  return '<div class="kv-list">'+rows.map(function(p,i){
+    var c=NJ_KV_DOTS[i%NJ_KV_DOTS.length];
+    var v=valFmt?valFmt(p.v):njEsc(p.v);
+    return '<div class="kv-row"><span class="kv-dot" style="background:'+c+';box-shadow:0 0 0 3px '+c+'22;"></span>'
+      +'<span class="kv-key">'+njEsc(p.k)+'</span>'
+      +'<span class="kv-val">'+v+'</span></div>';
+  }).join('')+'</div>';
+}
 function njFeeRows(raw){
   var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
   if(!t) return {rows:[],table:false};
@@ -1467,9 +1494,7 @@ function njFeeCell(raw){
   if(!raw) return '\u2014';
   var r=njFeeRows(raw);
   if(r.table&&r.rows.length){
-    var h=njGetLang()==='kn'?['\u0cb5\u0cb0\u0ccd\u0c97','\u0cb6\u0cc1\u0cb2\u0ccd\u0c95']:['Category','Fee'];
-    return '<div class="sub-tbl-wrap"><table class="sub-tbl"><thead><tr><th>'+h[0]+'</th><th>'+h[1]+'</th></tr></thead><tbody>'+
-      r.rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td>'+njFeeFmt(p.v)+'</td></tr>';}).join('')+'</tbody></table></div>';
+    return njKvList(r.rows,njFeeFmt);
   }
   return String(raw).split(/\s*[|;\n,]\s*/).map(function(x){return x.trim();}).filter(Boolean).map(function(x){return njEsc(x);}).join('<br>');
 }
@@ -1528,9 +1553,7 @@ function njAgeCell(raw){
   if(!raw) return '\u2014';
   var r=njAgeRows(raw);
   if(r.table&&r.rows.length){
-    var h=njGetLang()==='kn'?['\u0cb5\u0cb0\u0ccd\u0c97','\u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0cc1']:['Category','Age Limit'];
-    return '<div class="sub-tbl-wrap"><table class="sub-tbl"><thead><tr><th>'+h[0]+'</th><th>'+h[1]+'</th></tr></thead><tbody>'+
-      r.rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td><span class="vbox"><strong>'+njEsc(p.v)+'</strong></span></td></tr>';}).join('')+'</tbody></table></div>';
+    return njKvList(r.rows,null);
   }
   return njEsc(String(raw));
 }
@@ -1723,13 +1746,6 @@ function renderJob(j){
 
         ${j.skills?njSecCard(njIc('graduation-cap'),'sb-blue',kn?'ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆ':'Educational Qualification','<div class="sec-text">'+njField(j.skills,j.skills_kn)+'</div>'):''}
 
-        ${(function(){
-          var tags=(kn&&j.tags_kn?j.tags_kn:j.tags);
-          if(!tags) return '';
-          var chips=tags.split(',').map(function(t){return '<span class="qual-chip">'+njIc('graduation-cap')+njEsc(t.trim())+'</span>';}).join(' ');
-          return njSecCard(njIc('tag'),'sb-teal',kn?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags','<div class="qual-wrap">'+chips+'</div>');
-        })()}
-
         ${j.description?njSecCard(njIc('file-text'),'sb-blue',kn?'ಈ ಉದ್ಯೋಗದ ಬಗ್ಗೆ':'About this Job','<div class="sec-text">'+njField(j.description,j.description_kn)+'</div>'):''}
 
         ${j.selection_process?njSecCard(njIc('award'),'sb-orange',kn?'ಆಯ್ಕೆ ಪ್ರಕ್ರಿಯೆ':'Selection Process','<div class="sel-layout">'+njSelectionItems(njField(j.selection_process,j.selection_process_kn))+'<div class="sel-illus" aria-hidden="true">📋<span class="sel-illus-target">🎯</span></div></div>',{id:'selection-section'}):''}
@@ -1770,6 +1786,13 @@ function renderJob(j){
           var tips=njField(j.tips_en,j.tips_kn);
           if(!tips||!tips.trim())return '';
           return njSecCard('💡','sb-orange',kn?'ನಮ್ಮ ಜಾಬ್ಸ್ ತಜ್ಞರ ಸಲಹೆಗಳು':'NammaJobs Expert Tips','<div class="tips-card"><div class="tips-ic">💡</div><div class="tips-body">'+tips+'</div></div>');
+        })()}
+
+        ${(function(){
+          var tags=(kn&&j.tags_kn?j.tags_kn:j.tags);
+          if(!tags) return '';
+          var chips=tags.split(',').map(function(t){return '<span class="qual-chip">'+njIc('graduation-cap')+njEsc(t.trim())+'</span>';}).join(' ');
+          return njSecCard(njIc('tag'),'sb-teal',kn?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags','<div class="qual-wrap">'+chips+'</div>');
         })()}
 
         ${actionBarHtml(j)}
