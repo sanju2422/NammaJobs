@@ -178,10 +178,28 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
 .pub-bar .fbtns{margin-top:0;padding-top:0;border-top:none;gap:14px;}
 .pub-bar .fbtn{padding:14px 20px;}
 
-/* TBA Checkbox */
-.tba-row{display:flex;align-items:center;gap:8px;margin-top:8px;padding:10px 12px;background:rgba(255,193,7,0.12);border:1.5px solid rgba(255,193,7,0.3);border-radius:10px;cursor:pointer;}
-.tba-row input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:#ffc107;flex-shrink:0;}
-.tba-label{font-size:12px;font-weight:700;color:#fde68a;flex:1;}
+/* TBA Checkbox — compact single-line premium row (UI only; logic unchanged) */
+.tba-row{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-top:6px;
+  padding:5px 10px;
+  min-height:26px;
+  background:rgba(255,193,7,0.08);
+  border:1px solid rgba(255,193,7,0.26);
+  border-radius:8px;
+  cursor:pointer;
+  transition:background .2s ease,border-color .2s ease;
+}
+.tba-row:hover{background:rgba(255,193,7,0.13);border-color:rgba(255,193,7,0.42);}
+.tba-row input[type=checkbox]{width:14px;height:14px;margin:0;cursor:pointer;accent-color:#ffc107;flex-shrink:0;}
+.tba-label{font-size:11px;font-weight:700;color:#fde68a;flex:1;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.01em;}
+/* Green "Already Started" variant — same compact geometry, green accent kept. */
+.tba-row.tba-started{background:rgba(76,217,100,0.08);border-color:rgba(76,217,100,0.26);}
+.tba-row.tba-started:hover{background:rgba(76,217,100,0.13);border-color:rgba(76,217,100,0.42);}
+.tba-row.tba-started input[type=checkbox]{accent-color:#4cd964;}
+.tba-row.tba-started .tba-label{color:#86efac;}
 
 /* Buttons */
 .fbtns{display:flex;gap:10px;margin-top:24px;padding-top:18px;border-top:1.5px solid rgba(255,255,255,0.12);}
@@ -421,7 +439,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
             </div>
             <label class="tba-row">
               <input type="checkbox" id="f-seats-tba" onchange="toggleSeatsTBA(this.checked)">
-              <span class="tba-label">⚠️ Vacancies not yet confirmed (To Be Announced)</span>
+              <span class="tba-label">⚠️ Vacancies TBA</span>
             </label>
           </div>
 
@@ -434,7 +452,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
             </div>
             <label class="tba-row">
               <input type="checkbox" id="f-sal-tba" onchange="toggleSalTBA(this.checked)">
-              <span class="tba-label">⚠️ Salary not yet confirmed (To Be Announced)</span>
+              <span class="tba-label">⚠️ Salary TBA</span>
             </label>
           </div>
 
@@ -462,15 +480,15 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
             </div>
             <label class="tba-row">
               <input type="checkbox" id="f-sd-tba" onchange="toggleTBA('f-sd',this.checked);if(this.checked)document.getElementById('f-sd-started').checked=false;">
-              <span class="tba-label">⚠️ Start Date not yet confirmed (To Be Announced)</span>
+              <span class="tba-label">⚠️ Start Date TBA</span>
             </label>
-            <label class="tba-row" style="background:rgba(76,217,100,0.12);border-color:rgba(76,217,100,0.3);">
-              <input type="checkbox" id="f-sd-started" onchange="toggleStarted(this.checked)" style="accent-color:#4cd964;">
-              <span class="tba-label" style="color:#86efac;">✅ Already Started – Applications are open (exact date not confirmed)</span>
+            <label class="tba-row tba-started">
+              <input type="checkbox" id="f-sd-started" onchange="toggleStarted(this.checked)">
+              <span class="tba-label">✅ Already Started</span>
             </label>
             <label class="tba-row">
               <input type="checkbox" id="f-ld-tba" onchange="toggleTBA('f-ld',this.checked)">
-              <span class="tba-label">⚠️ Last Date not yet confirmed (To Be Announced)</span>
+              <span class="tba-label">⚠️ Last Date TBA</span>
             </label>
             <!-- Additional optional dates (UI only — not yet wired to save/parser/database). -->
             <div class="fsec" style="margin-top:18px;">📅 Additional Dates (Optional)</div>
@@ -526,7 +544,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
             </div>
             <label class="tba-row">
               <input type="checkbox" id="f-fee-tba" onchange="toggleFeeTBA(this.checked)">
-              <span class="tba-label">⚠️ Application Fee not yet confirmed (To Be Announced)</span>
+              <span class="tba-label">⚠️ Application Fee TBA</span>
             </label>
           </div>
 
