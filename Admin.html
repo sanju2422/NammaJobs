@@ -65,7 +65,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 
 label{display:block;font-size:11px;font-weight:800;color:#4ade80;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;margin-top:14px;}
 .banner-prev{margin-top:8px;}
-.banner-prev img{max-width:100%;max-height:140px;border-radius:12px;border:1.5px solid var(--glass-border);display:block;}
+.banner-prev img{max-width:100%;max-height:180px;border-radius:12px;border:1.5px solid var(--glass-border);display:block;}
+/* Framed live-preview area with an empty-state hint (populated by showBannerPreview). */
+.banner-prev-box{min-height:96px;display:flex;align-items:center;justify-content:center;padding:10px;background:var(--glass-bg);border:1.5px dashed var(--glass-border);border-radius:12px;}
+.banner-prev-box:empty::before{content:"Banner preview appears here";font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);}
 
 input[type=text],input[type=number],input[type=url],input[type=date],input[type=email],input[type=password],textarea{
   width:100%;
@@ -492,11 +495,18 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
           <div class="bi-card bi-span">
             <div class="bi-card-hd"><span class="bi-ic">🖼️</span> Job Banner</div>
             <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Upload a banner (JPG, PNG or WebP) or paste a direct image URL. Shown on the Job Details page and used as the social-share preview image. The same banner is used for both English and Kannada pages. Leave blank to use the default share image.</div>
-            <label>Banner URL</label>
-            <input type="url" id="f-banner-en" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-en')">
-            <label style="margin-top:12px;">Upload Banner</label>
-            <input type="file" id="f-banner-en-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-en')" style="margin-top:2px;font-size:12px;color:rgba(255,255,255,0.7);">
-            <div id="f-banner-en-prev" class="banner-prev"></div>
+            <div class="row2">
+              <div>
+                <label>Banner URL</label>
+                <input type="url" id="f-banner-en" placeholder="https://example.com/banner.jpg  (or upload →)" oninput="showBannerPreview('f-banner-en')">
+              </div>
+              <div>
+                <label>Upload Banner</label>
+                <input type="file" id="f-banner-en-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-en')" style="font-size:12px;color:rgba(255,255,255,0.7);padding:9px 14px;">
+              </div>
+            </div>
+            <label style="margin-top:14px;">🖼️ Live Banner Preview</label>
+            <div id="f-banner-en-prev" class="banner-prev banner-prev-box"></div>
             <!-- Legacy Kannada banner fields retained (hidden) for 100% backward compatibility with existing save/edit/upload logic. -->
             <div style="display:none;" aria-hidden="true">
               <input type="url" id="f-banner-kn" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-kn')">
@@ -515,16 +525,16 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
           <div class="bi-card bi-span">
             <div class="bi-card-hd"><span class="bi-ic">🏷️</span> Category-wise Vacancies</div>
             <label>Category-wise Vacancies</label>
-            <input type="text" id="f-cats" placeholder="SC-24, ST-12, OBC-32, Gen-52">
-            <div class="url-hint">Example: UR: 120, OBC: 45, SC: 30, ST: 12, EWS: 18</div>
+            <input type="text" id="f-cats" placeholder="UR:120, OBC:45, SC:30, ST:12, EWS:18">
+            <div class="url-hint">Example: UR:120, OBC:45, SC:30, ST:12, EWS:18</div>
           </div>
 
           <!-- 🏷 TAGS / ELIGIBILITY -->
           <div class="bi-card bi-span">
             <div class="bi-card-hd"><span class="bi-ic">🎓</span> Tags / Eligibility</div>
             <label>Tags / Eligibility (English, Comma separated)</label>
-            <input type="text" id="f-tags" placeholder="10th Pass, 12th Pass, Graduate, Diploma">
-            <div class="url-hint">Tags are comma separated. Examples: Graduate, Diploma, ITI, Engineering, Karnataka Jobs</div>
+            <input type="text" id="f-tags" placeholder="Graduate, Diploma, ITI, Engineering, Karnataka Jobs">
+            <div class="url-hint">Tags are comma separated. Example: Graduate, Diploma, ITI, Engineering, Karnataka Jobs</div>
             <label style="margin-top:12px;">Tags / Eligibility (ಕನ್ನಡ)</label>
             <input type="text" id="f-tags-kn" placeholder="ಪದವೀಧರ, ಬೆಂಗಳೂರು, ಕರ್ನಾಟಕ (ಕನ್ನಡದಲ್ಲಿ)" style="font-family:'Noto Sans Kannada',sans-serif;" title="Tags (Kannada)">
           </div>
