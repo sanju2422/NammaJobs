@@ -229,11 +229,11 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   margin-bottom:10px;
   color:#fff;
 }
-.hb-open{background:rgba(76,217,100,0.3);border-color:rgba(76,217,100,0.6);}
+.hb-open{background:rgba(22,163,74,0.92);border-color:rgba(21,128,61,0.95);box-shadow:0 4px 12px rgba(21,128,61,0.35);}
 .hb-soon{background:rgba(255,193,7,0.3);border-color:rgba(255,193,7,0.6);}
 .hb-closed{background:rgba(150,150,150,0.3);border-color:rgba(150,150,150,0.6);}
 .hero-badge::before{content:'';width:7px;height:7px;border-radius:50%;}
-.hb-open::before{background:#4cd964;box-shadow:0 0 8px #4cd964;}
+.hb-open::before{background:#86efac;box-shadow:0 0 8px rgba(134,239,172,0.9);}
 .hb-soon::before{background:#ffc107;}
 
 .hero h1{
@@ -708,8 +708,8 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .act-btn .act-sub{font-size:10px;font-weight:600;opacity:.85;;display:block;width:100%;text-align:center}
 .act-btn:hover{transform:translateY(-2px);}
 .act-apply{background:linear-gradient(135deg,#4ade80,#22c55e);border-color:rgba(74,222,128,0.6);color:#0a1f12 !important;box-shadow:0 6px 18px rgba(74,222,128,0.35);}
-.act-official{background:rgba(59,130,246,0.28);border-color:rgba(59,130,246,0.6);}
-.act-notif{background:rgba(245,158,11,0.28);border-color:rgba(245,158,11,0.6);}
+.act-official{background:linear-gradient(135deg,#3b82f6,#2563eb);border-color:rgba(37,99,235,0.6);color:#fff !important;box-shadow:0 6px 18px rgba(37,99,235,0.35);}
+.act-notif{background:linear-gradient(135deg,#fb923c,#f59e0b);border-color:rgba(245,158,11,0.6);color:#fff !important;box-shadow:0 6px 18px rgba(245,158,11,0.35);}
 .act-share{background:var(--glass-bg-dark);border-color:var(--glass-border-strong);}
 @media(max-width:768px){.action-bar{grid-template-columns:1fr 1fr;}}
 
@@ -898,6 +898,26 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .stay-head-ic .nj-ic{width:18px;height:18px;}
 .stay-head-tt{font-size:13px;font-weight:800;color:var(--text);line-height:1.2;}
 .stay-head-sub{font-size:11.5px;color:var(--text-muted);font-weight:600;margin-top:2px;}
+
+/* ============================================================
+   APPROVED-REFERENCE UI MATCH (colours only; layout untouched)
+   ============================================================ */
+/* Section title colours matched to each section's badge colour (light theme = default/reference). */
+[data-theme=light] .sb-blue ~ .sec-title{color:#2563eb;}
+[data-theme=light] .sb-red ~ .sec-title{color:#ef4444;}
+[data-theme=light] .sb-green ~ .sec-title{color:#059669;}
+[data-theme=light] .sb-purple ~ .sec-title{color:#7c3aed;}
+[data-theme=light] .sb-orange ~ .sec-title{color:#d97706;}
+[data-theme=light] .sb-teal ~ .sec-title{color:#0891b2;}
+/* Keep the coloured action buttons legible with white text in the light theme too. */
+[data-theme=light] .act-official,[data-theme=light] .act-notif{color:#fff !important;}
+/* Selection Process illustration (clipboard + target) shown to the right of the checklist. */
+.sel-layout{display:flex;gap:22px;align-items:center;}
+.sel-layout .check-list{flex:1;min-width:0;}
+.sel-illus{flex-shrink:0;display:flex;align-items:center;gap:4px;font-size:58px;line-height:1;filter:drop-shadow(0 6px 14px rgba(0,0,0,0.12));}
+.sel-illus .sel-illus-target{font-size:64px;}
+@media(max-width:900px){.sel-illus{display:none;}}
+@media(min-width:1025px){#selection-section .check-list{grid-template-columns:1fr;}}
 
 </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9037988612895250" crossorigin="anonymous"></script>
@@ -1712,7 +1732,7 @@ function renderJob(j){
 
         ${j.description?njSecCard(njIc('file-text'),'sb-blue',kn?'ಈ ಉದ್ಯೋಗದ ಬಗ್ಗೆ':'About this Job','<div class="sec-text">'+njField(j.description,j.description_kn)+'</div>'):''}
 
-        ${j.selection_process?njSecCard(njIc('award'),'sb-orange',kn?'ಆಯ್ಕೆ ಪ್ರಕ್ರಿಯೆ':'Selection Process',njSelectionItems(njField(j.selection_process,j.selection_process_kn)),{id:'selection-section'}):''}
+        ${j.selection_process?njSecCard(njIc('award'),'sb-orange',kn?'ಆಯ್ಕೆ ಪ್ರಕ್ರಿಯೆ':'Selection Process','<div class="sel-layout">'+njSelectionItems(njField(j.selection_process,j.selection_process_kn))+'<div class="sel-illus" aria-hidden="true">📋<span class="sel-illus-target">🎯</span></div></div>',{id:'selection-section'}):''}
 
         ${j.salary?njSecCard(njIc('wallet'),'sb-green',kn?'ವೇತನ / ಪೇ ಸ್ಕೇಲ್':'Salary / Pay Scale','<div class="salary-box">'+njSalaryCell(njField(j.salary,j.salary_kn))+'</div>'):''}
 
