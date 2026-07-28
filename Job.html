@@ -729,6 +729,106 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 @media(max-width:1024px){.footer-wrap{grid-template-columns:1fr 1fr;}}
 @media(max-width:600px){.footer-wrap{grid-template-columns:1fr;gap:24px;}}
 
+/* ============================================================
+   APPROVED-DESIGN REBUILD LAYER
+   Premium light-first look (dark theme preserved via var() tokens).
+   New, self-contained components — none of the existing rules,
+   the sidebar/similar/related class names, the theme override
+   block or the language system are altered.
+   ============================================================ */
+
+/* ---- Breadcrumb bar (navy accent strip in BOTH themes) ---- */
+.crumb-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  background:linear-gradient(135deg,#0c1f4a,#15316f);border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;padding:12px 20px;margin-bottom:18px;box-shadow:var(--shadow-soft);}
+.crumbs{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;font-weight:700;min-width:0;}
+.crumbs a{color:rgba(255,255,255,0.72);text-decoration:none;transition:color .2s;white-space:nowrap;}
+.crumbs a:hover{color:#fff;}
+.crumbs .sep{color:rgba(255,255,255,0.38);}
+.crumbs .current{color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:340px;}
+.crumb-back{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.22);color:#fff;padding:8px 15px;border-radius:10px;
+  font-size:12.5px;font-weight:700;text-decoration:none;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.crumb-back:hover{background:rgba(255,255,255,0.22);transform:translateY(-1px);}
+@media(max-width:600px){.crumbs .current{max-width:150px;}.crumb-bar{padding:11px 15px;}}
+
+/* ---- Section card + accordion (main content) ---- */
+.sec{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  margin-bottom:18px;box-shadow:var(--shadow-soft);overflow:hidden;}
+.sec-head{display:flex;align-items:center;gap:13px;width:100%;padding:17px 20px;background:transparent;
+  border:none;cursor:pointer;font-family:inherit;text-align:left;color:var(--text);transition:background .2s;}
+.sec-head:hover{background:var(--surface-2);}
+.sec-badge{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;color:#fff;font-size:19px;box-shadow:0 4px 12px rgba(0,0,0,0.18);}
+.sec-badge .nj-ic{width:20px;height:20px;}
+.sec-title{flex:1;min-width:0;font-family:var(--fhead);font-size:17px;font-weight:800;
+  color:var(--text);letter-spacing:-0.2px;line-height:1.3;}
+.sec-chevron{flex-shrink:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  border-radius:8px;color:var(--text-muted);transition:transform .3s ease;}
+.sec-chevron .nj-ic{width:17px;height:17px;}
+.sec.collapsed .sec-chevron{transform:rotate(-90deg);}
+.sec-body{padding:0 20px 20px;}
+.sec.collapsed .sec-body{display:none;}
+/* Section badge colour variants */
+.sb-blue{background:linear-gradient(135deg,#3b82f6,#2563eb);}
+.sb-red{background:linear-gradient(135deg,#f87171,#ef4444);}
+.sb-green{background:linear-gradient(135deg,#34d399,#10b981);}
+.sb-purple{background:linear-gradient(135deg,#a78bfa,#8b5cf6);}
+.sb-orange{background:linear-gradient(135deg,#fbbf24,#f59e0b);}
+.sb-teal{background:linear-gradient(135deg,#22d3ee,#0891b2);}
+
+/* ---- Vacancy total highlight ---- */
+.vac-total{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:14px;}
+.vac-total .vt-k{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);}
+.vac-total .vt-v{font-family:var(--fhead);font-size:24px;font-weight:800;color:var(--accent);line-height:1;}
+
+/* ---- Important Dates table ---- */
+.idates-wrap{border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.idates{width:100%;border-collapse:collapse;}
+.idates tr{border-bottom:1px solid var(--border);}
+.idates tr:last-child{border-bottom:none;}
+.idates td{padding:13px 16px;font-size:14px;}
+.idates td:first-child{color:var(--text-muted);font-weight:700;width:54%;}
+.idates td:last-child{color:var(--text);font-weight:800;font-family:var(--fhead);text-align:right;}
+.idates td.due{color:#ef4444;}
+.idates tr.hot{background:rgba(239,68,68,0.09);}
+
+/* ---- Plain section text ---- */
+.sec-text{color:var(--text);font-size:14px;line-height:1.75;font-weight:500;white-space:pre-wrap;}
+
+/* ---- Checklist (Selection Process) ---- */
+.check-list{display:flex;flex-direction:column;gap:10px;}
+.check-item{display:flex;gap:12px;align-items:center;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:12px;padding:12px 15px;font-size:14px;font-weight:600;color:var(--text);}
+.check-item .ci-ic{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#34d399,#10b981);
+  color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.check-item .ci-ic .nj-ic{width:14px;height:14px;}
+@media(min-width:1025px){#selection-section .check-list{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;}}
+
+/* ---- Required documents grid ---- */
+.doc-item{display:flex;align-items:center;gap:10px;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:10px;padding:11px 14px;font-size:13.5px;font-weight:600;color:var(--text);}
+.doc-item .doc-check{color:#10b981;flex-shrink:0;display:flex;}
+.doc-item .doc-check .nj-ic{width:16px;height:16px;}
+
+/* ---- Salary highlight box ---- */
+.salary-box{background:linear-gradient(135deg,rgba(16,185,129,0.13),rgba(5,150,105,0.05));
+  border:1px solid rgba(16,185,129,0.32);border-radius:14px;padding:16px 18px;}
+
+/* ---- "More jobs" banner ---- */
+.more-jobs{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;flex-wrap:wrap;
+  background:linear-gradient(135deg,rgba(255,214,10,0.16),rgba(245,158,11,0.08));
+  border:1px solid rgba(245,158,11,0.35);border-radius:14px;padding:15px 20px;margin-bottom:18px;
+  font-size:14px;font-weight:700;color:var(--text);}
+.more-jobs a{color:var(--accent);text-decoration:none;font-weight:800;}
+.more-jobs a:hover{text-decoration:underline;}
+
+/* ---- Light-theme fine-tuning for the new layer ---- */
+[data-theme=light] .sec-badge{box-shadow:0 4px 12px rgba(15,23,42,0.12);}
+[data-theme=light] .vac-total .vt-v{color:#6d28d9;}
+[data-theme=light] .more-jobs a{color:#6d28d9;}
+
 </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9037988612895250" crossorigin="anonymous"></script>
 <script src="lang.js?v=2"></script>
@@ -857,7 +957,12 @@ var NJ_SVG={
   download:{p:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>'},
   link:{p:'<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>'},
   share:{p:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5 8.6 10.5"/>'},
-  'file-text':{p:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h8M8 9h2"/>'}
+  'file-text':{p:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h8M8 9h2"/>'},
+  'chevron-down':{p:'<path d="m6 9 6 6 6-6"/>'},
+  check:{p:'<path d="M20 6 9 17l-5-5"/>'},
+  award:{p:'<circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/>'},
+  list:{p:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>'},
+  clipboard:{p:'<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>'}
 };
 function njIc(n){
   var s=NJ_SVG[n]; if(!s) return '';
@@ -1377,6 +1482,89 @@ function njToggleFaq(btn){
   if(item)item.classList.toggle('open');
 }
 
+/* ===== APPROVED-DESIGN REBUILD HELPERS (presentation only) ===== */
+/* Accordion toggle for the new .sec section cards. */
+function njToggleSec(head){
+  var s=head.closest('.sec');
+  if(s) s.classList.toggle('collapsed');
+}
+/* One reusable premium section card: [coloured icon badge] TITLE [chevron] + collapsible body. */
+function njSecCard(iconHtml,colorClass,title,bodyHtml,opts){
+  opts=opts||{};
+  if(bodyHtml==null) return '';
+  var b=String(bodyHtml).trim();
+  if(!b) return '';
+  var idAttr=opts.id?(' id="'+opts.id+'"'):'';
+  return '<div class="sec"'+idAttr+'>'
+    +'<button type="button" class="sec-head" onclick="njToggleSec(this)">'
+      +'<span class="sec-badge '+colorClass+'">'+iconHtml+'</span>'
+      +'<span class="sec-title">'+title+'</span>'
+      +'<span class="sec-chevron">'+njIc('chevron-down')+'</span>'
+    +'</button>'
+    +'<div class="sec-body">'+bodyHtml+'</div>'
+  +'</div>';
+}
+/* Breadcrumb strip: Home › Karnataka Jobs › <Dept> › <Title>, with Back to Results. */
+function njBreadcrumb(j){
+  var kn=njGetLang()==='kn';
+  var home=kn?'ಮುಖಪುಟ':'Home';
+  var kjobs=kn?'ಕರ್ನಾಟಕ ಉದ್ಯೋಗಗಳು':'Karnataka Jobs';
+  var back=kn?'← ಫಲಿತಾಂಶಗಳಿಗೆ ಹಿಂತಿರುಗಿ':'← Back to Results';
+  var dept=njField(j.dept,j.dept_kn)||'';
+  var title=njField(j.title_en,j.title_kn)||'';
+  var mid='';
+  if(dept) mid+='<span class="sep">›</span><a href="index.html">'+njEsc(dept)+'</a>';
+  return '<nav class="crumb-bar" aria-label="Breadcrumb">'
+    +'<div class="crumbs">'
+      +'<a href="index.html">'+home+'</a>'
+      +'<span class="sep">›</span><a href="index.html">'+kjobs+'</a>'
+      +mid
+      +(title?'<span class="sep">›</span><span class="current">'+njEsc(title)+'</span>':'')
+    +'</div>'
+    +'<a class="crumb-back" href="index.html">'+back+'</a>'
+  +'</nav>';
+}
+/* Important Dates as a clean label/value table (uses only the dates that exist). */
+function njDatesTable(j){
+  var kn=njGetLang()==='kn';
+  var dl=daysLeft(j.last_date);
+  var isExpiring=j.status==='open'&&dl!==null&&dl>=0&&dl<=5;
+  var rows=[];
+  if(j.notif_date) rows.push({k:kn?'ಅಧಿಸೂಚನೆ ದಿನಾಂಕ':'Notification Release Date',v:fmtDate(j.notif_date)});
+  if(j.start_status==='started') rows.push({k:kn?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start Date',v:kn?'ಈಗಾಗಲೆ ಪ್ರಾರಂಭ':'Already Started'});
+  else if(j.start_date) rows.push({k:kn?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start Date',v:fmtDate(j.start_date)});
+  rows.push({k:kn?'ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಅಂತಿಮ ದಿನಾಂಕ':'Last Date to Apply',v:j.last_date?fmtDate(j.last_date):(kn?'ಘೋಷಿಸಬೇಕಿದೆ':'To Be Announced'),due:!!j.last_date,hot:isExpiring});
+  if(dl!==null) rows.push({k:kn?'ಬಾಕಿ ಇರುವ ದಿನಗಳು':'Days Remaining',v:dl>=0?(dl+(kn?' ದಿನಗಳು':' Days')):(kn?'ಮುಕ್ತಾಯ':'Expired')});
+  if(j.custom_dates&&Array.isArray(j.custom_dates)){
+    j.custom_dates.forEach(function(cd){
+      rows.push({k:(kn&&cd.label_kn?cd.label_kn:cd.label_en)||'',v:fmtDate(cd.date)});
+    });
+  }
+  rows=rows.filter(function(r){return r.k&&r.v;});
+  if(!rows.length) return '';
+  return '<div class="idates-wrap"><table class="idates"><tbody>'
+    + rows.map(function(r){
+        return '<tr'+(r.hot?' class="hot"':'')+'><td>'+njEsc(r.k)+'</td><td'+(r.due?' class="due"':'')+'>'+njEsc(r.v)+'</td></tr>';
+      }).join('')
+    + '</tbody></table></div>';
+}
+/* Required documents → clean bordered check items. */
+function njDocItems(raw){
+  var items=njList(raw);
+  if(!items.length) return '';
+  return items.map(function(s){
+    return '<div class="doc-item"><span class="doc-check">'+njIc('check')+'</span><span>'+njEsc(s.trim())+'</span></div>';
+  }).join('');
+}
+/* Selection process → green check list. */
+function njSelectionItems(raw){
+  var items=njSteps(raw);
+  if(!items.length) return '';
+  return '<div class="check-list">'+items.map(function(s){
+    return '<div class="check-item"><span class="ci-ic">'+njIc('check')+'</span><span>'+njEsc(s)+'</span></div>';
+  }).join('')+'</div>';
+}
+
 function renderJob(j){
   const dl=daysLeft(j.last_date);
   const isOpen=j.status==='open';
@@ -1402,6 +1590,8 @@ function renderJob(j){
   document.title=ogTitle+' \u2013 Namma Jobs';
 
   let html=`
+    ${njBreadcrumb(j)}
+
     ${banner?`<div class="job-banner"><img src="${banner}" alt="${njField(j.title_en,j.title_kn)||'Job'} banner" loading="lazy" onerror="this.parentElement.style.display='none';"></div>`:''}
     <div class="hero">
       ${heroLogoHtml}
@@ -1426,90 +1616,47 @@ function renderJob(j){
 
     <div class="main-grid">
       <div>
-        ${njOverviewCards(j)}
-        ${overviewCardsHtml(j)}
+        ${(function(){
+          var vb='';
+          var vt=njTotalSeats(njField(j.seats||'',j.seats_kn)); if(vt==='0')vt='';
+          if(vt) vb+='<div class="vac-total"><span class="vt-k">'+(kn?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies')+'</span><span class="vt-v">'+njEsc(vt)+'</span></div>';
+          if(j.cats) vb+='<div style="overflow-x:auto;"><table class="cat-tbl"><thead><tr><th>'+(kn?'ವರ್ಗವಾರು ಹುದ್ದೆಗಳು':'Category-wise Vacancies')+'</th><th>'+(kn?'ಹುದ್ದೆಗಳು':'Vacancies')+'</th></tr></thead><tbody>'+njCatRows(njField(j.cats,j.cats_kn))+'</tbody></table></div>';
+          return njSecCard(njIc('users'),'sb-blue',kn?'ಹುದ್ದೆಗಳ ವಿವರ':'Vacancy Details',vb);
+        })()}
 
-        ${(j.last_date||j.start_date||j.start_status==='started'||(j.custom_dates&&j.custom_dates.length))?`
-        <div class="card">
-          <div class="card-title">${njGetLang()==='kn'?'ಪ್ರಮುಖ ದಿನಾಂಕಗಳು':'Important Dates'}</div>
-          <div class="dates-grid">
-            ${j.start_status==='started'
-              ?`<div class="date-item start"><div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start'}</div><div class="date-val">${njIc('calendar-check')} ${njGetLang()==='kn'?'ಈಗಾಗಲೇ ಪ್ರಾರಂಭವಾಗಿದೆ':'Already Started'}</div></div>`
-              :(j.start_date
-              ?`<div class="date-item start"><div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start'}</div><div class="date-val">${njIc('calendar')} ${fmtDate(j.start_date)}</div></div>`
-              :`<div class="date-item"><div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಪ್ರಾರಂಭ':'Application Start'}</div><div class="date-val">${j.status==='soon'?'TBA':(njGetLang()==='kn'?'ಈಗಲೇ ಲಭ್ಯ':'Available Now')}</div></div>`)}
-            <div class="date-item ${isExpiring?'highlight':''}">
-              <div class="date-label">${njGetLang()==='kn'?'ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಅಂತಿಮ ದಿನಾಂಕ':'Last Date to Apply'}</div>
-              <div class="date-val">${j.last_date?njIc('calendar')+' '+fmtDate(j.last_date):'<span style="color:rgba(255,255,255,0.7);">TBA</span>'}</div>
-            </div>
-            ${dl!==null?`<div class="date-item ${isExpiring?'highlight':''}"><div class="date-label">${njGetLang()==='kn'?'ಬಾಕಿ ಇರುವ ದಿನಗಳು':'Days Remaining'}</div><div class="date-val">${njIc('clock')} ${dl>=0?dl+(njGetLang()==='kn'?' ದಿನಗಳು ಬಾಕಿ':' Days Left'):(njGetLang()==='kn'?'ಮುಕ್ತಾಯಗೊಂಡಿದೆ':'Expired')}</div></div>`:''}
-            ${(j.custom_dates&&Array.isArray(j.custom_dates))?j.custom_dates.map(cd=>`
-              <div class="date-item">
-                <div class="date-label">${njGetLang()==='kn'&&cd.label_kn?cd.label_kn:cd.label_en}</div>
-                <div class="date-val">${njIc('calendar')} ${fmtDate(cd.date)}</div>
-              </div>
-            `).join(''):''}
-          </div>
-        </div>`:''}
+        ${njSecCard(njIc('calendar'),'sb-red',kn?'ಪ್ರಮುಖ ದಿನಾಂಕಗಳು':'Important Dates',njDatesTable(j))}
 
-        ${j.description?`
-        <div class="card">
-          <div class="card-title">${njGetLang()==="kn"?"ಈ ಉದ್ಯೋಗದ ಬಗ್ಗೆ":"About this Job"}</div>
-          <div class="vbox-sec" style="color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;white-space:pre-wrap;">${njField(j.description,j.description_kn)}</div>
-        </div>`:''}
+        ${j.fee?njSecCard(njIc('credit-card'),'sb-green',kn?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee',njFeeCell(njField(j.fee,j.fee_kn))):''}
 
-        ${j.cats?`
-        <div class="card">
-          <div class="card-title">${njGetLang()==="kn"?"ವರ್ಗವಾರು ಹುದ್ದೆಗಳು":"Category-wise Vacancies"}</div>
-          <div class="vbox-sec" style="overflow-x:auto;"><table class="cat-tbl">
-            <thead><tr><th>${njGetLang()==='kn'?'ವರ್ಗ':'Category'}</th><th>${njGetLang()==='kn'?'ಹುದ್ದೆಗಳು':'Vacancies'}</th></tr></thead>
-            <tbody>
-              ${njCatRows(njField(j.cats,j.cats_kn))}
-            </tbody>
-          </table></div>
-        </div>`:''}
+        ${j.age?njSecCard(njIc('user-check'),'sb-purple',kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit',njAgeCell(njField(j.age,j.age_kn))):''}
 
-        ${j.selection_process?`
-        <div class="card">
-          <div class="card-title">${njGetLang()==='kn'?'🏆 ಆಯ್ಕೆ ಪ್ರಕ್ರಿಯೆ':'🏆 Selection Process'}</div>
-          <div class="steps">
-            ${njSteps(njField(j.selection_process,j.selection_process_kn)).map((s,i)=>`
-              <div class="step"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>
-            `).join('')}
-          </div>
-        </div>`:''}
+        ${j.skills?njSecCard(njIc('graduation-cap'),'sb-blue',kn?'ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆ':'Educational Qualification',njQualCell(njField(j.skills,j.skills_kn))):''}
 
-        ${j.required_docs?`
-        <div class="card">
-          <div class="card-title">${njGetLang()==='kn'?'📋 ಅಗತ್ಯ ದಾಖಲೆಗಳು':'📋 Required Documents'}</div>
-          <div class="req-docs">
-            ${njList(njField(j.required_docs,j.required_docs_kn)).map(s=>`
-              <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;">
-                <span style="color:#4ade80;font-size:16px;flex-shrink:0;">✅</span>
-                <span style="font-size:14px;color:rgba(255,255,255,0.9);font-weight:600;">${s.trim()}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>`:''}
+        ${(function(){
+          var tags=(kn&&j.tags_kn?j.tags_kn:j.tags);
+          if(!tags) return '';
+          var chips=tags.split(',').map(function(t){return '<span class="qual-chip">'+njIc('graduation-cap')+njEsc(t.trim())+'</span>';}).join(' ');
+          return njSecCard(njIc('tag'),'sb-teal',kn?'ಅರ್ಹತಾ ಟ್ಯಾಗ್‌ಗಳು':'Eligibility Tags','<div class="qual-wrap">'+chips+'</div>');
+        })()}
 
-        ${j.syllabus?`
-        <div class="card">
-          <div class="card-title">${njGetLang()==="kn"?"ಪರೀಕ್ಷಾ ಪಠ್ಯಕ್ರಮ":"Exam Syllabus"}</div>
-          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;">
-            ${njField(j.syllabus,j.syllabus_kn).split('\n').filter(function(l){return l.trim();}).map(function(l){return `<li style="display:flex;align-items:flex-start;gap:8px;color:rgba(255,255,255,0.92);font-size:14px;line-height:1.7;font-weight:500;"><span style="flex-shrink:0;margin-top:2px;">•</span><span>${l.trim()}</span></li>`;}).join('')}
-          </ul>
-          ${j.syllabus_url?`<div style="margin-top:12px;"><a href="${j.syllabus_url}" target="_blank" class="btn-apply-main" style="display:inline-flex;font-size:13px;padding:10px 20px;">${njIc('download')} Download Syllabus PDF</a></div>`:''}
-        </div>`:''}
+        ${j.description?njSecCard(njIc('file-text'),'sb-blue',kn?'ಈ ಉದ್ಯೋಗದ ಬಗ್ಗೆ':'About this Job','<div class="sec-text">'+njField(j.description,j.description_kn)+'</div>'):''}
 
-        ${njField(j.how_to_apply,j.how_to_apply_kn)?`
-        <div class="card" id="apply-section">
-          <div class="card-title">${njGetLang()==='kn'?'ಅರ್ಜಿ ಹೇಗೆ ಸಲ್ಲಿಸುವುದು':'How to Apply'}</div>
-          <div class="steps">
-            ${njSteps(njField(j.how_to_apply,j.how_to_apply_kn)).map((s,i)=>`
-              <div class="step"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>
-            `).join('')}
-          </div>
-        </div>`:''}
+        ${j.selection_process?njSecCard(njIc('award'),'sb-orange',kn?'ಆಯ್ಕೆ ಪ್ರಕ್ರಿಯೆ':'Selection Process',njSelectionItems(njField(j.selection_process,j.selection_process_kn)),{id:'selection-section'}):''}
+
+        ${j.salary?njSecCard(njIc('wallet'),'sb-green',kn?'ವೇತನ / ಪೇ ಸ್ಕೇಲ್':'Salary / Pay Scale','<div class="salary-box">'+njSalaryCell(njField(j.salary,j.salary_kn))+'</div>'):''}
+
+        ${j.required_docs?njSecCard(njIc('clipboard'),'sb-purple',kn?'ಅಗತ್ಯ ದಾಖಲೆಗಳು':'Required Documents','<div class="req-docs">'+njDocItems(njField(j.required_docs,j.required_docs_kn))+'</div>'):''}
+
+        ${j.syllabus?njSecCard(njIc('file-text'),'sb-teal',kn?'ಪರೀಕ್ಷಾ ಪಠ್ಯಕ್ರಮ':'Exam Syllabus',
+          '<ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;">'
+          +njField(j.syllabus,j.syllabus_kn).split('\n').filter(function(l){return l.trim();}).map(function(l){return '<li style="display:flex;align-items:flex-start;gap:8px;" class="sec-text"><span style="flex-shrink:0;margin-top:2px;color:var(--accent);">•</span><span>'+l.trim()+'</span></li>';}).join('')
+          +'</ul>'
+          +(j.syllabus_url?'<div style="margin-top:14px;"><a href="'+j.syllabus_url+'" target="_blank" class="btn-apply-main" style="display:inline-flex;font-size:13px;padding:10px 20px;">'+njIc('download')+' '+(kn?'ಪಠ್ಯಕ್ರಮ PDF ಡೌನ್‌ಲೋಡ್':'Download Syllabus PDF')+'</a></div>':'')
+        ):''}
+
+        ${njField(j.how_to_apply,j.how_to_apply_kn)?njSecCard(njIc('list'),'sb-orange',kn?'ಅರ್ಜಿ ಹೇಗೆ ಸಲ್ಲಿಸುವುದು':'How to Apply',
+          '<div class="steps">'+njSteps(njField(j.how_to_apply,j.how_to_apply_kn)).map(function(s,i){return '<div class="step"><div class="step-num">'+(i+1)+'</div><div class="step-text">'+s+'</div></div>';}).join('')+'</div>',
+          {id:'apply-section'}):''}
 
         ${(function(){
           var faq=njField(j.faq_en,j.faq_kn);
@@ -1519,31 +1666,19 @@ function renderJob(j){
             var q=(parts[0]||'').trim();
             var a=parts.slice(1).join('|').trim();
             if(!q)return '';
-            return `<div class="faq-item${i===0?' open':''}">
-              <button type="button" class="faq-q" onclick="njToggleFaq(this)">
-                <span>${q}</span>
-                <span class="faq-ic">+</span>
-              </button>
-              ${a?`<div class="faq-a"><div class="faq-a-inner">${a}</div></div>`:''}
-            </div>`;
+            return '<div class="faq-item'+(i===0?' open':'')+'">'
+              +'<button type="button" class="faq-q" onclick="njToggleFaq(this)"><span>'+q+'</span><span class="faq-ic">+</span></button>'
+              +(a?'<div class="faq-a"><div class="faq-a-inner">'+a+'</div></div>':'')
+            +'</div>';
           }).join('');
           if(!items.trim())return '';
-          return `<div class="card">
-            <div class="card-title">${njGetLang()==='kn'?'❓ ಪದೇ ಪದೇ ಕೇಳಲಾಗುವ ಪ್ರಶ್ನೆಗಳು':'❓ Frequently Asked Questions'}</div>
-            <div class="faq-list">${items}</div>
-          </div>`;
+          return njSecCard(njIc('file-text'),'sb-purple',kn?'ಪದೇ ಪದೇ ಕೇಳಲಾಗುವ ಪ್ರಶ್ನೆಗಳು':'Frequently Asked Questions','<div class="faq-list">'+items+'</div>');
         })()}
 
         ${(function(){
           var tips=njField(j.tips_en,j.tips_kn);
           if(!tips||!tips.trim())return '';
-          return `<div class="card">
-            <div class="card-title">${njGetLang()==='kn'?'💡 ನಮ್ಮ ಜಾಬ್ಸ್ ತಜ್ಞರ ಸಲಹೆಗಳು':'💡 NammaJobs Expert Tips'}</div>
-            <div class="tips-card">
-              <div class="tips-ic">💡</div>
-              <div class="tips-body">${tips}</div>
-            </div>
-          </div>`;
+          return njSecCard('💡','sb-orange',kn?'ನಮ್ಮ ಜಾಬ್ಸ್ ತಜ್ಞರ ಸಲಹೆಗಳು':'NammaJobs Expert Tips','<div class="tips-card"><div class="tips-ic">💡</div><div class="tips-body">'+tips+'</div></div>');
         })()}
 
         <div id="similar-jobs-section"></div>
@@ -1552,15 +1687,23 @@ function renderJob(j){
 
         ${actionBarHtml(j)}
 
-        <div class="card" id="share-section">
-          <div class="card-title">${njGetLang()==="kn"?"ಈ ಉದ್ಯೋಗವನ್ನು ಹಂಚಿಕೊಳ್ಳಿ":"Share this Job"}</div>
-          <div class="share-row">
-            <button class="share-btn sb-wa" onclick="shareWA()">${njIc('wa')} WhatsApp</button>
-            <button class="share-btn sb-tg" onclick="shareTG()">${njIc('tg')} Telegram</button>
-            <button class="share-btn sb-cp" id="copy-btn" onclick="copyLink()">${njIc('link')} ${njGetLang()==='kn'?'ಲಿಂಕ್ ಕಾಪಿ ಮಾಡಿ':'Copy Link'}</button>
-            <button class="share-btn sb-cp" onclick="shareNative()">${njIc('share')} ${njGetLang()==='kn'?'ಹಂಚಿಕೊಳ್ಳಿ':'Share'}</button>
+        <div class="sec" id="share-section">
+          <button type="button" class="sec-head" onclick="njToggleSec(this)">
+            <span class="sec-badge sb-teal">${njIc('share')}</span>
+            <span class="sec-title">${kn?'ಈ ಉದ್ಯೋಗವನ್ನು ಹಂಚಿಕೊಳ್ಳಿ':'Share This Job'}</span>
+            <span class="sec-chevron">${njIc('chevron-down')}</span>
+          </button>
+          <div class="sec-body">
+            <div class="share-row">
+              <button class="share-btn sb-wa" onclick="shareWA()">${njIc('wa')} WhatsApp</button>
+              <button class="share-btn sb-tg" onclick="shareTG()">${njIc('tg')} Telegram</button>
+              <button class="share-btn sb-cp" id="copy-btn" onclick="copyLink()">${njIc('link')} ${kn?'ಲಿಂಕ್ ಕಾಪಿ ಮಾಡಿ':'Copy Link'}</button>
+              <button class="share-btn sb-cp" onclick="shareNative()">${njIc('share')} ${kn?'ಹಂಚಿಕೊಳ್ಳಿ':'Share'}</button>
+            </div>
           </div>
         </div>
+
+        <div class="more-jobs">📌 ${kn?'ಹೆಚ್ಚಿನ ಸರ್ಕಾರಿ ಉದ್ಯೋಗಗಳಿಗಾಗಿ ಭೇಟಿ ನೀಡಿ':'For more government jobs visit'} <a href="index.html">NammaJobs.co.in</a> ⭐</div>
       </div>
 
       <div id="sidebar"></div>
@@ -1568,6 +1711,11 @@ function renderJob(j){
   `;
 
   document.getElementById('main-content').innerHTML=html;
+
+  // Accordion sections start collapsed on mobile (expanded on desktop/tablet).
+  if(window.matchMedia && window.matchMedia('(max-width:768px)').matches){
+    document.querySelectorAll('#main-content .sec').forEach(function(s){s.classList.add('collapsed');});
+  }
 }
 
 function renderSidebar(currentJob,jobs){
