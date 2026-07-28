@@ -472,6 +472,28 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
               <input type="checkbox" id="f-ld-tba" onchange="toggleTBA('f-ld',this.checked)">
               <span class="tba-label">⚠️ Last Date not yet confirmed (To Be Announced)</span>
             </label>
+            <!-- Additional optional dates (UI only — not yet wired to save/parser/database). -->
+            <div class="fsec" style="margin-top:18px;">📅 Additional Dates (Optional)</div>
+            <div class="row2">
+              <div>
+                <label>Fee Payment Last Date</label>
+                <input type="date" id="f-fee-last-date">
+              </div>
+              <div>
+                <label>Exam Date</label>
+                <input type="date" id="f-exam-date">
+              </div>
+            </div>
+            <div class="row2" style="margin-top:14px;">
+              <div>
+                <label>Admit Card Release Date</label>
+                <input type="date" id="f-admit-card-date">
+              </div>
+              <div>
+                <label>Result Date</label>
+                <input type="date" id="f-result-date">
+              </div>
+            </div>
             <div class="fsec" style="margin-top:18px;">📅 Custom Important Dates (Optional)</div>
             <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Add Walk-In Interview, Document Verification, Reporting Date, etc.</div>
             <div id="custom-dates-list"></div>
