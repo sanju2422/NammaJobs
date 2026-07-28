@@ -70,6 +70,7 @@
 [data-theme=light] .tbtn:not(.primary):not(.tbtn-tg):not(.tbtn-wa):hover{background:#e2e8f0;border-color:#cbd5e1;}
 [data-theme=light] .lang-toggle{background:#f1f5f9;border-color:#e2e8f0;}
 [data-theme=light] .lang-toggle-btn{color:#475569;}
+[data-theme=light] .lang-toggle-btn.lang-active{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,0.35);}
 [data-theme=light] .lang-toggle-btn:hover:not(.lang-active){color:#0f2b5c;background:#e2e8f0;}
 [data-theme=light] .hdr-search input{background:#f1f5f9;border-color:#e2e8f0;color:#0f172a;}
 [data-theme=light] .hdr-search input::placeholder{color:#94a3b8;}
@@ -603,11 +604,30 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
 .hero-chip{display:inline-flex;align-items:center;gap:6px;background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);color:#fff;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;min-width:0;max-width:100%;}
 .hero-chip .chip-txt{display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:280px;vertical-align:bottom;}
+/* Coloured hero chips to match the approved design (dept=blue, category=green, location=violet). */
+.hero-chip.hc-blue{background:rgba(37,99,235,0.16);border-color:rgba(37,99,235,0.45);color:#bfdbfe;}
+.hero-chip.hc-blue .nj-ic{color:#60a5fa;}
+.hero-chip.hc-green{background:rgba(16,185,129,0.16);border-color:rgba(16,185,129,0.45);color:#bbf7d0;}
+.hero-chip.hc-green .nj-ic{color:#34d399;}
+.hero-chip.hc-violet{background:rgba(139,92,246,0.18);border-color:rgba(139,92,246,0.5);color:#ddd6fe;}
+.hero-chip.hc-violet .nj-ic{color:#a78bfa;}
+[data-theme=light] .hero-chip.hc-blue{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8;}
+[data-theme=light] .hero-chip.hc-blue .nj-ic{color:#2563eb;}
+[data-theme=light] .hero-chip.hc-green{background:#ecfdf5;border-color:#a7f3d0;color:#047857;}
+[data-theme=light] .hero-chip.hc-green .nj-ic{color:#059669;}
+[data-theme=light] .hero-chip.hc-violet{background:#f5f3ff;border-color:#ddd6fe;color:#6d28d9;}
+[data-theme=light] .hero-chip.hc-violet .nj-ic{color:#7c3aed;}
 @media(max-width:768px){.hero-chips{justify-content:center;}.hero-chip .chip-txt{max-width:210px;}}
 .hero-lastdate{flex-shrink:0;align-self:flex-start;background:rgba(255,87,87,0.16);border:2px solid rgba(255,87,87,0.5);border-radius:14px;padding:12px 18px;text-align:center;min-width:150px;}
-.ld-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,0.85);margin-bottom:5px;display:flex;align-items:center;gap:5px;justify-content:center;}
+.ld-label{font-size:11px;font-weight:800;letter-spacing:.01em;color:rgba(255,255,255,0.85);margin-bottom:5px;display:flex;align-items:center;gap:5px;justify-content:center;}
 .ld-val{font-family:var(--fhead);font-size:17px;font-weight:800;color:#ff9a9a;}
 @media(max-width:768px){.hero-lastdate{width:100%;}}
+/* Status badge pinned to the hero's top-right corner on tablet/desktop (matches approved design). */
+@media(min-width:769px){
+  .hero{position:relative;}
+  .hero-content>.hero-badge{position:absolute;top:22px;right:26px;margin-bottom:0;z-index:3;}
+  .hero-lastdate{margin-top:34px;}
+}
 
 /* ---- Job Overview strip: 4 quick stats ---- */
 .ov-strip{display:grid;grid-template-columns:repeat(4,1fr);background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:var(--radius);margin-bottom:18px;box-shadow:var(--shadow-soft);overflow:hidden;}
@@ -1598,10 +1618,11 @@ function renderJob(j){
       <div class="hero-content">
         ${badgeForJob(j,dl)}
         <h1>${njField(j.title_en,j.title_kn)||''}</h1>
+        ${(j.title_en&&j.title_kn)?`<div class="hero-h1-kn">${njGetLang()==='kn'?j.title_en:j.title_kn}</div>`:''}
         <div class="hero-chips">
-          ${njField(j.dept,j.dept_kn)?`<span class="hero-chip">${njIc('building')} <span class="chip-txt">${njField(j.dept,j.dept_kn)}</span></span>`:''}
-          ${njField(j.cat,j.cat_kn)?`<span class="hero-chip">${njIc('tag')} <span class="chip-txt">${njTitleCase(njField(j.cat,j.cat_kn))}</span></span>`:''}
-          ${njField(j.loc,j.loc_kn)?`<span class="hero-chip">${njIc('map-pin')} <span class="chip-txt">${njField(j.loc,j.loc_kn)}</span></span>`:''}
+          ${njField(j.dept,j.dept_kn)?`<span class="hero-chip hc-blue">${njIc('building')} <span class="chip-txt">${njField(j.dept,j.dept_kn)}</span></span>`:''}
+          ${njField(j.cat,j.cat_kn)?`<span class="hero-chip hc-green">${njIc('tag')} <span class="chip-txt">${njTitleCase(njField(j.cat,j.cat_kn))}</span></span>`:''}
+          ${njField(j.loc,j.loc_kn)?`<span class="hero-chip hc-violet">${njIc('map-pin')} <span class="chip-txt">${njField(j.loc,j.loc_kn)}</span></span>`:''}
         </div>
       </div>
       ${j.last_date?`<div class="hero-lastdate">
