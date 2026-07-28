@@ -84,7 +84,7 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.5);font-weight
 input:focus,textarea:focus{background:rgba(255,255,255,0.15);border-color:rgba(168,85,247,0.6);}
 input[type=date]{color-scheme:dark;}
 
-textarea{min-height:90px;resize:vertical;line-height:1.5;}
+textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
 
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:600px){.row2{grid-template-columns:1fr;}}
@@ -92,7 +92,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
 .fsec{font-family:var(--fhead);font-size:14px;font-weight:800;color:#c4b5fd;margin-top:24px;margin-bottom:10px;padding-top:14px;border-top:1.5px solid rgba(255,255,255,0.12);display:flex;align-items:center;gap:8px;}
 .fsec:first-of-type{margin-top:8px;border-top:none;padding-top:0;}
 
-.url-hint{font-size:11px;color:rgba(255,193,7,0.95);margin-top:6px;font-weight:600;}
+.url-hint{font-size:11px;color:rgba(255,193,7,0.82);margin-top:6px;font-weight:500;line-height:1.5;}
 
 /* Category & Status buttons */
 .cat-grid,.st-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
@@ -154,6 +154,21 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
 /* Second label inside a stacked card (e.g. a Kannada label below the first input)
    still needs its top spacing; only the paired top labels are pinned above. */
 .row2 label+*{margin-top:0;}
+
+/* ===== GLOBAL VISUAL RHYTHM (UI only; consistent spacing everywhere) ===== */
+/* Consistent card padding + radius across every card in the panel. */
+.bi-card{padding:18px;border-radius:14px;}
+/* Consistent label→input distance and equal input spacing everywhere. */
+.bi-card>label{margin-top:16px;}
+.bi-card>label:first-of-type{margin-top:0;}
+.bi-card .row2{margin-top:0;}
+/* Second stacked row inside a card keeps an even rhythm. */
+.bi-card .row2+.row2{margin-top:14px;}
+/* Helper text sits close to its field; lighter, easy to scan. */
+.bi-card .url-hint,.bi-card .bi-note{margin-bottom:0;}
+/* Equal, comfortable spacing between the section heading and its grid. */
+.bi-head{margin:22px 0 14px;}
+.bi-head:first-of-type{margin-top:4px;}
 
 /* ===== PREMIUM PUBLISH ACTION BAR (functionality unchanged) ===== */
 .pub-bar{background:linear-gradient(135deg,rgba(124,58,237,0.14),rgba(59,130,246,0.10));border-color:var(--glass-border-strong);}
