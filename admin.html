@@ -366,81 +366,116 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
 
         </div>
 
-        <div class="row2">
-          <div><label>Total Vacancies (English)</label><input type="text" id="f-seats" placeholder="120 (Karnataka 26, Central 94)"></div>
-          <div><label>Total Vacancies (ಕನ್ನಡ)</label><input type="text" id="f-seats-kn" placeholder="೧೨೦ (ಕರ್ನಾಟಕ ೨೬, ಕೇಂದ್ರ ೯೪)" style="font-family:var(--fkn);"></div>
+        <div class="bi-grid" style="margin-top:16px;">
+
+          <!-- VACANCIES -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">👥</span> Vacancies</div>
+            <div class="row2">
+              <div><label>Total Vacancies (English)</label><input type="text" id="f-seats" placeholder="120 (Karnataka 26, Central 94)"></div>
+              <div><label>Total Vacancies (ಕನ್ನಡ)</label><input type="text" id="f-seats-kn" placeholder="೧೨೦ (ಕರ್ನಾಟಕ ೨೬, ಕೇಂದ್ರ ೯೪)" style="font-family:var(--fkn);"></div>
+            </div>
+            <label class="tba-row">
+              <input type="checkbox" id="f-seats-tba" onchange="toggleSeatsTBA(this.checked)">
+              <span class="tba-label">⚠️ Vacancies not yet confirmed (To Be Announced)</span>
+            </label>
+          </div>
+
+          <!-- SALARY -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">💰</span> Salary</div>
+            <div class="row2">
+              <div><label>Salary / Pay Scale (English)</label><input type="text" id="f-sal" placeholder="₹35,400-1,12,400"></div>
+              <div><label>Salary / Pay Scale (ಕನ್ನಡ)</label><input type="text" id="f-sal-kn" placeholder="₹35,400-1,12,400 (ಕನ್ನಡದಲ್ಲಿ — optional)" style="font-family:var(--fkn);" title="Salary in Kannada"></div>
+            </div>
+            <label class="tba-row">
+              <input type="checkbox" id="f-sal-tba" onchange="toggleSalTBA(this.checked)">
+              <span class="tba-label">⚠️ Salary not yet confirmed (To Be Announced)</span>
+            </label>
+          </div>
+
+          <!-- AGE LIMIT -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">🎂</span> Age Limit</div>
+            <div class="row2">
+              <div><label>Age Limit (English)</label><input type="text" id="f-age" placeholder="18-35 years"></div>
+              <div><label>Age Limit (ಕನ್ನಡ)</label><input type="text" id="f-age-kn" placeholder="೧೮-೩೫ ವರ್ಷಗಳು" style="font-family:var(--fkn);"></div>
+            </div>
+          </div>
+
+          <!-- IMPORTANT DATES -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">📅</span> Important Dates</div>
+            <div class="row2">
+              <div>
+                <label>Start Date (Apply From)</label>
+                <input type="date" id="f-sd">
+              </div>
+              <div>
+                <label>Last Date</label>
+                <input type="date" id="f-ld">
+              </div>
+            </div>
+            <label class="tba-row">
+              <input type="checkbox" id="f-sd-tba" onchange="toggleTBA('f-sd',this.checked);if(this.checked)document.getElementById('f-sd-started').checked=false;">
+              <span class="tba-label">⚠️ Start Date not yet confirmed (To Be Announced)</span>
+            </label>
+            <label class="tba-row" style="background:rgba(76,217,100,0.12);border-color:rgba(76,217,100,0.3);">
+              <input type="checkbox" id="f-sd-started" onchange="toggleStarted(this.checked)" style="accent-color:#4cd964;">
+              <span class="tba-label" style="color:#86efac;">✅ Already Started – Applications are open (exact date not confirmed)</span>
+            </label>
+            <label class="tba-row">
+              <input type="checkbox" id="f-ld-tba" onchange="toggleTBA('f-ld',this.checked)">
+              <span class="tba-label">⚠️ Last Date not yet confirmed (To Be Announced)</span>
+            </label>
+            <div class="fsec" style="margin-top:18px;">📅 Custom Important Dates (Optional)</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Add Walk-In Interview, Document Verification, Reporting Date, etc.</div>
+            <div id="custom-dates-list"></div>
+            <button type="button" onclick="addCustomDateRow()" style="background:var(--glass-bg);border:1.5px dashed var(--glass-border-strong);color:#c4b5fd;padding:10px 16px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px;width:100%;">➕ Add Custom Date</button>
+          </div>
+
+          <!-- APPLICATION FEE -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">💳</span> Application Fee</div>
+            <div class="row2">
+              <div><label>Fee (English)</label><input type="text" id="f-fee" placeholder="Gen: ₹500 | SC/ST: ₹250"></div>
+              <div><label>Fee (ಕನ್ನಡ)</label><input type="text" id="f-fee-kn" placeholder="Gen: ₹500 | SC/ST: ₹250 (ಕನ್ನಡದಲ್ಲಿ — optional)" style="font-family:var(--fkn);" title="Fee in Kannada"></div>
+            </div>
+            <label class="tba-row">
+              <input type="checkbox" id="f-fee-tba" onchange="toggleFeeTBA(this.checked)">
+              <span class="tba-label">⚠️ Application Fee not yet confirmed (To Be Announced)</span>
+            </label>
+          </div>
+
+          <!-- OFFICIAL LINKS -->
+          <div class="bi-card">
+            <div class="bi-card-hd"><span class="bi-ic">🔗</span> Official Links</div>
+            <label>🌐 Official Website Link</label>
+            <input type="url" id="f-url" placeholder="https://kpsc.kar.nic.in">
+            <div class="url-hint">⚠️ This URL opens when user clicks "Visit Official Website" button</div>
+            <label style="margin-top:14px;">📋 Apply Now Link (Direct Apply Page)</label>
+            <input type="url" id="f-apply-link" placeholder="https://kpsc.kar.nic.in/apply">
+            <div class="url-hint">⚠️ This URL opens when user clicks "Apply Now" button (if different from official site)</div>
+          </div>
+
+          <!-- JOB BANNER (single banner; used for both English & Kannada Job Details pages) -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🖼️</span> Job Banner</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Upload a banner (JPG, PNG or WebP) or paste a direct image URL. Shown on the Job Details page and used as the social-share preview image. The same banner is used for both English and Kannada pages. Leave blank to use the default share image.</div>
+            <label>Banner URL</label>
+            <input type="url" id="f-banner-en" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-en')">
+            <label style="margin-top:12px;">Upload Banner</label>
+            <input type="file" id="f-banner-en-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-en')" style="margin-top:2px;font-size:12px;color:rgba(255,255,255,0.7);">
+            <div id="f-banner-en-prev" class="banner-prev"></div>
+            <!-- Legacy Kannada banner fields retained (hidden) for 100% backward compatibility with existing save/edit/upload logic. -->
+            <div style="display:none;" aria-hidden="true">
+              <input type="url" id="f-banner-kn" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-kn')">
+              <input type="file" id="f-banner-kn-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-kn')">
+              <div id="f-banner-kn-prev" class="banner-prev"></div>
+            </div>
+          </div>
+
         </div>
-        <label class="tba-row">
-          <input type="checkbox" id="f-seats-tba" onchange="toggleSeatsTBA(this.checked)">
-          <span class="tba-label">⚠️ Vacancies not yet confirmed (To Be Announced)</span>
-        </label>
-
-        <label style="margin-top:14px;">Salary / Pay Scale</label>
-        <input type="text" id="f-sal" placeholder="₹35,400-1,12,400">
-        <label class="tba-row">
-          <input type="checkbox" id="f-sal-tba" onchange="toggleSalTBA(this.checked)">
-          <span class="tba-label">⚠️ Salary not yet confirmed (To Be Announced)</span>
-        </label>
-        <input type="text" id="f-sal-kn" placeholder="₹35,400-1,12,400 (ಕನ್ನಡದಲ್ಲಿ — optional)" style="margin-top:6px;font-family:var(--fkn);" title="Salary in Kannada">
-
-        <div class="row2">
-          <div><label>Age Limit (English)</label><input type="text" id="f-age" placeholder="18-35 years"></div>
-          <div><label>Age Limit (ಕನ್ನಡ)</label><input type="text" id="f-age-kn" placeholder="೧೮-೩೫ ವರ್ಷಗಳು" style="font-family:var(--fkn);"></div>
-        </div>
-
-        <!-- START DATE with TBA -->
-        <label>Start Date (Apply From)</label>
-        <input type="date" id="f-sd">
-        <label class="tba-row">
-          <input type="checkbox" id="f-sd-tba" onchange="toggleTBA('f-sd',this.checked);if(this.checked)document.getElementById('f-sd-started').checked=false;">
-          <span class="tba-label">⚠️ Start Date not yet confirmed (To Be Announced)</span>
-        </label>
-        <label class="tba-row" style="background:rgba(76,217,100,0.12);border-color:rgba(76,217,100,0.3);">
-          <input type="checkbox" id="f-sd-started" onchange="toggleStarted(this.checked)" style="accent-color:#4cd964;">
-          <span class="tba-label" style="color:#86efac;">✅ Already Started – Applications are open (exact date not confirmed)</span>
-        </label>
-
-        <!-- LAST DATE with TBA -->
-        <label style="margin-top:14px;">Last Date</label>
-        <input type="date" id="f-ld">
-        <label class="tba-row">
-          <input type="checkbox" id="f-ld-tba" onchange="toggleTBA('f-ld',this.checked)">
-          <span class="tba-label">⚠️ Last Date not yet confirmed (To Be Announced)</span>
-        </label>
-
-        <!-- CUSTOM IMPORTANT DATES -->
-        <div class="fsec" style="margin-top:20px;">📅 Custom Important Dates (Optional)</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Add Walk-In Interview, Document Verification, Reporting Date, etc.</div>
-        <div id="custom-dates-list"></div>
-        <button type="button" onclick="addCustomDateRow()" style="background:var(--glass-bg);border:1.5px dashed var(--glass-border-strong);color:#c4b5fd;padding:10px 16px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px;width:100%;">➕ Add Custom Date</button>
-
-        <!-- APPLICATION FEE with TBA -->
-        <label style="margin-top:14px;">Application Fee</label>
-        <input type="text" id="f-fee" placeholder="Gen: ₹500 | SC/ST: ₹250">
-        <label class="tba-row">
-          <input type="checkbox" id="f-fee-tba" onchange="toggleFeeTBA(this.checked)">
-          <span class="tba-label">⚠️ Application Fee not yet confirmed (To Be Announced)</span>
-        </label>
-        <input type="text" id="f-fee-kn" placeholder="Gen: ₹500 | SC/ST: ₹250 (ಕನ್ನಡದಲ್ಲಿ — optional)" style="margin-top:6px;font-family:var(--fkn);" title="Fee in Kannada">
-
-        <div class="fsec">🌐 Official Website Link</div>
-        <input type="url" id="f-url" placeholder="https://kpsc.kar.nic.in">
-        <div class="url-hint">⚠️ This URL opens when user clicks "Visit Official Website" button</div>
-
-        <div class="fsec">📋 Apply Now Link (Direct Apply Page)</div>
-        <input type="url" id="f-apply-link" placeholder="https://kpsc.kar.nic.in/apply">
-        <div class="url-hint">⚠️ This URL opens when user clicks "Apply Now" button (if different from official site)</div>
-
-        <div class="fsec" style="margin-top:20px;">🖼️ Job Banner (Optional)</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Upload a banner (JPG, PNG or WebP) or paste a direct image URL. Shown on the Job Details page and used as the social-share preview image. Leave blank to use the default share image.</div>
-        <label style="font-size:12px;color:#4ade80;">English Banner</label>
-        <input type="url" id="f-banner-en" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-en')">
-        <input type="file" id="f-banner-en-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-en')" style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.7);">
-        <div id="f-banner-en-prev" class="banner-prev"></div>
-        <label style="margin-top:10px;font-size:12px;color:#4ade80;">Kannada Banner</label>
-        <input type="url" id="f-banner-kn" placeholder="https://...  (or upload below)" oninput="showBannerPreview('f-banner-kn')">
-        <input type="file" id="f-banner-kn-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'f-banner-kn')" style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.7);">
-        <div id="f-banner-kn-prev" class="banner-prev"></div>
 
         <label>Category-wise Vacancies</label>
         <input type="text" id="f-cats" placeholder="SC-24, ST-12, OBC-32, Gen-52">
