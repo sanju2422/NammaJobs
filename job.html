@@ -832,14 +832,30 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .doc-item .doc-check{color:#10b981;flex-shrink:0;display:flex;}
 .doc-item .doc-check .nj-ic{width:16px;height:16px;}
 
-/* ---- Salary highlight box ---- */
-.salary-box{background:linear-gradient(135deg,rgba(16,185,129,0.13),rgba(5,150,105,0.05));
-  border:1px solid rgba(16,185,129,0.32);border-radius:14px;padding:16px 18px;}
-/* Salary text sits as plain green text inside the box (matches approved design),
-   while preserving the multi-level stacking produced by njSalaryCell. */
-.salary-box .qual-wrap{flex-direction:column;align-items:flex-start;gap:6px;}
-.salary-box .qual-chip{background:transparent;border:none;padding:0;font-size:15px;font-weight:700;color:#059669;line-height:1.5;}
-[data-theme=dark] .salary-box .qual-chip{color:#4ade80;}
+/* ---- Salary highlight box (presentation only; data/logic unchanged) ---- */
+.salary-box{background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(5,150,105,0.04));
+  border:1px solid rgba(16,185,129,0.28);border-radius:16px;padding:16px;}
+/* Each pay level from njSalaryCell renders as a clean, readable row card with a
+   ₹ badge and a green left accent — stacking of multiple levels is preserved. */
+.salary-box .qual-wrap{flex-direction:column;align-items:stretch;gap:10px;width:100%;}
+.salary-box .qual-chip{
+  display:flex;align-items:center;gap:12px;width:100%;
+  background:var(--surface);border:1px solid rgba(16,185,129,0.28);
+  border-left:4px solid #10b981;border-radius:12px;
+  padding:13px 15px;font-size:15px;font-weight:700;line-height:1.5;
+  color:var(--text);letter-spacing:.1px;
+  box-shadow:0 2px 8px rgba(16,185,129,0.10);
+  transition:transform .18s,box-shadow .18s;}
+.salary-box .qual-chip:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(16,185,129,0.18);}
+.salary-box .qual-chip::before{
+  content:'\20b9';flex-shrink:0;
+  width:32px;height:32px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#10b981,#059669);color:#fff;
+  font-size:16px;font-weight:800;line-height:1;
+  box-shadow:0 2px 6px rgba(5,150,105,0.35);}
+[data-theme=dark] .salary-box{background:linear-gradient(135deg,rgba(16,185,129,0.16),rgba(5,150,105,0.06));}
+[data-theme=dark] .salary-box .qual-chip{background:rgba(255,255,255,0.03);border-color:rgba(16,185,129,0.30);color:#e6edf5;}
 
 /* ---- "More jobs" banner ---- */
 .more-jobs{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;flex-wrap:wrap;
@@ -1775,6 +1791,28 @@ function renderSidebar(currentJob,jobs){
   glance+=gi(njIc('calendar'),kn?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date',currentJob.last_date?fmtDate(currentJob.last_date):'',true);
   if(glance){
     html+=`<div class="card"><div class="card-title">${kn?'ಒಂದು ನೋಟದಲ್ಲಿ':'At a Glance'}</div><div class="glance-list">${glance}</div></div>`;
+  }
+
+  // ---- Last Date Approaching (dynamic: up to 5 soonest upcoming deadlines; same style as Similar Jobs) ----
+  const approaching=(jobs||[])
+    .filter(function(j){return j && j.id!==currentJob.id && j.status==='open' && j.last_date;})
+    .map(function(j){return {j:j,dl:daysLeft(j.last_date)};})
+    .filter(function(x){return x.dl!==null && x.dl>=0;})
+    .sort(function(a,b){return a.dl-b.dl;})
+    .slice(0,5)
+    .map(function(x){return x.j;});
+  if(approaching.length){
+    html+=`<div class="card"><div class="card-title">${kn?'ಅಂತಿಮ ದಿನಾಂಕ ಸಮೀಪಿಸುತ್ತಿದೆ':'Last Date Approaching'}</div>`;
+    html+=approaching.map(function(j){
+      const t=njField(j.title_en,j.title_kn)||'';
+      const ic=njLogoImg(getDeptLogo(j.dept),j.dept,(j.icon||'💼'));
+      const meta=`${kn?'ಅಂತಿಮ ದಿನಾಂಕ':'Last Date'}: ${fmtDate(j.last_date)}`;
+      return `<a class="sb-sim" href="job.html?job=${encodeURIComponent(j.id)}">
+        <div class="sb-sim-ic">${ic}</div>
+        <div><div class="sl-title">${njEsc(t)}</div><div class="sl-meta">${njEsc(meta)}</div></div>
+      </a>`;
+    }).join('');
+    html+=`</div>`;
   }
 
   // ---- Similar Jobs (reuses computeSimilarJobs) ----
