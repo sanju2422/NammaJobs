@@ -119,10 +119,12 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
 
 /* ===== BASIC INFORMATION — professional card layout (UI only; logic unchanged) ===== */
 .bi-head{font-family:var(--fhead);font-size:15px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;margin:4px 0 14px;padding-bottom:12px;border-bottom:1.5px solid rgba(255,255,255,0.14);}
-.bi-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.bi-card{background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);border-radius:14px;padding:15px 16px 17px;transition:border-color .25s,box-shadow .25s;}
+.bi-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch;}
+.bi-card{display:flex;flex-direction:column;height:100%;background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);border-radius:14px;padding:16px;transition:border-color .25s,box-shadow .25s;}
 .bi-card:hover{border-color:var(--glass-border-strong);box-shadow:0 6px 18px rgba(0,0,0,0.18);}
 .bi-card.bi-span{grid-column:1 / -1;}
+/* Pin the TBA checkbox to the bottom of its card so cards in the same row align. */
+.bi-card>.tba-row:last-child{margin-top:auto;}
 .bi-card-hd{font-family:var(--fhead);font-size:12px;font-weight:800;color:#c4b5fd;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:7px;margin-bottom:12px;}
 .bi-card-hd .bi-ic{font-size:15px;line-height:1;}
 .bi-card label{margin-top:0;}
