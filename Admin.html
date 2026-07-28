@@ -473,17 +473,6 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
             </label>
           </div>
 
-          <!-- OFFICIAL LINKS -->
-          <div class="bi-card">
-            <div class="bi-card-hd"><span class="bi-ic">🔗</span> Official Links</div>
-            <label>🌐 Official Website Link</label>
-            <input type="url" id="f-url" placeholder="https://kpsc.kar.nic.in">
-            <div class="url-hint">⚠️ This URL opens when user clicks "Visit Official Website" button</div>
-            <label style="margin-top:14px;">📋 Apply Now Link (Direct Apply Page)</label>
-            <input type="url" id="f-apply-link" placeholder="https://kpsc.kar.nic.in/apply">
-            <div class="url-hint">⚠️ This URL opens when user clicks "Apply Now" button (if different from official site)</div>
-          </div>
-
           <!-- JOB BANNER (single banner; used for both English & Kannada Job Details pages) -->
           <div class="bi-card bi-span">
             <div class="bi-card-hd"><span class="bi-ic">🖼️</span> Job Banner</div>
@@ -568,14 +557,32 @@ textarea{min-height:90px;resize:vertical;line-height:1.5;}
                 <textarea id="f-syllabus-kn" style="min-height:150px;font-family:var(--fkn);" placeholder="ಪರೀಕ್ಷಾ ವಿಷಯಗಳು:&#10;ಸಾಮಾನ್ಯ ಜ್ಞಾನ, ತಾರ್ಕಿಕತೆ, ಗಣಿತ..."></textarea>
               </div>
             </div>
-            <div class="row2" style="margin-top:12px;">
+          </div>
+
+          <!-- 📄 OFFICIAL DOCUMENTS -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">📄</span> Official Documents</div>
+            <label>Official Notification PDF</label>
+            <input type="url" id="f-notif-url" placeholder="https://official-site.gov.in/notification.pdf">
+            <!-- Legacy Syllabus PDF field removed from the UI but retained (hidden) for 100% backward compatibility with existing save/edit/preview logic. -->
+            <div style="display:none;" aria-hidden="true">
+              <input type="url" id="f-syllabus-url" placeholder="https://official-site.gov.in/syllabus.pdf">
+            </div>
+          </div>
+
+          <!-- 🔗 OFFICIAL LINKS -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🔗</span> Official Links</div>
+            <div class="row2">
               <div>
-                <label>Syllabus PDF Link (Official)</label>
-                <input type="url" id="f-syllabus-url" placeholder="https://official-site.gov.in/syllabus.pdf">
+                <label>🌐 Official Website</label>
+                <input type="url" id="f-url" placeholder="https://kpsc.kar.nic.in">
+                <div class="url-hint">⚠️ This URL opens when user clicks "Visit Official Website" button</div>
               </div>
               <div>
-                <label>Notification PDF Link (Official)</label>
-                <input type="url" id="f-notif-url" placeholder="https://official-site.gov.in/notification.pdf">
+                <label>📋 Apply Online Link</label>
+                <input type="url" id="f-apply-link" placeholder="https://kpsc.kar.nic.in/apply">
+                <div class="url-hint">⚠️ This URL opens when user clicks "Apply Now" button (if different from official site)</div>
               </div>
             </div>
           </div>
