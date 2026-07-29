@@ -183,9 +183,6 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .fh{font-family:var(--fhead);font-size:14px;font-weight:800;color:#fff;margin-bottom:10px;text-shadow:0 1px 3px rgba(0,0,0,0.2);}
 .fl{display:block;color:rgba(255,255,255,0.85);font-size:13px;font-weight:600;padding:4px 0;cursor:pointer;}
 .fl:hover{color:#fff;}
-/* Light polish: footer Quick Links only (alignment, spacing, subtle shadow, smooth hover) */
-.fcol-ql .fl{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;transition:transform .2s ease,background .2s ease,box-shadow .2s ease;}
-.fcol-ql .fl:hover{transform:translateX(3px);background:rgba(255,255,255,0.05);box-shadow:0 3px 10px rgba(0,0,0,0.18);}
 .fb{text-align:center;border-top:1px solid rgba(255,255,255,0.15);padding-top:18px;font-size:12px;color:rgba(255,255,255,0.85);font-weight:600;display:flex;flex-direction:column;gap:4px;}
 .loading{text-align:center;padding:40px 20px;color:#fff;font-weight:600;grid-column:1/-1;}
 .spinner{width:38px;height:38px;border:3px solid rgba(255,255,255,0.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px;}
@@ -1255,7 +1252,7 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 
 <style>
 /* ===== FOOTER — aligned to Job Details footer reference (layout only; themes preserved) ===== */
-.ft .ft-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1.5fr;gap:30px;margin-bottom:26px;align-items:start;}
+.ft .ft-grid{display:grid;grid-template-columns:1.6fr 1fr 1.3fr;gap:30px;margin-bottom:26px;align-items:start;}
 .nj-fbrand{max-width:340px;}
 .nj-fbrandrow{display:flex;align-items:center;gap:11px;margin-bottom:12px;}
 .nj-flogo{width:44px;height:44px;border-radius:12px;background:#fff;padding:4px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.14);flex:0 0 auto;}
@@ -1269,8 +1266,8 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 .nj-fsoc svg{width:18px;height:18px;display:block;fill:currentColor;}
 .nj-fsoc a:hover{transform:translateY(-2px);}
 .nj-fcta{display:flex;flex-direction:column;gap:10px;}
-.nj-fbtn{display:inline-flex;align-items:center;gap:9px;padding:12px 16px;border-radius:12px;font-family:var(--fhead);font-weight:800;font-size:13px;text-decoration:none;border:1.5px solid;transition:transform .2s ease,filter .2s ease;}
-.nj-fbtn svg{width:16px;height:16px;fill:currentColor;flex:0 0 auto;}
+.nj-fbtn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:11px;font-family:var(--fhead);font-weight:800;font-size:11.5px;text-decoration:none;border:1.5px solid;transition:transform .2s ease,filter .2s ease;}
+.nj-fbtn svg{width:14px;height:14px;fill:currentColor;flex:0 0 auto;}
 .nj-fbtn:hover{transform:translateY(-2px);filter:brightness(1.03);}
 .nj-fbtn-tg{background:rgba(34,158,217,0.14);border-color:rgba(34,158,217,0.45);color:#1c8fcc;}
 .nj-fbtn-wa{background:rgba(37,211,102,0.14);border-color:rgba(37,211,102,0.45);color:#16a34a;}
@@ -1333,19 +1330,6 @@ html:not([data-theme=dark]) .nj-fdisc{color:#94a3b8;}
         <span class="fl lang-kn" onclick="filtCat('bank')">ಬ್ಯಾಂಕ್</span>
         <span class="fl lang-en" onclick="filtCat('police')">Police Jobs</span>
         <span class="fl lang-kn" onclick="filtCat('police')">ಪೊಲೀಸ್</span>
-      </div>
-
-      <div class="fcol-ql">
-        <div class="fh lang-en">Quick Links</div>
-        <div class="fh lang-kn">ತ್ವರಿತ ಲಿಂಕ್‌ಗಳು</div>
-        <a href="about.html" class="fl lang-en" style="text-decoration:none;">About Us</a>
-        <a href="about.html" class="fl lang-kn" style="text-decoration:none;">ನಮ್ಮ ಬಗ್ಗೆ</a>
-        <a href="contact.html" class="fl lang-en" style="text-decoration:none;">Contact Us</a>
-        <a href="contact.html" class="fl lang-kn" style="text-decoration:none;">ಸಂಪರ್ಕಿಸಿ</a>
-        <a href="privacy.html" class="fl lang-en" style="text-decoration:none;">Privacy Policy</a>
-        <a href="privacy.html" class="fl lang-kn" style="text-decoration:none;">ಗೌಪ್ಯತಾ ನೀತಿ</a>
-        <a href="terms.html" class="fl lang-en" style="text-decoration:none;">Terms & Conditions</a>
-        <a href="terms.html" class="fl lang-kn" style="text-decoration:none;">ನಿಯಮಗಳು ಮತ್ತು ಷರತ್ತುಗಳು</a>
       </div>
 
       <div>
@@ -1762,11 +1746,6 @@ function njIsFeatured(j){
   if(v===true)return true;
   if(typeof v==='number'&&v>0)return true;
   if(typeof v==='string'){const s=v.toLowerCase().trim();if(s==='true'||s==='1'||s==='yes'||s==='y')return true;}
-  // Status/category based: "Future Recruitment" is saved as an upcoming/soon job
-  const st=(j.status||'').toString().toLowerCase().trim();
-  if(st==='soon'||st==='future'||st==='upcoming')return true;
-  const c=(j.cat||'').toString().toLowerCase().trim();
-  if(c==='future'||c==='upcoming')return true;
   return false;
 }
 
@@ -1830,13 +1809,16 @@ function renderLatestNotifs(){
 // Smoothly scroll to the existing FAQ section (located by heading text, section left unmodified)
 function njScrollFAQ(){
   const hs=document.querySelectorAll('.nj-info h2');
+  let match=null,visible=null;
   for(let i=0;i<hs.length;i++){
     const t=hs[i].textContent||'';
     if(t.indexOf('Frequently Asked')>-1||t.indexOf('ಆಗಾಗ್ಗೆ')>-1){
-      hs[i].scrollIntoView({behavior:'smooth',block:'start'});
-      break;
+      if(!match)match=hs[i];
+      if(hs[i].offsetParent!==null){visible=hs[i];break;}
     }
   }
+  const target=visible||match;
+  if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
   return false;
 }
 
