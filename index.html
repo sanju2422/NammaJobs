@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -663,6 +663,92 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
   .nj-light #jgrid .njl-action{order:4;margin-left:auto;}
 }
 /* ===== END LATEST JOBS CARD REDESIGN ===== */
+
+/* ============================================================
+   HOMEPAGE PROTOTYPE LAYOUT — Featured Recruitment + Sidebar cards
+   UI ONLY. Scoped to new nj-feat / nj-ph / nj-left-col classes.
+   No JS, no data wiring, existing functionality untouched.
+   ============================================================ */
+/* Left column wrapper: stacks Featured card above Latest Jobs */
+.nj-light .nj-left-col{display:flex;flex-direction:column;gap:18px;min-width:0;}
+
+/* ---- Featured Recruitment (premium card) ---- */
+.nj-feat{position:relative;overflow:hidden;border-radius:18px;padding:26px 28px;
+  background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 55%,#2563eb 100%);
+  border:1px solid rgba(255,255,255,0.14);box-shadow:0 14px 40px rgba(15,23,42,0.22);color:#fff;}
+.nj-feat::before{content:'';position:absolute;top:-70px;right:-50px;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,201,60,0.30),transparent 70%);pointer-events:none;}
+.nj-feat-tag{display:inline-flex;align-items:center;gap:7px;position:relative;z-index:1;
+  font-family:var(--fhead);font-weight:800;font-size:11.5px;letter-spacing:0.06em;text-transform:uppercase;
+  color:#0f2b5c;background:linear-gradient(135deg,#FFD60A,#f59e0b);padding:6px 14px;border-radius:9999px;
+  box-shadow:0 4px 14px rgba(245,158,11,0.4);}
+.nj-feat-title{font-family:var(--fhead);font-size:30px;font-weight:800;line-height:1.12;letter-spacing:-0.6px;
+  margin:14px 0 6px;position:relative;z-index:1;text-shadow:0 2px 10px rgba(0,0,0,0.25);}
+.nj-feat-sub{font-family:var(--fhead);font-size:18px;font-weight:800;color:#FFC93C;margin-bottom:16px;
+  position:relative;z-index:1;text-shadow:0 1px 6px rgba(0,0,0,0.2);}
+.nj-feat-meta{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;position:relative;z-index:1;}
+.nj-feat-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.13);
+  border:1px solid rgba(255,255,255,0.24);border-radius:9999px;padding:8px 14px;font-size:13px;font-weight:700;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+.nj-feat-pill b{font-weight:800;}
+.nj-feat-cta{display:inline-flex;align-items:center;gap:9px;position:relative;z-index:1;
+  background:linear-gradient(135deg,#FFD60A,#f59e0b);color:#0f2b5c;font-family:var(--fhead);font-weight:800;
+  font-size:15px;padding:13px 28px;border:none;border-radius:12px;cursor:pointer;
+  box-shadow:0 8px 22px rgba(245,158,11,0.42);transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;}
+.nj-feat-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(245,158,11,0.55);filter:brightness(1.04);}
+/* Dark mode: premium purple gradient (matches dark design language) */
+[data-theme=dark] .nj-feat{background:linear-gradient(135deg,#4c1d95 0%,#6d28d9 55%,#7c3aed 100%);
+  border:1px solid var(--glass-border);box-shadow:var(--shadow-lg);}
+[data-theme=dark] .nj-feat::before{background:radial-gradient(circle,rgba(168,85,247,0.42),transparent 70%);}
+
+/* ---- Sidebar placeholder cards (reuse .sc / .sc-ttl for theme match) ---- */
+.nj-ph-list{display:flex;flex-direction:column;}
+.nj-ph-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(15,23,42,0.07);align-items:flex-start;}
+.nj-ph-item:last-child{border-bottom:none;}
+.nj-ph-dot{width:8px;height:8px;border-radius:50%;background:#1d4ed8;margin-top:6px;flex-shrink:0;}
+.nj-ph-body{flex:1;min-width:0;}
+.nj-ph-t{font-size:12.5px;font-weight:700;color:#0f2b5c;line-height:1.35;}
+.nj-ph-m{font-size:10.5px;font-weight:600;color:#64748b;margin-top:3px;}
+.nj-ph-new{display:inline-flex;align-items:center;font-size:9px;font-weight:800;letter-spacing:0.04em;
+  text-transform:uppercase;color:#92400e;background:#FFD60A;padding:2px 7px;border-radius:5px;margin-left:8px;
+  flex-shrink:0;vertical-align:middle;}
+.nj-ph-links{display:flex;flex-direction:column;gap:8px;}
+.nj-ph-link{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:10px;background:#f1f5f9;
+  border:1px solid #e6ebf2;color:#0f2b5c;font-size:12.5px;font-weight:700;text-decoration:none;cursor:pointer;
+  transition:background .2s ease,transform .2s ease;}
+.nj-ph-link:hover{background:#e2e8f0;transform:translateX(3px);}
+/* Dark mode placeholder colors */
+[data-theme=dark] .nj-ph-item{border-bottom-color:rgba(255,255,255,0.12);}
+[data-theme=dark] .nj-ph-dot{background:#a855f7;}
+[data-theme=dark] .nj-ph-t{color:#fff;}
+[data-theme=dark] .nj-ph-m{color:rgba(255,255,255,0.7);}
+[data-theme=dark] .nj-ph-link{background:var(--glass-bg-dark);border-color:var(--glass-border);color:#fff;}
+[data-theme=dark] .nj-ph-link:hover{background:var(--glass-bg);}
+
+/* ---- Sticky sidebar (desktop only) ---- */
+@media(min-width:1025px){.nj-light .sb{position:sticky;top:70px;align-self:start;}}
+
+/* ---- Responsive ---- */
+@media(max-width:560px){
+  .nj-feat{padding:22px 20px;}
+  .nj-feat-title{font-size:24px;}
+  .nj-feat-sub{font-size:16px;}
+}
+/* ---- Featured Recruitment empty state ---- */
+.nj-feat-empty{padding:28px;}
+.nj-feat-empty-title{font-family:var(--fhead);font-size:20px;font-weight:800;margin:14px 0 6px;
+  position:relative;z-index:1;text-shadow:0 2px 10px rgba(0,0,0,0.25);}
+.nj-feat-empty-desc{font-size:13.5px;font-weight:600;line-height:1.6;color:rgba(255,255,255,0.85);
+  position:relative;z-index:1;max-width:520px;}
+
+/* ---- Sidebar empty state ---- */
+.nj-ph-empty{font-size:12.5px;font-weight:600;color:#64748b;text-align:center;padding:16px 6px;line-height:1.5;}
+[data-theme=dark] .nj-ph-empty{color:rgba(255,255,255,0.6);}
+
+/* ===== SECTION 10 — VERTICAL SPACING POLISH ===== */
+.nj-info>div{margin-bottom:36px !important;}
+.nj-info>div:last-child{margin-bottom:0 !important;}
+/* ===== END HOMEPAGE PROTOTYPE LAYOUT ===== */
 </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9037988612895250" crossorigin="anonymous"></script>
   <style>
@@ -678,9 +764,8 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
     {"@type":"Question","name":"Is NammaJobs free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes, NammaJobs is 100% free for all job seekers. No registration, no fees, no hidden charges."}},
     {"@type":"Question","name":"How often are jobs updated on NammaJobs?","acceptedAnswer":{"@type":"Answer","text":"NammaJobs is updated daily with new government job notifications as soon as they are officially released."}},
     {"@type":"Question","name":"How can I apply for a job through NammaJobs?","acceptedAnswer":{"@type":"Answer","text":"Click on any job card to view full details, then click Apply Now to go to the official recruitment website."}},
-    {"@type":"Question","name":"Does NammaJobs support Kannada language?","acceptedAnswer":{"@type":"Answer","text":"Yes, NammaJobs displays job titles and department names in both English and Kannada language."}},
-    {"@type":"Question","name":"Does NammaJobs provide Karnataka government jobs?","acceptedAnswer":{"@type":"Answer","text":"Yes, NammaJobs covers KPSC, KSSB, Karnataka Police, and all Karnataka state government job notifications."}},
-    {"@type":"Question","name":"Where can I find admit cards on NammaJobs?","acceptedAnswer":{"@type":"Answer","text":"Scroll down on the homepage to find the Admit Card section in the right sidebar with direct download links."}}
+    {"@type":"Question","name":"Where can I find admit cards on NammaJobs?","acceptedAnswer":{"@type":"Answer","text":"Scroll down on the homepage to find the Admit Card section in the right sidebar with direct download links."}},
+    {"@type":"Question","name":"Does NammaJobs provide Karnataka government jobs?","acceptedAnswer":{"@type":"Answer","text":"Yes, NammaJobs covers KPSC, KSSB, Karnataka Police, and all Karnataka state government job notifications."}}
   ]
 }
 </script>
@@ -808,6 +893,16 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 
 <div class="main">
 
+  <div class="nj-left-col">
+
+  <!-- ===== FEATURED RECRUITMENT (empty state — populated when a featured recruitment is published) ===== -->
+  <div class="nj-feat nj-feat-empty">
+    <span class="nj-feat-tag">⭐ <span class="lang-en">Featured Recruitment</span><span class="lang-kn">ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ</span></span>
+    <div class="nj-feat-empty-title"><span class="lang-en">No Featured Recruitment Available</span><span class="lang-kn">ಯಾವುದೇ ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ ಲಭ್ಯವಿಲ್ಲ</span></div>
+    <div class="nj-feat-empty-desc"><span class="lang-en">Featured recruitment will automatically appear here when published.</span><span class="lang-kn">ಪ್ರಕಟಿಸಿದಾಗ ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ ಇಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ.</span></div>
+  </div>
+  <!-- ===== END FEATURED RECRUITMENT ===== -->
+
   <div class="nj-jobs-panel">
     <div class="latest-head">
       <div class="sh">Latest Jobs</div>
@@ -829,7 +924,59 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 
   </div>
 
+  </div><!-- /nj-left-col -->
+
   <div class="sb">
+    <!-- ===== PROTOTYPE SIDEBAR CARDS (UI placeholders — no data wiring) ===== -->
+    <div class="sc">
+      <div class="sc-ttl">📢 <span class="lang-en">Latest Notifications</span><span class="lang-kn">ಇತ್ತೀಚಿನ ಅಧಿಸೂಚನೆಗಳು</span></div>
+      <div class="nj-ph-list">
+        <div class="nj-ph-empty"><span class="lang-en">No Notifications Available</span><span class="lang-kn">ಯಾವುದೇ ಅಧಿಸೂಚನೆಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-ttl">🟡 <span class="lang-en">Short Notifications</span><span class="lang-kn">ಸಂಕ್ಷಿಪ್ತ ಅಧಿಸೂಚನೆಗಳು</span></div>
+      <div class="nj-ph-list">
+        <div class="nj-ph-empty"><span class="lang-en">No Notifications Available</span><span class="lang-kn">ಯಾವುದೇ ಅಧಿಸೂಚನೆಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-ttl">🎫 <span class="lang-en">Admit Cards</span><span class="lang-kn">ಪ್ರವೇಶ ಪತ್ರಗಳು</span></div>
+      <div class="nj-ph-list">
+        <div class="nj-ph-empty"><span class="lang-en">No Admit Cards Available</span><span class="lang-kn">ಯಾವುದೇ ಪ್ರವೇಶ ಪತ್ರಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-ttl">🏆 <span class="lang-en">Results</span><span class="lang-kn">ಫಲಿತಾಂಶಗಳು</span></div>
+      <div class="nj-ph-list">
+        <div class="nj-ph-empty"><span class="lang-en">No Results Available</span><span class="lang-kn">ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-ttl">🔗 <span class="lang-en">Quick Links</span><span class="lang-kn">ತ್ವರಿತ ಲಿಂಕ್‌ಗಳು</span></div>
+      <div class="nj-ph-links">
+        <a href="#" class="nj-ph-link">📋 <span class="lang-en">About Us</span><span class="lang-kn">ನಮ್ಮ ಬಗ್ಗೆ</span></a>
+        <a href="#" class="nj-ph-link">🔒 <span class="lang-en">Privacy Policy</span><span class="lang-kn">ಗೌಪ್ಯತಾ ನೀತಿ</span></a>
+        <a href="#" class="nj-ph-link">📞 <span class="lang-en">Contact</span><span class="lang-kn">ಸಂಪರ್ಕ</span></a>
+        <a href="#" class="nj-ph-link">⚖️ <span class="lang-en">Disclaimer</span><span class="lang-kn">ಹಕ್ಕು ನಿರಾಕರಣೆ</span></a>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-ttl">📌 <span class="lang-en">Important Links</span><span class="lang-kn">ಪ್ರಮುಖ ಲಿಂಕ್‌ಗಳು</span></div>
+      <div class="nj-ph-links">
+        <a href="#" class="nj-ph-link">🧭 <span class="lang-en">How to Apply</span><span class="lang-kn">ಹೇಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸುವುದು</span></a>
+        <a href="#" class="nj-ph-link">🗓️ <span class="lang-en">Exam Calendar</span><span class="lang-kn">ಪರೀಕ್ಷಾ ಕ್ಯಾಲೆಂಡರ್</span></a>
+        <a href="#" class="nj-ph-link">📝 <span class="lang-en">Preparation Tips</span><span class="lang-kn">ತಯಾರಿ ಸಲಹೆಗಳು</span></a>
+        <a href="#" class="nj-ph-link">❓ <span class="lang-en">FAQs</span><span class="lang-kn">ಪ್ರಶ್ನೆಗಳು</span></a>
+      </div>
+    </div>
+    <!-- ===== END PROTOTYPE SIDEBAR CARDS ===== -->
+
     <div class="sc" id="sb-ac" style="display:none;">
       <div class="sc-ttl">🎓 Admit Card</div>
       <div id="sb-ac-list"></div>
@@ -865,7 +1012,7 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 
 
 <!-- ===== ABOUT + TRUST + FAQ SECTIONS ===== -->
-<div class="nj-info" style="max-width:1280px;margin:0 auto;padding:0 16px 48px;position:relative;z-index:1;">
+<div class="nj-info" style="max-width:1280px;margin:0 auto;padding:24px 16px 48px;position:relative;z-index:1;">
 
   <!-- INTERNAL LINKS -->
   <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:2px solid rgba(255,255,255,0.12);border-radius:20px;padding:24px;margin-bottom:28px;">
@@ -886,8 +1033,8 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
       <a href="index.html" class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;background:rgba(168,85,247,0.3);border:1.5px solid rgba(168,85,247,0.5);color:#d8b4fe;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;">🎓 ಪ್ರವೇಶ ಪತ್ರಗಳು</a>
       <a href="index.html" class="lang-en" style="background:rgba(20,184,166,0.3);border:1.5px solid rgba(20,184,166,0.5);color:#99f6e4;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;">📊 Results</a>
       <a href="index.html" class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;background:rgba(20,184,166,0.3);border:1.5px solid rgba(20,184,166,0.5);color:#99f6e4;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;">📊 ಫಲಿತಾಂಶಗಳು</a>
-      <a href="blog.html" class="lang-en" style="background:rgba(255,193,7,0.3);border:1.5px solid rgba(255,193,7,0.5);color:#fde68a;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;">📖 Blog & Tips</a>
-      <a href="blog.html" class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;background:rgba(255,193,7,0.3);border:1.5px solid rgba(255,193,7,0.5);color:#fde68a;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;">📖 ಬ್ಲಾಗ್ ಮತ್ತು ಸಲಹೆಗಳು</a>
+      <a href="#" class="lang-en" style="background:rgba(255,193,7,0.3);border:1.5px solid rgba(255,193,7,0.5);color:#fde68a;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;">📖 Blog & Tips</a>
+      <a href="#" class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;background:rgba(255,193,7,0.3);border:1.5px solid rgba(255,193,7,0.5);color:#fde68a;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;">📖 ಬ್ಲಾಗ್ ಮತ್ತು ಸಲಹೆಗಳು</a>
     </div>
   </div>
 
@@ -1106,78 +1253,6 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
         </div>
       </details>
 
-      <details style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 20px;cursor:pointer;">
-        <summary style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:#fff;list-style:none;display:flex;justify-content:space-between;align-items:center;">
-          <span class="lang-en">How can I receive job alerts?</span>
-          <span class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಉದ್ಯೋಗ ಎಚ್ಚರಿಕೆಗಳನ್ನು ಹೇಗೆ ಪಡೆಯಬಹುದು?</span>
-          <span style="color:#FFD60A;font-size:18px;flex-shrink:0;margin-left:10px;">+</span>
-        </summary>
-        <div style="margin-top:14px;">
-          <p style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:10px;" class="lang-en">Join our WhatsApp or Telegram channel using the buttons on the homepage. You will receive instant notifications for new jobs, admit cards, and results.</p>
-          <p style="font-family:'Noto Sans Kannada',sans-serif;font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;" class="lang-kn">ಮುಖ್ಯ ಪುಟದಲ್ಲಿ WhatsApp ಅಥವಾ Telegram ಗುಂಡಿ ಒತ್ತಿ ಚಾನಲ್ ಸೇರಿ. ಹೊಸ ಉದ್ಯೋಗ, ಪ್ರವೇಶ ಪತ್ರ ಮತ್ತು ಫಲಿತಾಂಶಗಳ ತಕ್ಷಣ ಎಚ್ಚರಿಕೆ ಪಡೆಯಿರಿ.</p>
-        </div>
-      </details>
-
-      <details style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 20px;cursor:pointer;">
-        <summary style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:#fff;list-style:none;display:flex;justify-content:space-between;align-items:center;">
-          <span class="lang-en">Are official notification links available?</span>
-          <span class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಅಧಿಕೃತ ಅಧಿಸೂಚನೆ ಲಿಂಕ್‌ಗಳು ಲಭ್ಯವಿದೆಯೇ?</span>
-          <span style="color:#FFD60A;font-size:18px;flex-shrink:0;margin-left:10px;">+</span>
-        </summary>
-        <div style="margin-top:14px;">
-          <p style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:10px;" class="lang-en">Yes. Every job listing on NammaJobs includes direct links to the official government notification PDF and the official application website. We never link to unofficial sources.</p>
-          <p style="font-family:'Noto Sans Kannada',sans-serif;font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;" class="lang-kn">ಹೌದು. ಪ್ರತಿ ಉದ್ಯೋಗ ಪಟ್ಟಿಯಲ್ಲಿ ಅಧಿಕೃತ ಅಧಿಸೂಚನೆ PDF ಮತ್ತು ಅರ್ಜಿ ವೆಬ್‌ಸೈಟ್‌ಗೆ ನೇರ ಲಿಂಕ್‌ಗಳಿವೆ.</p>
-        </div>
-      </details>
-
-      <details style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 20px;cursor:pointer;">
-        <summary style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:#fff;list-style:none;display:flex;justify-content:space-between;align-items:center;">
-          <span class="lang-en">Can I access NammaJobs on mobile?</span>
-          <span class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;">ಮೊಬೈಲ್‌ನಲ್ಲಿ ನಮ್ಮಜಾಬ್ಸ್ ಬಳಸಬಹುದೇ?</span>
-          <span style="color:#FFD60A;font-size:18px;flex-shrink:0;margin-left:10px;">+</span>
-        </summary>
-        <div style="margin-top:14px;">
-          <p style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:10px;" class="lang-en">Yes! NammaJobs is fully mobile responsive and works perfectly on smartphones and tablets. The site is optimized for fast loading on mobile networks.</p>
-          <p style="font-family:'Noto Sans Kannada',sans-serif;font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;" class="lang-kn">ಹೌದು! ನಮ್ಮಜಾಬ್ಸ್ ಸ್ಮಾರ್ಟ್‌ಫೋನ್ ಮತ್ತು ಟ್ಯಾಬ್ಲೆಟ್‌ಗಳಲ್ಲಿ ಸುಲಲಿತವಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ.</p>
-        </div>
-      </details>
-
-      <details style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 20px;cursor:pointer;">
-        <summary style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:#fff;list-style:none;display:flex;justify-content:space-between;align-items:center;">
-          <span class="lang-en">Does NammaJobs support Kannada language?</span>
-          <span class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮಜಾಬ್ಸ್ ಕನ್ನಡ ಭಾಷೆಯನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆಯೇ?</span>
-          <span style="color:#FFD60A;font-size:18px;flex-shrink:0;margin-left:10px;">+</span>
-        </summary>
-        <div style="margin-top:14px;">
-          <p style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:10px;" class="lang-en">Yes! NammaJobs displays job titles and department names in both English and Kannada, making it easier for Kannada-speaking job seekers across Karnataka.</p>
-          <p style="font-family:'Noto Sans Kannada',sans-serif;font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;" class="lang-kn">ಹೌದು! ನಮ್ಮಜಾಬ್ಸ್ ಇಂಗ್ಲಿಷ್ ಮತ್ತು ಕನ್ನಡ ಎರಡರಲ್ಲೂ ಉದ್ಯೋಗ ವಿವರಗಳನ್ನು ತೋರಿಸುತ್ತದೆ.</p>
-        </div>
-      </details>
-
-      <details style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 20px;cursor:pointer;">
-        <summary style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:#fff;list-style:none;display:flex;justify-content:space-between;align-items:center;">
-          <span class="lang-en">Are private jobs also listed on NammaJobs?</span>
-          <span class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;">ನಮ್ಮಜಾಬ್ಸ್‌ನಲ್ಲಿ ಖಾಸಗಿ ಉದ್ಯೋಗಗಳೂ ಪಟ್ಟಿ ಮಾಡಲಾಗಿದೆಯೇ?</span>
-          <span style="color:#FFD60A;font-size:18px;flex-shrink:0;margin-left:10px;">+</span>
-        </summary>
-        <div style="margin-top:14px;">
-          <p style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:10px;" class="lang-en">Yes, NammaJobs also lists selected private sector job opportunities in Karnataka from reputed companies in Bengaluru and other cities, in addition to government jobs.</p>
-          <p style="font-family:'Noto Sans Kannada',sans-serif;font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;" class="lang-kn">ಹೌದು, ಸರ್ಕಾರಿ ಉದ್ಯೋಗಗಳ ಜೊತೆಗೆ ಕರ್ನಾಟಕದ ಆಯ್ದ ಖಾಸಗಿ ಕಂಪನಿಗಳ ಉದ್ಯೋಗಗಳನ್ನೂ ಪಟ್ಟಿ ಮಾಡಲಾಗಿದೆ.</p>
-        </div>
-      </details>
-
-      <details style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 20px;cursor:pointer;">
-        <summary style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:#fff;list-style:none;display:flex;justify-content:space-between;align-items:center;">
-          <span class="lang-en">How do I find KPSC recruitment notifications?</span>
-          <span class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;">KPSC ನೇಮಕಾತಿ ಅಧಿಸೂಚನೆಗಳನ್ನು ಹೇಗೆ ಹುಡುಕುವುದು?</span>
-          <span style="color:#FFD60A;font-size:18px;flex-shrink:0;margin-left:10px;">+</span>
-        </summary>
-        <div style="margin-top:14px;">
-          <p style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:10px;" class="lang-en">Click the "Karnataka" category button on the homepage to filter Karnataka government jobs. All KPSC notifications are listed there with full details and official links.</p>
-          <p style="font-family:'Noto Sans Kannada',sans-serif;font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;" class="lang-kn">ಮುಖ್ಯ ಪುಟದಲ್ಲಿ "Karnataka" ವರ್ಗ ಗುಂಡಿ ಒತ್ತಿ KPSC ಉದ್ಯೋಗಗಳನ್ನು ಫಿಲ್ಟರ್ ಮಾಡಿ.</p>
-        </div>
-      </details>
-
     </div>
   </div>
 
@@ -1185,8 +1260,8 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
   <div style="text-align:center;margin-top:28px;">
     <p class="lang-en" style="font-size:15px;color:rgba(255,255,255,0.7);margin-bottom:6px;">Want tips on how to prepare for government exams?</p>
     <p class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;font-size:15px;color:rgba(255,255,255,0.7);margin-bottom:6px;">ಸರ್ಕಾರಿ ಪರೀಕ್ಷೆ ತಯಾರಿ ಸಲಹೆಗಳು ಬೇಕೇ?</p>
-    <a href="blog.html" class="lang-en" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;padding:12px 28px;border-radius:14px;font-size:14px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">📖 Read Our Blog →</a>
-    <a href="blog.html" class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;padding:12px 28px;border-radius:14px;font-size:14px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">📖 ನಮ್ಮ ಬ್ಲಾಗ್ ಓದಿ →</a>
+    <span class="lang-en" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;padding:12px 28px;border-radius:14px;font-size:14px;font-weight:800;display:inline-flex;align-items:center;gap:8px;cursor:default;opacity:0.9;">📖 Blog Coming Soon</span>
+    <span class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;padding:12px 28px;border-radius:14px;font-size:14px;font-weight:800;display:inline-flex;align-items:center;gap:8px;cursor:default;opacity:0.9;">📖 ಬ್ಲಾಗ್ ಶೀಘ್ರದಲ್ಲೇ</span>
   </div>
 
 </div>
@@ -1622,6 +1697,8 @@ function jListCard(j){
 
 // Called by lang.js when language changes — re-renders all dynamic content
 function njRerender(){
+  // Sync the static language-toggle attribute so [data-lang] CSS shows only the active language
+  if(typeof njGetLang==='function') document.documentElement.setAttribute('data-lang',njGetLang());
   if(typeof renderCats==='function') renderCats();
   if(typeof renderAll==='function') renderAll();
   if(typeof renderNotifs==='function') renderNotifs();
@@ -1798,6 +1875,8 @@ async function init(){
     document.documentElement.setAttribute('data-theme','dark');
     document.getElementById('dmb').textContent='☀️';
   }
+  // Apply the saved/active language to the static [data-lang] CSS on load
+  if(typeof njGetLang==='function') document.documentElement.setAttribute('data-lang',njGetLang());
   // Set search placeholder based on saved language
   const srch=document.getElementById('srch');
   if(srch) srch.placeholder=njGetLang()==='kn'?'ಉದ್ಯೋಗಗಳನ್ನು ಹುಡುಕಿ...':'Search Jobs...';
