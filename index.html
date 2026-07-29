@@ -896,8 +896,8 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
   <div class="nj-left-col">
 
   <!-- ===== FEATURED RECRUITMENT (empty state — populated when a featured recruitment is published) ===== -->
-  <div class="nj-feat nj-feat-empty" id="nj-feat">
-    <span class="nj-feat-tag">⭐ <span class="lang-en">Build Your Future 👇</span><span class="lang-kn">ನಿಮ್ಮ ಭವಿಷ್ಯ 👇</span></span>
+  <div class="nj-feat nj-feat-empty">
+    <span class="nj-feat-tag">⭐ <span class="lang-en">Featured Recruitment</span><span class="lang-kn">ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ</span></span>
     <div class="nj-feat-empty-title"><span class="lang-en">No Featured Recruitment Available</span><span class="lang-kn">ಯಾವುದೇ ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ ಲಭ್ಯವಿಲ್ಲ</span></div>
     <div class="nj-feat-empty-desc"><span class="lang-en">Featured recruitment will automatically appear here when published.</span><span class="lang-kn">ಪ್ರಕಟಿಸಿದಾಗ ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ ಇಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ.</span></div>
   </div>
@@ -930,7 +930,7 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
     <!-- ===== PROTOTYPE SIDEBAR CARDS (UI placeholders — no data wiring) ===== -->
     <div class="sc">
       <div class="sc-ttl">📢 <span class="lang-en">Latest Notifications</span><span class="lang-kn">ಇತ್ತೀಚಿನ ಅಧಿಸೂಚನೆಗಳು</span></div>
-      <div class="nj-ph-list" id="nj-latest-notif">
+      <div class="nj-ph-list">
         <div class="nj-ph-empty"><span class="lang-en">No Notifications Available</span><span class="lang-kn">ಯಾವುದೇ ಅಧಿಸೂಚನೆಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
       </div>
     </div>
@@ -939,6 +939,20 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
       <div class="sc-ttl">🟡 <span class="lang-en">Short Notifications</span><span class="lang-kn">ಸಂಕ್ಷಿಪ್ತ ಅಧಿಸೂಚನೆಗಳು</span></div>
       <div class="nj-ph-list">
         <div class="nj-ph-empty"><span class="lang-en">No Notifications Available</span><span class="lang-kn">ಯಾವುದೇ ಅಧಿಸೂಚನೆಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-ttl">🎫 <span class="lang-en">Admit Cards</span><span class="lang-kn">ಪ್ರವೇಶ ಪತ್ರಗಳು</span></div>
+      <div class="nj-ph-list">
+        <div class="nj-ph-empty"><span class="lang-en">No Admit Cards Available</span><span class="lang-kn">ಯಾವುದೇ ಪ್ರವೇಶ ಪತ್ರಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-ttl">🏆 <span class="lang-en">Results</span><span class="lang-kn">ಫಲಿತಾಂಶಗಳು</span></div>
+      <div class="nj-ph-list">
+        <div class="nj-ph-empty"><span class="lang-en">No Results Available</span><span class="lang-kn">ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
       </div>
     </div>
 
@@ -958,7 +972,7 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
         <a href="#" class="nj-ph-link">🧭 <span class="lang-en">How to Apply</span><span class="lang-kn">ಹೇಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸುವುದು</span></a>
         <a href="#" class="nj-ph-link">🗓️ <span class="lang-en">Exam Calendar</span><span class="lang-kn">ಪರೀಕ್ಷಾ ಕ್ಯಾಲೆಂಡರ್</span></a>
         <a href="#" class="nj-ph-link">📝 <span class="lang-en">Preparation Tips</span><span class="lang-kn">ತಯಾರಿ ಸಲಹೆಗಳು</span></a>
-        <a href="#" class="nj-ph-link" onclick="return njScrollFAQ();">❓ <span class="lang-en">FAQs</span><span class="lang-kn">ಪ್ರಶ್ನೆಗಳು</span></a>
+        <a href="#" class="nj-ph-link">❓ <span class="lang-en">FAQs</span><span class="lang-kn">ಪ್ರಶ್ನೆಗಳು</span></a>
       </div>
     </div>
     <!-- ===== END PROTOTYPE SIDEBAR CARDS ===== -->
@@ -1253,13 +1267,6 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 </div>
 <!-- ===== END ABOUT + TRUST + FAQ ===== -->
 
-<style>
-.ft-social{display:flex;justify-content:center;align-items:center;gap:18px;margin-top:18px;}
-.ft-social a{display:inline-flex;align-items:center;justify-content:center;color:inherit;opacity:.72;transition:opacity .2s ease,transform .2s ease;text-decoration:none;}
-.ft-social a:hover{opacity:1;transform:translateY(-2px);}
-.ft-social svg{width:20px;height:20px;display:block;fill:currentColor;}
-</style>
-
 <footer class="ft">
   <div class="ft-wrap">
     <div class="ft-grid">
@@ -1294,17 +1301,15 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
         <a href="terms.html" class="fl lang-kn" style="text-decoration:none;">📜 ನಿಯಮಗಳು ಮತ್ತು ಷರತ್ತುಗಳು</a>
       </div>
     </div>
-    <div class="ft-social">
-      <a href="https://t.me/nammajobs_karnataka" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.036 15.803l-.375 5.286c.536 0 .768-.23 1.046-.507l2.51-2.4 5.203 3.81c.954.526 1.63.25 1.888-.882L23.99 4.42c.304-1.404-.507-1.953-1.436-1.607L1.11 10.98c-1.372.532-1.351 1.296-.233 1.641l5.443 1.694L18.9 6.29c.6-.394 1.146-.176.696.218"/></svg></a>
-      <a href="https://whatsapp.com/channel/0029VbD5Hy5Au3aKeDdCB10L" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.892c0 2.096.549 4.142 1.595 5.945L0 24l6.335-1.652a12.062 12.062 0 005.71 1.447h.006c6.585 0 11.946-5.335 11.949-11.893a11.821 11.821 0 00-3.48-8.413"/></svg></a>
-      <a href="#" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.376.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.376-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-      <a href="#" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
-    </div>
-    <div class="fb" style="gap:6px;margin-top:18px;">
+    <div class="fb">
       <span class="lang-en">© 2026 Namma Jobs · nammajobs.co.in · Karnataka's Trusted Job Portal</span>
       <span class="lang-kn">© 2026 ನಮ್ಮ ಜಾಬ್ಸ್ · nammajobs.co.in · ಕರ್ನಾಟಕದ ವಿಶ್ವಾಸಾರ್ಹ ಉದ್ಯೋಗ ಪೋರ್ಟಲ್</span>
       <span class="lang-en">Namma Jobs is an independent job information portal and is not affiliated with any government agency.</span>
-      <span class="lang-kn">ನಮ್ಮ ಜಾಬ್ಸ್ ಒಂದು ಸ್ವತಂತ್ರ ಉದ್ಯೋಗ ಮಾಹಿತಿ ಪೋರ್ಟಲ್ ಆಗಿದೆ ಮತ್ತು ಯಾವುದೇ ಸರ್ಕಾರಿ ಸಂಸ್ಥೆಯೊಂದಿಗೆ ಸಂಬಂಧ ಹೊಂದಿಲ್ಲ.</span>
+      <span class="lang-kn">ಕರ್ನಾಟಕ ಉದ್ಯೋಗಾರ್ಥಿಗಳಿಗಾಗಿ ❤️ ನಿಂದ ತಯಾರಿಸಲಾಗಿದೆ</span>
+    </div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);text-align:center;">
+      <p class="lang-en" style="font-size:11px;color:rgba(255,255,255,0.5);line-height:1.6;margin:0;">"Namma Jobs is an independent job information portal and is not affiliated with any government agency."</p>
+      <p class="lang-kn" style="font-size:11px;color:rgba(255,255,255,0.5);line-height:1.6;margin:0;">"ನಮ್ಮ ಜಾಬ್ಸ್ ಒಂದು ಸ್ವತಂತ್ರ ಉದ್ಯೋಗ ಮಾಹಿತಿ ಪೋರ್ಟಲ್ ಆಗಿದೆ ಮತ್ತು ಯಾವುದೇ ಸರ್ಕಾರಿ ಸಂಸ್ಥೆಯೊಂದಿಗೆ ಸಂಬಂಧ ಹೊಂದಿಲ್ಲ."</p>
     </div>
   </div>
 </footer>
@@ -1690,95 +1695,6 @@ function jListCard(j){
   </div>`;
 }
 
-// Featured / Future Recruitment: detect the flag saved by the admin panel (tolerant of field name)
-function njIsFeatured(j){
-  const v = (j.featured!=null?j.featured
-          :(j.is_featured!=null?j.is_featured
-          :(j.featured_recruitment!=null?j.featured_recruitment
-          :(j.future_recruitment!=null?j.future_recruitment
-          :(j.future!=null?j.future
-          :(j.is_future!=null?j.is_future:undefined))))));
-  if(v===true)return true;
-  if(typeof v==='number'&&v>0)return true;
-  if(typeof v==='string'){const s=v.toLowerCase().trim();if(s==='true'||s==='1'||s==='yes'||s==='y')return true;}
-  // Status/category based: "Future Recruitment" is saved as an upcoming/soon job
-  const st=(j.status||'').toString().toLowerCase().trim();
-  if(st==='soon'||st==='future'||st==='upcoming')return true;
-  const c=(j.cat||'').toString().toLowerCase().trim();
-  if(c==='future'||c==='upcoming')return true;
-  return false;
-}
-
-// Notification PDF saved by the admin panel (tolerant of field name)
-function njNotifPdf(j){
-  return j.notification_pdf||j.notif_pdf||j.notification_url||j.notif_url||j.notification||j.pdf_url||j.pdf||'';
-}
-
-// FEATURED RECRUITMENT — populate the existing .nj-feat card from job data
-function renderFeatured(){
-  const box=document.getElementById('nj-feat');
-  if(!box)return;
-  const feat=allJobs.filter(njIsFeatured).sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
-  const j=feat.find(x=>x.status!=='closed')||feat[0];
-  if(!j){
-    box.className='nj-feat nj-feat-empty';
-    box.innerHTML=`<span class="nj-feat-tag">⭐ <span class="lang-en">Build Your Future 👇</span><span class="lang-kn">ನಿಮ್ಮ ಭವಿಷ್ಯ 👇</span></span>
-    <div class="nj-feat-empty-title"><span class="lang-en">No Featured Recruitment Available</span><span class="lang-kn">ಯಾವುದೇ ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ ಲಭ್ಯವಿಲ್ಲ</span></div>
-    <div class="nj-feat-empty-desc"><span class="lang-en">Featured recruitment will automatically appear here when published.</span><span class="lang-kn">ಪ್ರಕಟಿಸಿದಾಗ ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ ಇಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ.</span></div>`;
-    return;
-  }
-  const tp=njPostsTotal(j.seats);
-  const postsWord=njGetLang()==='kn'?' ಹುದ್ದೆಗಳು':' Posts';
-  const postsPill=(tp!=null)?`<span class="nj-feat-pill">👥 <b>${tp.toLocaleString('en-IN')}</b>${postsWord}</span>`:'';
-  const locPill=j.loc?`<span class="nj-feat-pill">📍 ${njField(j.loc,j.loc_kn)}</span>`:'';
-  let datePill='';
-  if(j.status==='soon'){datePill=j.start_date?`<span class="nj-feat-pill">🔜 ${njGetLang()==='kn'?'ಪ್ರಾರಂಭ':'Starts'}: ${fmtDate(j.start_date)}</span>`:'';}
-  else if(j.last_date){datePill=`<span class="nj-feat-pill">📅 ${njGetLang()==='kn'?'ಕೊನೆಯ ದಿನಾಂಕ':'Last Date'}: ${fmtDate(j.last_date)}</span>`;}
-  const cta=njGetLang()==='kn'?'ಉದ್ಯೋಗ ವಿವರಗಳು →':'View Details →';
-  box.className='nj-feat';
-  box.innerHTML=`<span class="nj-feat-tag">⭐ <span class="lang-en">Build Your Future 👇</span><span class="lang-kn">ನಿಮ್ಮ ಭವಿಷ್ಯ 👇</span></span>
-    <div class="nj-feat-title">${njField(j.title_en,j.title_kn)||''}</div>
-    <div class="nj-feat-sub">${njField(j.dept,j.dept_kn)||''}</div>
-    <div class="nj-feat-meta">${postsPill}${locPill}${datePill}</div>
-    <a class="nj-feat-cta" href="${getJobUrl(j.id)}" onclick="event.stopPropagation();" style="text-decoration:none;">${cta}</a>`;
-}
-
-// LATEST NOTIFICATIONS — every published job, linking to its admin-uploaded notification PDF
-function renderLatestNotifs(){
-  const box=document.getElementById('nj-latest-notif');
-  if(!box)return;
-  const pub=allJobs.filter(j=>j.status==='open').sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0)).slice(0,8);
-  if(!pub.length){
-    box.innerHTML=`<div class="nj-ph-empty"><span class="lang-en">No Notifications Available</span><span class="lang-kn">ಯಾವುದೇ ಅಧಿಸೂಚನೆಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>`;
-    return;
-  }
-  box.innerHTML=pub.map(j=>{
-    const pdf=njNotifPdf(j);
-    const action=pdf?`window.open('${pdf}','_blank')`:`window.location.href='${getJobUrl(j.id)}'`;
-    const meta=(njField(j.dept,j.dept_kn)||'')+(j.last_date?' · '+fmtDate(j.last_date):'');
-    return `<div class="nj-ph-item" style="cursor:pointer;" onclick="${action}">
-      <div class="nj-ph-dot"></div>
-      <div class="nj-ph-body">
-        <div class="nj-ph-t">${njField(j.title_en,j.title_kn)||''}<span class="nj-ph-new">${njGetLang()==='kn'?'ಹೊಸ':'New'}</span></div>
-        <div class="nj-ph-m">${meta}</div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// Smoothly scroll to the existing FAQ section (located by heading text, section left unmodified)
-function njScrollFAQ(){
-  const hs=document.querySelectorAll('.nj-info h2');
-  for(let i=0;i<hs.length;i++){
-    const t=hs[i].textContent||'';
-    if(t.indexOf('Frequently Asked')>-1||t.indexOf('ಆಗಾಗ್ಗೆ')>-1){
-      hs[i].scrollIntoView({behavior:'smooth',block:'start'});
-      break;
-    }
-  }
-  return false;
-}
-
 // Called by lang.js when language changes — re-renders all dynamic content
 function njRerender(){
   // Sync the static language-toggle attribute so [data-lang] CSS shows only the active language
@@ -1786,8 +1702,6 @@ function njRerender(){
   if(typeof renderCats==='function') renderCats();
   if(typeof renderAll==='function') renderAll();
   if(typeof renderNotifs==='function') renderNotifs();
-  if(typeof renderFeatured==='function') renderFeatured();
-  if(typeof renderLatestNotifs==='function') renderLatestNotifs();
   // Update search placeholder
   const srch=document.getElementById('srch');
   if(srch) srch.placeholder=njGetLang()==='kn'?'ಉದ್ಯೋಗಗಳನ್ನು ಹುಡುಕಿ...':'Search Jobs...';
@@ -1970,8 +1884,6 @@ async function init(){
     allJobs=await fetchJobs();
     renderCats();
     renderAll();
-    renderFeatured();
-    renderLatestNotifs();
     // Fetch admit cards & results in background
     const notifs=await fetchNotifs();
     allAC=notifs.filter(n=>n.type==='admit_card');
