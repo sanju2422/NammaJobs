@@ -896,7 +896,7 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
   <div class="nj-left-col">
 
   <!-- ===== FEATURED RECRUITMENT (empty state — populated when a featured recruitment is published) ===== -->
-  <div class="nj-feat nj-feat-empty">
+  <div class="nj-feat nj-feat-empty" id="nj-feat">
     <span class="nj-feat-tag">⭐ <span class="lang-en">Featured Recruitment</span><span class="lang-kn">ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ</span></span>
     <div class="nj-feat-empty-title"><span class="lang-en">No Featured Recruitment Available</span><span class="lang-kn">ಯಾವುದೇ ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ ಲಭ್ಯವಿಲ್ಲ</span></div>
     <div class="nj-feat-empty-desc"><span class="lang-en">Featured recruitment will automatically appear here when published.</span><span class="lang-kn">ಪ್ರಕಟಿಸಿದಾಗ ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ ಇಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ.</span></div>
@@ -930,7 +930,7 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
     <!-- ===== PROTOTYPE SIDEBAR CARDS (UI placeholders — no data wiring) ===== -->
     <div class="sc">
       <div class="sc-ttl">📢 <span class="lang-en">Latest Notifications</span><span class="lang-kn">ಇತ್ತೀಚಿನ ಅಧಿಸೂಚನೆಗಳು</span></div>
-      <div class="nj-ph-list">
+      <div class="nj-ph-list" id="nj-latest-notif">
         <div class="nj-ph-empty"><span class="lang-en">No Notifications Available</span><span class="lang-kn">ಯಾವುದೇ ಅಧಿಸೂಚನೆಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
       </div>
     </div>
@@ -939,20 +939,6 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
       <div class="sc-ttl">🟡 <span class="lang-en">Short Notifications</span><span class="lang-kn">ಸಂಕ್ಷಿಪ್ತ ಅಧಿಸೂಚನೆಗಳು</span></div>
       <div class="nj-ph-list">
         <div class="nj-ph-empty"><span class="lang-en">No Notifications Available</span><span class="lang-kn">ಯಾವುದೇ ಅಧಿಸೂಚನೆಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
-      </div>
-    </div>
-
-    <div class="sc">
-      <div class="sc-ttl">🎫 <span class="lang-en">Admit Cards</span><span class="lang-kn">ಪ್ರವೇಶ ಪತ್ರಗಳು</span></div>
-      <div class="nj-ph-list">
-        <div class="nj-ph-empty"><span class="lang-en">No Admit Cards Available</span><span class="lang-kn">ಯಾವುದೇ ಪ್ರವೇಶ ಪತ್ರಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
-      </div>
-    </div>
-
-    <div class="sc">
-      <div class="sc-ttl">🏆 <span class="lang-en">Results</span><span class="lang-kn">ಫಲಿತಾಂಶಗಳು</span></div>
-      <div class="nj-ph-list">
-        <div class="nj-ph-empty"><span class="lang-en">No Results Available</span><span class="lang-kn">ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
       </div>
     </div>
 
@@ -1695,6 +1681,77 @@ function jListCard(j){
   </div>`;
 }
 
+// Featured / Future Recruitment: detect the flag saved by the admin panel (tolerant of field name)
+function njIsFeatured(j){
+  const v = (j.featured!=null?j.featured
+          :(j.is_featured!=null?j.is_featured
+          :(j.featured_recruitment!=null?j.featured_recruitment
+          :(j.future_recruitment!=null?j.future_recruitment
+          :(j.future!=null?j.future
+          :(j.is_future!=null?j.is_future:undefined))))));
+  if(v===true)return true;
+  if(typeof v==='number')return v>0;
+  if(typeof v==='string'){const s=v.toLowerCase().trim();return s==='true'||s==='1'||s==='yes'||s==='y';}
+  return false;
+}
+
+// Notification PDF saved by the admin panel (tolerant of field name)
+function njNotifPdf(j){
+  return j.notification_pdf||j.notif_pdf||j.notification_url||j.notif_url||j.notification||j.pdf_url||j.pdf||'';
+}
+
+// FEATURED RECRUITMENT — populate the existing .nj-feat card from job data
+function renderFeatured(){
+  const box=document.getElementById('nj-feat');
+  if(!box)return;
+  const feat=allJobs.filter(njIsFeatured).sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
+  const j=feat.find(x=>x.status!=='closed')||feat[0];
+  if(!j){
+    box.className='nj-feat nj-feat-empty';
+    box.innerHTML=`<span class="nj-feat-tag">⭐ <span class="lang-en">Featured Recruitment</span><span class="lang-kn">ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ</span></span>
+    <div class="nj-feat-empty-title"><span class="lang-en">No Featured Recruitment Available</span><span class="lang-kn">ಯಾವುದೇ ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ ಲಭ್ಯವಿಲ್ಲ</span></div>
+    <div class="nj-feat-empty-desc"><span class="lang-en">Featured recruitment will automatically appear here when published.</span><span class="lang-kn">ಪ್ರಕಟಿಸಿದಾಗ ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ ಇಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ.</span></div>`;
+    return;
+  }
+  const tp=njPostsTotal(j.seats);
+  const postsWord=njGetLang()==='kn'?' ಹುದ್ದೆಗಳು':' Posts';
+  const postsPill=(tp!=null)?`<span class="nj-feat-pill">👥 <b>${tp.toLocaleString('en-IN')}</b>${postsWord}</span>`:'';
+  const locPill=j.loc?`<span class="nj-feat-pill">📍 ${njField(j.loc,j.loc_kn)}</span>`:'';
+  let datePill='';
+  if(j.status==='soon'){datePill=j.start_date?`<span class="nj-feat-pill">🔜 ${njGetLang()==='kn'?'ಪ್ರಾರಂಭ':'Starts'}: ${fmtDate(j.start_date)}</span>`:'';}
+  else if(j.last_date){datePill=`<span class="nj-feat-pill">📅 ${njGetLang()==='kn'?'ಕೊನೆಯ ದಿನಾಂಕ':'Last Date'}: ${fmtDate(j.last_date)}</span>`;}
+  const cta=njGetLang()==='kn'?'ಉದ್ಯೋಗ ವಿವರಗಳು →':'View Details →';
+  box.className='nj-feat';
+  box.innerHTML=`<span class="nj-feat-tag">⭐ <span class="lang-en">Featured Recruitment</span><span class="lang-kn">ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ</span></span>
+    <div class="nj-feat-title">${njField(j.title_en,j.title_kn)||''}</div>
+    <div class="nj-feat-sub">${njField(j.dept,j.dept_kn)||''}</div>
+    <div class="nj-feat-meta">${postsPill}${locPill}${datePill}</div>
+    <a class="nj-feat-cta" href="${getJobUrl(j.id)}" onclick="event.stopPropagation();" style="text-decoration:none;">${cta}</a>`;
+}
+
+// LATEST NOTIFICATIONS — every published job, linking to its admin-uploaded notification PDF
+function renderLatestNotifs(){
+  const box=document.getElementById('nj-latest-notif');
+  if(!box)return;
+  const pub=allJobs.filter(j=>j.status==='open').sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0)).slice(0,8);
+  if(!pub.length){
+    box.innerHTML=`<div class="nj-ph-empty"><span class="lang-en">No Notifications Available</span><span class="lang-kn">ಯಾವುದೇ ಅಧಿಸೂಚನೆಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>`;
+    return;
+  }
+  box.innerHTML=pub.map(j=>{
+    const pdf=njNotifPdf(j);
+    const action=pdf?`window.open('${pdf}','_blank')`:`window.location.href='${getJobUrl(j.id)}'`;
+    const meta=(njField(j.dept,j.dept_kn)||'')+(j.last_date?' · '+fmtDate(j.last_date):'');
+    return `<div class="nj-ph-item" style="cursor:pointer;" onclick="${action}">
+      <div class="nj-ph-dot"></div>
+      <div class="nj-ph-body">
+        <div class="nj-ph-t">${njField(j.title_en,j.title_kn)||''}<span class="nj-ph-new">${njGetLang()==='kn'?'ಹೊಸ':'New'}</span></div>
+        <div class="nj-ph-m">${meta}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 // Called by lang.js when language changes — re-renders all dynamic content
 function njRerender(){
   // Sync the static language-toggle attribute so [data-lang] CSS shows only the active language
@@ -1702,6 +1759,8 @@ function njRerender(){
   if(typeof renderCats==='function') renderCats();
   if(typeof renderAll==='function') renderAll();
   if(typeof renderNotifs==='function') renderNotifs();
+  if(typeof renderFeatured==='function') renderFeatured();
+  if(typeof renderLatestNotifs==='function') renderLatestNotifs();
   // Update search placeholder
   const srch=document.getElementById('srch');
   if(srch) srch.placeholder=njGetLang()==='kn'?'ಉದ್ಯೋಗಗಳನ್ನು ಹುಡುಕಿ...':'Search Jobs...';
@@ -1884,6 +1943,8 @@ async function init(){
     allJobs=await fetchJobs();
     renderCats();
     renderAll();
+    renderFeatured();
+    renderLatestNotifs();
     // Fetch admit cards & results in background
     const notifs=await fetchNotifs();
     allAC=notifs.filter(n=>n.type==='admit_card');
