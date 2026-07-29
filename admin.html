@@ -99,7 +99,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
 
 /* Category & Status buttons */
 .cat-grid,.st-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
-.to,.sto{
+.to,.sto,.stf{
   background:var(--glass-bg-dark);
   border:2px solid var(--glass-border);
   color:#fff;
@@ -114,11 +114,14 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
   align-items:center;
   gap:5px;
 }
-.to:hover,.sto:hover{background:rgba(255,255,255,0.12);}
+.to:hover,.sto:hover,.stf:hover{background:rgba(255,255,255,0.12);}
 .to.on{background:var(--grad-pink);border-color:rgba(168,85,247,0.7);box-shadow:0 4px 14px rgba(168,85,247,0.4);}
 .sto.on{background:rgba(76,217,100,0.3);border-color:rgba(76,217,100,0.7);}
 .sto[data-v=soon].on{background:rgba(255,193,7,0.3);border-color:rgba(255,193,7,0.7);}
 .sto[data-v=closed].on{background:rgba(150,150,150,0.3);border-color:rgba(150,150,150,0.7);}
+/* Independent display-flag buttons (Short Notification / Featured) — same geometry & animation as .sto. */
+.stf[data-v=short].on{background:rgba(255,193,7,0.3);border-color:rgba(255,193,7,0.7);box-shadow:0 4px 14px rgba(255,193,7,0.35);}
+.stf[data-v=featured].on{background:rgba(255,153,0,0.32);border-color:rgba(255,171,0,0.8);box-shadow:0 4px 14px rgba(255,153,0,0.4);}
 
 /* ===== BASIC INFORMATION — professional card layout (UI only; logic unchanged) ===== */
 .bi-head{font-family:var(--fhead);font-size:15px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;margin:4px 0 14px;padding-bottom:12px;border-bottom:1.5px solid rgba(255,255,255,0.14);}
@@ -373,6 +376,8 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
               <button class="sto" data-v="open" onclick="setStat('open',this)">● Open</button>
               <button class="sto" data-v="soon" onclick="setStat('soon',this)">◐ Coming Soon</button>
               <button class="sto" data-v="closed" onclick="setStat('closed',this)">○ Closed</button>
+              <button class="stf" data-v="short" onclick="this.classList.toggle('on')">🟡 Short Notification</button>
+              <button class="stf" data-v="featured" onclick="this.classList.toggle('on')">⭐ Featured Recruitment</button>
             </div>
           </div>
 
