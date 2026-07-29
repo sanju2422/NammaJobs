@@ -646,6 +646,9 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
             <div class="bi-card-hd"><span class="bi-ic">📄</span> Official Documents</div>
             <label>Official Notification PDF</label>
             <input type="url" id="f-notif-url" placeholder="https://official-site.gov.in/notification.pdf">
+            <!-- Short Notification PDF — optional, UI only (not yet wired to save/edit/parser). -->
+            <label style="margin-top:12px;">Short Notification PDF</label>
+            <input type="url" id="f-short-notif-url" placeholder="https://official-site.gov.in/short-notification.pdf">
             <!-- Legacy Syllabus PDF field removed from the UI but retained (hidden) for 100% backward compatibility with existing save/edit/preview logic. -->
             <div style="display:none;" aria-hidden="true">
               <input type="url" id="f-syllabus-url" placeholder="https://official-site.gov.in/syllabus.pdf">
