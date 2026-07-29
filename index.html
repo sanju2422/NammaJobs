@@ -942,15 +942,6 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
       </div>
     </div>
 
-    <div class="sc">
-      <div class="sc-ttl">📌 <span class="lang-en">Important Links</span><span class="lang-kn">ಪ್ರಮುಖ ಲಿಂಕ್‌ಗಳು</span></div>
-      <div class="nj-ph-links">
-        <a href="#" class="nj-ph-link">🧭 <span class="lang-en">How to Apply</span><span class="lang-kn">ಹೇಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸುವುದು</span></a>
-        <a href="#" class="nj-ph-link">🗓️ <span class="lang-en">Exam Calendar</span><span class="lang-kn">ಪರೀಕ್ಷಾ ಕ್ಯಾಲೆಂಡರ್</span></a>
-        <a href="#" class="nj-ph-link">📝 <span class="lang-en">Preparation Tips</span><span class="lang-kn">ತಯಾರಿ ಸಲಹೆಗಳು</span></a>
-        <a href="#" class="nj-ph-link" onclick="return njScrollFAQ();">❓ <span class="lang-en">FAQs</span><span class="lang-kn">ಪ್ರಶ್ನೆಗಳು</span></a>
-      </div>
-    </div>
     <!-- ===== END PROTOTYPE SIDEBAR CARDS ===== -->
 
     <div class="sc" id="sb-ac" style="display:none;">
@@ -1245,7 +1236,7 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 
 <style>
 /* ===== FOOTER — aligned to Job Details footer reference (layout only; themes preserved) ===== */
-.ft .ft-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1.5fr;gap:30px;margin-bottom:26px;align-items:start;}
+.ft .ft-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1.3fr;gap:26px;margin-bottom:26px;align-items:start;}
 .nj-fbrand{max-width:340px;}
 .nj-fbrandrow{display:flex;align-items:center;gap:11px;margin-bottom:12px;}
 .nj-flogo{width:44px;height:44px;border-radius:12px;background:#fff;padding:4px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.14);flex:0 0 auto;}
@@ -1284,8 +1275,9 @@ html:not([data-theme=dark]) .nj-fdisc{color:#94a3b8;}
 [data-theme=dark] .nj-fbottom{border-top-color:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);}
 [data-theme=dark] .nj-fdisc{color:rgba(255,255,255,0.5);}
 /* Responsive */
-@media(max-width:900px){.ft .ft-grid{grid-template-columns:1fr 1fr;}.nj-fbrand{grid-column:1/-1;max-width:none;}}
-@media(max-width:560px){.ft .ft-grid{grid-template-columns:1fr;}.nj-fbottom{justify-content:center;text-align:center;}}
+@media(max-width:1100px){.ft .ft-grid{grid-template-columns:1fr 1fr 1fr;}.nj-fbrand{grid-column:1/-1;max-width:none;}}
+@media(max-width:640px){.ft .ft-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.ft .ft-grid{grid-template-columns:1fr;}.nj-fbottom{justify-content:center;text-align:center;}}
 </style>
 
 <footer class="ft">
@@ -1336,6 +1328,19 @@ html:not([data-theme=dark]) .nj-fdisc{color:#94a3b8;}
         <a href="privacy.html" class="fl lang-kn" style="text-decoration:none;">ಗೌಪ್ಯತಾ ನೀತಿ</a>
         <a href="terms.html" class="fl lang-en" style="text-decoration:none;">Terms & Conditions</a>
         <a href="terms.html" class="fl lang-kn" style="text-decoration:none;">ನಿಯಮಗಳು ಮತ್ತು ಷರತ್ತುಗಳು</a>
+      </div>
+
+      <div class="fcol-ql">
+        <div class="fh lang-en">Important Links</div>
+        <div class="fh lang-kn">ಪ್ರಮುಖ ಲಿಂಕ್‌ಗಳು</div>
+        <a href="#" class="fl lang-en" style="text-decoration:none;">How to Apply</a>
+        <a href="#" class="fl lang-kn" style="text-decoration:none;">ಹೇಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸುವುದು</a>
+        <a href="#" class="fl lang-en" style="text-decoration:none;">Exam Calendar</a>
+        <a href="#" class="fl lang-kn" style="text-decoration:none;">ಪರೀಕ್ಷಾ ಕ್ಯಾಲೆಂಡರ್</a>
+        <a href="#" class="fl lang-en" style="text-decoration:none;">Preparation Tips</a>
+        <a href="#" class="fl lang-kn" style="text-decoration:none;">ತಯಾರಿ ಸಲಹೆಗಳು</a>
+        <a href="#" class="fl lang-en" onclick="return njScrollFAQ();" style="text-decoration:none;">FAQs</a>
+        <a href="#" class="fl lang-kn" onclick="return njScrollFAQ();" style="text-decoration:none;">ಪ್ರಶ್ನೆಗಳು</a>
       </div>
 
       <div>
