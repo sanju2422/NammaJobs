@@ -943,7 +943,7 @@ html:not([data-theme=dark]) .nj-more-notif-btn:hover{background:#f1f5f9;border-c
 
     <div class="sc">
       <div class="sc-ttl">🟡 <span class="lang-en">Short Notifications</span><span class="lang-kn">ಸಂಕ್ಷಿಪ್ತ ಅಧಿಸೂಚನೆಗಳು</span></div>
-      <div class="nj-ph-list">
+      <div class="nj-ph-list" id="sb-short-list">
         <div class="nj-ph-empty"><span class="lang-en">No Notifications Available</span><span class="lang-kn">ಯಾವುದೇ ಅಧಿಸೂಚನೆಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>
       </div>
     </div>
@@ -1554,7 +1554,7 @@ function notifCard(item, type){
   </div>`;
 }
 
-let allAC=[],allRS=[];
+let allAC=[],allRS=[],allShort=[];
 
 async function fetchNotifs(){
   try{
@@ -1860,6 +1860,7 @@ function njRerender(){
   if(typeof renderCats==='function') renderCats();
   if(typeof renderAll==='function') renderAll();
   if(typeof renderNotifs==='function') renderNotifs();
+  if(typeof renderShortNotifs==='function') renderShortNotifs();
   if(typeof renderFeatured==='function') renderFeatured();
   if(typeof renderLatestNotifs==='function') renderLatestNotifs();
   // Update search placeholder
@@ -2046,11 +2047,13 @@ async function init(){
     renderAll();
     renderFeatured();
     renderLatestNotifs();
-    // Fetch admit cards & results in background
+    // Fetch admit cards & results & short notifications in background
     const notifs=await fetchNotifs();
     allAC=notifs.filter(n=>n.type==='admit_card');
     allRS=notifs.filter(n=>n.type==='result');
+    allShort=notifs.filter(n=>n.type==='short_notification');
     renderNotifs();
+    renderShortNotifs();
   }catch(e){
     document.getElementById('jgrid').innerHTML=`<div class="empty" style="grid-column:1/-1;">⚠️ Could not load jobs. Please refresh.</div>`;
   }
@@ -2086,6 +2089,59 @@ function renderNotifs(){
     document.getElementById('sb-rs').style.display='block';
     document.getElementById('sb-rs-list').innerHTML=allRS.slice(0,5).map(item=>sidebarNotifItem(item,'rs')).join('');
   }
+}
+
+// ===== SHORT NOTIFICATIONS (Homepage sidebar — live from Supabase) =====
+function shortOpen(id){
+  const n=allShort.find(x=>x.id===id);
+  if(!n)return;
+  const target=n.url||n.short_pdf;
+  if(target)window.open(target,'_blank');
+}
+function shareShortWA(id){
+  const n=allShort.find(x=>x.id===id);
+  if(!n)return;
+  const title=njField(n.title,n.title_kn)||'';
+  const dept=njField(n.dept,n.dept_kn)||'';
+  const desc=(njField(n.short_desc,n.short_desc_kn)||'').split('\n')[0].slice(0,120);
+  const txt=`🟡 *Short Notification*\n\n${title}\n${dept}${desc?'\n'+desc:''}\n\n${n.url||n.short_pdf||''}\n\n— Namma Jobs`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
+}
+function shareShortTG(id){
+  const n=allShort.find(x=>x.id===id);
+  if(!n)return;
+  const target=n.url||n.short_pdf||window.location.href;
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(target)}&text=${encodeURIComponent('🟡 Short Notification: '+njField(n.title,n.title_kn))}`,'_blank');
+}
+function shortCard(n){
+  const title=njField(n.title,n.title_kn)||'';
+  const dept=njField(n.dept,n.dept_kn)||'';
+  const desc=njField(n.short_desc,n.short_desc_kn)||'';
+  const dateVal=n.date?fmtDate(n.date):'';
+  const kn=njGetLang()==='kn';
+  return `<div class="sj" onclick="shortOpen('${n.id}')" style="cursor:pointer;">
+    ${n.banner?`<div style="flex:0 0 68px;width:68px;height:52px;overflow:hidden;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);flex-shrink:0;"><img src="${n.banner}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.style.display='none';"></div>`:''}
+    <div style="flex:1;min-width:0;">
+      <div class="sjt">${title}</div>
+      <div class="sjm">${dept}${dateVal?' · 📅 '+dateVal:''}</div>
+      ${desc?`<div class="sjm" style="margin-top:3px;line-height:1.45;color:rgba(255,255,255,0.75);white-space:normal;">${desc}</div>`:''}
+      <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
+        ${n.url?`<button class="btn-card bc-apply" onclick="event.stopPropagation();window.open('${n.url}','_blank')" style="font-size:11px;padding:4px 8px;">🌐 ${kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್':'Official Website'}</button>`:''}
+        ${n.short_pdf?`<button class="btn-card bc-details" onclick="event.stopPropagation();window.open('${n.short_pdf}','_blank')" style="font-size:11px;padding:4px 8px;">📄 ${kn?'ಅಧಿಸೂಚನೆ':'Notification'} PDF</button>`:''}
+        <button class="btn-card bc-wa" onclick="event.stopPropagation();shareShortWA('${n.id}')" style="font-size:11px;padding:4px 8px;">📱 WhatsApp</button>
+        <button class="btn-card bc-tg" onclick="event.stopPropagation();shareShortTG('${n.id}')" style="font-size:11px;padding:4px 8px;">✈️ Telegram</button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderShortNotifs(){
+  const box=document.getElementById('sb-short-list');
+  if(!box)return;
+  if(!allShort.length){
+    box.innerHTML=`<div class="nj-ph-empty"><span class="lang-en">No Notifications Available</span><span class="lang-kn">ಯಾವುದೇ ಅಧಿಸೂಚನೆಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>`;
+    return;
+  }
+  box.innerHTML=allShort.slice(0,5).map(shortCard).join('');
 }
 
 init();

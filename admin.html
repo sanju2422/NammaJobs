@@ -119,8 +119,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
 .sto.on{background:rgba(76,217,100,0.3);border-color:rgba(76,217,100,0.7);}
 .sto[data-v=soon].on{background:rgba(255,193,7,0.3);border-color:rgba(255,193,7,0.7);}
 .sto[data-v=closed].on{background:rgba(150,150,150,0.3);border-color:rgba(150,150,150,0.7);}
-/* Independent display-flag buttons (Short Notification / Featured) — same geometry & animation as .sto. */
-.stf[data-v=short].on{background:rgba(255,193,7,0.3);border-color:rgba(255,193,7,0.7);box-shadow:0 4px 14px rgba(255,193,7,0.35);}
+/* Independent display-flag button (Featured Recruitment) — same geometry & animation as .sto. */
 .stf[data-v=featured].on{background:rgba(255,153,0,0.32);border-color:rgba(255,171,0,0.8);box-shadow:0 4px 14px rgba(255,153,0,0.4);}
 
 /* ===== BASIC INFORMATION — professional card layout (UI only; logic unchanged) ===== */
@@ -346,6 +345,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
     <!-- TABS -->
     <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;">
       <button class="tab-btn on" id="tab-jobs" onclick="switchTab('jobs')">💼 Jobs</button>
+      <button class="tab-btn" id="tab-short" onclick="switchTab('short')">🟡 Short Notification</button>
       <button class="tab-btn" id="tab-ac" onclick="switchTab('ac')">🎓 Admit Card</button>
       <button class="tab-btn" id="tab-rs" onclick="switchTab('rs')">📊 Result</button>
     </div>
@@ -376,7 +376,6 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
               <button class="sto" data-v="open" onclick="setStat('open',this)">● Open</button>
               <button class="sto" data-v="soon" onclick="setStat('soon',this)">◐ Coming Soon</button>
               <button class="sto" data-v="closed" onclick="setStat('closed',this)">○ Closed</button>
-              <button class="stf" data-v="short" onclick="this.classList.toggle('on')">🟡 Short Notification</button>
               <button class="stf" data-v="featured" onclick="this.classList.toggle('on')">⭐ Featured Recruitment</button>
             </div>
           </div>
@@ -651,11 +650,22 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
             <div class="bi-card-hd"><span class="bi-ic">📄</span> Official Documents</div>
             <label>Official Notification PDF</label>
             <input type="url" id="f-notif-url" placeholder="https://official-site.gov.in/notification.pdf">
-            <!-- Short Notification PDF — optional, UI only (not yet wired to save/edit/parser). -->
-            <label style="margin-top:12px;">Short Notification PDF</label>
-            <input type="url" id="f-short-notif-url" placeholder="https://official-site.gov.in/short-notification.pdf">
-            <!-- Legacy Syllabus PDF field removed from the UI but retained (hidden) for 100% backward compatibility with existing save/edit/preview logic. -->
+
+            <label style="margin-top:12px;">Notification Label 1</label>
+            <input type="text" id="f-notif-label-1" placeholder="e.g. Notification PDF - KK">
+            <label style="margin-top:12px;">Notification PDF 1</label>
+            <input type="url" id="f-notif-url-1" placeholder="https://official-site.gov.in/notification-1.pdf">
+
+            <label style="margin-top:12px;">Notification Label 2</label>
+            <input type="text" id="f-notif-label-2" placeholder="e.g. Corrigendum">
+            <label style="margin-top:12px;">Notification PDF 2</label>
+            <input type="url" id="f-notif-url-2" placeholder="https://official-site.gov.in/notification-2.pdf">
+
+            <div class="url-hint">📄 Labels are editable. If a label or PDF is empty, it will not be shown on the Job Details page. Examples: Notification PDF - KK, Notification PDF - RPC, Corrigendum, Revised Notification.</div>
+
+            <!-- Legacy fields retained (hidden) for 100% backward compatibility with existing save/edit/preview logic. -->
             <div style="display:none;" aria-hidden="true">
+              <input type="url" id="f-short-notif-url" placeholder="https://official-site.gov.in/short-notification.pdf">
               <input type="url" id="f-syllabus-url" placeholder="https://official-site.gov.in/syllabus.pdf">
             </div>
           </div>
@@ -793,6 +803,95 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
 
     </div>
     </div><!-- end tab-content-jobs -->
+
+    <!-- SHORT NOTIFICATION TAB -->
+    <div id="tab-content-short" style="display:none;">
+      <div class="layout">
+        <!-- FORM -->
+        <div class="panel">
+          <div class="panel-hdr">
+            <h2 id="short-ttl">🟡 Add Short Notification</h2>
+            <p id="short-sub">Post a short notification to the homepage</p>
+          </div>
+
+          <div class="bi-head" style="margin-top:4px;">📌 Basic Information</div>
+          <div class="bi-grid">
+            <div class="bi-card bi-span">
+              <div class="bi-card-hd"><span class="bi-ic">💼</span> Job Title</div>
+              <div class="row2">
+                <div><label>Job Title (English) *</label><input type="text" id="s-title" placeholder="e.g. KSRTC Recruitment 2026"></div>
+                <div><label>Job Title (ಕನ್ನಡ)</label><input type="text" id="s-title-kn" style="font-family:var(--fkn);" placeholder="ಉದಾ. ಕೆಎಸ್‌ಆರ್‌ಟಿಸಿ ನೇಮಕಾತಿ 2026"></div>
+              </div>
+            </div>
+
+            <div class="bi-card">
+              <div class="bi-card-hd"><span class="bi-ic">🏛️</span> Department</div>
+              <div class="row2">
+                <div><label>Department (English) *</label><input type="text" id="s-dept" placeholder="KPSC, KSRTC, SSC..."></div>
+                <div><label>Department (ಕನ್ನಡ)</label><input type="text" id="s-dept-kn" style="font-family:var(--fkn);" placeholder="ಕರ್ನಾಟಕ ಲೋಕಸೇವಾ ಆಯೋಗ"></div>
+              </div>
+            </div>
+
+            <div class="bi-card">
+              <div class="bi-card-hd"><span class="bi-ic">📅</span> Notification Date</div>
+              <input type="date" id="s-date">
+            </div>
+          </div>
+
+          <div class="bi-head" style="margin-top:22px;">🗂️ Content</div>
+          <div class="bi-grid">
+            <div class="bi-card bi-span">
+              <div class="bi-card-hd"><span class="bi-ic">📝</span> Short Description</div>
+              <div class="bi-note">You can include Salary, Age, Qualification, Last Date or other basic information inside the description.</div>
+              <div class="row2">
+                <div><label>Short Description (English)</label><textarea id="s-desc" style="min-height:150px;" placeholder="e.g. Applications invited for 500 Assistant Engineer posts. Last Date: 31/08/2026. Age: 18-35 years."></textarea></div>
+                <div><label>Short Description (ಕನ್ನಡ)</label><textarea id="s-desc-kn" style="min-height:150px;font-family:var(--fkn);" placeholder="ಉದಾ. 500 ಸಹಾಯಕ ಎಂಜಿನಿಯರ್ ಹುದ್ದೆಗಳಿಗೆ ಅರ್ಜಿ ಆಹ್ವಾನಿಸಲಾಗಿದೆ. ಕೊನೆ ದಿನ: 31/08/2026"></textarea></div>
+              </div>
+            </div>
+
+            <div class="bi-card bi-span">
+              <div class="bi-card-hd"><span class="bi-ic">🖼️</span> Banner / Image <span class="bi-opt">(Optional)</span></div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;font-weight:600;">Upload a banner (JPG, PNG or WebP) or paste a direct image URL. Shown on the homepage Short Notifications section.</div>
+              <div class="row2">
+                <div><label>Banner URL</label><input type="url" id="s-banner" placeholder="https://example.com/banner.jpg (or upload →)" oninput="showBannerPreview('s-banner')"></div>
+                <div><label>Upload Banner</label><input type="file" id="s-banner-file" accept="image/jpeg,image/png,image/webp" onchange="uploadBanner(this,'s-banner')" style="font-size:12px;color:rgba(255,255,255,0.7);padding:9px 14px;"></div>
+              </div>
+              <label style="margin-top:14px;">🖼️ Live Banner Preview</label>
+              <div id="s-banner-prev" class="banner-prev banner-prev-box"></div>
+            </div>
+
+            <div class="bi-card bi-span">
+              <div class="bi-card-hd"><span class="bi-ic">📄</span> Short Notification PDF <span class="bi-opt">(Optional)</span></div>
+              <input type="url" id="s-pdf" placeholder="https://official-site.gov.in/short-notification.pdf">
+            </div>
+
+            <div class="bi-card bi-span">
+              <div class="bi-card-hd"><span class="bi-ic">🌐</span> Official Website</div>
+              <input type="url" id="s-url" placeholder="https://kpsc.kar.nic.in">
+              <div class="url-hint">⚠️ This URL opens when the user clicks the notification or the "Official Website" button</div>
+            </div>
+          </div>
+
+          <div class="fbtns">
+            <button class="fbtn fb-pub" id="short-pub-btn" onclick="saveShortNotif()">
+              <span id="short-spin" class="spin"></span>
+              <span id="short-btn-txt">✓ Publish</span>
+            </button>
+            <button class="fbtn fb-clr" onclick="clearShortNotifForm()">✕ Clear</button>
+          </div>
+        </div>
+
+        <!-- LIST -->
+        <div class="panel">
+          <div class="panel-hdr" style="background:linear-gradient(135deg,#1e40af,#3b82f6);">
+            <h2 id="short-list-ttl">📋 Posted Short Notifications</h2>
+            <p>Edit or delete</p>
+          </div>
+          <div class="jl" id="short-list"><div style="color:rgba(255,255,255,0.7);text-align:center;padding:20px;font-size:13px;">Loading...</div></div>
+        </div>
+
+      </div>
+    </div><!-- end tab-content-short -->
 
     <!-- ADMIT CARD / RESULT TAB -->
     <div id="tab-content-notif" style="display:none;">
@@ -1098,6 +1197,10 @@ function collectJob(){
     syllabus_kn:document.getElementById('f-syllabus-kn')?document.getElementById('f-syllabus-kn').value.trim()||null:null,
     syllabus_url:document.getElementById('f-syllabus-url').value.trim()||null,
     notif_url:document.getElementById('f-notif-url')?document.getElementById('f-notif-url').value.trim()||null:null,
+    notif_label_1:document.getElementById('f-notif-label-1')?document.getElementById('f-notif-label-1').value.trim()||null:null,
+    notif_url_1:document.getElementById('f-notif-url-1')?document.getElementById('f-notif-url-1').value.trim()||null:null,
+    notif_label_2:document.getElementById('f-notif-label-2')?document.getElementById('f-notif-label-2').value.trim()||null:null,
+    notif_url_2:document.getElementById('f-notif-url-2')?document.getElementById('f-notif-url-2').value.trim()||null:null,
     selection_process:document.getElementById('f-sel-process').value.trim()||null,
     selection_process_kn:document.getElementById('f-sel-process-kn').value.trim()||null,
     required_docs:document.getElementById('f-req-docs').value.trim()||null,
@@ -1213,6 +1316,10 @@ function editJob(id){
   if(document.getElementById('f-syllabus-kn'))document.getElementById('f-syllabus-kn').value=j.syllabus_kn||'';
   document.getElementById('f-syllabus-url').value=j.syllabus_url||'';
   if(document.getElementById('f-notif-url'))document.getElementById('f-notif-url').value=j.notif_url||'';
+  if(document.getElementById('f-notif-label-1'))document.getElementById('f-notif-label-1').value=j.notif_label_1||'';
+  if(document.getElementById('f-notif-url-1'))document.getElementById('f-notif-url-1').value=j.notif_url_1||'';
+  if(document.getElementById('f-notif-label-2'))document.getElementById('f-notif-label-2').value=j.notif_label_2||'';
+  if(document.getElementById('f-notif-url-2'))document.getElementById('f-notif-url-2').value=j.notif_url_2||'';
   document.getElementById('f-sel-process').value=j.selection_process||'';
   document.getElementById('f-sel-process-kn').value=j.selection_process_kn||'';
   document.getElementById('f-req-docs').value=j.required_docs||'';
@@ -1268,7 +1375,7 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-faq','f-faq-kn','f-tips','f-tips-kn','f-banner-en','f-banner-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-notif-label-1','f-notif-url-1','f-notif-label-2','f-notif-url-2','f-faq','f-faq-kn','f-tips','f-tips-kn','f-banner-en','f-banner-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-banner-en','f-banner-kn'].forEach(id=>showBannerPreview(id));
   ['f-ld-tba','f-sd-tba','f-sd-started','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleStarted(false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
@@ -1347,9 +1454,13 @@ function switchTab(tab){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
   document.getElementById('tab-'+tab).classList.add('on');
   document.getElementById('tab-content-jobs').style.display=tab==='jobs'?'block':'none';
+  document.getElementById('tab-content-short').style.display=tab==='short'?'block':'none';
   document.getElementById('tab-content-notif').style.display=(tab==='ac'||tab==='rs')?'block':'none';
 
-  if(tab==='ac'){
+  if(tab==='short'){
+    clearShortNotifForm();
+    loadShortNotifs();
+  } else if(tab==='ac'){
     currentNotifType='admit_card';
     document.getElementById('notif-ttl').textContent='🎓 Add Admit Card';
     document.getElementById('notif-sub').textContent='Post admit card / hall ticket notification';
@@ -1474,6 +1585,144 @@ async function loadNotifs(){
     renderNotifList();
   }catch(e){
     document.getElementById('notif-list').innerHTML=`<div style="color:#ff8080;text-align:center;padding:20px;">⚠️ Could not load</div>`;
+  }
+}
+
+// ============ SHORT NOTIFICATIONS ============
+let editShortId=null, allShort=[];
+// Short notifications are stored in the same notifications table with type='short_notification'.
+// Required new columns on the notifications table (run once in Supabase SQL):
+//   ALTER TABLE notifications
+//     ADD COLUMN title_kn TEXT,
+//     ADD COLUMN short_desc TEXT,
+//     ADD COLUMN short_desc_kn TEXT,
+//     ADD COLUMN banner TEXT,
+//     ADD COLUMN short_pdf TEXT;
+
+async function saveShortNotif(){
+  const title=document.getElementById('s-title').value.trim();
+  const dept=document.getElementById('s-dept').value.trim();
+  if(!title||!dept){toast('err','Job Title and Department are required!');return;}
+
+  const btn=document.getElementById('short-pub-btn');
+  const sp=document.getElementById('short-spin');
+  btn.disabled=true;sp.style.display='inline-block';
+
+  const notif={
+    type:'short_notification',
+    title:title,
+    title_kn:document.getElementById('s-title-kn').value.trim()||null,
+    dept:dept,
+    dept_kn:document.getElementById('s-dept-kn').value.trim()||null,
+    date:document.getElementById('s-date').value||null,
+    short_desc:document.getElementById('s-desc').value.trim()||null,
+    short_desc_kn:document.getElementById('s-desc-kn').value.trim()||null,
+    banner:document.getElementById('s-banner').value.trim()||null,
+    short_pdf:document.getElementById('s-pdf').value.trim()||null,
+    url:document.getElementById('s-url').value.trim()||null,
+  };
+
+  try{
+    let res;
+    if(editShortId){
+      res=await fetch(`${SB_URL}/rest/v1/notifications?id=eq.${editShortId}`,{method:'PATCH',headers:H,body:JSON.stringify(notif)});
+    }else{
+      res=await fetch(`${SB_URL}/rest/v1/notifications`,{method:'POST',headers:H,body:JSON.stringify(notif)});
+    }
+    if(!res.ok)throw new Error('save failed');
+    toast('ok',editShortId?'Short notification updated!':'Short notification published!');
+    clearShortNotifForm();
+    await loadShortNotifs();
+  }catch(e){
+    toast('err','Save failed. Make sure the notifications table has the new columns.');
+  }finally{
+    btn.disabled=false;sp.style.display='none';
+  }
+}
+
+function editShortNotif(id){
+  const n=allShort.find(x=>x.id===id);
+  if(!n)return;
+  editShortId=id;
+  document.getElementById('s-title').value=n.title||'';
+  document.getElementById('s-title-kn').value=n.title_kn||'';
+  document.getElementById('s-dept').value=n.dept||'';
+  document.getElementById('s-dept-kn').value=n.dept_kn||'';
+  document.getElementById('s-date').value=n.date||'';
+  document.getElementById('s-desc').value=n.short_desc||'';
+  document.getElementById('s-desc-kn').value=n.short_desc_kn||'';
+  document.getElementById('s-banner').value=n.banner||'';
+  showBannerPreview('s-banner');
+  document.getElementById('s-pdf').value=n.short_pdf||'';
+  document.getElementById('s-url').value=n.url||'';
+  document.getElementById('short-btn-txt').textContent='✓ Update';
+  document.getElementById('short-pub-btn').className='fbtn fb-upd';
+  document.getElementById('short-ttl').textContent='✏️ Edit Short Notification';
+  document.getElementById('short-sub').textContent='Update existing short notification';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function delShortNotif(id){
+  const n=allShort.find(x=>x.id===id);
+  document.getElementById('cf-ttl').textContent='Delete this short notification?';
+  document.getElementById('cf-msg').innerHTML=`<strong>${n?n.title:''}</strong><br>Permanent action. It will be removed from the homepage.`;
+  document.getElementById('cf-yes').onclick=async()=>{
+    try{
+      await fetch(`${SB_URL}/rest/v1/notifications?id=eq.${id}`,{method:'DELETE',headers:H});
+      allShort=allShort.filter(x=>x.id!==id);
+      document.getElementById('cfbg').classList.remove('open');
+      toast('ok','Short notification deleted');
+      if(editShortId===id)clearShortNotifForm();
+      renderShortNotifList();
+    }catch(e){toast('err','Delete failed');}
+  };
+  document.getElementById('cfbg').classList.add('open');
+}
+
+function clearShortNotifForm(){
+  editShortId=null;
+  ['s-title','s-title-kn','s-dept','s-dept-kn','s-date','s-desc','s-desc-kn','s-banner','s-pdf','s-url'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  showBannerPreview('s-banner');
+  document.getElementById('short-btn-txt').textContent='✓ Publish';
+  document.getElementById('short-pub-btn').className='fbtn fb-pub';
+  document.getElementById('short-ttl').textContent='🟡 Add Short Notification';
+  document.getElementById('short-sub').textContent='Post a short notification to the homepage';
+}
+
+function renderShortNotifList(){
+  if(!allShort.length){
+    document.getElementById('short-list').innerHTML=`<div style="color:rgba(255,255,255,0.7);text-align:center;padding:30px;font-size:13px;">No short notifications posted yet</div>`;
+    return;
+  }
+  document.getElementById('short-list').innerHTML=allShort.map(n=>`
+    <div class="ji">
+      <div class="jit">${n.title}</div>
+      <div class="jim">
+        <span class="jim-pill">${n.dept||'—'}</span>
+        ${n.date?`<span class="jim-pill">📅 ${n.date}</span>`:''}
+        ${n.banner?`<span class="jim-pill">🖼️</span>`:''}
+        ${n.short_pdf?`<span class="jim-pill">📄</span>`:''}
+      </div>
+      <div class="jactions">
+        <button class="jab jab-edit" onclick="editShortNotif('${n.id}')">✏️ Edit</button>
+        <button class="jab jab-del" onclick="delShortNotif('${n.id}')">🗑️ Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadShortNotifs(){
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/notifications?type=eq.short_notification&order=created_at.desc`,{headers:H});
+    if(!r.ok){
+      document.getElementById('short-list').innerHTML=`<div style="color:#ff8080;text-align:center;padding:20px;font-size:12px;">⚠️ Could not load short notifications</div>`;
+      return;
+    }
+    const data=await r.json();
+    allShort=Array.isArray(data)?data.filter(n=>n.type==='short_notification'):[];
+    renderShortNotifList();
+  }catch(e){
+    document.getElementById('short-list').innerHTML=`<div style="color:#ff8080;text-align:center;padding:20px;">⚠️ Could not load</div>`;
   }
 }
 </script>

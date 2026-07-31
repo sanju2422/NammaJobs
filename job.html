@@ -1365,6 +1365,7 @@ function actionBarHtml(j){
   if(j.apply_link) b+='<a class="act-btn act-apply" href="'+j.apply_link+'" target="_blank" rel="noopener"><span class="act-lbl">'+njIc('send')+(kn?'ಅರ್ಜಿ ಸಲ್ಲಿಸಿ':'Apply Online')+'</span><span class="act-sub">'+(kn?'ಅಧಿಕೃತ ಅರ್ಜಿ ಲಿಂಕ್':'Official Apply Link')+'</span></a>';
   if(j.official_url) b+='<a class="act-btn act-official" href="'+j.official_url+'" target="_blank" rel="noopener"><span class="act-lbl">'+njIc('globe')+(kn?'ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್':'Official Website')+'</span><span class="act-sub">'+(kn?'ಮೂಲ ಜಾಲತಾಣ':'Visit site')+'</span></a>';
   if(j.notif_url) b+='<a class="act-btn act-notif" href="'+j.notif_url+'" target="_blank" rel="noopener"><span class="act-lbl">'+njIc('download')+(kn?'ಅಧಿಸೂಚನೆ':'Download Notification')+'</span><span class="act-sub">PDF</span></a>';
+  b+=njActionDocs(j);
   b+='<button type="button" class="act-btn act-share" onclick="scrollToShare()"><span class="act-lbl">'+njIc('share')+(kn?'ಹಂಚಿಕೊಳ್ಳಿ':'Share This Job')+'</span><span class="act-sub">WhatsApp · Telegram</span></button>';
   return '<div class="action-bar">'+b+'</div>';
 }
@@ -1669,6 +1670,28 @@ function njDocItems(raw){
     return '<div class="doc-item"><span class="doc-check">'+njIc('check')+'</span><span>'+njEsc(s.trim())+'</span></div>';
   }).join('');
 }
+/* Labeled Notification PDFs (label + pdf pairs). Empty label or PDF → hidden. */
+function njNotifDocs(j){
+  var items=[];
+  if(j.notif_label_1&&String(j.notif_label_1).trim()&&j.notif_url_1&&String(j.notif_url_1).trim()) items.push({label:j.notif_label_1,pdf:j.notif_url_1});
+  if(j.notif_label_2&&String(j.notif_label_2).trim()&&j.notif_url_2&&String(j.notif_url_2).trim()) items.push({label:j.notif_label_2,pdf:j.notif_url_2});
+  if(!items.length) return '';
+  return '<div style="display:flex;flex-direction:column;gap:10px;">'+items.map(function(d){
+    return '<a href="'+njEsc(d.pdf)+'" target="_blank" rel="noopener" class="btn-apply-main" style="display:inline-flex;align-items:center;gap:8px;justify-content:center;font-size:13px;padding:11px 20px;">'+njIc('download')+' '+njEsc(d.label)+'</a>';
+  }).join('')+'</div>';
+}
+/* Labeled Notification PDF action-bar buttons. Empty label or PDF → hidden. */
+function njActionDocs(j){
+  var kn=njGetLang()==='kn';
+  var b='';
+  if(j.notif_label_1&&String(j.notif_label_1).trim()&&j.notif_url_1&&String(j.notif_url_1).trim()){
+    b+='<a class="act-btn act-notif" href="'+njEsc(j.notif_url_1)+'" target="_blank" rel="noopener"><span class="act-lbl">'+njIc('download')+njEsc(j.notif_label_1)+'</span><span class="act-sub">PDF</span></a>';
+  }
+  if(j.notif_label_2&&String(j.notif_label_2).trim()&&j.notif_url_2&&String(j.notif_url_2).trim()){
+    b+='<a class="act-btn act-notif" href="'+njEsc(j.notif_url_2)+'" target="_blank" rel="noopener"><span class="act-lbl">'+njIc('download')+njEsc(j.notif_label_2)+'</span><span class="act-sub">PDF</span></a>';
+  }
+  return b;
+}
 /* Selection process → green check list. */
 function njSelectionItems(raw){
   var items=njSteps(raw);
@@ -1739,6 +1762,8 @@ function renderJob(j){
         })()}
 
         ${njSecCard(njIc('calendar'),'sb-red',kn?'ಪ್ರಮುಖ ದಿನಾಂಕಗಳು':'Important Dates',njDatesTable(j))}
+
+        ${njSecCard(njIc('file-text'),'sb-blue',kn?'ಅಧಿಸೂಚನೆ PDF ಗಳು':'Notification PDFs',njNotifDocs(j))}
 
         ${j.fee?njSecCard(njIc('credit-card'),'sb-green',kn?'ಅರ್ಜಿ ಶುಲ್ಕ':'Application Fee',njFeeCell(njField(j.fee,j.fee_kn))):''}
 
