@@ -1531,6 +1531,23 @@ function njCatRows(raw){
   }
   return body;
 }
+/* All vacancy tables (Category / Post / State / District / Zone) rendered as one
+   stack of clean responsive tables. Empty sections are skipped entirely. */
+function njVacancySections(j){
+  var kn=njGetLang()==='kn';
+  var html='';
+  function sec(col,knTitle,enTitle){
+    var raw=j[col];
+    if(!raw||!String(raw).trim()) return '';
+    return '<div style="overflow-x:auto;margin-top:14px;"><table class="cat-tbl"><thead><tr><th>'+(kn?knTitle:enTitle)+'</th><th>'+(kn?'ಹುದ್ದೆಗಳು':'Vacancies')+'</th></tr></thead><tbody>'+njCatRows(raw)+'</tbody></table></div>';
+  }
+  html+=sec('cats', 'ವರ್ಗವಾರು ಹುದ್ದೆಗಳು','Category-wise Vacancies');
+  html+=sec('post_wise', 'ಹುದ್ದೆವಾರು ಹುದ್ದೆಗಳು','Post-wise Vacancies');
+  html+=sec('state_wise', 'ರಾಜ್ಯವಾರು ಹುದ್ದೆಗಳು','State-wise Vacancies');
+  html+=sec('district_wise', 'ಜಿಲ್ಲಾವಾರು ಹುದ್ದೆಗಳು','District-wise Vacancies');
+  html+=sec('zone_wise', 'ವಲಯ / ವೃತ್ತವಾರು ಹುದ್ದೆಗಳು','Zone / Circle-wise Vacancies');
+  return html;
+}
 function njAgeRows(raw){
   var t=String(raw).replace(/\r/g,' ').replace(/\s+/g,' ').trim();
   if(!t) return {rows:[],table:false};
@@ -1779,7 +1796,7 @@ function renderJob(j){
           var vb='';
           var vt=njTotalSeats(njField(j.seats||'',j.seats_kn)); if(vt==='0')vt='';
           if(vt) vb+='<div class="vac-total"><span class="vt-k">'+(kn?'ಒಟ್ಟು ಹುದ್ದೆಗಳು':'Total Vacancies')+'</span><span class="vt-v">'+njEsc(vt)+'</span></div>';
-          if(j.cats) vb+='<div style="overflow-x:auto;"><table class="cat-tbl"><thead><tr><th>'+(kn?'ವರ್ಗವಾರು ಹುದ್ದೆಗಳು':'Category-wise Vacancies')+'</th><th>'+(kn?'ಹುದ್ದೆಗಳು':'Vacancies')+'</th></tr></thead><tbody>'+njCatRows(njField(j.cats,j.cats_kn))+'</tbody></table></div>';
+          vb+=njVacancySections(j);
           return njSecCard(njIc('users'),'sb-blue',kn?'ಹುದ್ದೆಗಳ ವಿವರ':'Vacancy Details',vb);
         })()}
 
@@ -1792,6 +1809,8 @@ function renderJob(j){
         ${j.age?njSecCard(njIc('user-check'),'sb-purple',kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit',njAgeCell(njField(j.age,j.age_kn))):''}
 
         ${j.skills?njSecCard(njIc('graduation-cap'),'sb-blue',kn?'ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆ':'Educational Qualification','<div class="sec-text">'+njField(j.skills,j.skills_kn)+'</div>'):''}
+
+        ${njField(j.experience,j.experience_kn)?njSecCard(njIc('briefcase'),'sb-blue',kn?'ಅನುಭವ':'Experience','<div class="sec-text">'+njField(j.experience,j.experience_kn)+'</div>'):''}
 
         ${j.description?njSecCard(njIc('file-text'),'sb-blue',kn?'ಈ ಉದ್ಯೋಗದ ಬಗ್ಗೆ':'About this Job','<div class="sec-text">'+njField(j.description,j.description_kn)+'</div>'):''}
 
