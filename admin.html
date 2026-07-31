@@ -591,10 +591,42 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
 
           <!-- 🏷 CATEGORY-WISE VACANCIES -->
           <div class="bi-card bi-span">
-            <div class="bi-card-hd"><span class="bi-ic">🏷️</span> Category-wise Vacancies</div>
+            <div class="bi-card-hd"><span class="bi-ic">🏷️</span> Category-wise Vacancies <span class="bi-opt">(Optional)</span></div>
             <label>Category-wise Vacancies</label>
-            <input type="text" id="f-cats" placeholder="UR:120, OBC:45, SC:30, ST:12, EWS:18">
-            <div class="url-hint">Example: UR:120, OBC:45, SC:30, ST:12, EWS:18</div>
+            <textarea id="f-cats" style="min-height:110px;" placeholder="One entry per line — Category:Vacancies:&#10;UR:120&#10;OBC:45&#10;SC:30"></textarea>
+            <div class="url-hint">One entry per line, format: <strong>Category:Vacancies</strong>. Example: UR:120, OBC:45, SC:30. Any categories are allowed.</div>
+          </div>
+
+          <!-- 💼 POST-WISE VACANCIES -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">💼</span> Post-wise Vacancies <span class="bi-opt">(Optional)</span></div>
+            <label>Post-wise Vacancies</label>
+            <textarea id="f-post-wise" style="min-height:110px;" placeholder="One entry per line — Post:Vacancies:&#10;Junior Assistant:45&#10;Senior Assistant:18"></textarea>
+            <div class="url-hint">One entry per line, format: <strong>Post:Vacancies</strong>. Example: Junior Assistant:45, Senior Assistant:18.</div>
+          </div>
+
+          <!-- 🗺 STATE-WISE VACANCIES -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🗺️</span> State-wise Vacancies <span class="bi-opt">(Optional)</span></div>
+            <label>State-wise Vacancies</label>
+            <textarea id="f-state-wise" style="min-height:110px;" placeholder="One entry per line — State:Vacancies:&#10;Karnataka:120&#10;Maharashtra:85"></textarea>
+            <div class="url-hint">One entry per line, format: <strong>State:Vacancies</strong>. Example: Karnataka:120, Maharashtra:85.</div>
+          </div>
+
+          <!-- 🏢 DISTRICT-WISE VACANCIES -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🏢</span> District-wise Vacancies <span class="bi-opt">(Optional)</span></div>
+            <label>District-wise Vacancies</label>
+            <textarea id="f-district-wise" style="min-height:110px;" placeholder="One entry per line — District:Vacancies:&#10;Bengaluru Urban:30&#10;Mysuru:18"></textarea>
+            <div class="url-hint">One entry per line, format: <strong>District:Vacancies</strong>. Example: Bengaluru Urban:30, Mysuru:18.</div>
+          </div>
+
+          <!-- 🌀 ZONE / CIRCLE-WISE VACANCIES -->
+          <div class="bi-card bi-span">
+            <div class="bi-card-hd"><span class="bi-ic">🌀</span> Zone / Circle-wise Vacancies <span class="bi-opt">(Optional)</span></div>
+            <label>Zone / Circle-wise Vacancies</label>
+            <textarea id="f-zone-wise" style="min-height:110px;" placeholder="One entry per line — Zone/Circle:Vacancies:&#10;North Zone:40&#10;South Zone:35"></textarea>
+            <div class="url-hint">One entry per line, format: <strong>Zone/Circle:Vacancies</strong>. Example: North Zone:40, South Zone:35.</div>
           </div>
 
           <!-- 🏷 TAGS / ELIGIBILITY -->
@@ -633,6 +665,16 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
               <div>
                 <label>Qualifications / Skills (ಕನ್ನಡ)</label>
                 <textarea id="f-skills-kn" placeholder="ಎಂಜಿನಿಯರಿಂಗ್, ಕನ್ನಡ ಜ್ಞಾನ..." style="min-height:140px;font-family:var(--fkn);"></textarea>
+              </div>
+            </div>
+            <div class="row2" style="margin-top:14px;">
+              <div>
+                <label>Experience (English)</label>
+                <textarea id="f-exp" placeholder="2 years relevant experience" style="min-height:90px;"></textarea>
+              </div>
+              <div>
+                <label>Experience (ಕನ್ನಡ)</label>
+                <textarea id="f-exp-kn" placeholder="2 ವರ್ಷಗಳ ಅನುಭವ" style="min-height:90px;font-family:var(--fkn);"></textarea>
               </div>
             </div>
           </div>
@@ -1236,6 +1278,15 @@ function toast(type,msg){
 //     ADD COLUMN qualifying_marks_kn TEXT,
 //     ADD COLUMN subject_pattern TEXT,
 //     ADD COLUMN subject_pattern_kn TEXT;
+// Jobs also store Experience and the four extra vacancy tables.
+// Required new columns on the jobs table (run once in Supabase SQL):
+//   ALTER TABLE jobs
+//     ADD COLUMN experience TEXT,
+//     ADD COLUMN experience_kn TEXT,
+//     ADD COLUMN post_wise TEXT,
+//     ADD COLUMN state_wise TEXT,
+//     ADD COLUMN district_wise TEXT,
+//     ADD COLUMN zone_wise TEXT;
 function toggleExamCard(){
   document.getElementById('exam-card').classList.toggle('collapsed');
 }
@@ -1271,6 +1322,12 @@ function collectJob(){
     banner_en:document.getElementById('f-banner-en')?document.getElementById('f-banner-en').value.trim()||null:null,
     banner_kn:document.getElementById('f-banner-kn')?document.getElementById('f-banner-kn').value.trim()||null:null,
     cats:document.getElementById('f-cats').value.trim()||null,
+    post_wise:document.getElementById('f-post-wise')?document.getElementById('f-post-wise').value.trim()||null:null,
+    state_wise:document.getElementById('f-state-wise')?document.getElementById('f-state-wise').value.trim()||null:null,
+    district_wise:document.getElementById('f-district-wise')?document.getElementById('f-district-wise').value.trim()||null:null,
+    zone_wise:document.getElementById('f-zone-wise')?document.getElementById('f-zone-wise').value.trim()||null:null,
+    experience:document.getElementById('f-exp')?document.getElementById('f-exp').value.trim()||null:null,
+    experience_kn:document.getElementById('f-exp-kn')?document.getElementById('f-exp-kn').value.trim()||null:null,
     tags:document.getElementById('f-tags').value.trim()||null,
     tags_kn:document.getElementById('f-tags-kn').value.trim()||null,
     description:document.getElementById('f-desc').value.trim()||null,
@@ -1408,6 +1465,12 @@ function editJob(id){
   if(document.getElementById('f-banner-en')){document.getElementById('f-banner-en').value=j.banner_en||'';showBannerPreview('f-banner-en');}
   if(document.getElementById('f-banner-kn')){document.getElementById('f-banner-kn').value=j.banner_kn||'';showBannerPreview('f-banner-kn');}
   document.getElementById('f-cats').value=j.cats||'';
+  if(document.getElementById('f-post-wise'))document.getElementById('f-post-wise').value=j.post_wise||'';
+  if(document.getElementById('f-state-wise'))document.getElementById('f-state-wise').value=j.state_wise||'';
+  if(document.getElementById('f-district-wise'))document.getElementById('f-district-wise').value=j.district_wise||'';
+  if(document.getElementById('f-zone-wise'))document.getElementById('f-zone-wise').value=j.zone_wise||'';
+  if(document.getElementById('f-exp'))document.getElementById('f-exp').value=j.experience||'';
+  if(document.getElementById('f-exp-kn'))document.getElementById('f-exp-kn').value=j.experience_kn||'';
   document.getElementById('f-tags').value=j.tags||'';
   document.getElementById('f-tags-kn').value=j.tags_kn||'';
   document.getElementById('f-desc').value=j.description||'';
@@ -1495,7 +1558,7 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-notif-label-1','f-notif-url-1','f-notif-label-2','f-notif-url-2','f-exam-type','f-exam-type-kn','f-exam-mode','f-exam-mode-kn','f-exam-duration','f-exam-duration-kn','f-exam-lang','f-exam-lang-kn','f-total-questions','f-total-questions-kn','f-total-marks','f-total-marks-kn','f-neg-marking','f-neg-marking-kn','f-qual-marks','f-qual-marks-kn','f-subject-pattern','f-subject-pattern-kn','f-faq','f-faq-kn','f-tips','f-tips-kn','f-banner-en','f-banner-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-post-wise','f-state-wise','f-district-wise','f-zone-wise','f-exp','f-exp-kn','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-notif-label-1','f-notif-url-1','f-notif-label-2','f-notif-url-2','f-exam-type','f-exam-type-kn','f-exam-mode','f-exam-mode-kn','f-exam-duration','f-exam-duration-kn','f-exam-lang','f-exam-lang-kn','f-total-questions','f-total-questions-kn','f-total-marks','f-total-marks-kn','f-neg-marking','f-neg-marking-kn','f-qual-marks','f-qual-marks-kn','f-subject-pattern','f-subject-pattern-kn','f-faq','f-faq-kn','f-tips','f-tips-kn','f-banner-en','f-banner-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-banner-en','f-banner-kn'].forEach(id=>showBannerPreview(id));
   ['f-ld-tba','f-sd-tba','f-sd-started','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleStarted(false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
