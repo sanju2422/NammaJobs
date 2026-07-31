@@ -1680,6 +1680,28 @@ function njNotifDocs(j){
     return '<a href="'+njEsc(d.pdf)+'" target="_blank" rel="noopener" class="btn-apply-main" style="display:inline-flex;align-items:center;gap:8px;justify-content:center;font-size:13px;padding:11px 20px;">'+njIc('download')+' '+njEsc(d.label)+'</a>';
   }).join('')+'</div>';
 }
+/* Examination Details → clean label/value table. Hidden when every field is empty. */
+function njExamDetails(j){
+  var kn=njGetLang()==='kn';
+  var rows=[];
+  function add(en,knv,enV,knV){
+    var v=njField(enV,knV);
+    if(v&&String(v).trim()) rows.push({k:(kn?knv:en),v:njEsc(String(v)).replace(/\n/g,'<br>')});
+  }
+  add('Exam Type','ಪರೀಕ್ಷಾ ಪ್ರಕಾರ',j.exam_type,j.exam_type_kn);
+  add('Exam Mode','ಪರೀಕ್ಷಾ ವಿಧಾನ',j.exam_mode,j.exam_mode_kn);
+  add('Exam Duration','ಪರೀಕ್ಷೆಯ ಅವಧಿ',j.exam_duration,j.exam_duration_kn);
+  add('Exam Language','ಪರೀಕ್ಷಾ ಭಾಷೆ',j.exam_language,j.exam_language_kn);
+  add('Total Questions','ಒಟ್ಟು ಪ್ರಶ್ನೆಗಳು',j.total_questions,j.total_questions_kn);
+  add('Total Marks','ಒಟ್ಟು ಅಂಕಗಳು',j.total_marks,j.total_marks_kn);
+  add('Negative Marking','ನಕಾರಾತ್ಮಕ ಅಂಕಗಳು',j.negative_marking,j.negative_marking_kn);
+  add('Qualifying Marks','ಅರ್ಹತಾ ಅಂಕಗಳು',j.qualifying_marks,j.qualifying_marks_kn);
+  add('Subject-wise Pattern','ವಿಷಯವಾರು ವಿನ್ಯಾಸ',j.subject_pattern,j.subject_pattern_kn);
+  if(!rows.length) return '';
+  return '<div class="idates-wrap"><table class="idates"><tbody>'
+    + rows.map(function(r){return '<tr><td>'+njEsc(r.k)+'</td><td>'+r.v+'</td></tr>';}).join('')
+    + '</tbody></table></div>';
+}
 /* Labeled Notification PDF action-bar buttons. Empty label or PDF → hidden. */
 function njActionDocs(j){
   var kn=njGetLang()==='kn';
@@ -1778,6 +1800,11 @@ function renderJob(j){
         ${j.salary?njSecCard(njIc('wallet'),'sb-green',kn?'ವೇತನ / ಪೇ ಸ್ಕೇಲ್':'Salary / Pay Scale','<div class="salary-box">'+njSalaryCell(njField(j.salary,j.salary_kn))+'</div>'):''}
 
         ${j.required_docs?njSecCard(njIc('clipboard'),'sb-purple',kn?'ಅಗತ್ಯ ದಾಖಲೆಗಳು':'Required Documents','<div class="req-docs">'+njDocItems(njField(j.required_docs,j.required_docs_kn))+'</div>'):''}
+
+        ${(function(){
+          var exam=njExamDetails(j);
+          return exam?njSecCard(njIc('clipboard'),'sb-teal',kn?'ಪರೀಕ್ಷಾ ವಿವರಗಳು':'Examination Details',exam):'';
+        })()}
 
         ${j.syllabus?njSecCard(njIc('file-text'),'sb-teal',kn?'ಪರೀಕ್ಷಾ ಪಠ್ಯಕ್ರಮ':'Exam Syllabus',
           '<ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;">'
