@@ -741,6 +741,12 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 .nj-feat-empty-desc{font-size:13.5px;font-weight:600;line-height:1.6;color:rgba(255,255,255,0.85);
   position:relative;z-index:1;max-width:520px;}
 
+/* ---- More Notifications toggle button ---- */
+.nj-more-notif-btn{width:100%;margin-top:10px;padding:8px 12px;background:transparent;border:1.5px solid var(--glass-border);border-radius:10px;color:rgba(255,255,255,0.75);font-family:var(--fen);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s ease;display:flex;align-items:center;justify-content:center;gap:6px;}
+.nj-more-notif-btn:hover{background:var(--glass-bg);border-color:var(--glass-border-strong);color:#fff;}
+html:not([data-theme=dark]) .nj-more-notif-btn{border-color:#e2e8f0;color:#64748b;}
+html:not([data-theme=dark]) .nj-more-notif-btn:hover{background:#f1f5f9;border-color:#c7d6ec;color:#0f2b5c;}
+
 /* ---- Sidebar empty state ---- */
 .nj-ph-empty{font-size:12.5px;font-weight:600;color:#64748b;text-align:center;padding:16px 6px;line-height:1.5;}
 [data-theme=dark] .nj-ph-empty{color:rgba(255,255,255,0.6);}
@@ -1772,12 +1778,10 @@ function renderFeatured(){
   const feat=allJobs.filter(njIsFeatured).sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
   const j=feat.find(x=>x.status!=='closed')||feat[0];
   if(!j){
-    box.className='nj-feat nj-feat-empty';
-    box.innerHTML=`<span class="nj-feat-tag">⭐ <span class="lang-en">Build Your Future 👇</span><span class="lang-kn">ನಿಮ್ಮ ಭವಿಷ್ಯ 👇</span></span>
-    <div class="nj-feat-empty-title"><span class="lang-en">No Featured Recruitment Available</span><span class="lang-kn">ಯಾವುದೇ ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ ಲಭ್ಯವಿಲ್ಲ</span></div>
-    <div class="nj-feat-empty-desc"><span class="lang-en">Featured recruitment will automatically appear here when published.</span><span class="lang-kn">ಪ್ರಕಟಿಸಿದಾಗ ವೈಶಿಷ್ಟ್ಯ ನೇಮಕಾತಿ ಇಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ.</span></div>`;
+    box.style.display='none';
     return;
   }
+  box.style.display='';
   const tp=njPostsTotal(j.seats);
   const postsWord=njGetLang()==='kn'?' ಹುದ್ದೆಗಳು':' Posts';
   const postsPill=(tp!=null)?`<span class="nj-feat-pill">👥 <b>${tp.toLocaleString('en-IN')}</b>${postsWord}</span>`:'';
@@ -1795,15 +1799,17 @@ function renderFeatured(){
 }
 
 // LATEST NOTIFICATIONS — every published job, linking to its admin-uploaded notification PDF
+let _notifExpanded=false;
 function renderLatestNotifs(){
   const box=document.getElementById('nj-latest-notif');
   if(!box)return;
-  const pub=allJobs.filter(j=>j.status==='open').sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0)).slice(0,8);
+  const NOTIF_LIMIT=5;
+  const pub=allJobs.filter(j=>j.status==='open').sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
   if(!pub.length){
     box.innerHTML=`<div class="nj-ph-empty"><span class="lang-en">No Notifications Available</span><span class="lang-kn">ಯಾವುದೇ ಅಧಿಸೂಚನೆಗಳು ಲಭ್ಯವಿಲ್ಲ</span></div>`;
     return;
   }
-  box.innerHTML=pub.map(j=>{
+  function buildItem(j){
     const pdf=njNotifPdf(j);
     const action=pdf?`window.open('${pdf}','_blank')`:`window.location.href='${getJobUrl(j.id)}'`;
     const meta=(njField(j.dept,j.dept_kn)||'')+(j.last_date?' · '+fmtDate(j.last_date):'');
@@ -1814,7 +1820,21 @@ function renderLatestNotifs(){
         <div class="nj-ph-m">${meta}</div>
       </div>
     </div>`;
-  }).join('');
+  }
+  const visible=pub.slice(0,NOTIF_LIMIT);
+  const hidden=pub.slice(NOTIF_LIMIT);
+  let html=visible.map(buildItem).join('');
+  if(hidden.length){
+    const hiddenHtml=hidden.map(buildItem).join('');
+    const isKn=njGetLang()==='kn';
+    const moreLabel=isKn?`+ ${hidden.length} ಹೆಚ್ಚಿನ ಅಧಿಸೂಚನೆಗಳು ▾`:`+ ${hidden.length} More Notifications ▾`;
+    const lessLabel=isKn?'ಕಡಿಮೆ ತೋರಿಸಿ ▴':'Show Less ▴';
+    html+=`<div id="nj-notif-extra" style="display:${_notifExpanded?'block':'none'};">${hiddenHtml}</div>`;
+    html+=`<button class="nj-more-notif-btn" id="nj-notif-toggle" onclick="(function(){_notifExpanded=!_notifExpanded;renderLatestNotifs();})()">
+      <span>${_notifExpanded?lessLabel:moreLabel}</span>
+    </button>`;
+  }
+  box.innerHTML=html;
 }
 
 // Smoothly scroll to the existing FAQ section (located by heading text, section left unmodified)
