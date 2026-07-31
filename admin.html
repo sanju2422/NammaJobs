@@ -148,6 +148,13 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
 .bi-card textarea{min-height:150px;padding:12px 14px;}
 .bi-card .url-hint{margin-bottom:0;}
 
+/* ===== EXAMINATION DETAILS — collapsible card (UI only; logic unchanged) ===== */
+.exam-hd{user-select:none;}
+.exam-chev{font-size:11px;color:rgba(255,255,255,0.45);transition:transform .25s;line-height:1;margin-left:auto;}
+.exam-card.collapsed .exam-chev{transform:rotate(-90deg);}
+.exam-card.collapsed .exam-body{display:none;}
+.exam-card.collapsed .exam-hd{margin-bottom:0;}
+
 /* ===== GLOBAL EN/KN PAIR ALIGNMENT (one reusable rule; UI only) =====
    Every English/Kannada field lives in a .row2 grid cell as <label> + input.
    Reserving a consistent label height and pinning the label text to the bottom
@@ -641,6 +648,52 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
               <div>
                 <label>Syllabus (ಕನ್ನಡ)</label>
                 <textarea id="f-syllabus-kn" style="min-height:150px;font-family:var(--fkn);" placeholder="ಪರೀಕ್ಷಾ ವಿಷಯಗಳು:&#10;ಸಾಮಾನ್ಯ ಜ್ಞಾನ, ತಾರ್ಕಿಕತೆ, ಗಣಿತ..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- 📝 EXAMINATION DETAILS (collapsible card) -->
+          <div class="bi-card bi-span exam-card" id="exam-card">
+            <div class="bi-card-hd exam-hd" onclick="toggleExamCard()">
+              <span class="bi-ic">📝</span> Examination Details <span class="bi-opt">(Optional)</span>
+              <span class="exam-chev" aria-hidden="true">▼</span>
+            </div>
+            <div class="exam-body">
+              <div class="row2">
+                <div><label>Exam Type (English)</label><input type="text" id="f-exam-type" placeholder="CBT / Offline Written Exam"></div>
+                <div><label>Exam Type (ಕನ್ನಡ)</label><input type="text" id="f-exam-type-kn" style="font-family:var(--fkn);" placeholder="ಸಿಬಿಟಿ / ಲಿಖಿತ ಪರೀಕ್ಷೆ"></div>
+              </div>
+              <div class="row2" style="margin-top:14px;">
+                <div><label>Exam Mode (English)</label><input type="text" id="f-exam-mode" placeholder="Online (Computer Based Test)"></div>
+                <div><label>Exam Mode (ಕನ್ನಡ)</label><input type="text" id="f-exam-mode-kn" style="font-family:var(--fkn);" placeholder="ಆನ್‌ಲೈನ್ (ಕಂಪ್ಯೂಟರ್ ಆಧಾರಿತ ಪರೀಕ್ಷೆ)"></div>
+              </div>
+              <div class="row2" style="margin-top:14px;">
+                <div><label>Exam Duration (English)</label><input type="text" id="f-exam-duration" placeholder="2 Hours 30 Minutes"></div>
+                <div><label>Exam Duration (ಕನ್ನಡ)</label><input type="text" id="f-exam-duration-kn" style="font-family:var(--fkn);" placeholder="2 ಗಂಟೆ 30 ನಿಮಿಷ"></div>
+              </div>
+              <div class="row2" style="margin-top:14px;">
+                <div><label>Exam Language (English)</label><input type="text" id="f-exam-lang" placeholder="English, Kannada, Hindi"></div>
+                <div><label>Exam Language (ಕನ್ನಡ)</label><input type="text" id="f-exam-lang-kn" style="font-family:var(--fkn);" placeholder="ಇಂಗ್ಲಿಷ್, ಕನ್ನಡ, ಹಿಂದಿ"></div>
+              </div>
+              <div class="row2" style="margin-top:14px;">
+                <div><label>Total Questions (English)</label><input type="text" id="f-total-questions" placeholder="150"></div>
+                <div><label>Total Questions (ಕನ್ನಡ)</label><input type="text" id="f-total-questions-kn" style="font-family:var(--fkn);" placeholder="೧೫೦"></div>
+              </div>
+              <div class="row2" style="margin-top:14px;">
+                <div><label>Total Marks (English)</label><input type="text" id="f-total-marks" placeholder="150"></div>
+                <div><label>Total Marks (ಕನ್ನಡ)</label><input type="text" id="f-total-marks-kn" style="font-family:var(--fkn);" placeholder="೧೫೦"></div>
+              </div>
+              <div class="row2" style="margin-top:14px;">
+                <div><label>Negative Marking (English)</label><input type="text" id="f-neg-marking" placeholder="0.25 marks per wrong answer"></div>
+                <div><label>Negative Marking (ಕನ್ನಡ)</label><input type="text" id="f-neg-marking-kn" style="font-family:var(--fkn);" placeholder="ಪ್ರತಿ ತಪ್ಪು ಉತ್ತರಕ್ಕೆ 0.25 ಅಂಕ"></div>
+              </div>
+              <div class="row2" style="margin-top:14px;">
+                <div><label>Qualifying Marks (English)</label><input type="text" id="f-qual-marks" placeholder="UR: 60 / SC-ST: 45"></div>
+                <div><label>Qualifying Marks (ಕನ್ನಡ)</label><input type="text" id="f-qual-marks-kn" style="font-family:var(--fkn);" placeholder="ಸಾಮಾನ್ಯ: 60 / ಪರಿಶಿಷ್ಟ: 45"></div>
+              </div>
+              <div class="row2" style="margin-top:14px;">
+                <div><label>Subject-wise Pattern (English)</label><textarea id="f-subject-pattern" style="min-height:150px;" placeholder="Each line — subject and questions:&#10;General Knowledge - 50 Questions&#10;Reasoning - 50 Questions&#10;Mathematics - 50 Questions"></textarea></div>
+                <div><label>Subject-wise Pattern (ಕನ್ನಡ)</label><textarea id="f-subject-pattern-kn" style="min-height:150px;font-family:var(--fkn);" placeholder="ಪ್ರತಿ ಸಾಲು — ವಿಷಯ ಮತ್ತು ಪ್ರಶ್ನೆಗಳು:&#10;ಸಾಮಾನ್ಯ ಜ್ಞಾನ - 50 ಪ್ರಶ್ನೆಗಳು"></textarea></div>
               </div>
             </div>
           </div>
@@ -1155,6 +1208,37 @@ function toast(type,msg){
 
 // SAVE
 // Collect the current form into a job object (shared by Publish and Preview).
+// Jobs now store two extra labeled notification PDFs.
+// Required new columns on the jobs table (run once in Supabase SQL):
+//   ALTER TABLE jobs
+//     ADD COLUMN notif_label_1 TEXT,
+//     ADD COLUMN notif_url_1 TEXT,
+//     ADD COLUMN notif_label_2 TEXT,
+//     ADD COLUMN notif_url_2 TEXT;
+// Jobs also store bilingual Examination Details.
+// Required new columns on the jobs table (run once in Supabase SQL):
+//   ALTER TABLE jobs
+//     ADD COLUMN exam_type TEXT,
+//     ADD COLUMN exam_type_kn TEXT,
+//     ADD COLUMN exam_mode TEXT,
+//     ADD COLUMN exam_mode_kn TEXT,
+//     ADD COLUMN exam_duration TEXT,
+//     ADD COLUMN exam_duration_kn TEXT,
+//     ADD COLUMN exam_language TEXT,
+//     ADD COLUMN exam_language_kn TEXT,
+//     ADD COLUMN total_questions TEXT,
+//     ADD COLUMN total_questions_kn TEXT,
+//     ADD COLUMN total_marks TEXT,
+//     ADD COLUMN total_marks_kn TEXT,
+//     ADD COLUMN negative_marking TEXT,
+//     ADD COLUMN negative_marking_kn TEXT,
+//     ADD COLUMN qualifying_marks TEXT,
+//     ADD COLUMN qualifying_marks_kn TEXT,
+//     ADD COLUMN subject_pattern TEXT,
+//     ADD COLUMN subject_pattern_kn TEXT;
+function toggleExamCard(){
+  document.getElementById('exam-card').classList.toggle('collapsed');
+}
 function collectJob(){
   const ten=document.getElementById('f-ten').value.trim();
   const dept=document.getElementById('f-dept').value.trim();
@@ -1201,6 +1285,24 @@ function collectJob(){
     notif_url_1:document.getElementById('f-notif-url-1')?document.getElementById('f-notif-url-1').value.trim()||null:null,
     notif_label_2:document.getElementById('f-notif-label-2')?document.getElementById('f-notif-label-2').value.trim()||null:null,
     notif_url_2:document.getElementById('f-notif-url-2')?document.getElementById('f-notif-url-2').value.trim()||null:null,
+    exam_type:document.getElementById('f-exam-type')?document.getElementById('f-exam-type').value.trim()||null:null,
+    exam_type_kn:document.getElementById('f-exam-type-kn')?document.getElementById('f-exam-type-kn').value.trim()||null:null,
+    exam_mode:document.getElementById('f-exam-mode')?document.getElementById('f-exam-mode').value.trim()||null:null,
+    exam_mode_kn:document.getElementById('f-exam-mode-kn')?document.getElementById('f-exam-mode-kn').value.trim()||null:null,
+    exam_duration:document.getElementById('f-exam-duration')?document.getElementById('f-exam-duration').value.trim()||null:null,
+    exam_duration_kn:document.getElementById('f-exam-duration-kn')?document.getElementById('f-exam-duration-kn').value.trim()||null:null,
+    exam_language:document.getElementById('f-exam-lang')?document.getElementById('f-exam-lang').value.trim()||null:null,
+    exam_language_kn:document.getElementById('f-exam-lang-kn')?document.getElementById('f-exam-lang-kn').value.trim()||null:null,
+    total_questions:document.getElementById('f-total-questions')?document.getElementById('f-total-questions').value.trim()||null:null,
+    total_questions_kn:document.getElementById('f-total-questions-kn')?document.getElementById('f-total-questions-kn').value.trim()||null:null,
+    total_marks:document.getElementById('f-total-marks')?document.getElementById('f-total-marks').value.trim()||null:null,
+    total_marks_kn:document.getElementById('f-total-marks-kn')?document.getElementById('f-total-marks-kn').value.trim()||null:null,
+    negative_marking:document.getElementById('f-neg-marking')?document.getElementById('f-neg-marking').value.trim()||null:null,
+    negative_marking_kn:document.getElementById('f-neg-marking-kn')?document.getElementById('f-neg-marking-kn').value.trim()||null:null,
+    qualifying_marks:document.getElementById('f-qual-marks')?document.getElementById('f-qual-marks').value.trim()||null:null,
+    qualifying_marks_kn:document.getElementById('f-qual-marks-kn')?document.getElementById('f-qual-marks-kn').value.trim()||null:null,
+    subject_pattern:document.getElementById('f-subject-pattern')?document.getElementById('f-subject-pattern').value.trim()||null:null,
+    subject_pattern_kn:document.getElementById('f-subject-pattern-kn')?document.getElementById('f-subject-pattern-kn').value.trim()||null:null,
     selection_process:document.getElementById('f-sel-process').value.trim()||null,
     selection_process_kn:document.getElementById('f-sel-process-kn').value.trim()||null,
     required_docs:document.getElementById('f-req-docs').value.trim()||null,
@@ -1320,6 +1422,24 @@ function editJob(id){
   if(document.getElementById('f-notif-url-1'))document.getElementById('f-notif-url-1').value=j.notif_url_1||'';
   if(document.getElementById('f-notif-label-2'))document.getElementById('f-notif-label-2').value=j.notif_label_2||'';
   if(document.getElementById('f-notif-url-2'))document.getElementById('f-notif-url-2').value=j.notif_url_2||'';
+  if(document.getElementById('f-exam-type'))document.getElementById('f-exam-type').value=j.exam_type||'';
+  if(document.getElementById('f-exam-type-kn'))document.getElementById('f-exam-type-kn').value=j.exam_type_kn||'';
+  if(document.getElementById('f-exam-mode'))document.getElementById('f-exam-mode').value=j.exam_mode||'';
+  if(document.getElementById('f-exam-mode-kn'))document.getElementById('f-exam-mode-kn').value=j.exam_mode_kn||'';
+  if(document.getElementById('f-exam-duration'))document.getElementById('f-exam-duration').value=j.exam_duration||'';
+  if(document.getElementById('f-exam-duration-kn'))document.getElementById('f-exam-duration-kn').value=j.exam_duration_kn||'';
+  if(document.getElementById('f-exam-lang'))document.getElementById('f-exam-lang').value=j.exam_language||'';
+  if(document.getElementById('f-exam-lang-kn'))document.getElementById('f-exam-lang-kn').value=j.exam_language_kn||'';
+  if(document.getElementById('f-total-questions'))document.getElementById('f-total-questions').value=j.total_questions||'';
+  if(document.getElementById('f-total-questions-kn'))document.getElementById('f-total-questions-kn').value=j.total_questions_kn||'';
+  if(document.getElementById('f-total-marks'))document.getElementById('f-total-marks').value=j.total_marks||'';
+  if(document.getElementById('f-total-marks-kn'))document.getElementById('f-total-marks-kn').value=j.total_marks_kn||'';
+  if(document.getElementById('f-neg-marking'))document.getElementById('f-neg-marking').value=j.negative_marking||'';
+  if(document.getElementById('f-neg-marking-kn'))document.getElementById('f-neg-marking-kn').value=j.negative_marking_kn||'';
+  if(document.getElementById('f-qual-marks'))document.getElementById('f-qual-marks').value=j.qualifying_marks||'';
+  if(document.getElementById('f-qual-marks-kn'))document.getElementById('f-qual-marks-kn').value=j.qualifying_marks_kn||'';
+  if(document.getElementById('f-subject-pattern'))document.getElementById('f-subject-pattern').value=j.subject_pattern||'';
+  if(document.getElementById('f-subject-pattern-kn'))document.getElementById('f-subject-pattern-kn').value=j.subject_pattern_kn||'';
   document.getElementById('f-sel-process').value=j.selection_process||'';
   document.getElementById('f-sel-process-kn').value=j.selection_process_kn||'';
   document.getElementById('f-req-docs').value=j.required_docs||'';
@@ -1375,7 +1495,7 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-notif-label-1','f-notif-url-1','f-notif-label-2','f-notif-url-2','f-faq','f-faq-kn','f-tips','f-tips-kn','f-banner-en','f-banner-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-notif-label-1','f-notif-url-1','f-notif-label-2','f-notif-url-2','f-exam-type','f-exam-type-kn','f-exam-mode','f-exam-mode-kn','f-exam-duration','f-exam-duration-kn','f-exam-lang','f-exam-lang-kn','f-total-questions','f-total-questions-kn','f-total-marks','f-total-marks-kn','f-neg-marking','f-neg-marking-kn','f-qual-marks','f-qual-marks-kn','f-subject-pattern','f-subject-pattern-kn','f-faq','f-faq-kn','f-tips','f-tips-kn','f-banner-en','f-banner-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-banner-en','f-banner-kn'].forEach(id=>showBannerPreview(id));
   ['f-ld-tba','f-sd-tba','f-sd-started','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleStarted(false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
