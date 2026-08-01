@@ -367,7 +367,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 /* JOB BANNER */
 .job-banner{width:100%;margin-bottom:18px;border-radius:18px;overflow:hidden;border:2px solid var(--glass-border);box-shadow:var(--shadow);background:rgba(255,255,255,0.05);}
 .job-banner img{width:100%;height:auto;display:block;}
-@media(min-width:769px){.job-banner{margin-bottom:14px;}}
+@media(min-width:769px){
+  .job-banner{margin-bottom:14px;display:flex;justify-content:center;align-items:center;}
+  .job-banner img{width:auto;max-width:100%;max-height:260px;height:auto;object-fit:contain;}
+}
 
 /* CATEGORY TABLE */
 .cat-tbl{width:100%;border-collapse:collapse;}
@@ -377,6 +380,12 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .cat-tbl th:last-child,.cat-tbl td:last-child{text-align:right;width:38%;padding-right:6%;}
 .cat-tbl tr:last-child td{border-top:2px solid var(--border-strong);border-bottom:none;font-weight:800;}
 .cat-tbl strong{color:#c4b5fd;font-weight:800;}
+/* Independent vacancy sections: clear heading + divider + own table + own Total. */
+.vsec{margin-top:20px;padding-top:16px;border-top:1px dashed rgba(148,163,184,0.4);}
+.vsec:first-child{margin-top:0;padding-top:0;border-top:none;}
+.vsec-head{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;color:var(--accent);}
+.vsec-head::before{content:'';width:4px;height:15px;border-radius:3px;background:var(--accent);flex-shrink:0;}
+[data-theme=light] .vsec{border-top-color:rgba(100,116,139,0.35);}
 .fee-chip{display:block;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.14);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;}
 .fee-chip:last-child{margin-bottom:2px;}
 .info-table tr.fee-row td{border-bottom:none;}
@@ -925,8 +934,8 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .kv-row{display:flex;align-items:center;gap:12px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:13px 16px;transition:transform .18s,box-shadow .18s,border-color .18s;}
 .kv-row:hover{transform:translateY(-1px);box-shadow:var(--shadow-soft);border-color:var(--border-strong);}
 .kv-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
-.kv-key{flex:1;min-width:0;font-size:14px;font-weight:700;color:var(--text);line-height:1.4;word-break:break-word;}
-.kv-val{flex-shrink:0;font-family:var(--fhead);font-size:14px;font-weight:800;color:var(--text);text-align:right;line-height:1.4;}
+.kv-key{flex:0 1 auto;min-width:0;font-size:14px;font-weight:700;color:var(--text);line-height:1.4;word-break:break-word;}
+.kv-val{flex:1 1 auto;min-width:0;font-family:var(--fhead);font-size:14px;font-weight:800;color:var(--text);text-align:right;line-height:1.4;white-space:normal;word-break:break-word;}
 @media(max-width:480px){
   .kv-row{flex-wrap:wrap;}
   .kv-val{width:100%;text-align:left;padding-left:23px;}
@@ -1468,15 +1477,18 @@ function njKvList(rows,valFmt){
 function njFeeRows(raw){
   var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
   if(!t) return {rows:[],table:false};
-  var FEE=/(?:\u20b9|rs\.?|inr)\s?[0-9](?:[0-9,]*[0-9])?(?:\s*\+\s*[0-9]+\s*%?\s*gst)?|no\s*(?:application\s*)?fee|\bnil\b|\bfree\b|\bexempt(?:ed)?\b|\bn\/?a\b/ig;
+  // Amounts may be bare numbers or carry a currency symbol; nil-words too.
+  var AMT='(?:\\u20b9|rs\\.?|inr)\\s*[0-9][0-9,]*(?:\\s*[\\-\\/]\\s*[0-9][0-9,]*)?|(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*(?:\\s*[\\-\\/]\\s*[0-9][0-9,]*)?|no\\s*(?:application\\s*)?fee|\\bnil\\b|\\bfree\\b|\\bexempt(?:ed)?\\b|\\bn\\/?a\\b';
   var NOTE=/\([^)]*(?:%|gst|incl|refund|after|exam|gateway|charge|portal|collect|\bvia\b|note|payable|through)[^)]*\)/ig;
   var SENT=/\b(will|shall|after|before|refund\w*|appearing|candidate\w*|per official|notification|payable|through|paid|eligible|of the|as per)\b/i;
-  var CATWORD=/(gen\b|general|obc|ews|sc\b|st\b|pwd|pwbd|women|female|male|ex-?s|servicemen|transgender|minorit|ebc|cat-?|category|others|ur\b|unreserved|2a|2b|3a|3b|\ball\b)/i;
-  var SEP=/[|;\n]|,(?!\d)| {2,}|\.\s/;
+  var CATWORD=/(gen\b|general|obc|ews|sc\b|st\b|pwd|pwbd|women|female|male|ex-?s|servicemen|transgender|minorit|ebc|cat-?|category|others|ur\b|unreserved|2a|2b|3a|3b|\ball\b|all\s+other|fresh|experienced|ಸಾಮಾನ್ಯ|ಹಿಂದುಳಿದ|ಪರಿಶಿಷ್ಟ|ಮಹಿಳಾ|ಇತರ|ಎಲ್ಲಾ|ಅರ್ಜಿದಾರ|ಅಭ್ಯರ್ಥಿ)/i;
+  var SEP=/[|;\n]|,(?!\d)| {2,}|\.\s|\s*\/\s*/;
   function cleanCat(c){
-    var parts=String(c).split(SEP); c=parts[parts.length-1];
-    c=c.replace(/[()]/g,' ').replace(/\s*\/\s*/g,'/');
-    return c.replace(/\s+/g,' ').replace(/^[\s:\u2013\-=.,|]+|[\s:\u2013\-=.,|]+$/g,'');
+    c=String(c).replace(/[()]/g,' ');
+    c=c.replace(/\s*\/\s*/g,'/');
+    c=c.replace(/[\s,;:|=\u2013\-./]*$/,'').replace(/^[\s,;:|=\u2013\-./]*/,'');
+    c=c.replace(/\s+(?:is|are|for|to|of|and)\s*$/i,'');
+    return c.replace(/\s+/g,' ').trim();
   }
   function goodCat(c){
     if(!c||c.length>80||c.split(/\s+/).length>9) return false;
@@ -1486,10 +1498,15 @@ function njFeeRows(raw){
   t=t.replace(NOTE,' ');
   var out=[],seen={};
   function push(k,v){v=String(v).trim().replace(/[.,]+$/,'');var key=k+'|'+v;if(goodCat(k)&&!seen[key]){seen[key]=1;out.push({k:k,v:v});}}
-  var VF=new RegExp('('+FEE.source+')\\s*\\(([^)]+)\\)','ig');
+  // "₹500 (General), ₹250 (SC)" → value-first with parenthesised category.
+  var VF=new RegExp('('+AMT+')\\s*\\(([^)]+)\\)','ig');
   t=t.replace(VF,function(m,fee,cat){push(cleanCat(cat),fee);return '  ';});
-  FEE.lastIndex=0;var m,last=0;
-  while((m=FEE.exec(t))!==null){push(cleanCat(t.slice(last,m.index)),m[0]);last=m.index+m[0].length;}
+  var FEE=new RegExp(AMT,'ig');
+  var m,last=0;
+  while((m=FEE.exec(t))!==null){
+    push(cleanCat(t.slice(last,m.index)),m[0]);
+    last=m.index+m[0].length;
+  }
   return {rows:out,table:out.length>=1};
 }
 function njFeeCell(raw){
@@ -1546,69 +1563,110 @@ function njCatRows(raw){
   if(totalShow!=null) body+='<tr><td><strong>'+totalLabel+'</strong></td><td><strong>'+njEsc(totalShow)+'</strong></td></tr>';
   return body;
 }
-/* All vacancy tables (Category / Post / State / District / Zone) rendered as one
-   stack of clean responsive tables. Empty sections are skipped entirely. */
+/* All vacancy tables (Category / Post / State / District / Zone) rendered as a
+   stack of independent sections — each with its own heading, divider, table and
+   Total row. Empty sections are skipped entirely and tables are never merged. */
 function njVacancySections(j){
   var kn=njGetLang()==='kn';
   var html='';
-  function sec(raw,knTitle,enTitle){
+  function sec(raw,knTitle,enTitle,knCol,enCol){
     if(!raw||!String(raw).trim()) return '';
     var body=njCatRows(raw);
     if(!body) body='<tr><td colspan="2">'+njEsc(String(raw).replace(/\s+/g,' ').trim())+'</td></tr>';
-    return '<div style="overflow-x:auto;margin-top:14px;"><table class="cat-tbl"><thead><tr><th>'+(kn?knTitle:enTitle)+'</th><th>'+(kn?'ಹುದ್ದೆಗಳು':'Vacancies')+'</th></tr></thead><tbody>'+body+'</tbody></table></div>';
+    return '<div class="vsec">'
+      +'<div class="vsec-head">'+(kn?knTitle:enTitle)+'</div>'
+      +'<div style="overflow-x:auto;"><table class="cat-tbl"><thead><tr><th>'+(kn?knCol:enCol)+'</th><th>'+(kn?'ಹುದ್ದೆಗಳು':'Vacancies')+'</th></tr></thead><tbody>'+body+'</tbody></table></div>'
+      +'</div>';
   }
-  html+=sec(njField(j.cats,j.cats_kn), 'ವರ್ಗವಾರು ಹುದ್ದೆಗಳು','Category-wise Vacancies');
-  html+=sec(j.post_wise, 'ಹುದ್ದೆವಾರು ಹುದ್ದೆಗಳು','Post-wise Vacancies');
-  html+=sec(j.state_wise, 'ರಾಜ್ಯವಾರು ಹುದ್ದೆಗಳು','State-wise Vacancies');
-  html+=sec(j.district_wise, 'ಜಿಲ್ಲಾವಾರು ಹುದ್ದೆಗಳು','District-wise Vacancies');
-  html+=sec(j.zone_wise, 'ವಲಯ / ವೃತ್ತವಾರು ಹುದ್ದೆಗಳು','Zone / Circle-wise Vacancies');
+  html+=sec(njField(j.cats,j.cats_kn), 'ವರ್ಗವಾರು ಹುದ್ದೆಗಳು','Category-wise Vacancies','ವರ್ಗ','Category');
+  html+=sec(j.post_wise, 'ಹುದ್ದೆವಾರು ಹುದ್ದೆಗಳು','Post-wise Vacancies','ಹುದ್ದೆ','Post');
+  html+=sec(j.state_wise, 'ರಾಜ್ಯವಾರು ಹುದ್ದೆಗಳು','State-wise Vacancies','ರಾಜ್ಯ','State');
+  html+=sec(j.district_wise, 'ಜಿಲ್ಲಾವಾರು ಹುದ್ದೆಗಳು','District-wise Vacancies','ಜಿಲ್ಲೆ','District');
+  html+=sec(j.zone_wise, 'ವಲಯ / ವೃತ್ತವಾರು ಹುದ್ದೆಗಳು','Zone / Circle-wise Vacancies','ವಲಯ / ವೃತ್ತ','Zone / Circle');
   return html;
 }
 function njAgeRows(raw){
-  var t=String(raw).replace(/\r/g,' ').replace(/\s+/g,' ').trim();
+  var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
   if(!t) return {rows:[],table:false};
-  var rows=[];
-  function addRel(){
-    var rel=t.match(/age\s*relax[a-z]*\s*(?:is\s+|[:\-\u2013]\s*)?(.+?)\s*$/i);
-    if(rel&&rel[1]){
-      var rv=rel[1].trim().replace(/[).]+$/,'');
-      if(rv&&rv.length<=200&&!/^\(/.test(rv)) rows.push({k:(njGetLang()==='kn'?'ವಯಸ್ಸಿನ ಸಡಿಲಿಕೆ':'Age Relaxation'),v:rv});
+  var kn=njGetLang()==='kn';
+  var rows=[],seen={};
+  function push(k,v){
+    v=String(v==null?'':v).trim().replace(/^[\s,;:.\u2013\-()]+/,'').replace(/[\s,;:.\u2013\-]+$/,'');
+    if(/\)$/.test(v)&&v.indexOf('(')<0) v=v.replace(/[\)\s]+$/,'');
+    k=String(k).trim();
+    if(!k||!v) return;
+    var key=k.toLowerCase()+'|'+v.toLowerCase();
+    if(seen[key]) return;
+    seen[key]=1; rows.push({k:k,v:v});
+  }
+  var R_RELAX=kn?'ವಯಸ್ಸಿನ ಸಡಿಲಿಕೆ':'Age Relaxation';
+  var R_MAX=kn?'ಗರಿಷ್ಠ ವಯಸ್ಸು':'Maximum Age';
+  var R_MIN=kn?'ಕನಿಷ್ಠ ವಯಸ್ಸು':'Minimum Age';
+  var R_GEN=kn?'ಸಾಮಾನ್ಯ':'General';
+  var UNIT='(?:Years?|yrs?|Months?|Days?|ವರ್ಷ|ವರ್ಷಗಳು|ತಿಂಗಳು|ತಿಂಗಳುಗಳು|ದಿನ|ದಿನಗಳು)';
+  var NUMP='[0-9][0-9,]*(?:\\s*(?:-|–|—|to)\\s*[0-9][0-9,]*)?';
+
+  // ---- 1) Age Relaxation note (usually last). Extract + strip. ----
+  var relRe=kn?/(ವಯೋಮಿತಿ\s*ಸಡಿಲಿಕೆ|ವಯೋಮಿತಿ|ಸಡಿಲಿಕೆ)/:/(?:\bage\s*)?relax(?:ation)?/i;
+  var relIdx=t.search(relRe);
+  if(relIdx>=0){
+    var note=t.slice(relIdx).replace(relRe,' ');
+    var cut=note.search(/(maximum|minimum|max\.?|min\.?|upto|up\s?to|ಗರಿಷ್ಠ|ಕನಿಷ್ಠ|ಹೆಚ್ಚೆಂದರೆ|ಕಡಿಮೆಂದರೆ)/i);
+    if(cut>0) note=note.slice(0,cut);
+    note=note.replace(/^[\s,;:.\u2013\-()]+/,'').replace(/[\s,;:.\u2013\-]+$/,'').trim();
+    if(note) push(R_RELAX,note);
+    t=t.slice(0,relIdx);
+  }
+
+  t=t.replace(/[ \t]+/g,' ');
+  var segs=t.split(/[\n|;]|,\s*(?=\S)/).map(function(x){return x.trim();}).filter(Boolean);
+  if(!segs.length&&!rows.length) return {rows:[],table:false};
+
+  function matchFirst(seg){
+    // Max/Min phrase, e.g. "Maximum 35 Years", "Minimum Age : 18 Years", "ಗರಿಷ್ಠ 35 ವರ್ಷ"
+    var mm=seg.match(new RegExp('^(maximum|max\\.?|upto|up\\s?to|ಗರಿಷ್ಠ|ಹೆಚ್ಚೆಂದರೆ|minimum|min\\.?|ಕನಿಷ್ಠ|ಕಡಿಮೆಂದರೆ)\\s*(?:age\\s*|ವಯಸ್ಸು\\s*|ವಯೋಮಿತಿ\\s*)?(?::|-|–|=)?\\s*(?:is\\s+)?('+NUMP+')\\s*('+UNIT+')?','i'));
+    if(mm){
+      var max=/(maximum|max\.?|upto|up\s?to|ಗರಿಷ್ಠ|ಹೆಚ್ಚೆಂದರೆ)/i.test(mm[1]);
+      push(max?R_MAX:R_MIN,mm[2]+' '+(mm[3]||''));
+      return seg.slice(mm[0].length);
     }
+    // "Label : value" e.g. "General : 35 Years", "Cat-II(A) : 38 Years"
+    var lm=seg.match(new RegExp('^([A-Za-z\\u0C80-\\u0CFF\\u0900-\\u097F][^:=|;\\n]*?)\\s*[:=]\\s*(?:(?:up\\s?to|upto|maximum|max\\.?|minimum|min\\.?)\\s+)?('+NUMP+')\\s*('+UNIT+')?','i'));
+    if(lm){
+      push(lm[1].replace(/\s+/g,' ').trim(),lm[2]+' '+(lm[3]||''));
+      return seg.slice(lm[0].length);
+    }
+    // "value (Label)" with an age unit, e.g. "18–35 Years (General Merit)"
+    var pm=seg.match(new RegExp('^('+NUMP+')\\s*('+UNIT+')\\s*\\(([^)]+)\\)','i'));
+    if(pm){
+      push(pm[3].trim(),pm[1]+' '+pm[2]);
+      return seg.slice(pm[0].length);
+    }
+    // "value Label" e.g. "18-27 Years General", "18-27 ವರ್ಷ ಸಾಮಾನ್ಯ", "18-27 Years 2A"
+    var vm=seg.match(new RegExp('^('+NUMP+')\\s*('+UNIT+')\\s+([A-Za-z\\u0C80-\\u0CFF\\u0900-\\u097F0-9][^0-9][^0-9]*?)(?=\\s*(?:'+NUMP+'\\s*'+UNIT+')|$)','i'));
+    if(vm){
+      push(vm[3].replace(/\s+/g,' ').trim(),vm[1]+' '+vm[2]);
+      return seg.slice(vm[0].length);
+    }
+    // bare value with a unit → "General"
+    var bm=seg.match(new RegExp('^('+NUMP+')\\s*('+UNIT+')','i'));
+    if(bm){
+      push(R_GEN,bm[1]+' '+bm[2]);
+      return seg.slice(bm[0].length);
+    }
+    return null;
   }
-  var kv=njKV(t,false);
-  if(kv.length>=2&&kv.every(function(p){return p.v!=='';})) return {rows:kv,table:true};
-  // Repeated "Label : value" pairs with no separators, e.g.
-  // "Minimum Age : 18 Years General : 35 Years Cat-II(A) : 38 Years ..."
-  var pairRe=/[A-Za-z][A-Za-z0-9&()'/\u2013\u2014\-, ]*?\s*:\s*(?:up\s?to|upto|max\.?|maximum|min\.?|minimum|below)?\s*[0-9][0-9,/\u2013\u2014\-]*\s*(?:Years?|Months?|Days?)/g,m;
-  while((m=pairRe.exec(t))!==null){
-    var pk=m[0].slice(0,m[0].lastIndexOf(':')).replace(/\s+/g,' ').trim();
-    var pv=m[0].slice(m[0].lastIndexOf(':')+1).replace(/\s+/g,' ').trim();
-    if(/^age\s*relax/i.test(pk)) continue;
-    if(pk&&pk.length<=40&&pv) rows.push({k:pk,v:pv});
-  }
-  if(rows.length>=2){ addRel(); return {rows:rows,table:true}; }
-  rows=[];
-  // "18–35 Years (General Merit) 18–38 Years (2A, 2B, 3A, 3B) ..." →
-  // each "(category)" takes the preceding age as its value. The "value ends in
-  // an age unit" guard keeps relaxation notes like "(NCL)" / "(both dates …)" out.
-  var re=/([^()]+?)\s*\(([^)]+)\)/g;
-  while((m=re.exec(t))!==null){
-    var val=m[1].replace(/^[\s,;:.\u2013\-]+/,'').replace(/^(maximum|max\.?|upto|up\s?to|minimum|min\.?)\s+/i,'').trim();
-    var cat=m[2].trim();
-    if(!/\b(?:years?|months?|days?)\s*$/i.test(val)) continue;
-    if(cat&&cat.length<=40&&val) rows.push({k:cat,v:val});
-  }
-  if(rows.length){ addRel(); return {rows:rows,table:true}; }
-  rows=[];
-  // Bare leading age range with no label, e.g. "18–24 Years  Age relaxation ..." → "General"
-  var lead=t.match(/^[0-9][0-9,/\u2013\u2014\-]*(?:\s*(?:to|-|\u2013|\u2014)\s*[0-9][0-9,/\u2013\u2014\-]*)?\s*(?:Years?|Months?|Days?)/i);
-  if(lead&&lead[0]){
-    rows.push({k:(njGetLang()==='kn'?'ಸಾಮಾನ್ಯ':'General'),v:lead[0].replace(/\s+/g,' ').trim()});
-    addRel();
-    return {rows:rows,table:true};
-  }
-  addRel();
-  if(rows.length>=1) return {rows:rows,table:true};
+
+  segs.forEach(function(seg){
+    var s=seg,guard=0;
+    while(s&&guard++<8){
+      var nxt=matchFirst(s);
+      if(nxt===null) break;
+      if(nxt.trim()===s.trim()) break;
+      s=nxt.trim();
+    }
+  });
+  if(rows.length) return {rows:rows,table:true};
   return {rows:[],table:false};
 }
 function njAgeCell(raw){
@@ -1651,6 +1709,27 @@ function njList(raw){
   if(!t) return [];
   var parts=(/[\n|;]/.test(t))?t.split(/[\n|;]+/):t.split(/\s*,\s*/);
   return parts.map(function(s){return s.replace(/^\s*\d{1,2}[\.\)]\s*/,'').replace(/^[-\u2013\u2022\*\s]+/,'').trim();}).filter(Boolean);
+}
+/* Normalize natural admin text into clean list items. Tolerates comma, newline,
+   semicolon, bullets, numbering, multiple spaces and mixed formatting. */
+function njBulletItems(raw){
+  var t=String(raw==null?'':raw).replace(/\r/g,'').trim();
+  if(!t) return [];
+  t=t.replace(/[ \t]+/g,' ').replace(/ ?\n ?/g,'\n');
+  var parts;
+  if(/[\n\u2022]/.test(t)) parts=t.split(/[\n\u2022]+/);
+  else if(/;/.test(t)) parts=t.split(/\s*;\s*/);
+  else if(/,/.test(t)) parts=t.split(/\s*,\s*/);
+  else parts=[t];
+  return parts.map(function(x){return x.replace(/^\s*\d{1,2}[\.\)]\s*/,'').replace(/^[-\u2013\u2022\*\s]+/,'').replace(/\s+/g,' ').trim();}).filter(Boolean);
+}
+/* Structured check-list used by Qualification / Experience sections. */
+function njCheckItems(raw){
+  var items=njBulletItems(raw);
+  if(!items.length) return '';
+  return '<div class="check-list">'+items.map(function(s){
+    return '<div class="check-item"><span class="ci-ic">'+njIc('check')+'</span><span>'+njEsc(s)+'</span></div>';
+  }).join('')+'</div>';
 }
 function njToggleFaq(btn){
   var item=btn.closest('.faq-item');
@@ -1747,7 +1826,10 @@ function njExamDetails(j){
   var rows=[];
   function add(en,knv,enV,knV){
     var v=njField(enV,knV);
-    if(v&&String(v).trim()) rows.push({k:(kn?knv:en),v:njEsc(String(v)).replace(/\n/g,'<br>')});
+    if(v&&String(v).trim()){
+      v=String(v).replace(/[ \t]+/g,' ').replace(/ ?\n ?/g,'\n').replace(/\s*;\s*[;|]+\s*/g,'; ').replace(/[ \t]+/g,' ').trim();
+      rows.push({k:(kn?knv:en),v:njEsc(v).replace(/\n/g,'<br>')});
+    }
   }
   add('Exam Type','ಪರೀಕ್ಷಾ ಪ್ರಕಾರ',j.exam_type,j.exam_type_kn);
   add('Exam Mode','ಪರೀಕ್ಷಾ ವಿಧಾನ',j.exam_mode,j.exam_mode_kn);
@@ -1852,9 +1934,9 @@ function renderJob(j){
 
         ${j.age?njSecCard(njIc('user-check'),'sb-purple',kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit',njAgeCell(njField(j.age,j.age_kn))):''}
 
-        ${j.skills?njSecCard(njIc('graduation-cap'),'sb-blue',kn?'ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆ':'Educational Qualification','<div class="sec-text">'+njField(j.skills,j.skills_kn)+'</div>'):''}
+        ${j.skills?njSecCard(njIc('graduation-cap'),'sb-blue',kn?'ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆ':'Educational Qualification',njCheckItems(njField(j.skills,j.skills_kn))):''}
 
-        ${njField(j.experience,j.experience_kn)?njSecCard(njIc('briefcase'),'sb-blue',kn?'ಅನುಭವ':'Experience','<div class="sec-text">'+njField(j.experience,j.experience_kn)+'</div>'):''}
+        ${njField(j.experience,j.experience_kn)?njSecCard(njIc('briefcase'),'sb-blue',kn?'ಅನುಭವ':'Experience',njCheckItems(njField(j.experience,j.experience_kn))):''}
 
         ${j.description?njSecCard(njIc('file-text'),'sb-blue',kn?'ಈ ಉದ್ಯೋಗದ ಬಗ್ಗೆ':'About this Job','<div class="sec-text">'+njField(j.description,j.description_kn)+'</div>'):''}
 
