@@ -1057,6 +1057,31 @@ const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 const H={'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=representation'};
 const PASS='90Br@thers';
 
+// Allowlist of columns that exist on the live `jobs` table (plus the six vacancy /
+// experience columns documented in the ALTER TABLE comments above, which are added
+// by the shipped migration). saveJob() sends ONLY these keys so a stale/optional
+// field can never 400 the whole payload; the PGRST204 retry below is a second,
+// belt-and-suspenders guard that strips any column the DB is missing.
+const NJ_KNOWN_COLS=[
+  'age','age_kn','apply_link','banner_en','banner_kn','bg','cat','cats','cats_kn',
+  'custom_dates','dept','dept_kn','description','description_kn',
+  'exam_duration','exam_duration_kn','exam_language','exam_language_kn','exam_mode','exam_mode_kn',
+  'exam_type','exam_type_kn','faq_en','faq_kn','fee','fee_kn','how_to_apply','how_to_apply_kn',
+  'icon','last_date','loc','loc_kn','logo_url','negative_marking','negative_marking_kn','notif',
+  'notif_label_1','notif_label_2','notif_url','notif_url_1','notif_url_2','official_url',
+  'qualifying_marks','qualifying_marks_kn','required_docs','required_docs_kn','salary','salary_kn',
+  'seats','seats_kn','selection_process','selection_process_kn','skills','skills_kn','start_date',
+  'start_status','status','subject_pattern','subject_pattern_kn','syllabus','syllabus_kn',
+  'syllabus_url','tags','tags_kn','tips_en','tips_kn','title_en','title_kn','total_marks',
+  'total_marks_kn','total_questions','total_questions_kn',
+  'experience','experience_kn','post_wise','state_wise','district_wise','zone_wise'
+];
+function njJobPayload(job){
+  const p={};
+  NJ_KNOWN_COLS.forEach(function(c){ if(job[c]!==undefined) p[c]=job[c]; });
+  return p;
+}
+
 const CATS=[
   {v:'karnataka',n:'Karnataka',i:'🏛️'},
   {v:'central',n:'Central',i:'🇮🇳'},
@@ -1413,11 +1438,26 @@ async function saveJob(){
   btn.disabled=true;sp.style.display='inline-block';
 
   try{
+    let payload=njJobPayload(job);
     let res;
-    if(editId){
-      res=await fetch(`${SB_URL}/rest/v1/jobs?id=eq.${editId}`,{method:'PATCH',headers:H,body:JSON.stringify(job)});
-    }else{
-      res=await fetch(`${SB_URL}/rest/v1/jobs`,{method:'POST',headers:H,body:JSON.stringify(job)});
+    const send=()=>{
+      if(editId){
+        return fetch(`${SB_URL}/rest/v1/jobs?id=eq.${editId}`,{method:'PATCH',headers:H,body:JSON.stringify(payload)});
+      }else{
+        return fetch(`${SB_URL}/rest/v1/jobs`,{method:'POST',headers:H,body:JSON.stringify(payload)});
+      }
+    };
+    res=await send();
+    // PostgREST rejects the WHOLE payload when any key is not a real column.
+    // If the DB is missing one or more columns (e.g. a migration hasn't been
+    // applied yet), drop exactly those columns and retry so publish/update
+    // never fail because of optional fields.
+    for(let guard=0; !res.ok && guard<20; guard++){
+      const errBody=await res.json().catch(()=>null);
+      const mm=errBody&&errBody.code==='PGRST204'&&errBody.message?String(errBody.message).match(/Could not find the '([^']+)' column/):null;
+      if(!mm||!mm[1]||payload[mm[1]]===undefined) break;
+      delete payload[mm[1]];
+      res=await send();
     }
     if(!res.ok)throw new Error('save failed');
     toast('ok',editId?'Job updated!':'Job published!');
