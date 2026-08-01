@@ -1446,6 +1446,7 @@ function njFeeFmt(v){
   if(!v) return '\u2014';
   var t=v.trim();
   if(/^(nil|free|no fee|no application fee|not applicable|exempt(?:ed)?|n\/a|na|-)$/i.test(t)||t==='0') return '<span class="fee-nil">'+njEsc(t==='0'?'Nil':t)+'</span>';
+  if(/^(?:rs\.?|inr|\u20b9)\s*0(?:\s*[\/\-]+\s*)?$/i.test(t)) return '<span class="fee-nil">Nil</span>';
   if(/^[0-9][0-9,]*$/.test(t)) return '\u20b9 '+njEsc(t);
   if(/^(rs\.?|inr|\u20b9)\s*[0-9]/i.test(t)) return njEsc(t.replace(/^rs\.?\s*/i,'\u20b9 ').replace(/^inr\s*/i,'\u20b9 '));
   return njEsc(t);
@@ -1497,38 +1498,52 @@ function njFeeCell(raw){
   if(r.table&&r.rows.length){
     return njKvList(r.rows,njFeeFmt);
   }
-  return String(raw).split(/\s*[|;\n,]\s*/).map(function(x){return x.trim();}).filter(Boolean).map(function(x){return njEsc(x);}).join('<br>');
+  return String(raw).split(/\s*[|;\n,]\s*/).map(function(x){return x.trim();}).filter(Boolean).map(function(x){return njFeeFmt(x);}).join('<br>');
 }
 /* Category-wise vacancies → rows + an ALWAYS-present TOTAL row.
    The total uses an explicit "Total: N" from the data when present; otherwise it
    is the sum of the category numbers. Universal — no hardcoding. */
 function njCatRows(raw){
-  var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
-  if(!t) return '<tr><td colspan="2">'+njEsc(raw)+'</td></tr>';
+  var t=String(raw==null?'':raw).replace(/\r/g,' ').replace(/\s+/g,' ').trim();
+  if(!t) return '';
+  // Split single-space 'Key: N' runs, e.g. "UR:10 OBC:5 SC: 3".
+  t=t.replace(/([0-9])\s+([A-Za-z\u0C80-\u0CFF\u0900-\u097F0-9])/g,'$1\n$2');
+  // Normalize "Label (N)" → "Label: N" so "Air Safety (15)" becomes a clean pair.
+  t=t.replace(/([A-Za-z\u0C80-\u0CFF\u0900-\u097F][^0-9]*?)\s*\(([0-9][0-9,]*\+?)\)/g,'$1: $2');
   var SEP=/\s*[\n|;]\s*|\s*,(?!\d)\s*|\s{2,}/;
   var segs=t.split(SEP).map(function(x){return x.trim();}).filter(Boolean);
   var rows=[],explicitTotal=null;
+  function grabTotal(s){
+    var mm=String(s).match(/\btotals?\b[^0-9]{0,12}([0-9][0-9,]*)/i);
+    if(mm&&mm[1]){ explicitTotal=mm[1]; return true; }
+    return false;
+  }
   segs.forEach(function(seg){
+    // An explicit "Total: N" anywhere in a segment wins and is never a category row.
+    if(grabTotal(seg)) return;
     var k,v,ci=seg.indexOf(':');
+    if(ci<0) ci=seg.indexOf('=');
     if(ci>=0){k=seg.slice(0,ci);v=seg.slice(ci+1);}
     else{var mm=seg.match(/^(.*?)[-\u2013]\s*([0-9][0-9,]*)\s*$/);if(mm){k=mm[1];v=mm[2];}else{k=seg;v='';}}
     k=k.replace(/\s+/g,' ').trim();
-    var num=(String(v).match(/[0-9][0-9,]*/)||[''])[0];
-    if(/^total\b/i.test(k)){ if(num) explicitTotal=num; return; }
+    var num=(String(v).match(/[0-9][0-9,]*\+?/)||[''])[0];
+    if(!num){
+      // value empty but the key carries a trailing "(N)" — e.g. "Air Safety (15)"
+      var pm=k.match(/^(.*?)[\s:]*\(([0-9][0-9,]*\+?)\)[\s:]*$/);
+      if(pm&&pm[1]&&pm[2]){k=pm[1].replace(/\s+/g,' ').trim();num=pm[2];}
+    }
+    if(/\btotals?\b/i.test(k)){ if(num) grabTotal(k+': '+num); return; }
     if(num&&k.length>0&&k.length<=60) rows.push({k:k,v:num});
   });
-  if(!rows.length) return '<tr><td colspan="2">'+njEsc(raw)+'</td></tr>';
-  var body=rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td>'+njEsc(p.v)+'</td></tr>';}).join('');
   // Always append a TOTAL row (explicit if given, else computed sum).
   var totalShow=explicitTotal;
-  if(totalShow==null){
-    var sum=rows.reduce(function(a,r){return a+parseInt(String(r.v).replace(/,/g,''),10);},0);
+  if(totalShow==null&&rows.length){
+    var sum=rows.reduce(function(a,r){return a+parseInt(String(r.v).replace(/[^0-9]/g,''),10);},0);
     if(sum>0) totalShow=String(sum);
   }
-  if(totalShow!=null){
-    var totalLabel=njGetLang()==='kn'?'ಒಟ್ಟು':'Total';
-    body+='<tr><td><strong>'+totalLabel+'</strong></td><td><strong>'+njEsc(totalShow)+'</strong></td></tr>';
-  }
+  var totalLabel=njGetLang()==='kn'?'ಒಟ್ಟು':'Total';
+  var body=rows.map(function(p){return '<tr><td>'+njEsc(p.k)+'</td><td>'+njEsc(p.v)+'</td></tr>';}).join('');
+  if(totalShow!=null) body+='<tr><td><strong>'+totalLabel+'</strong></td><td><strong>'+njEsc(totalShow)+'</strong></td></tr>';
   return body;
 }
 /* All vacancy tables (Category / Post / State / District / Zone) rendered as one
@@ -1536,34 +1551,63 @@ function njCatRows(raw){
 function njVacancySections(j){
   var kn=njGetLang()==='kn';
   var html='';
-  function sec(col,knTitle,enTitle){
-    var raw=j[col];
+  function sec(raw,knTitle,enTitle){
     if(!raw||!String(raw).trim()) return '';
-    return '<div style="overflow-x:auto;margin-top:14px;"><table class="cat-tbl"><thead><tr><th>'+(kn?knTitle:enTitle)+'</th><th>'+(kn?'ಹುದ್ದೆಗಳು':'Vacancies')+'</th></tr></thead><tbody>'+njCatRows(raw)+'</tbody></table></div>';
+    var body=njCatRows(raw);
+    if(!body) body='<tr><td colspan="2">'+njEsc(String(raw).replace(/\s+/g,' ').trim())+'</td></tr>';
+    return '<div style="overflow-x:auto;margin-top:14px;"><table class="cat-tbl"><thead><tr><th>'+(kn?knTitle:enTitle)+'</th><th>'+(kn?'ಹುದ್ದೆಗಳು':'Vacancies')+'</th></tr></thead><tbody>'+body+'</tbody></table></div>';
   }
-  html+=sec('cats', 'ವರ್ಗವಾರು ಹುದ್ದೆಗಳು','Category-wise Vacancies');
-  html+=sec('post_wise', 'ಹುದ್ದೆವಾರು ಹುದ್ದೆಗಳು','Post-wise Vacancies');
-  html+=sec('state_wise', 'ರಾಜ್ಯವಾರು ಹುದ್ದೆಗಳು','State-wise Vacancies');
-  html+=sec('district_wise', 'ಜಿಲ್ಲಾವಾರು ಹುದ್ದೆಗಳು','District-wise Vacancies');
-  html+=sec('zone_wise', 'ವಲಯ / ವೃತ್ತವಾರು ಹುದ್ದೆಗಳು','Zone / Circle-wise Vacancies');
+  html+=sec(njField(j.cats,j.cats_kn), 'ವರ್ಗವಾರು ಹುದ್ದೆಗಳು','Category-wise Vacancies');
+  html+=sec(j.post_wise, 'ಹುದ್ದೆವಾರು ಹುದ್ದೆಗಳು','Post-wise Vacancies');
+  html+=sec(j.state_wise, 'ರಾಜ್ಯವಾರು ಹುದ್ದೆಗಳು','State-wise Vacancies');
+  html+=sec(j.district_wise, 'ಜಿಲ್ಲಾವಾರು ಹುದ್ದೆಗಳು','District-wise Vacancies');
+  html+=sec(j.zone_wise, 'ವಲಯ / ವೃತ್ತವಾರು ಹುದ್ದೆಗಳು','Zone / Circle-wise Vacancies');
   return html;
 }
 function njAgeRows(raw){
   var t=String(raw).replace(/\r/g,' ').replace(/\s+/g,' ').trim();
   if(!t) return {rows:[],table:false};
+  var rows=[];
+  function addRel(){
+    var rel=t.match(/age\s*relax[a-z]*\s*(?:is\s+|[:\-\u2013]\s*)?(.+?)\s*$/i);
+    if(rel&&rel[1]){
+      var rv=rel[1].trim().replace(/[).]+$/,'');
+      if(rv&&rv.length<=200&&!/^\(/.test(rv)) rows.push({k:(njGetLang()==='kn'?'ವಯಸ್ಸಿನ ಸಡಿಲಿಕೆ':'Age Relaxation'),v:rv});
+    }
+  }
   var kv=njKV(t,false);
   if(kv.length>=2&&kv.every(function(p){return p.v!=='';})) return {rows:kv,table:true};
-  var rows=[],re=/([^()]+?)\s*\(([^)]+)\)/g,m;
+  // Repeated "Label : value" pairs with no separators, e.g.
+  // "Minimum Age : 18 Years General : 35 Years Cat-II(A) : 38 Years ..."
+  var pairRe=/[A-Za-z][A-Za-z0-9&()'/\u2013\u2014\-, ]*?\s*:\s*(?:up\s?to|upto|max\.?|maximum|min\.?|minimum|below)?\s*[0-9][0-9,/\u2013\u2014\-]*\s*(?:Years?|Months?|Days?)/g,m;
+  while((m=pairRe.exec(t))!==null){
+    var pk=m[0].slice(0,m[0].lastIndexOf(':')).replace(/\s+/g,' ').trim();
+    var pv=m[0].slice(m[0].lastIndexOf(':')+1).replace(/\s+/g,' ').trim();
+    if(/^age\s*relax/i.test(pk)) continue;
+    if(pk&&pk.length<=40&&pv) rows.push({k:pk,v:pv});
+  }
+  if(rows.length>=2){ addRel(); return {rows:rows,table:true}; }
+  rows=[];
+  // "18–35 Years (General Merit) 18–38 Years (2A, 2B, 3A, 3B) ..." →
+  // each "(category)" takes the preceding age as its value. The "value ends in
+  // an age unit" guard keeps relaxation notes like "(NCL)" / "(both dates …)" out.
+  var re=/([^()]+?)\s*\(([^)]+)\)/g;
   while((m=re.exec(t))!==null){
     var val=m[1].replace(/^[\s,;:.\u2013\-]+/,'').replace(/^(maximum|max\.?|upto|up\s?to|minimum|min\.?)\s+/i,'').trim();
     var cat=m[2].trim();
+    if(!/\b(?:years?|months?|days?)\s*$/i.test(val)) continue;
     if(cat&&cat.length<=40&&val) rows.push({k:cat,v:val});
   }
-  var rel=t.match(/age\s*relax[a-z]*\s*(?:is\s+|[:\-\u2013]\s*)?(.+?)\s*$/i);
-  if(rel&&rel[1]){
-    var rv=rel[1].trim().replace(/[).]+$/,'');
-    if(rv&&rv.length<=80&&!/^\(/.test(rv)) rows.push({k:(njGetLang()==='kn'?'\u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0cbf\u0ca8 \u0cb8\u0ca1\u0cbf\u0cb2\u0cbf\u0c95\u0cc6':'Age Relaxation'),v:rv});
+  if(rows.length){ addRel(); return {rows:rows,table:true}; }
+  rows=[];
+  // Bare leading age range with no label, e.g. "18–24 Years  Age relaxation ..." → "General"
+  var lead=t.match(/^[0-9][0-9,/\u2013\u2014\-]*(?:\s*(?:to|-|\u2013|\u2014)\s*[0-9][0-9,/\u2013\u2014\-]*)?\s*(?:Years?|Months?|Days?)/i);
+  if(lead&&lead[0]){
+    rows.push({k:(njGetLang()==='kn'?'ಸಾಮಾನ್ಯ':'General'),v:lead[0].replace(/\s+/g,' ').trim()});
+    addRel();
+    return {rows:rows,table:true};
   }
+  addRel();
   if(rows.length>=1) return {rows:rows,table:true};
   return {rows:[],table:false};
 }
