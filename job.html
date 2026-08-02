@@ -1782,12 +1782,11 @@ function njSecCard(iconHtml,colorClass,title,bodyHtml,opts){
     +'<div class="sec-body">'+bodyHtml+'</div>'
   +'</div>';
 }
-/* Breadcrumb strip: Home › Karnataka Jobs › <Dept> › <Title>, with Back to Results. */
+/* Breadcrumb strip: Home › Karnataka Jobs › <Dept> › <Title>. */
 function njBreadcrumb(j){
   var kn=njGetLang()==='kn';
   var home=kn?'ಮುಖಪುಟ':'Home';
   var kjobs=kn?'ಕರ್ನಾಟಕ ಉದ್ಯೋಗಗಳು':'Karnataka Jobs';
-  var back=kn?'← ಫಲಿತಾಂಶಗಳಿಗೆ ಹಿಂತಿರುಗಿ':'← Back to Results';
   var dept=njField(j.dept,j.dept_kn)||'';
   var title=njField(j.title_en,j.title_kn)||'';
   var mid='';
@@ -1799,7 +1798,6 @@ function njBreadcrumb(j){
       +mid
       +(title?'<span class="sep">›</span><span class="current">'+njEsc(title)+'</span>':'')
     +'</div>'
-    +'<a class="crumb-back" href="index.html">'+back+'</a>'
   +'</nav>';
 }
 /* Important Dates as a clean label/value table (uses only the dates that exist). */
