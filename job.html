@@ -369,7 +369,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .job-banner img{width:100%;height:auto;display:block;}
 @media(min-width:769px){
   .job-banner{margin-bottom:14px;display:flex;justify-content:center;align-items:center;}
-  .job-banner img{width:auto;max-width:100%;max-height:260px;height:auto;object-fit:contain;}
+  .job-banner img{width:auto;max-width:100%;max-height:320px;height:auto;object-fit:contain;}
 }
 
 /* CATEGORY TABLE */
@@ -380,12 +380,14 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .cat-tbl th:last-child,.cat-tbl td:last-child{text-align:right;width:38%;padding-right:6%;}
 .cat-tbl tr:last-child td{border-top:2px solid var(--border-strong);border-bottom:none;font-weight:800;}
 .cat-tbl strong{color:#c4b5fd;font-weight:800;}
-/* Independent vacancy sections: clear heading + divider + own table + own Total. */
-.vsec{margin-top:20px;padding-top:16px;border-top:1px dashed rgba(148,163,184,0.4);}
+/* Independent vacancy sections: clear light-purple header strip + divider +
+   own table + own Total. Sections are visually separated so they never merge. */
+.vsec{margin-top:24px;padding-top:18px;border-top:1px dashed rgba(148,163,184,0.35);}
 .vsec:first-child{margin-top:0;padding-top:0;border-top:none;}
-.vsec-head{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;color:var(--accent);}
+.vsec-head{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:10px 14px;border-radius:12px;margin-bottom:14px;background:rgba(168,85,247,0.16);border:1px solid rgba(168,85,247,0.32);color:#e9d5ff;}
 .vsec-head::before{content:'';width:4px;height:15px;border-radius:3px;background:var(--accent);flex-shrink:0;}
-[data-theme=light] .vsec{border-top-color:rgba(100,116,139,0.35);}
+[data-theme=light] .vsec{border-top-color:rgba(100,116,139,0.30);}
+[data-theme=light] .vsec-head{background:rgba(168,85,247,0.12);border-color:rgba(168,85,247,0.35);color:#6d28d9;}
 .fee-chip{display:block;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.14);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;}
 .fee-chip:last-child{margin-bottom:2px;}
 .info-table tr.fee-row td{border-bottom:none;}
@@ -1523,8 +1525,9 @@ function njFeeCell(raw){
 function njCatRows(raw){
   var t=String(raw==null?'':raw).replace(/\r/g,' ').replace(/\s+/g,' ').trim();
   if(!t) return '';
-  // Split single-space 'Key: N' runs, e.g. "UR:10 OBC:5 SC: 3".
-  t=t.replace(/([0-9])\s+([A-Za-z\u0C80-\u0CFF\u0900-\u097F0-9])/g,'$1\n$2');
+  // Split single-space 'Key: N' runs, e.g. "UR:10 OBC:5 SC: 3" — only when the
+  // char after the space is a LETTER so labels with digits ("Group 4 25") survive.
+  t=t.replace(/([0-9])\s+([A-Za-z\u0C80-\u0CFF\u0900-\u097F])/g,'$1\n$2');
   // Normalize "Label (N)" → "Label: N" so "Air Safety (15)" becomes a clean pair.
   t=t.replace(/([A-Za-z\u0C80-\u0CFF\u0900-\u097F][^0-9]*?)\s*\(([0-9][0-9,]*\+?)\)/g,'$1: $2');
   var SEP=/\s*[\n|;]\s*|\s*,(?!\d)\s*|\s{2,}/;
@@ -1541,7 +1544,16 @@ function njCatRows(raw){
     var k,v,ci=seg.indexOf(':');
     if(ci<0) ci=seg.indexOf('=');
     if(ci>=0){k=seg.slice(0,ci);v=seg.slice(ci+1);}
-    else{var mm=seg.match(/^(.*?)[-\u2013]\s*([0-9][0-9,]*)\s*$/);if(mm){k=mm[1];v=mm[2];}else{k=seg;v='';}}
+    else{
+      var mm=seg.match(/^(.*?)[-\u2013]\s*([0-9][0-9,]*)\s*$/);
+      if(mm){k=mm[1];v=mm[2];}
+      else{
+        // "Label 12" — no colon/dash, e.g. "Clerk 12", "Police Constable 1500".
+        var sm=seg.match(/^(.*?\S)\s+([0-9][0-9,]*\+?)\s*$/);
+        if(sm&&sm[1].length>0&&sm[1].length<=60&&!/^\d+$/.test(sm[1])){k=sm[1];v=sm[2];}
+        else{k=seg;v='';}
+      }
+    }
     k=k.replace(/\s+/g,' ').trim();
     var num=(String(v).match(/[0-9][0-9,]*\+?/)||[''])[0];
     if(!num){
@@ -1607,7 +1619,9 @@ function njAgeRows(raw){
   var NUMP='[0-9][0-9,]*(?:\\s*(?:-|–|—|to)\\s*[0-9][0-9,]*)?';
 
   // ---- 1) Age Relaxation note (usually last). Extract + strip. ----
-  var relRe=kn?/(ವಯೋಮಿತಿ\s*ಸಡಿಲಿಕೆ|ವಯೋಮಿತಿ|ಸಡಿಲಿಕೆ)/:/(?:\bage\s*)?relax(?:ation)?/i;
+  // Language-agnostic in BOTH modes so a Kannada job viewed in EN (or
+  // vice-versa, when only one language field is filled) parses identically.
+  var relRe=/((?:\bage\s*)?relax(?:ation)?|ವಯೋಮಿತಿ\s*ಸಡಿಲಿಕೆ|ಸಡಿಲಿಕೆ)/i;
   var relIdx=t.search(relRe);
   if(relIdx>=0){
     var note=t.slice(relIdx).replace(relRe,' ');
@@ -1876,7 +1890,10 @@ function renderJob(j){
   const logo=j.logo_url||getDeptLogo(j.dept);
   const heroLogoHtml=`<div class="hero-logo">${njLogoImg(logo, j.dept, (j.icon||'💼'))}</div>`;
 
-  const banner=(njGetLang()==='kn'?(j.banner_kn||''):(j.banner_en||'')).trim();
+  // Same banner must show in both languages: prefer the language-specific one,
+  // but fall back to the English banner whenever the Kannada one is missing
+  // (the admin UI publishes a single shared banner into banner_en).
+  const banner=((njGetLang()==='kn'?(j.banner_kn||j.banner_en||''):(j.banner_en||j.banner_kn||''))||'').trim();
 
   const OG_DEFAULT='https://www.nammajobs.co.in/NammaJobs.png';
   const ogImg=((j.banner_en||'').trim())||((j.banner_kn||'').trim())||OG_DEFAULT;
