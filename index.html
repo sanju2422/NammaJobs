@@ -1774,11 +1774,11 @@ function njNotifPdf(j){
   return j.notification_pdf||j.notif_pdf||j.notification_url||j.notif_url||j.notification||j.pdf_url||j.pdf||'';
 }
 
-// FEATURED RECRUITMENT — render up to 2 Featured/Future jobs, newest first.
-// No .single() / .limit(1) / find(): every featured job is eligible (capped at
-// 2), so marking a new job Featured never hides the previous ones.
-// Expired jobs (Last Date < today) are hidden from this section only; the
-// Featured flag is never removed from the database.
+// FEATURED RECRUITMENT — show the first 2 Featured/Future jobs, newest first,
+// with a "More" button that reveals the rest (mirrors the More Notifications
+// pattern). Expired jobs (Last Date < today) are hidden from this section only;
+// the Featured flag is never removed from the database.
+let _featExpanded=false;
 function renderFeatured(){
   const box=document.getElementById('nj-feat');
   if(!box)return;
@@ -1795,13 +1795,13 @@ function renderFeatured(){
     if(ac!==bc)return ac-bc;
     return new Date(b.created_at||0)-new Date(a.created_at||0);
   });
-  const list=feat.slice(0,2);
-  if(!list.length){box.style.display='none';return;}
+  if(!feat.length){box.style.display='none';return;}
   box.style.display='';
   box.className='nj-feat-wrap';
+  const FEAT_LIMIT=2;
   const postsWord=njGetLang()==='kn'?' ಹುದ್ದೆಗಳು':' Posts';
   const cta=njGetLang()==='kn'?'ಉದ್ಯೋಗ ವಿವರಗಳು →':'View Details →';
-  box.innerHTML=`<div class="nj-feat-list">`+list.map(function(j){
+  function buildCard(j){
     const tp=njPostsTotal(j.seats);
     const postsPill=(tp!=null)?`<span class="nj-feat-pill">👥 <b>${tp.toLocaleString('en-IN')}</b>${postsWord}</span>`:'';
     const locPill=j.loc?`<span class="nj-feat-pill">📍 ${njField(j.loc,j.loc_kn)}</span>`:'';
@@ -1815,7 +1815,21 @@ function renderFeatured(){
       <div class="nj-feat-meta">${postsPill}${locPill}${datePill}</div>
       <a class="nj-feat-cta" href="${getJobUrl(j.id)}" onclick="event.stopPropagation();" style="text-decoration:none;">${cta}</a>
     </div>`;
-  }).join('')+`</div>`;
+  }
+  const visible=feat.slice(0,FEAT_LIMIT);
+  const hidden=feat.slice(FEAT_LIMIT);
+  let html=`<div class="nj-feat-list">`+visible.map(buildCard).join('');
+  if(hidden.length){
+    const hiddenHtml=hidden.map(buildCard).join('');
+    const isKn=njGetLang()==='kn';
+    const moreLabel=isKn?`+ ${hidden.length} ಹೆಚ್ಚಿನ ವೈಶಿಷ್ಟ್ಯ ಉದ್ಯೋಗಗಳು ▾`:`+ ${hidden.length} More Featured Jobs ▾`;
+    const lessLabel=isKn?'ಕಡಿಮೆ ತೋರಿಸಿ ▴':'Show Less ▴';
+    html+=`<div id="nj-feat-extra" style="display:${_featExpanded?'block':'none'};">${hiddenHtml}</div>`;
+    html+=`<button class="nj-more-notif-btn" id="nj-feat-toggle" onclick="(function(){_featExpanded=!_featExpanded;renderFeatured();})()">
+      <span>${_featExpanded?lessLabel:moreLabel}</span>
+    </button>`;
+  }
+  box.innerHTML=html+`</div>`;
 }
 
 // LATEST NOTIFICATIONS — every published job, linking to its admin-uploaded notification PDF
