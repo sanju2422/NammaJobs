@@ -1066,7 +1066,7 @@ const NJ_KNOWN_COLS=[
   'age','age_kn','apply_link','banner_en','banner_kn','bg','cat','cats','cats_kn',
   'custom_dates','dept','dept_kn','description','description_kn',
   'exam_duration','exam_duration_kn','exam_language','exam_language_kn','exam_mode','exam_mode_kn',
-  'exam_type','exam_type_kn','faq_en','faq_kn','fee','fee_kn','how_to_apply','how_to_apply_kn',
+  'exam_type','exam_type_kn','faq_en','faq_kn','featured','fee','fee_kn','how_to_apply','how_to_apply_kn',
   'icon','last_date','loc','loc_kn','logo_url','negative_marking','negative_marking_kn','notif',
   'notif_label_1','notif_label_2','notif_url','notif_url_1','notif_url_2','official_url',
   'qualifying_marks','qualifying_marks_kn','required_docs','required_docs_kn','salary','salary_kn',
@@ -1321,6 +1321,7 @@ function collectJob(){
   const job={
     cat:selCat,
     status:selStat,
+    featured:document.querySelector('.stf[data-v="featured"]').classList.contains('on'),
     title_en:ten,
     title_kn:document.getElementById('f-tkn').value.trim()||null,
     dept,
@@ -1485,6 +1486,7 @@ function editJob(id){
   selStat=j.status||'open';
   renderCatGrid();
   document.querySelectorAll('.sto').forEach(b=>b.classList.toggle('on',b.dataset.v===selStat));
+  document.querySelectorAll('.stf[data-v="featured"]').forEach(b=>b.classList.toggle('on',!!j.featured));
 
   document.getElementById('f-ten').value=j.title_en||'';
   document.getElementById('f-tkn').value=j.title_kn||'';
@@ -1611,6 +1613,7 @@ function clearForm(){
   selCat='karnataka';selStat='open';
   renderCatGrid();
   document.querySelectorAll('.sto').forEach(b=>b.classList.toggle('on',b.dataset.v==='open'));
+  document.querySelectorAll('.stf[data-v="featured"]').forEach(b=>b.classList.remove('on'));
   document.getElementById('fpttl').textContent='➕ Add New Job';
   document.getElementById('fpsub').textContent='Fill details and publish to Supabase';
   document.getElementById('pub-btn').querySelector('span:last-child').textContent='✓ Publish Job';
