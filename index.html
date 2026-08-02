@@ -1774,20 +1774,28 @@ function njNotifPdf(j){
   return j.notification_pdf||j.notif_pdf||j.notification_url||j.notif_url||j.notification||j.pdf_url||j.pdf||'';
 }
 
-// FEATURED RECRUITMENT — render up to 5 Featured/Future jobs, newest first.
-// No .single() / .limit(1) / find(): every featured job is shown (capped at 5),
-// so marking a new job Featured never hides the previous ones.
+// FEATURED RECRUITMENT — render up to 2 Featured/Future jobs, newest first.
+// No .single() / .limit(1) / find(): every featured job is eligible (capped at
+// 2), so marking a new job Featured never hides the previous ones.
+// Expired jobs (Last Date < today) are hidden from this section only; the
+// Featured flag is never removed from the database.
 function renderFeatured(){
   const box=document.getElementById('nj-feat');
   if(!box)return;
-  const feat=allJobs.filter(njIsFeatured);
+  const today=new Date();today.setHours(0,0,0,0);
+  const feat=allJobs.filter(function(j){
+    if(!njIsFeatured(j))return false;
+    if(!j.last_date)return true;
+    const d=new Date(j.last_date);d.setHours(0,0,0,0);
+    return d>=today;
+  });
   feat.sort(function(a,b){
     // open/soon before closed, then newest (latest published) first
     const ac=a.status==='closed'?1:0,bc=b.status==='closed'?1:0;
     if(ac!==bc)return ac-bc;
     return new Date(b.created_at||0)-new Date(a.created_at||0);
   });
-  const list=feat.slice(0,5);
+  const list=feat.slice(0,2);
   if(!list.length){box.style.display='none';return;}
   box.style.display='';
   box.className='nj-feat-wrap';
