@@ -701,6 +701,9 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
   border:1px solid var(--glass-border);box-shadow:var(--shadow-lg);}
 [data-theme=dark] .nj-feat::before{background:radial-gradient(circle,rgba(168,85,247,0.42),transparent 70%);}
 
+/* Multiple Featured cards: wrap keeps each .nj-feat card intact and stacked */
+.nj-feat-wrap{display:flex;flex-direction:column;gap:18px;min-width:0;}
+
 /* ---- Sidebar placeholder cards (reuse .sc / .sc-ttl for theme match) ---- */
 .nj-ph-list{display:flex;flex-direction:column;}
 .nj-ph-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(15,23,42,0.07);align-items:flex-start;}
@@ -1771,31 +1774,40 @@ function njNotifPdf(j){
   return j.notification_pdf||j.notif_pdf||j.notification_url||j.notif_url||j.notification||j.pdf_url||j.pdf||'';
 }
 
-// FEATURED RECRUITMENT — populate the existing .nj-feat card from job data
+// FEATURED RECRUITMENT — render up to 5 Featured/Future jobs, newest first.
+// No .single() / .limit(1) / find(): every featured job is shown (capped at 5),
+// so marking a new job Featured never hides the previous ones.
 function renderFeatured(){
   const box=document.getElementById('nj-feat');
   if(!box)return;
-  const feat=allJobs.filter(njIsFeatured).sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
-  const j=feat.find(x=>x.status!=='closed')||feat[0];
-  if(!j){
-    box.style.display='none';
-    return;
-  }
+  const feat=allJobs.filter(njIsFeatured);
+  feat.sort(function(a,b){
+    // open/soon before closed, then newest (latest published) first
+    const ac=a.status==='closed'?1:0,bc=b.status==='closed'?1:0;
+    if(ac!==bc)return ac-bc;
+    return new Date(b.created_at||0)-new Date(a.created_at||0);
+  });
+  const list=feat.slice(0,5);
+  if(!list.length){box.style.display='none';return;}
   box.style.display='';
-  const tp=njPostsTotal(j.seats);
+  box.className='nj-feat-wrap';
   const postsWord=njGetLang()==='kn'?' ಹುದ್ದೆಗಳು':' Posts';
-  const postsPill=(tp!=null)?`<span class="nj-feat-pill">👥 <b>${tp.toLocaleString('en-IN')}</b>${postsWord}</span>`:'';
-  const locPill=j.loc?`<span class="nj-feat-pill">📍 ${njField(j.loc,j.loc_kn)}</span>`:'';
-  let datePill='';
-  if(j.status==='soon'){datePill=j.start_date?`<span class="nj-feat-pill">🔜 ${njGetLang()==='kn'?'ಪ್ರಾರಂಭ':'Starts'}: ${fmtDate(j.start_date)}</span>`:'';}
-  else if(j.last_date){datePill=`<span class="nj-feat-pill">📅 ${njGetLang()==='kn'?'ಕೊನೆಯ ದಿನಾಂಕ':'Last Date'}: ${fmtDate(j.last_date)}</span>`;}
   const cta=njGetLang()==='kn'?'ಉದ್ಯೋಗ ವಿವರಗಳು →':'View Details →';
-  box.className='nj-feat';
-  box.innerHTML=`<span class="nj-feat-tag">⭐ <span class="lang-en">Build Your Future 👇</span><span class="lang-kn">ನಿಮ್ಮ ಭವಿಷ್ಯ 👇</span></span>
-    <div class="nj-feat-title">${njField(j.title_en,j.title_kn)||''}</div>
-    <div class="nj-feat-sub">${njField(j.dept,j.dept_kn)||''}</div>
-    <div class="nj-feat-meta">${postsPill}${locPill}${datePill}</div>
-    <a class="nj-feat-cta" href="${getJobUrl(j.id)}" onclick="event.stopPropagation();" style="text-decoration:none;">${cta}</a>`;
+  box.innerHTML=`<div class="nj-feat-list">`+list.map(function(j){
+    const tp=njPostsTotal(j.seats);
+    const postsPill=(tp!=null)?`<span class="nj-feat-pill">👥 <b>${tp.toLocaleString('en-IN')}</b>${postsWord}</span>`:'';
+    const locPill=j.loc?`<span class="nj-feat-pill">📍 ${njField(j.loc,j.loc_kn)}</span>`:'';
+    let datePill='';
+    if(j.status==='soon'){datePill=j.start_date?`<span class="nj-feat-pill">🔜 ${njGetLang()==='kn'?'ಪ್ರಾರಂಭ':'Starts'}: ${fmtDate(j.start_date)}</span>`:'';}
+    else if(j.last_date){datePill=`<span class="nj-feat-pill">📅 ${njGetLang()==='kn'?'ಕೊನೆಯ ದಿನಾಂಕ':'Last Date'}: ${fmtDate(j.last_date)}</span>`;}
+    return `<div class="nj-feat">
+      <span class="nj-feat-tag">⭐ <span class="lang-en">Build Your Future 👇</span><span class="lang-kn">ನಿಮ್ಮ ಭವಿಷ್ಯ 👇</span></span>
+      <div class="nj-feat-title">${njField(j.title_en,j.title_kn)||''}</div>
+      <div class="nj-feat-sub">${njField(j.dept,j.dept_kn)||''}</div>
+      <div class="nj-feat-meta">${postsPill}${locPill}${datePill}</div>
+      <a class="nj-feat-cta" href="${getJobUrl(j.id)}" onclick="event.stopPropagation();" style="text-decoration:none;">${cta}</a>
+    </div>`;
+  }).join('')+`</div>`;
 }
 
 // LATEST NOTIFICATIONS — every published job, linking to its admin-uploaded notification PDF
