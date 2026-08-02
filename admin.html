@@ -1345,7 +1345,13 @@ function collectJob(){
     icon:document.getElementById('f-icon').value.trim()||'💼',
     logo_url:document.getElementById('f-logo').value.trim()||null,
     banner_en:document.getElementById('f-banner-en')?document.getElementById('f-banner-en').value.trim()||null:null,
-    banner_kn:document.getElementById('f-banner-kn')?document.getElementById('f-banner-kn').value.trim()||null:null,
+    // A single shared banner is used for BOTH languages. If the legacy Kannada
+    // field is empty, mirror the English banner so the Kannada job page never
+    // shows a missing banner.
+    banner_kn:document.getElementById('f-banner-kn')&&document.getElementById('f-banner-kn').value.trim()
+      ?document.getElementById('f-banner-kn').value.trim()
+      :(document.getElementById('f-banner-en')&&document.getElementById('f-banner-en').value.trim()
+        ?document.getElementById('f-banner-en').value.trim():null),
     cats:document.getElementById('f-cats').value.trim()||null,
     post_wise:document.getElementById('f-post-wise')?document.getElementById('f-post-wise').value.trim()||null:null,
     state_wise:document.getElementById('f-state-wise')?document.getElementById('f-state-wise').value.trim()||null:null,
