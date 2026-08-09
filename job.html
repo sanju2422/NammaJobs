@@ -1486,6 +1486,22 @@ function njKvList(rows,valFmt){
       +'<span class="kv-val">'+v+'</span></div>';
   }).join('')+'</div>';
 }
+/* ===== SHARED STRUCTURED-DATA GUARD =====
+   One reusable rule for every structured field (Age Limit, Application Fee,
+   and anything else that renders a key/value table via njKvList):
+   content only counts as structured data when it yields at least TWO distinct
+   key/value entries. A single entry — e.g. "18-35 Years", "General : 35 Years"
+   or "₹100 (General)" — is plain text, never a table.
+
+   This is the single place that decides "is this actually structured?". It
+   deliberately does NOT treat a lone ":" or a single pattern match as evidence
+   of structure, and it is language-agnostic (English / Kannada behave the
+   same). Existing multi-entry posts keep rendering as tables; single plain
+   values render as plain text. */
+function njStructured(rows){
+  rows=rows||[];
+  return {rows:rows, table:rows.length>=2};
+}
 function njFeeRows(raw){
   var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
   if(!t) return {rows:[],table:false};
@@ -1519,7 +1535,7 @@ function njFeeRows(raw){
     push(cleanCat(t.slice(last,m.index)),m[0]);
     last=m.index+m[0].length;
   }
-  return {rows:out,table:out.length>=1};
+  return njStructured(out);
 }
 function njFeeCell(raw){
   if(!raw) return '\u2014';
@@ -1644,7 +1660,7 @@ function njAgeRows(raw){
 
   t=t.replace(/[ \t]+/g,' ');
   var segs=t.split(/[\n|;]|,\s*(?=\S)/).map(function(x){return x.trim();}).filter(Boolean);
-  if(!segs.length&&!rows.length) return {rows:[],table:false};
+  if(!segs.length&&!rows.length) return njStructured([]);
 
   function matchFirst(seg){
     // Max/Min phrase, e.g. "Maximum 35 Years", "Minimum Age : 18 Years", "ಗರಿಷ್ಠ 35 ವರ್ಷ"
@@ -1690,8 +1706,7 @@ function njAgeRows(raw){
       s=nxt.trim();
     }
   });
-  if(rows.length) return {rows:rows,table:true};
-  return {rows:[],table:false};
+  return njStructured(rows);
 }
 function njAgeCell(raw){
   if(!raw) return '\u2014';
