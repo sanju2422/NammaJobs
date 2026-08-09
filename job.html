@@ -834,6 +834,28 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .idates td.due{color:#ef4444;}
 .idates tr.hot{background:rgba(239,68,68,0.09);}
 
+/* ---- Exam details: long structured values (e.g. Subject-wise Pattern) ----
+   Short values stay in the inline .idates table exactly as before. Long
+   structured values move out of the cramped single cell into a clean stacked
+   block: a small uppercase heading + one card row per line, with the leading
+   "Label - value" segment split for tidy two-column alignment. Presentation
+   only — parsing/normalization of the values is untouched. */
+.exam-details{display:flex;flex-direction:column;gap:14px;}
+.ep-block{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface);}
+.ep-head{padding:12px 16px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--text-muted);background:var(--surface-2);border-bottom:1px solid var(--border);}
+.ep-list{display:flex;flex-direction:column;gap:8px;padding:12px;}
+.ep-item{display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+  background:var(--surface-2);border:1px solid var(--border);border-radius:10px;
+  padding:10px 13px;font-size:13.5px;line-height:1.5;color:var(--text);}
+.ep-key{font-weight:600;color:var(--text);white-space:pre-wrap;min-width:0;overflow-wrap:anywhere;}
+.ep-val{font-weight:700;color:var(--accent);text-align:right;white-space:pre-wrap;flex-shrink:0;}
+.ep-text{font-weight:500;color:var(--text);white-space:pre-wrap;overflow-wrap:anywhere;}
+@media(max-width:480px){
+  .ep-item{flex-direction:column;align-items:flex-start;gap:4px;}
+  .ep-val{text-align:left;}
+}
+
 /* ---- Plain section text ---- */
 .sec-text{color:var(--text);font-size:14px;line-height:1.75;font-weight:500;white-space:pre-wrap;}
 
@@ -1857,15 +1879,42 @@ function njNotifDocs(j){
     return '<a href="'+njEsc(d.pdf)+'" target="_blank" rel="noopener" class="btn-apply-main" style="display:inline-flex;align-items:center;gap:8px;justify-content:center;font-size:13px;padding:11px 20px;">'+njIc('download')+' '+njEsc(d.label)+'</a>';
   }).join('')+'</div>';
 }
-/* Examination Details → clean label/value table. Hidden when every field is empty. */
+/* Long structured value detector — a value is "long structured" when it spans
+   multiple lines (e.g. Subject-wise Pattern) or is long enough that cramming it
+   into a single table cell looks cluttered. Short values are left untouched. */
+function njIsLongValue(v){
+  v=String(v==null?'':v).trim();
+  return v.indexOf('\n')>=0 || v.length>60;
+}
+/* Render a long structured value as a clean stacked list. Each line becomes its
+   own row card; a leading "Label - value" / "Label: value" segment is split for
+   tidy two-column alignment. Presentation only — no data transformation. */
+function njLongValueHtml(raw){
+  var lines=String(raw==null?'':raw).split('\n').map(function(s){return s.trim();}).filter(Boolean);
+  if(!lines.length) return '';
+  var sep=/\s*(?:\u2013|\u2014|:|=|\|)\s+|\s+\-\s+/;
+  return '<div class="ep-list">'+lines.map(function(line){
+    var parts=line.split(sep);
+    if(parts.length>=2){
+      var key=parts[0].trim(), val=parts.slice(1).join(' ').trim();
+      return '<div class="ep-item"><span class="ep-key">'+njEsc(key)+'</span><span class="ep-val">'+njEsc(val)+'</span></div>';
+    }
+    return '<div class="ep-item"><span class="ep-text">'+njEsc(line)+'</span></div>';
+  }).join('')+'</div>';
+}
+/* Examination Details → clean label/value table. Hidden when every field is
+   empty. Short values render inline exactly as before; long structured values
+   (multi-line, e.g. Subject-wise Pattern) render as readable stacked blocks
+   instead of one cramped cell. Presentation only — parsing unchanged. */
 function njExamDetails(j){
   var kn=njGetLang()==='kn';
-  var rows=[];
+  var shortRows=[],longRows=[];
   function add(en,knv,enV,knV){
     var v=njField(enV,knV);
     if(v&&String(v).trim()){
       v=String(v).replace(/[ \t]+/g,' ').replace(/ ?\n ?/g,'\n').replace(/\s*;\s*[;|]+\s*/g,'; ').replace(/[ \t]+/g,' ').trim();
-      rows.push({k:(kn?knv:en),v:njEsc(v).replace(/\n/g,'<br>')});
+      if(njIsLongValue(v)) longRows.push({k:(kn?knv:en), raw:v});
+      else shortRows.push({k:(kn?knv:en), v:njEsc(v).replace(/\n/g,'<br>')});
     }
   }
   add('Exam Type','ಪರೀಕ್ಷಾ ಪ್ರಕಾರ',j.exam_type,j.exam_type_kn);
@@ -1877,10 +1926,19 @@ function njExamDetails(j){
   add('Negative Marking','ನಕಾರಾತ್ಮಕ ಅಂಕಗಳು',j.negative_marking,j.negative_marking_kn);
   add('Qualifying Marks','ಅರ್ಹತಾ ಅಂಕಗಳು',j.qualifying_marks,j.qualifying_marks_kn);
   add('Subject-wise Pattern','ವಿಷಯವಾರು ವಿನ್ಯಾಸ',j.subject_pattern,j.subject_pattern_kn);
-  if(!rows.length) return '';
-  return '<div class="idates-wrap"><table class="idates"><tbody>'
-    + rows.map(function(r){return '<tr><td>'+njEsc(r.k)+'</td><td>'+r.v+'</td></tr>';}).join('')
-    + '</tbody></table></div>';
+  if(!shortRows.length&&!longRows.length) return '';
+  var out='';
+  if(shortRows.length){
+    out+='<div class="idates-wrap"><table class="idates"><tbody>'
+      + shortRows.map(function(r){return '<tr><td>'+njEsc(r.k)+'</td><td>'+r.v+'</td></tr>';}).join('')
+      + '</tbody></table></div>';
+  }
+  if(longRows.length){
+    out+=longRows.map(function(r){
+      return '<div class="ep-block"><div class="ep-head">'+njEsc(r.k)+'</div>'+njLongValueHtml(r.raw)+'</div>';
+    }).join('');
+  }
+  return '<div class="exam-details">'+out+'</div>';
 }
 /* Labeled Notification PDF action-bar buttons. Empty label or PDF → hidden. */
 function njActionDocs(j){
