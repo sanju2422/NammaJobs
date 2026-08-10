@@ -1321,10 +1321,10 @@ function njSalaryRows(raw){
   var segs=t.split(/\s*[\n;|]\s*|\s*,(?!\d)\s*/).map(function(x){return x.trim();}).filter(Boolean);
   var out=[],seen={};
   segs.forEach(function(seg){
-    var sp=njSplitLabelAmount(seg,AMT);
-    if(!sp) return;
-    var k=njCleanLabel(sp.k);
-    if(njGoodLabel(k)&&!seen[k+'|'+sp.v]){seen[k+'|'+sp.v]=1;out.push({k:k,v:sp.v});}
+    njSplitLabelAmount(seg,AMT).forEach(function(sp){
+      if(!njGoodLabel(sp.k)||seen[sp.k+'|'+sp.v]) return;
+      seen[sp.k+'|'+sp.v]=1;out.push({k:sp.k,v:sp.v});
+    });
   });
   return out;
 }
@@ -1562,14 +1562,16 @@ function njGoodLabel(c){
 }
 function njSplitLabelAmount(seg,AMT){
   var s=String(seg==null?'':seg).trim();
-  if(!s) return null;
-  var re=new RegExp(AMT,'ig');
-  var m,last=null;
-  while((m=re.exec(s))!==null){last=m;}
-  if(!last) return null;
-  var k=s.slice(0,last.index).trim();
-  if(!k) return null;
-  return {k:njCleanLabel(k),v:last[0].trim()};
+  if(!s) return [];
+  var re=new RegExp('\\s*[:=]\\s*('+AMT+')','ig');
+  var out=[],m,last=0;
+  while((m=re.exec(s))!==null){
+    var k=s.slice(last,m.index).trim();
+    var v=String(m[1]).trim();
+    last=m.index+m[0].length;
+    if(k) out.push({k:njCleanLabel(k),v:v});
+  }
+  return out;
 }
 function njFeeRows(raw){
   var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
@@ -1588,11 +1590,11 @@ function njFeeRows(raw){
   // "₹500 (General), ₹250 (SC)" → value-first with parenthesised category.
   var VF=new RegExp('('+AMT+')\\s*\\(([^)]+)\\)','ig');
   t=t.replace(VF,function(m,fee,cat){push(njCleanLabel(cat),fee);return '  ';});
-  // "General Merit / Category-2A / 2B / 3A / 3B : ₹750" → label : amount per line.
+  // "General Merit / Category-2A / 2B / 3A / 3B : ₹750" → label : amount.
+  // Handles pairs on separate lines AND space-separated on one line.
   t.split(/\s*[\n;|]\s*|\s*,(?!\d)\s*/).forEach(function(seg){
     seg=seg.trim(); if(!seg) return;
-    var sp=njSplitLabelAmount(seg,AMT);
-    if(sp) push(sp.k,sp.v);
+    njSplitLabelAmount(seg,AMT).forEach(function(sp){push(sp.k,sp.v);});
   });
   return njStructured(out);
 }
