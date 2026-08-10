@@ -1582,7 +1582,7 @@ function njFeeRows(raw){
   var CATWORD=/(gen\b|general|obc|ews|sc\b|st\b|pwd|pwbd|women|female|male|ex-?s|servicemen|transgender|minorit|ebc|cat-?|category|others|ur\b|unreserved|2a|2b|3a|3b|\ball\b|all\s+other|fresh|experienced|ಸಾಮಾನ್ಯ|ಹಿಂದುಳಿದ|ಪರಿಶಿಷ್ಟ|ಮಹಿಳಾ|ಇತರ|ಎಲ್ಲಾ|ಅರ್ಜಿದಾರ|ಅಭ್ಯರ್ಥಿ|ಮಾಜಿ|ಸೈನಿಕ)/i;
   function goodCat(c){
     if(!njGoodLabel(c)) return false;
-    return CATWORD.test(c)||(c.indexOf('/')>=0&&/[A-Za-z]/.test(c));
+    return CATWORD.test(c)||(c.indexOf('/')>=0&&/[A-Za-z\u0C80-\u0CFF]/.test(c));
   }
   t=t.replace(NOTE,' ');
   var out=[],seen={};
