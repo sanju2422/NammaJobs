@@ -1310,8 +1310,28 @@ function njSalaryLevels(raw){
   });
   return raw2.length?raw2:[t];
 }
+/* ===== SALARY STRUCTURED ROWS =====
+   Builds {label, amount} rows for structured salary data ("Post : ₹range" per
+   line). Reuses the shared label/amount splitter so labels keep hyphens and
+   the full amount stays on the right. Empty when not structured. */
+function njSalaryRows(raw){
+  var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
+  if(!t) return [];
+  var AMT='(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*(?:\\s*(?:[-\\u2013\\u2014]|to)\\s*(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*)?';
+  var segs=t.split(/\s*[\n;|]\s*|\s*,(?!\d)\s*/).map(function(x){return x.trim();}).filter(Boolean);
+  var out=[],seen={};
+  segs.forEach(function(seg){
+    var sp=njSplitLabelAmount(seg,AMT);
+    if(!sp) return;
+    var k=njCleanLabel(sp.k);
+    if(njGoodLabel(k)&&!seen[k+'|'+sp.v]){seen[k+'|'+sp.v]=1;out.push({k:k,v:sp.v});}
+  });
+  return out;
+}
 function njSalaryCell(raw){
   if(!raw) return '\u2014';
+  var rows=njSalaryRows(raw);
+  if(rows.length>=2) return njKvList(rows,null);
   var levels=njSalaryLevels(raw);
   if(!levels.length) return '\u2014';
   return '<div class="qual-wrap">'+levels.map(function(x){return '<span class="qual-chip sal-chip">'+njEsc(x)+'</span>';}).join('')+'</div>';
@@ -1524,39 +1544,56 @@ function njStructured(rows){
   rows=rows||[];
   return {rows:rows, table:rows.length>=2};
 }
+/* ===== SHARED LABEL/AMOUNT SPLITTER (Salary + Application Fee) =====
+   Splits one "label : amount" segment into {k, v} using the LAST amount
+   match, so hyphens and '/' inside labels (Category-2A, SC / ST / General)
+   are never mistaken for separators or numbers. */
+function njCleanLabel(c){
+  c=String(c==null?'':c).replace(/[()]/g,' ').trim();
+  c=c.replace(/[\s,;:|=\u2013\-./]*$/,'').replace(/^[\s,;:|=\u2013\-./]*/,'');
+  c=c.replace(/\s+(?:is|are|for|to|of|and)\s*$/i,'');
+  return c.replace(/\s+/g,' ').trim();
+}
+function njGoodLabel(c){
+  if(!c) return false;
+  var toks=c.split(/\s+/).filter(function(x){return x!=='/'&&x!=='';});
+  if(!toks.length||toks.length>9||c.length>80) return false;
+  return !/\b(will|shall|after|before|refund\w*|appearing|candidate\w*|per official|notification|payable|through|paid|eligible|of the|as per)\b/i.test(c);
+}
+function njSplitLabelAmount(seg,AMT){
+  var s=String(seg==null?'':seg).trim();
+  if(!s) return null;
+  var re=new RegExp(AMT,'ig');
+  var m,last=null;
+  while((m=re.exec(s))!==null){last=m;}
+  if(!last) return null;
+  var k=s.slice(0,last.index).trim();
+  if(!k) return null;
+  return {k:njCleanLabel(k),v:last[0].trim()};
+}
 function njFeeRows(raw){
   var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
   if(!t) return {rows:[],table:false};
   // Amounts may be bare numbers or carry a currency symbol; nil-words too.
   var AMT='(?:\\u20b9|rs\\.?|inr)\\s*[0-9][0-9,]*(?:\\s*[\\-\\/]\\s*[0-9][0-9,]*)?|(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*(?:\\s*[\\-\\/]\\s*[0-9][0-9,]*)?|no\\s*(?:application\\s*)?fee|\\bnil\\b|\\bfree\\b|\\bexempt(?:ed)?\\b|\\bn\\/?a\\b';
   var NOTE=/\([^)]*(?:%|gst|incl|refund|after|exam|gateway|charge|portal|collect|\bvia\b|note|payable|through)[^)]*\)/ig;
-  var SENT=/\b(will|shall|after|before|refund\w*|appearing|candidate\w*|per official|notification|payable|through|paid|eligible|of the|as per)\b/i;
-  var CATWORD=/(gen\b|general|obc|ews|sc\b|st\b|pwd|pwbd|women|female|male|ex-?s|servicemen|transgender|minorit|ebc|cat-?|category|others|ur\b|unreserved|2a|2b|3a|3b|\ball\b|all\s+other|fresh|experienced|ಸಾಮಾನ್ಯ|ಹಿಂದುಳಿದ|ಪರಿಶಿಷ್ಟ|ಮಹಿಳಾ|ಇತರ|ಎಲ್ಲಾ|ಅರ್ಜಿದಾರ|ಅಭ್ಯರ್ಥಿ)/i;
-  var SEP=/[|;\n]|,(?!\d)| {2,}|\.\s|\s*\/\s*/;
-  function cleanCat(c){
-    c=String(c).replace(/[()]/g,' ');
-    c=c.replace(/\s*\/\s*/g,'/');
-    c=c.replace(/[\s,;:|=\u2013\-./]*$/,'').replace(/^[\s,;:|=\u2013\-./]*/,'');
-    c=c.replace(/\s+(?:is|are|for|to|of|and)\s*$/i,'');
-    return c.replace(/\s+/g,' ').trim();
-  }
+  var CATWORD=/(gen\b|general|obc|ews|sc\b|st\b|pwd|pwbd|women|female|male|ex-?s|servicemen|transgender|minorit|ebc|cat-?|category|others|ur\b|unreserved|2a|2b|3a|3b|\ball\b|all\s+other|fresh|experienced|ಸಾಮಾನ್ಯ|ಹಿಂದುಳಿದ|ಪರಿಶಿಷ್ಟ|ಮಹಿಳಾ|ಇತರ|ಎಲ್ಲಾ|ಅರ್ಜಿದಾರ|ಅಭ್ಯರ್ಥಿ|ಮಾಜಿ|ಸೈನಿಕ)/i;
   function goodCat(c){
-    if(!c||c.length>80||c.split(/\s+/).length>9) return false;
-    if(SENT.test(c)) return false;
+    if(!njGoodLabel(c)) return false;
     return CATWORD.test(c)||(c.indexOf('/')>=0&&/[A-Za-z]/.test(c));
   }
   t=t.replace(NOTE,' ');
   var out=[],seen={};
-  function push(k,v){v=String(v).trim().replace(/[.,]+$/,'');var key=k+'|'+v;if(goodCat(k)&&!seen[key]){seen[key]=1;out.push({k:k,v:v});}}
+  function push(k,v){v=String(v==null?'':v).trim().replace(/[.,]+$/,'');var key=k+'|'+v;if(goodCat(k)&&!seen[key]){seen[key]=1;out.push({k:k,v:v});}}
   // "₹500 (General), ₹250 (SC)" → value-first with parenthesised category.
   var VF=new RegExp('('+AMT+')\\s*\\(([^)]+)\\)','ig');
-  t=t.replace(VF,function(m,fee,cat){push(cleanCat(cat),fee);return '  ';});
-  var FEE=new RegExp(AMT,'ig');
-  var m,last=0;
-  while((m=FEE.exec(t))!==null){
-    push(cleanCat(t.slice(last,m.index)),m[0]);
-    last=m.index+m[0].length;
-  }
+  t=t.replace(VF,function(m,fee,cat){push(njCleanLabel(cat),fee);return '  ';});
+  // "General Merit / Category-2A / 2B / 3A / 3B : ₹750" → label : amount per line.
+  t.split(/\s*[\n;|]\s*|\s*,(?!\d)\s*/).forEach(function(seg){
+    seg=seg.trim(); if(!seg) return;
+    var sp=njSplitLabelAmount(seg,AMT);
+    if(sp) push(sp.k,sp.v);
+  });
   return njStructured(out);
 }
 function njFeeCell(raw){
