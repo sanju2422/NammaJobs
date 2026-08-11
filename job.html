@@ -1317,7 +1317,7 @@ function njSalaryLevels(raw){
 function njSalaryRows(raw){
   var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
   if(!t) return [];
-  var AMT='(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*(?:\\s*(?:[-\\u2013\\u2014]|to)\\s*(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*)?';
+  var AMT='(?:\\u0ca4\\u0cbf\\u0c82\\u0c97\\u0cb3\\u0cbf\\u0c97\\u0cc6)?\\s*(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*(?:\\s*(?:[-\\u2013\\u2014]|to)\\s*(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*)?';
   var segs=t.split(/\s*[\n;|]\s*|\s*,(?!\d)\s*/).map(function(x){return x.trim();}).filter(Boolean);
   var out=[],seen={};
   segs.forEach(function(seg){
