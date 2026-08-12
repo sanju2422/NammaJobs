@@ -1317,7 +1317,7 @@ function njSalaryLevels(raw){
 function njSalaryRows(raw){
   var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
   if(!t) return [];
-  var AMT='(?:\\u0ca4\\u0cbf\\u0c82\\u0c97\\u0cb3\\u0cbf\\u0c97\\u0cc6)?\\s*(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*(?:\\s*(?:[-\\u2013\\u2014]|to)\\s*(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*)?';
+  var AMT='(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*(?:\\s*(?:[-\\u2013\\u2014]|to)\\s*(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*)?';
   var segs=t.split(/\s*[\n;|]\s*|\s*,(?!\d)\s*/).map(function(x){return x.trim();}).filter(Boolean);
   var out=[],seen={};
   segs.forEach(function(seg){
@@ -1754,6 +1754,14 @@ function njAgeRows(raw){
     if(bm){
       push(R_GEN,bm[1]+' '+bm[2]);
       return seg.slice(bm[0].length);
+    }
+    // "Category – 35 Years" / "Max: Category – 35 Years": category BEFORE the
+    // number, joined by a spaced dash (newer entries omit the colon), e.g.
+    // "Category 2A/2B/3A/3B – 38 Years" or "Maximum: General Merit – 35 Years".
+    var dm=seg.match(new RegExp('^(?:(maximum|max\\.?|upto|up\\s?to|ಗರಿಷ್ಠ|ಹೆಚ್ಚೆಂದರೆ|minimum|min\\.?|ಕನಿಷ್ಠ|ಕಡಿಮೆಂದರೆ)\\s*(?:age\\s*|ವಯಸ್ಸು\\s*|ವಯೋಮಿತಿ\\s*)?\\s*[:=]?\\s*)?(.+?)\\s+(?:-|–|—|to)\\s+('+NUMP+')\\s*('+UNIT+')','i'));
+    if(dm){
+      push(dm[2].replace(/\s+/g,' ').trim(),dm[3]+' '+(dm[4]||''));
+      return seg.slice(dm[0].length);
     }
     return null;
   }
