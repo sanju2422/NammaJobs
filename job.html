@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Job Details – Namma Jobs</title>
+<link rel="canonical" href="https://www.nammajobs.co.in/job.html" id="nj-canonical">
 <link rel="icon" type="image/png" href="NammaJobs.png">
 <!-- Open Graph / social share. Title/description/image are updated at runtime to the current job; the ENGLISH banner is used as the default preview image. -->
 <meta name="description" id="meta-description" content="Latest government & private job notifications in Karnataka.">
@@ -2090,6 +2091,96 @@ function njSelectionItems(raw){
   }).join('')+'</div>';
 }
 
+/* ===== JOB POSTING STRUCTURED DATA (schema.org/JobPosting) =====
+   One JSON-LD script per loaded job. Rebuilt from the same job object used by
+   renderJob(); re-renders (e.g. language toggle) update the single script in
+   place instead of creating duplicates. Properties are only emitted when the
+   job record actually carries that data — nothing is invented. */
+function njSchemaDate(d){
+  if(!d) return null;
+  var s=String(d).trim();
+  if(/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0,10);
+  var dt=new Date(d);
+  if(isNaN(dt.getTime())) return null;
+  return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
+}
+function njSalaryAmounts(raw){
+  var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
+  if(!t) return null;
+  var m=t.match(/(?:₹|rs\.?|inr|rupees)\s*([0-9][0-9,]*)(?:\s*(?:to|-|–|—)\s*(?:₹|rs\.?|inr)?\s*([0-9][0-9,]*))?/i);
+  if(m){
+    var min=parseInt(m[1].replace(/,/g,''),10);
+    var max=m[2]?parseInt(m[2].replace(/,/g,''),10):null;
+    if(!isNaN(min)&&min>0) return {min:min,max:(!isNaN(max)&&max>0?max:null)};
+  }
+  var r=t.match(/([0-9][0-9,]*)\s*(?:to|-|–|—)\s*([0-9][0-9,]*)/);
+  if(r){
+    var a=parseInt(r[1].replace(/,/g,''),10);
+    var b=parseInt(r[2].replace(/,/g,''),10);
+    if(!isNaN(a)&&a>0&&!isNaN(b)&&b>0) return {min:a,max:b};
+  }
+  return null;
+}
+function njUpsertJobPosting(j){
+  if(!j) return;
+  var title=(njField(j.title_en,j.title_kn)||'').trim();
+  if(!title) return;
+
+  var schema={
+    '@context':'https://schema.org',
+    '@type':'JobPosting',
+    'title':title,
+    'url':window.location.href
+  };
+
+  var posted=njSchemaDate(j.created_at);
+  if(posted) schema.datePosted=posted;
+
+  var desc=(njField(j.description,j.description_kn)||'').replace(/\s+/g,' ').trim();
+  if(desc) schema.description=desc;
+
+  var org=(njField(j.dept,j.dept_kn)||'').trim();
+  if(org) schema.hiringOrganization={'@type':'Organization','name':org};
+
+  var loc=(njField(j.loc,j.loc_kn)||'').trim();
+  if(loc) schema.jobLocation={'@type':'Place','address':{'@type':'PostalAddress','addressLocality':loc}};
+
+  var vt=njSchemaDate(j.last_date);
+  if(vt) schema.validThrough=vt;
+
+  var qual=(njField(j.skills,j.skills_kn)||'').replace(/\r/g,'').trim();
+  if(qual){
+    var quals=qual.split('\n').map(function(x){return x.trim();}).filter(function(x){return x;});
+    schema.qualifications=quals.length?quals:qual;
+  }
+
+  var cat=njTitleCase(njField(j.cat,j.cat_kn));
+  if(cat) schema.occupationalCategory=String(cat).trim();
+
+  if(j.id) schema.identifier={'@type':'PropertyValue','name':'NammaJobsJobId','value':String(j.id)};
+
+  if(j.apply_link) schema.directApply=true;
+
+  var amt=njSalaryAmounts(njField(j.salary,j.salary_kn));
+  if(amt){
+    var val={'@type':'QuantitativeValue'};
+    if(amt.max!=null){val.minValue=amt.min;val.maxValue=amt.max;}
+    else{val.value=amt.min;}
+    schema.baseSalary={'@type':'MonetaryAmount','currency':'INR','value':val};
+  }
+
+  var el=document.getElementById('nj-job-posting');
+  if(el){
+    el.textContent=JSON.stringify(schema);
+  }else{
+    el=document.createElement('script');
+    el.type='application/ld+json';
+    el.id='nj-job-posting';
+    el.textContent=JSON.stringify(schema);
+    document.head.appendChild(el);
+  }
+}
+
 function renderJob(j){
   const dl=daysLeft(j.last_date);
   const isOpen=j.status==='open';
@@ -2115,7 +2206,11 @@ function renderJob(j){
   setMeta('og-title',ogTitle); setMeta('twitter-title',ogTitle);
   setMeta('og-description',ogDesc); setMeta('twitter-description',ogDesc); setMeta('meta-description',ogDesc);
   setMeta('og-url',window.location.href);
+  const njCanonical=document.getElementById('nj-canonical');
+  if(njCanonical&&window.location.search) njCanonical.setAttribute('href',window.location.href);
   document.title=ogTitle+' \u2013 Namma Jobs';
+
+  njUpsertJobPosting(j);
 
   let html=`
     ${njBreadcrumb(j)}
