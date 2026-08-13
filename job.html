@@ -845,15 +845,18 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .ep-head{padding:12px 16px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
   color:var(--text-muted);background:var(--surface-2);border-bottom:1px solid var(--border);}
 .ep-list{display:flex;flex-direction:column;gap:8px;padding:12px;}
-.ep-item{display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+/* Fixed left label column (content width, never squeezed by the value) + a
+   flexible right column that wraps long values. Rows grow vertically and both
+   columns stay baseline-aligned. Short rows render identically to before. */
+.ep-item{display:flex;align-items:baseline;gap:14px;
   background:var(--surface-2);border:1px solid var(--border);border-radius:10px;
   padding:10px 13px;font-size:13.5px;line-height:1.5;color:var(--text);}
-.ep-key{font-weight:600;color:var(--text);white-space:pre-wrap;min-width:0;overflow-wrap:anywhere;}
-.ep-val{font-weight:700;color:var(--accent);text-align:right;white-space:pre-wrap;flex-shrink:0;}
+.ep-key{flex:0 0 auto;min-width:0;font-weight:600;color:var(--text);white-space:pre-wrap;overflow-wrap:anywhere;}
+.ep-val{flex:1 1 auto;min-width:0;font-weight:700;color:var(--accent);text-align:right;white-space:pre-wrap;overflow-wrap:anywhere;}
 .ep-text{font-weight:500;color:var(--text);white-space:pre-wrap;overflow-wrap:anywhere;}
 @media(max-width:480px){
   .ep-item{flex-direction:column;align-items:flex-start;gap:4px;}
-  .ep-val{text-align:left;}
+  .ep-val{flex:0 0 auto;text-align:left;}
 }
 
 /* ---- Plain section text ---- */
