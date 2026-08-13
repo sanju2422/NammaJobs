@@ -864,10 +864,17 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
    breaks inside each paragraph are preserved via white-space:pre-wrap. The
    main-section paragraph branch reuses .salary-box (the SAME outer light-green
    container as Salary / Application Fee / Age Limit) and a centred content
-   block inside; the paragraph text itself stays left-aligned. */
+   block inside; the paragraph text itself stays left-aligned. Bulleted
+   paragraphs use a hanging-indent grid so wrapped lines align under the text. */
 .qual-content{max-width:960px;margin:0 auto;width:100%;}
 .qual-paras{display:flex;flex-direction:column;gap:14px;width:100%;}
 .qual-para{color:var(--text);font-size:14px;line-height:1.75;font-weight:500;white-space:pre-wrap;width:100%;text-align:left;}
+/* Hanging-indent bullet layout: the bullet occupies its own fixed grid column,
+   so wrapped and continuation lines always start under the text, never under
+   the bullet. No browser-default <ul><li> indentation is used. */
+.qual-para-list{display:grid;grid-template-columns:1.3em 1fr;column-gap:10px;row-gap:2px;align-items:baseline;}
+.qual-bullet{color:var(--accent);font-weight:800;text-align:center;}
+.qual-txt{white-space:pre-wrap;font-size:14px;line-height:1.75;font-weight:500;color:var(--text);min-width:0;}
 
 /* ---- Checklist (Selection Process) ---- */
 .check-list{display:flex;flex-direction:column;gap:10px;}
@@ -1821,6 +1828,26 @@ function njQualParagraphs(t){
   if(!paras.length) paras=[t];
   return paras;
 }
+/* Render one paragraph block. Paragraphs whose lines start with a bullet marker
+   use a hanging-indent grid: the bullet lives in its own fixed-width column, so
+   every wrapped / continuation line aligns under the first line's text — never
+   under the bullet. Plain (non-bulleted) paragraphs render exactly as before. */
+function njQualParaHtml(p){
+  var BULLET=/^\s*([•◦▪‣*\-–—])\s+/;
+  var lines=p.split('\n');
+  var bulleted=lines.some(function(l){return BULLET.test(l);});
+  if(!bulleted) return '<div class="qual-para">'+njEsc(p)+'</div>';
+  var html='<div class="qual-para qual-para-list">';
+  lines.forEach(function(l){
+    var m=BULLET.exec(l);
+    if(m){
+      html+='<span class="qual-bullet">'+njEsc(m[1])+'</span><span class="qual-txt">'+njEsc(l.slice(m[0].length))+'</span>';
+    }else{
+      html+='<span class="qual-bullet"></span><span class="qual-txt">'+njEsc(l)+'</span>';
+    }
+  });
+  return html+'</div>';
+}
 /* Bare content — used by the compact overview Qualification card (matches the
    other overview cards, which show plain content). */
 function njQualContent(raw){
@@ -1828,9 +1855,7 @@ function njQualContent(raw){
   if(!t) return '';
   var rows=njQualRows(t);
   if(rows.length>=2) return njKvList(rows,null);
-  return '<div class="qual-paras">'+njQualParagraphs(t).map(function(p){
-    return '<div class="qual-para">'+njEsc(p)+'</div>';
-  }).join('')+'</div>';
+  return '<div class="qual-paras">'+njQualParagraphs(t).map(njQualParaHtml).join('')+'</div>';
 }
 /* Main-section variant: the paragraph branch sits inside the SAME outer
    light-green container as Salary / Application Fee / Age Limit (.salary-box),
@@ -1842,9 +1867,7 @@ function njQualBoxed(raw){
   var rows=njQualRows(t);
   if(rows.length>=2) return njKvList(rows,null);
   return '<div class="salary-box"><div class="qual-content"><div class="qual-paras">'
-    + njQualParagraphs(t).map(function(p){
-      return '<div class="qual-para">'+njEsc(p)+'</div>';
-    }).join('')+'</div></div></div>';
+    + njQualParagraphs(t).map(njQualParaHtml).join('')+'</div></div></div>';
 }
 function njQualCell(raw){
   if(!raw) return '\u2014';
