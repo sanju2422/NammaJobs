@@ -861,9 +861,13 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 
 /* ---- Educational Qualification paragraphs ----
    Blank-line separated blocks render as paragraphs (never cards). Manual line
-   breaks inside each paragraph are preserved via white-space:pre-wrap. */
+   breaks inside each paragraph are preserved via white-space:pre-wrap. The
+   main-section paragraph branch reuses .salary-box (the SAME outer light-green
+   container as Salary / Application Fee / Age Limit) and a centred content
+   block inside; the paragraph text itself stays left-aligned. */
+.qual-content{max-width:960px;margin:0 auto;width:100%;}
 .qual-paras{display:flex;flex-direction:column;gap:14px;width:100%;}
-.qual-para{color:var(--text);font-size:14px;line-height:1.75;font-weight:500;white-space:pre-wrap;width:100%;}
+.qual-para{color:var(--text);font-size:14px;line-height:1.75;font-weight:500;white-space:pre-wrap;width:100%;text-align:left;}
 
 /* ---- Checklist (Selection Process) ---- */
 .check-list{display:flex;flex-direction:column;gap:10px;}
@@ -1810,18 +1814,37 @@ function njQualRows(raw){
   });
   return out;
 }
+function njQualParagraphs(t){
+  var paras=t.split(/\n[ \t]*\n+/).map(function(p){
+    return p.replace(/[ \t]+\n/g,'\n').replace(/\n[ \t]+/g,'\n').trim();
+  }).filter(Boolean);
+  if(!paras.length) paras=[t];
+  return paras;
+}
+/* Bare content — used by the compact overview Qualification card (matches the
+   other overview cards, which show plain content). */
 function njQualContent(raw){
   var t=String(raw==null?'':raw).replace(/\r\n?/g,'\n').trim();
   if(!t) return '';
   var rows=njQualRows(t);
   if(rows.length>=2) return njKvList(rows,null);
-  var paras=t.split(/\n[ \t]*\n+/).map(function(p){
-    return p.replace(/[ \t]+\n/g,'\n').replace(/\n[ \t]+/g,'\n').trim();
-  }).filter(Boolean);
-  if(!paras.length) paras=[t];
-  return '<div class="qual-paras">'+paras.map(function(p){
+  return '<div class="qual-paras">'+njQualParagraphs(t).map(function(p){
     return '<div class="qual-para">'+njEsc(p)+'</div>';
   }).join('')+'</div>';
+}
+/* Main-section variant: the paragraph branch sits inside the SAME outer
+   light-green container as Salary / Application Fee / Age Limit (.salary-box),
+   with a centred content block (.qual-content) inside; the text itself stays
+   left-aligned. Structured data stays an unboxed table, exactly as before. */
+function njQualBoxed(raw){
+  var t=String(raw==null?'':raw).replace(/\r\n?/g,'\n').trim();
+  if(!t) return '';
+  var rows=njQualRows(t);
+  if(rows.length>=2) return njKvList(rows,null);
+  return '<div class="salary-box"><div class="qual-content"><div class="qual-paras">'
+    + njQualParagraphs(t).map(function(p){
+      return '<div class="qual-para">'+njEsc(p)+'</div>';
+    }).join('')+'</div></div></div>';
 }
 function njQualCell(raw){
   if(!raw) return '\u2014';
@@ -2112,7 +2135,7 @@ function renderJob(j){
 
         ${j.age?njSecCard(njIc('user-check'),'sb-purple',kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit',njAgeCell(njField(j.age,j.age_kn))):''}
 
-        ${j.skills?njSecCard(njIc('graduation-cap'),'sb-blue',kn?'ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆ':'Educational Qualification',njQualContent(njField(j.skills,j.skills_kn))):''}
+        ${j.skills?njSecCard(njIc('graduation-cap'),'sb-blue',kn?'ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆ':'Educational Qualification',njQualBoxed(njField(j.skills,j.skills_kn))):''}
 
         ${njField(j.experience,j.experience_kn)?njSecCard(njIc('briefcase'),'sb-blue',kn?'ಅನುಭವ':'Experience',njCheckItems(njField(j.experience,j.experience_kn))):''}
 
