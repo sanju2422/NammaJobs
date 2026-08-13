@@ -859,6 +859,12 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 /* ---- Plain section text ---- */
 .sec-text{color:var(--text);font-size:14px;line-height:1.75;font-weight:500;white-space:pre-wrap;}
 
+/* ---- Educational Qualification paragraphs ----
+   Blank-line separated blocks render as paragraphs (never cards). Manual line
+   breaks inside each paragraph are preserved via white-space:pre-wrap. */
+.qual-paras{display:flex;flex-direction:column;gap:14px;width:100%;}
+.qual-para{color:var(--text);font-size:14px;line-height:1.75;font-weight:500;white-space:pre-wrap;width:100%;}
+
 /* ---- Checklist (Selection Process) ---- */
 .check-list{display:flex;flex-direction:column;gap:10px;}
 .check-item{display:flex;gap:12px;align-items:center;background:var(--surface-2);border:1px solid var(--border);
@@ -1785,14 +1791,41 @@ function njAgeCell(raw){
   }
   return njEsc(String(raw));
 }
+/* ===== EDUCATIONAL QUALIFICATION RENDERER =====
+   Preserves exactly what the admin entered — paragraphs are never split into
+   per-line cards. Only genuinely structured "label : amount" data (2+ distinct
+   rows, e.g. "General : ₹750" or "Officer : ₹65,000") renders as a table.
+   English and Kannada behave identically; stored data is never changed. */
+function njQualRows(raw){
+  var t=String(raw==null?'':raw).replace(/\r/g,' ').trim();
+  if(!t) return [];
+  var AMT='(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*(?:\\s*(?:[-\\u2013\\u2014]|to)\\s*(?:\\u20b9|rs\\.?|inr)?\\s*[0-9][0-9,]*)?';
+  var segs=t.split(/\s*[\n;|]\s*|\s*,(?!\d)\s*/).map(function(x){return x.trim();}).filter(Boolean);
+  var out=[],seen={};
+  segs.forEach(function(seg){
+    njSplitLabelAmount(seg,AMT).forEach(function(sp){
+      if(!njGoodLabel(sp.k)||seen[sp.k+'|'+sp.v]) return;
+      seen[sp.k+'|'+sp.v]=1;out.push({k:sp.k,v:sp.v});
+    });
+  });
+  return out;
+}
+function njQualContent(raw){
+  var t=String(raw==null?'':raw).replace(/\r\n?/g,'\n').trim();
+  if(!t) return '';
+  var rows=njQualRows(t);
+  if(rows.length>=2) return njKvList(rows,null);
+  var paras=t.split(/\n[ \t]*\n+/).map(function(p){
+    return p.replace(/[ \t]+\n/g,'\n').replace(/\n[ \t]+/g,'\n').trim();
+  }).filter(Boolean);
+  if(!paras.length) paras=[t];
+  return '<div class="qual-paras">'+paras.map(function(p){
+    return '<div class="qual-para">'+njEsc(p)+'</div>';
+  }).join('')+'</div>';
+}
 function njQualCell(raw){
   if(!raw) return '\u2014';
-  var t=String(raw).replace(/\r/g,'').trim();
-  if(!t) return '\u2014';
-  var items=/[\n|;,]/.test(t)?t.split(/\s*[\n|;,]\s*/):[t];
-  items=items.map(function(x){return x.replace(/^[-\u2013\u2022*\s]+/,'').trim();}).filter(Boolean);
-  if(!items.length) items=[t];
-  return '<div class="qual-wrap">'+items.map(function(x){return '<span class="qual-chip">'+njIc('graduation-cap')+njEsc(x)+'</span>';}).join('')+'</div>';
+  return njQualContent(raw)||'\u2014';
 }
 function njPairCell(raw){
   var t=String(raw==null?'':raw).replace(/\r/g,'').trim();
@@ -2079,7 +2112,7 @@ function renderJob(j){
 
         ${j.age?njSecCard(njIc('user-check'),'sb-purple',kn?'ವಯಸ್ಸಿನ ಮಿತಿ':'Age Limit',njAgeCell(njField(j.age,j.age_kn))):''}
 
-        ${j.skills?njSecCard(njIc('graduation-cap'),'sb-blue',kn?'ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆ':'Educational Qualification',njCheckItems(njField(j.skills,j.skills_kn))):''}
+        ${j.skills?njSecCard(njIc('graduation-cap'),'sb-blue',kn?'ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆ':'Educational Qualification',njQualContent(njField(j.skills,j.skills_kn))):''}
 
         ${njField(j.experience,j.experience_kn)?njSecCard(njIc('briefcase'),'sb-blue',kn?'ಅನುಭವ':'Experience',njCheckItems(njField(j.experience,j.experience_kn))):''}
 
