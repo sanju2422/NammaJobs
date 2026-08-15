@@ -1,0 +1,11 @@
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*.html
+  Cache-Control: public, max-age=3600, must-revalidate
+
+NammaJobs.png
+  Cache-Control: public, max-age=2592000, immutable
+
+lang.js
+  Cache-Control: public, max-age=86400, must-revalidate
