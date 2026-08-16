@@ -149,14 +149,14 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .pl-tba{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.2);}
 .jf{display:flex;gap:7px;align-items:center;border-top:1.5px solid rgba(255,255,255,0.18);padding-top:13px;margin-top:5px;}
 .btn-card{flex:1;padding:9px 10px;border-radius:11px;font-size:11px;font-weight:800;border:2px solid;cursor:pointer;transition:all .25s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:4px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.2);}
-.bc-wa{background:rgba(37,211,102,0.6);border-color:rgba(37,211,102,0.9);}
-.bc-wa:hover{background:rgba(37,211,102,0.8);}
-.bc-tg{background:rgba(0,136,204,0.6);border-color:rgba(0,136,204,0.9);}
-.bc-tg:hover{background:rgba(0,136,204,0.8);}
+.bc-wa{background:#15803d;border-color:#15803d;}
+.bc-wa:hover{background:#166534;}
+.bc-tg{background:#0369a1;border-color:#0369a1;}
+.bc-tg:hover{background:#075985;}
 /* Sidebar share buttons: compact square, vibrant brand colors (scoped to sidebar .sc) */
 .sc .bc-wa,.sc .bc-tg{gap:6px !important;}
-.sc .bc-wa{background:#25D366 !important;border-color:#1FA85A !important;}
-.sc .bc-wa:hover{background:#1EBE5D !important;}
+.sc .bc-wa{background:#128a4f !important;border-color:#0d7a42 !important;}
+.sc .bc-wa:hover{background:#0d7a42 !important;}
 .sc .bc-tg{background:#229ED9 !important;border-color:#1B84BC !important;}
 .sc .bc-tg:hover{background:#1C8FCC !important;}
 /* Admit Card + Results: WhatsApp/Telegram match the View button size (height & flex width) */
@@ -165,8 +165,8 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .bc-apply:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(255,107,157,0.6);}
 .bc-details{background:linear-gradient(135deg,#4ade80,#22c55e);border-color:rgba(74,222,128,0.8);box-shadow:0 4px 14px rgba(74,222,128,0.4);color:#1a1a2e !important;text-shadow:none;}
 .bc-details:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(74,222,128,0.6);}
-.bc-closed{background:rgba(150,150,150,0.3);border-color:rgba(150,150,150,0.6);cursor:default;}
-.bc-soon{background:rgba(255,193,7,0.3);border-color:rgba(255,193,7,0.7);cursor:default;}
+.bc-closed{background:#e2e8f0;border-color:#94a3b8;color:#475569;text-shadow:none;cursor:default;}
+.bc-soon{background:#fde68a;border-color:#f59e0b;color:#78350f;text-shadow:none;cursor:default;}
 .jlc{background:var(--glass-bg);backdrop-filter:blur(20px);border:2px solid var(--glass-border);border-radius:16px;padding:14px 16px;cursor:pointer;transition:all .25s;display:flex;gap:14px;align-items:center;margin-bottom:10px;}
 .jlc:hover{background:var(--glass-bg-dark);transform:translateX(4px);}
 .jli{width:50px;height:50px;background:#fff;border-radius:12px;padding:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px;}
@@ -296,13 +296,13 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 #jgrid .btn-card{padding:8px 10px;border-radius:12px;font-size:11px;font-weight:800;border:none;letter-spacing:0.02em;transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;}
 #jgrid .btn-card:hover{transform:translateY(-2px);filter:brightness(1.08);}
 /* Positive / share = green gradient */
-#jgrid .bc-wa{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 5px 16px rgba(34,197,94,0.35);}
-#jgrid .bc-wa:hover{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 8px 22px rgba(34,197,94,0.5);}
+#jgrid .bc-wa{background:linear-gradient(135deg,#15803d,#166534);box-shadow:0 5px 16px rgba(34,197,94,0.35);}
+#jgrid .bc-wa:hover{background:linear-gradient(135deg,#15803d,#166534);box-shadow:0 8px 22px rgba(34,197,94,0.5);}
 /* Details = blue gradient */
 #jgrid .bc-details{background:linear-gradient(135deg,#3b82f6,#2563eb) !important;border:none !important;color:#fff !important;text-shadow:0 1px 3px rgba(0,0,0,0.25) !important;box-shadow:0 5px 16px rgba(37,99,235,0.4);}
 #jgrid .bc-details:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,0.6);}
-#jgrid .bc-tg{background:linear-gradient(135deg,#38bdf8,#0ea5e9);box-shadow:0 5px 16px rgba(14,165,233,0.30);}
-#jgrid .bc-tg:hover{background:linear-gradient(135deg,#38bdf8,#0ea5e9);box-shadow:0 8px 22px rgba(14,165,233,0.48);}
+#jgrid .bc-tg{background:linear-gradient(135deg,#0369a1,#075985);box-shadow:0 5px 16px rgba(14,165,233,0.30);}
+#jgrid .bc-tg:hover{background:linear-gradient(135deg,#0369a1,#075985);box-shadow:0 8px 22px rgba(14,165,233,0.48);}
 
 /* ---- Responsive: keep tablet 2-col, mobile 1-col ---- */
 @media(max-width:680px){#jgrid{grid-template-columns:1fr;gap:16px;}.latest-head .sh{font-size:21px;}}
@@ -641,7 +641,7 @@ html:not([data-theme=dark]) .ft [style*="rgba(255,255,255,0.1)"]{border-top-colo
 
 /* NEW badge + last date (top aligned) */
 .nj-light #jgrid .njl-side{flex:0 0 auto;align-self:flex-start;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:118px;margin-top:1px;}
-.nj-light #jgrid .njl-new{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:800;letter-spacing:0.04em;background:#16a34a;color:#fff;text-transform:uppercase;}
+.nj-light #jgrid .njl-new{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:800;letter-spacing:0.04em;background:#15803d;color:#fff;text-transform:uppercase;}
 .nj-light #jgrid .njl-date{display:flex;flex-direction:column;gap:1px;margin-top:5px;}
 .nj-light #jgrid .njl-date-l{font-size:11px;font-weight:600;}
 .nj-light #jgrid .njl-date-v{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;}
@@ -655,7 +655,7 @@ html:not([data-theme=dark]) .nj-light #jgrid .njl-title{color:#0f172a;text-shado
 html:not([data-theme=dark]) .nj-light #jgrid .njl-dept{color:#64748b;}
 html:not([data-theme=dark]) .nj-light #jgrid .njl-loc{color:#64748b;}
 html:not([data-theme=dark]) .nj-light #jgrid .njl-posts{background:#eaf1ff;color:#1d4ed8;}
-html:not([data-theme=dark]) .nj-light #jgrid .njl-date-l{color:#94a3b8;}
+html:not([data-theme=dark]) .nj-light #jgrid .njl-date-l{color:#64748b;}
 html:not([data-theme=dark]) .nj-light #jgrid .njl-date-v{color:#334155;}
 
 /* DARK colors */
@@ -989,7 +989,7 @@ html:not([data-theme=dark]) .nj-more-notif-btn:hover{background:#f1f5f9;border-c
   <div class="tags-grid" id="tags-grid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
 </div>
 
-<div class="main">
+<div class="main" role="main">
 
   <div class="nj-left-col">
 
@@ -1336,7 +1336,7 @@ html:not([data-theme=dark]) .nj-more-notif-btn:hover{background:#f1f5f9;border-c
   </div>
 
   <!-- FAQ SECTION -->
-  <div style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:2px solid rgba(255,255,255,0.12);border-radius:20px;padding:32px;">
+  <div id="faq" style="background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);border:2px solid rgba(255,255,255,0.12);border-radius:20px;padding:32px;">
     <h2 class="lang-en" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#FFD60A;display:block;margin:0 0 26px 0;">Frequently Asked Questions</h2>
     <h2 class="lang-kn" style="font-family:'Noto Sans Kannada',sans-serif;font-size:22px;font-weight:800;color:#FFD60A;display:block;margin:0 0 26px 0;">ಆಗಾಗ್ಗೆ ಕೇಳಲಾಗುವ ಪ್ರಶ್ನೆಗಳು</h2>
     <div style="display:flex;flex-direction:column;gap:12px;">
@@ -1439,30 +1439,30 @@ html:not([data-theme=dark]) .nj-more-notif-btn:hover{background:#f1f5f9;border-c
 .nj-fname-ac{color:#e11d2a;}
 .nj-fdesc{font-size:12.5px;line-height:1.7;font-weight:500;margin-bottom:14px;}
 .nj-fsoc{display:flex;gap:10px;flex-wrap:wrap;}
-.nj-fsoc a{width:38px;height:38px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform .2s ease,background .2s ease,border-color .2s ease,color .2s ease;}
+.nj-fsoc a,.nj-fsoc .nfic{width:38px;height:38px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform .2s ease,background .2s ease,border-color .2s ease,color .2s ease;}
 .nj-fsoc svg{width:18px;height:18px;display:block;fill:currentColor;}
-.nj-fsoc a:hover{transform:translateY(-2px);}
+.nj-fsoc a:hover,.nj-fsoc .nfic:hover{transform:translateY(-2px);}
 .nj-fcta{display:flex;flex-direction:column;gap:10px;}
 .nj-fbtn{display:inline-flex;align-items:center;gap:9px;padding:12px 16px;border-radius:12px;font-family:var(--fhead);font-weight:800;font-size:13px;text-decoration:none;border:1.5px solid;transition:transform .2s ease,filter .2s ease;}
 .nj-fbtn svg{width:16px;height:16px;fill:currentColor;flex:0 0 auto;}
 .nj-fbtn:hover{transform:translateY(-2px);filter:brightness(1.03);}
 .nj-fbtn-tg{background:rgba(34,158,217,0.14);border-color:rgba(34,158,217,0.45);color:#1c8fcc;}
-.nj-fbtn-wa{background:rgba(37,211,102,0.14);border-color:rgba(37,211,102,0.45);color:#16a34a;}
+.nj-fbtn-wa{background:rgba(37,211,102,0.14);border-color:rgba(37,211,102,0.45);color:#166534;}
 .nj-fbottom{border-top:1px solid;padding-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:12.5px;font-weight:600;}
 .nj-fbottom .nj-heart{color:#e11d2a;}
 .nj-fdisc{text-align:center;font-size:11px;line-height:1.6;margin-top:14px;font-weight:500;}
 /* Light theme */
 html:not([data-theme=dark]) .nj-fname{color:#0f2b5c;}
 html:not([data-theme=dark]) .nj-fdesc{color:#475569;}
-html:not([data-theme=dark]) .nj-fsoc a{background:#f1f5f9;border:1px solid #e6ebf2;color:#334155;}
-html:not([data-theme=dark]) .nj-fsoc a:hover{background:#e2e8f0;color:#0f2b5c;}
+html:not([data-theme=dark]) .nj-fsoc a,html:not([data-theme=dark]) .nj-fsoc .nfic{background:#f1f5f9;border:1px solid #e6ebf2;color:#334155;}
+html:not([data-theme=dark]) .nj-fsoc a:hover,html:not([data-theme=dark]) .nj-fsoc .nfic:hover{background:#e2e8f0;color:#0f2b5c;}
 html:not([data-theme=dark]) .nj-fbottom{border-top-color:#e6ebf2;color:#64748b;}
-html:not([data-theme=dark]) .nj-fdisc{color:#94a3b8;}
+html:not([data-theme=dark]) .nj-fdisc{color:#64748b;}
 /* Dark theme */
 [data-theme=dark] .nj-fname{color:#fff;}
 [data-theme=dark] .nj-fdesc{color:rgba(255,255,255,0.8);}
-[data-theme=dark] .nj-fsoc a{background:var(--glass-bg);border:1px solid var(--glass-border);color:#fff;}
-[data-theme=dark] .nj-fsoc a:hover{background:var(--glass-bg-dark);}
+[data-theme=dark] .nj-fsoc a,[data-theme=dark] .nj-fsoc .nfic{background:var(--glass-bg);border:1px solid var(--glass-border);color:#fff;}
+[data-theme=dark] .nj-fsoc a:hover,[data-theme=dark] .nj-fsoc .nfic:hover{background:var(--glass-bg-dark);}
 [data-theme=dark] .nj-fbtn-tg{background:rgba(34,158,217,0.2);border-color:rgba(34,158,217,0.5);color:#7fd3f5;}
 [data-theme=dark] .nj-fbtn-wa{background:rgba(37,211,102,0.2);border-color:rgba(37,211,102,0.5);color:#6ee7a5;}
 [data-theme=dark] .nj-fbottom{border-top-color:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);}
@@ -1489,9 +1489,9 @@ html:not([data-theme=dark]) .nj-fdisc{color:#94a3b8;}
         <div class="nj-fsoc">
           <a href="https://whatsapp.com/channel/0029VbD5Hy5Au3aKeDdCB10L" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.892c0 2.096.549 4.142 1.595 5.945L0 24l6.335-1.652a12.062 12.062 0 005.71 1.447h.006c6.585 0 11.946-5.335 11.949-11.893a11.821 11.821 0 00-3.48-8.413"/></svg></a>
           <a href="https://t.me/nammajobs_karnataka" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.036 15.803l-.375 5.286c.536 0 .768-.23 1.046-.507l2.51-2.4 5.203 3.81c.954.526 1.63.25 1.888-.882L23.99 4.42c.304-1.404-.507-1.953-1.436-1.607L1.11 10.98c-1.372.532-1.351 1.296-.233 1.641l5.443 1.694L18.9 6.29c.6-.394 1.146-.176.696.218"/></svg></a>
-          <a aria-label="Facebook" title="Facebook" style="cursor:pointer;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-          <a aria-label="YouTube" title="YouTube" style="cursor:pointer;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.376.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.376-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-          <a aria-label="Instagram" title="Instagram" style="cursor:pointer;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+          <span class="nfic" title="Facebook" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></span>
+          <span class="nfic" title="YouTube" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.376.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.376-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span>
+          <span class="nfic" title="Instagram" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></span>
         </div>
       </div>
 
@@ -1534,8 +1534,8 @@ html:not([data-theme=dark]) .nj-fdisc{color:#94a3b8;}
         <a href="blog.html" class="fl lang-kn" style="text-decoration:none;">ತಯಾರಿ ಸಲಹೆಗಳು</a>
         <a href="tools.html" class="fl lang-en" style="text-decoration:none;">Free Image &amp; PDF Tools</a>
         <a href="tools.html" class="fl lang-kn" style="text-decoration:none;">ಉಚಿತ ಇಮೇಜ್ &amp; PDF ಪರಿಕರಗಳು</a>
-        <a class="fl lang-en" onclick="return njScrollFAQ();" style="text-decoration:none;cursor:pointer;">FAQs</a>
-        <a class="fl lang-kn" onclick="return njScrollFAQ();" style="text-decoration:none;cursor:pointer;">ಪ್ರಶ್ನೆಗಳು</a>
+        <a class="fl lang-en" href="#faq" onclick="return njScrollFAQ();" style="text-decoration:none;cursor:pointer;">FAQs</a>
+        <a class="fl lang-kn" href="#faq" onclick="return njScrollFAQ();" style="text-decoration:none;cursor:pointer;">ಪ್ರಶ್ನೆಗಳು</a>
       </div>
 
       <div>
@@ -2207,7 +2207,7 @@ function renderAll(){
       <div style="flex:1;min-width:0;">
         <div class="dtt">${njField(j.title_en,j.title_kn)||''}</div>
         <div class="dde">${j.dept||''}</div>
-        <div style="font-size:10px;font-weight:800;color:${dl<=1?'#ff4444':dl<=3?'#ff8c00':'#f59e0b'};margin-top:3px;">${urgencyBadge}</div>
+        <div style="font-size:10px;font-weight:800;color:${dl<=1?'#ff4444':dl<=3?'#c2410c':'#b45309'};margin-top:3px;">${urgencyBadge}</div>
         <div style="display:flex;align-items:center;gap:5px;margin-top:4px;font-size:11px;font-weight:800;color:#ff4444;"><svg width="14" height="14" style="flex:0 0 auto;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>${njGetLang()==='kn'?'ಕೊನೆಯ ದಿನಾಂಕ':'Last Date'}: ${fmtDate(j.last_date)}</span></div>
         <div style="display:flex;gap:5px;margin-top:6px;">
           <a class="btn-card bc-details" href="${getJobUrl(j.id)}" onclick="event.stopPropagation();" style="text-decoration:none;font-size:10px;padding:3px 7px;">${njGetLang()==='kn'?'ವೀಕ್ಷಿಸಿ':'View'}</a>
@@ -2261,6 +2261,13 @@ async function init(){
   // Set search placeholder based on saved language
   const srch=document.getElementById('srch');
   if(srch) srch.placeholder=njGetLang()==='kn'?'ಉದ್ಯೋಗಗಳನ್ನು ಹುಡುಕಿ...':'Search Jobs...';
+  // Support ?search= (used by the WebSite Sitelinks SearchBox schema)
+  const _sp=new URLSearchParams(location.search).get('search');
+  if(_sp){
+    if(srch) srch.value=_sp;
+    const _hs=document.getElementById('hero-srch');
+    if(_hs) _hs.value=_sp;
+  }
   try{
     allJobs=await fetchJobs();
     renderCats();
