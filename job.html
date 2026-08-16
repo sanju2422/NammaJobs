@@ -107,7 +107,7 @@
 [data-theme=light] .site-footer{background:#ffffff;border-top:1px solid var(--border);}
 [data-theme=light] .fee-chip{background:#f1f5f9;border-color:#e2e8f0;}
 [data-theme=light] .hero-chip{background:#f1f5f9;border-color:#e2e8f0;}
-[data-theme=light] .footer-social a{background:#f1f5f9;border-color:#e2e8f0;}
+[data-theme=light] .footer-social a,[data-theme=light] .footer-social button,[data-theme=light] .footer-social .nfic{background:#f1f5f9;border-color:#e2e8f0;}
 [data-theme=light] .job-banner{background:#f1f5f9;}
 [data-theme=light] .act-share,[data-theme=light] .sb-cp{background:#f1f5f9;border-color:#e2e8f0;}
 [data-theme=light] .spinner{border-color:#dbe2ec;border-top-color:#6d28d9;}
@@ -169,8 +169,8 @@
 [data-theme=light] .stay-sub{color:#334155;}
 [data-theme=light] .stay-btn{color:#0f172a;}
 [data-theme=light] .footer-blurb{color:#334155;}
-[data-theme=light] .footer-social a{color:#0f172a;}
-[data-theme=light] .footer-col h4{color:#0f172a;}
+[data-theme=light] .footer-social a,[data-theme=light] .footer-social button,[data-theme=light] .footer-social .nfic{color:#0f172a;}
+[data-theme=light] .footer-col h2{color:#0f172a;}
 [data-theme=light] .footer-col a{color:#334155;}
 [data-theme=light] .footer-col a:hover{color:#6d28d9;}
 [data-theme=light] .footer-bottom-wrap{color:#64748b;}
@@ -258,9 +258,9 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
   margin-bottom:10px;
   color:#fff;
 }
-.hb-open{background:rgba(22,163,74,0.92);border-color:rgba(21,128,61,0.95);box-shadow:0 4px 12px rgba(21,128,61,0.35);}
-.hb-soon{background:rgba(255,193,7,0.3);border-color:rgba(255,193,7,0.6);}
-.hb-closed{background:rgba(150,150,150,0.3);border-color:rgba(150,150,150,0.6);}
+.hb-open{background:#15803d;border-color:#166534;box-shadow:0 4px 12px rgba(21,128,61,0.35);}
+.hb-soon{background:#fde68a;border-color:#f59e0b;color:#78350f;text-shadow:none;}
+.hb-closed{background:#e2e8f0;border-color:#94a3b8;color:#475569;text-shadow:none;}
 .hero-badge::before{content:'';width:7px;height:7px;border-radius:50%;}
 .hb-open::before{background:#86efac;box-shadow:0 0 8px rgba(134,239,172,0.9);}
 .hb-soon::before{background:#ffc107;}
@@ -597,7 +597,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 /* ===== INLINE ICON SYSTEM ===== */
 .nj-ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0;}
 .tbtn .nj-ic{width:15px;height:15px;}
-.footer-social a .nj-ic{width:16px;height:16px;}
+.footer-social a .nj-ic,.footer-social button .nj-ic,.footer-social .nfic .nj-ic{width:16px;height:16px;}
 .stay-btn .nj-ic{width:16px;height:16px;}
 .ov-ic .nj-ic{width:20px;height:20px;}
 .oc-ic .nj-ic{width:19px;height:19px;}
@@ -787,9 +787,10 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .fb-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
 .footer-blurb{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.65;font-weight:500;max-width:38ch;margin-bottom:16px;}
 .footer-social{display:flex;gap:10px;}
-.footer-social a{width:34px;height:34px;border-radius:10px;background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;transition:all .2s;}
-.footer-social a:hover{border-color:var(--glass-border-strong);transform:translateY(-2px);}
-.footer-col h4{font-family:var(--fhead);font-size:14px;font-weight:800;color:#fff;margin-bottom:15px;}
+.footer-social button{padding:0;margin:0;font:inherit;cursor:pointer;appearance:none;-webkit-appearance:none;}
+.footer-social a,.footer-social button,.footer-social .nfic{width:34px;height:34px;border-radius:10px;background:var(--glass-bg-dark);border:1.5px solid var(--glass-border);display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;transition:all .2s;}
+.footer-social a:hover,.footer-social button:hover,.footer-social .nfic:hover{border-color:var(--glass-border-strong);transform:translateY(-2px);}
+.footer-col h2{font-family:var(--fhead);font-size:14px;font-weight:800;color:#fff;margin-bottom:15px;}
 .footer-col a{display:block;font-size:13px;color:rgba(255,255,255,0.7);text-decoration:none;font-weight:600;margin-bottom:9px;transition:color .2s;}
 .footer-col a:hover{color:#c4b5fd;}
 .footer-connect .stay-btn{margin-bottom:10px;}
@@ -1047,15 +1048,15 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
         <button class="lang-toggle-btn lang-active" id="lang-btn-en" onclick="njToggleLang('en')">EN</button>
         <button class="lang-toggle-btn" id="lang-btn-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
       </div>
-      <a class="tbtn social tbtn-tg" data-nj-tg href="https://t.me/nammajobs_karnataka" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/></svg><span class="social-lbl">Telegram</span></a>
-      <a class="tbtn social tbtn-wa" data-nj-wa href="https://whatsapp.com/channel/0029VbD5Hy5Au3aKeDdCB10L" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg><span class="social-lbl">WhatsApp</span></a>
+      <a class="tbtn social tbtn-tg" data-nj-tg href="https://t.me/nammajobs_karnataka" target="_blank" rel="noopener" aria-label="Telegram"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/></svg><span class="social-lbl">Telegram</span></a>
+      <a class="tbtn social tbtn-wa" data-nj-wa href="https://whatsapp.com/channel/0029VbD5Hy5Au3aKeDdCB10L" target="_blank" rel="noopener" aria-label="WhatsApp"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg><span class="social-lbl">WhatsApp</span></a>
       <button class="dmb tbtn" id="dmb" onclick="toggleDark()" aria-label="Toggle theme">🌙</button>
       <a class="tbtn back-btn" href="index.html"><span class="back-full">← Back to Jobs</span><span class="back-short">← Back</span></a>
     </div>
   </div>
 </header>
 
-<div class="container" id="main-content">
+<div class="container" id="main-content" role="main">
   <div class="loading-page">
     <div class="spinner"></div>
     <div>Loading job details...</div>
@@ -1074,15 +1075,15 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       </div>
       <div class="footer-blurb">Karnataka's No.1 Government Job Portal. Find the latest government jobs, admit cards, results and job alerts in one place.</div>
       <div class="footer-social">
-        <a onclick="shareWA();return false;" title="WhatsApp" style="cursor:pointer;"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg></a>
-        <a onclick="shareTG();return false;" title="Telegram" style="cursor:pointer;"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/></svg></a>
-        <a title="Facebook" style="cursor:pointer;"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V5h-3c-2.2 0-4 1.8-4 4v2H7v4h3v6h4v-6h2.6l.4-4H14V9c0-.6.4-1 1-1Z"/></svg></a>
-        <a title="YouTube" style="cursor:pointer;"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.4-.43-5.02a2.6 2.6 0 0 0-1.83-1.84C19.13 4.7 12 4.7 12 4.7s-7.13 0-8.74.44A2.6 2.6 0 0 0 1.43 6.98 27 27 0 0 0 1 12a27 27 0 0 0 .43 5.02 2.6 2.6 0 0 0 1.83 1.84c1.61.44 8.74.44 8.74.44s7.13 0 8.74-.44a2.6 2.6 0 0 0 1.83-1.84C23 15.4 23 12 23 12ZM9.8 15.3V8.7l5.7 3.3-5.7 3.3Z"/></svg></a>
-        <a title="Instagram" style="cursor:pointer;"><svg class="nj-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+        <button type="button" aria-label="Share on WhatsApp" title="WhatsApp" onclick="shareWA()"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg></button>
+        <button type="button" aria-label="Share on Telegram" title="Telegram" onclick="shareTG()"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/></svg></button>
+        <span class="nfic" title="Facebook" aria-hidden="true"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V5h-3c-2.2 0-4 1.8-4 4v2H7v4h3v6h4v-6h2.6l.4-4H14V9c0-.6.4-1 1-1Z"/></svg></span>
+        <span class="nfic" title="YouTube" aria-hidden="true"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.4-.43-5.02a2.6 2.6 0 0 0-1.83-1.84C19.13 4.7 12 4.7 12 4.7s-7.13 0-8.74.44A2.6 2.6 0 0 0 1.43 6.98 27 27 0 0 0 1 12a27 27 0 0 0 .43 5.02 2.6 2.6 0 0 0 1.83 1.84c1.61.44 8.74.44 8.74.44s7.13 0 8.74-.44a2.6 2.6 0 0 0 1.83-1.84C23 15.4 23 12 23 12ZM9.8 15.3V8.7l5.7 3.3-5.7 3.3Z"/></svg></span>
+        <span class="nfic" title="Instagram" aria-hidden="true"><svg class="nj-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></span>
       </div>
     </div>
     <div class="footer-col">
-      <h4>Quick Links</h4>
+      <h2>Quick Links</h2>
       <a href="index.html">Home</a>
       <a href="blog.html">Preparation Blog</a>
       <a href="tools.html">Free Tools</a>
@@ -1092,7 +1093,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       <a href="index.html">Top Vacancies</a>
     </div>
     <div class="footer-col">
-      <h4>Important</h4>
+      <h2>Important</h2>
       <a href="about.html">About Us</a>
       <a href="contact.html">Contact Us</a>
       <a href="privacy.html">Privacy Policy</a>
@@ -1100,7 +1101,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       <a href="terms.html">Disclaimer</a>
     </div>
     <div class="footer-col">
-      <h4>Job Categories</h4>
+      <h2>Job Categories</h2>
       <a href="index.html">Bank Jobs</a>
       <a href="index.html">Railway Jobs</a>
       <a href="index.html">Teaching Jobs</a>
@@ -1108,7 +1109,7 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
       <a href="index.html">Engineering Jobs</a>
     </div>
     <div class="footer-col footer-connect">
-      <h4>Stay Connected</h4>
+      <h2>Stay Connected</h2>
       <a class="stay-btn stay-tg" data-nj-tg href="https://t.me/nammajobs_karnataka" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.94 4.6 18.92 18.9c-.23 1.03-.84 1.28-1.7.8l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.34-4.77 8.68-7.84c.38-.34-.08-.53-.59-.19L6.71 13.02l-4.62-1.45c-1-.31-1.02-1 .21-1.48l18.06-6.96c.84-.31 1.57.2 1.29 1.47Z"/></svg> Join Telegram Channel</a>
       <a class="stay-btn stay-wa" data-nj-wa href="https://whatsapp.com/channel/0029VbD5Hy5Au3aKeDdCB10L" target="_blank" rel="noopener"><svg class="nj-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.2 8.2 0 0 1 8.23 8.24c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.76-1.84-.2-.48-.4-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg> Join WhatsApp Channel</a>
     </div>
@@ -2558,7 +2559,7 @@ async function load(){
   }
 
   const id=params.get('job');
-  if(!id){window.location.href='index.html';return;}
+  if(!id){window.location.href='/';return;}
 
   try{
     const r=await fetch(`${SB_URL}/rest/v1/jobs?id=eq.${id}&limit=1`,{headers:H});
