@@ -1185,6 +1185,21 @@ function loadCustomDates(customDates){
     customDates.forEach(d=>addCustomDateRow(d));
   }
 }
+const FEE_DATE_LABEL='Fee Payment Last Date';
+/* The dedicated "Fee Payment Last Date" input is folded into the existing
+   custom_dates array (the only extra-date mechanism the job page renders).
+   A matching entry is kept in sync so the field survives edit round-trips. */
+function withFeeDate(customDates){
+  const feeDate=document.getElementById('f-fee-last-date').value;
+  const rest=(customDates||[]).filter(d=>d.label_en!==FEE_DATE_LABEL);
+  if(feeDate) rest.push({label_en:FEE_DATE_LABEL,label_kn:'ಶುಲ್ಕ ಪಾವತಿ ಕೊನೆಯ ದಿನಾಂಕ',date:feeDate});
+  return rest.length?rest:null;
+}
+function findFeeDate(customDates){
+  if(!customDates||!Array.isArray(customDates)) return '';
+  const hit=customDates.filter(d=>d.label_en===FEE_DATE_LABEL)[0];
+  return hit?hit.date:'';
+}
 function toggleFeeTBA(checked){
   const input=document.getElementById('f-fee');
   if(checked){
@@ -1336,7 +1351,7 @@ function collectJob(){
     age:document.getElementById('f-age').value.trim()||null,
     age_kn:document.getElementById('f-age-kn')?document.getElementById('f-age-kn').value.trim()||null:null,
     last_date:document.getElementById('f-ld-tba').checked?null:(document.getElementById('f-ld').value||null),
-    custom_dates:getCustomDates(),
+    custom_dates:withFeeDate(getCustomDates()),
     start_date:document.getElementById('f-sd-tba').checked?null:(document.getElementById('f-sd-started').checked?new Date().toISOString().slice(0,10):(document.getElementById('f-sd').value||null)),
     start_status:document.getElementById('f-sd-started').checked?'started':(document.getElementById('f-sd-tba').checked?'tba':null),
     fee:document.getElementById('f-fee-tba').checked?'To Be Announced':(document.getElementById('f-fee').value.trim()||null),
@@ -1502,7 +1517,8 @@ function editJob(id){
   document.getElementById('f-age').value=j.age||'';
   if(document.getElementById('f-age-kn'))document.getElementById('f-age-kn').value=j.age_kn||'';
   document.getElementById('f-ld').value=j.last_date||'';
-  loadCustomDates(j.custom_dates);
+  loadCustomDates((j.custom_dates||[]).filter(d=>d.label_en!==FEE_DATE_LABEL));
+  document.getElementById('f-fee-last-date').value=findFeeDate(j.custom_dates);
   document.getElementById('f-sd').value=j.start_date||'';
   document.getElementById('f-fee').value=j.fee||'';
   if(document.getElementById('f-fee-kn'))document.getElementById('f-fee-kn').value=j.fee_kn||'';
@@ -1607,7 +1623,7 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-post-wise','f-state-wise','f-district-wise','f-zone-wise','f-exp','f-exp-kn','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-notif-label-1','f-notif-url-1','f-notif-label-2','f-notif-url-2','f-exam-type','f-exam-type-kn','f-exam-mode','f-exam-mode-kn','f-exam-duration','f-exam-duration-kn','f-exam-lang','f-exam-lang-kn','f-total-questions','f-total-questions-kn','f-total-marks','f-total-marks-kn','f-neg-marking','f-neg-marking-kn','f-qual-marks','f-qual-marks-kn','f-subject-pattern','f-subject-pattern-kn','f-faq','f-faq-kn','f-tips','f-tips-kn','f-banner-en','f-banner-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-fee-last-date','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-post-wise','f-state-wise','f-district-wise','f-zone-wise','f-exp','f-exp-kn','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-notif-label-1','f-notif-url-1','f-notif-label-2','f-notif-url-2','f-exam-type','f-exam-type-kn','f-exam-mode','f-exam-mode-kn','f-exam-duration','f-exam-duration-kn','f-exam-lang','f-exam-lang-kn','f-total-questions','f-total-questions-kn','f-total-marks','f-total-marks-kn','f-neg-marking','f-neg-marking-kn','f-qual-marks','f-qual-marks-kn','f-subject-pattern','f-subject-pattern-kn','f-faq','f-faq-kn','f-tips','f-tips-kn','f-banner-en','f-banner-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-banner-en','f-banner-kn'].forEach(id=>showBannerPreview(id));
   ['f-ld-tba','f-sd-tba','f-sd-started','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleStarted(false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
