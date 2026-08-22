@@ -29,7 +29,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--grad-bg:radial-gradient(ellipse at top,#1e3a8a 0%,#0c1f4a 40%,#061333 100%);--grad-pink:linear-gradient(135deg,#7c3aed,#a855f7);--glass-bg:rgba(255,255,255,0.06);--glass-bg-light:rgba(255,255,255,0.04);--glass-bg-dark:rgba(255,255,255,0.10);--glass-border:rgba(255,255,255,0.12);--glass-border-strong:rgba(255,255,255,0.25);--shadow:0 8px 32px rgba(0,0,0,0.5);--shadow-lg:0 16px 48px rgba(0,0,0,0.6);--fen:'DM Sans',sans-serif;--fkn:'Noto Sans Kannada',sans-serif;--fhead:'Plus Jakarta Sans',sans-serif;}
-[data-theme=dark]{--grad-bg:linear-gradient(135deg,#0f1729 0%,#1e1538 50%,#3a1657 100%);--glass-bg:rgba(255,255,255,0.10);--glass-bg-light:rgba(255,255,255,0.08);--glass-bg-dark:rgba(255,255,255,0.15);--glass-border:rgba(255,255,255,0.25);--glass-border-strong:rgba(255,255,255,0.4);}
+[data-theme=dark]{--shadow:0 10px 30px rgba(0,0,0,0.40);}
 body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);background-attachment:fixed;color:#fff;position:relative;overflow-x:hidden;}
 .blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:0.5;z-index:0;pointer-events:none;animation:float 20s ease-in-out infinite;}
 .blob-1{width:600px;height:600px;background:#7c3aed;top:30%;left:-200px;opacity:0.25;}
@@ -63,8 +63,8 @@ body{font-family:var(--fen);min-height:100vh;background:var(--grad-bg);backgroun
 .tbtn-tg:hover{background:linear-gradient(135deg,rgba(0,136,204,0.65),rgba(0,136,204,0.38));border-color:rgba(0,136,204,0.9);box-shadow:0 6px 18px rgba(0,136,204,0.38);}
 .tbtn-wa{background:linear-gradient(135deg,rgba(37,211,102,0.45),rgba(37,211,102,0.22));border-color:rgba(37,211,102,0.7);}
 .tbtn-wa:hover{background:linear-gradient(135deg,rgba(37,211,102,0.65),rgba(37,211,102,0.38));border-color:rgba(37,211,102,0.9);box-shadow:0 6px 18px rgba(37,211,102,0.38);}
-.dmb{font-size:16px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;padding:0;border-radius:12px;}
-.dmb:hover{transform:translateY(-2px) rotate(-18deg);}
+.dmb{font-size:16px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;padding:0;border-radius:12px;border:2px solid var(--glass-border);}
+.dmb:hover{transform:translateY(-2px) rotate(-18deg);box-shadow:none;}
 .tooltip-wrap{position:relative;display:inline-block;}
 .tooltip-glass{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(-6px);background:rgba(15,30,70,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:2px solid rgba(168,85,247,0.5);border-radius:12px;padding:10px 14px;font-size:12px;font-weight:700;color:#fff;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.4),0 0 20px rgba(168,85,247,0.2);opacity:0;visibility:hidden;transition:all .25s ease;z-index:200;pointer-events:none;text-shadow:0 1px 3px rgba(0,0,0,0.3);}
 .tooltip-glass::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:rgba(15,30,70,0.85);border-top:2px solid rgba(168,85,247,0.5);border-left:2px solid rgba(168,85,247,0.5);}
@@ -486,6 +486,7 @@ html:not([data-theme=dark]) .hs input{background:#f1f5f9;border-color:#e2e8f0;co
 html:not([data-theme=dark]) .hs input::placeholder{color:#94a3b8;}
 html:not([data-theme=dark]) .hs::before{filter:brightness(0) invert(48%);opacity:1;}
 html:not([data-theme=dark]) .tbtn:not(.tbtn-tg):not(.tbtn-wa){background:#f1f5f9;border-color:#e2e8f0;color:#1e293b;text-shadow:none;}
+html:not([data-theme=dark]) .dmb:hover{background:#e2e8f0;border-color:#cbd5e1;}
 html:not([data-theme=dark]) .lang-toggle{background:#f1f5f9;border-color:#e2e8f0;}
 html:not([data-theme=dark]) .lang-toggle-btn{color:#475569;}
 html:not([data-theme=dark]) .lang-toggle-btn.lang-active{background:linear-gradient(135deg,#1d4ed8,#1e3a8a);color:#ffffff;}
@@ -861,7 +862,7 @@ html:not([data-theme=dark]) .nj-more-notif-btn:hover{background:#f1f5f9;border-c
         <button class="lang-toggle-btn lang-active" id="lang-btn-en" onclick="njToggleLang('en')">EN</button>
         <button class="lang-toggle-btn" id="lang-btn-kn" onclick="njToggleLang('kn')" style="font-family:'Noto Sans Kannada',sans-serif;">ಕನ್ನಡ</button>
       </div>
-      <button class="dmb tbtn" id="dmb" onclick="toggleDark()">🌙</button>
+      <button class="dmb tbtn" id="dmb" onclick="toggleDark()" aria-label="Toggle theme">🌙</button>
     </div>
   </div>
 </header>
