@@ -1819,8 +1819,8 @@ function njAgeRows(raw){
   }
 
   segs.forEach(function(seg){
-    var s=seg,guard=0;
-    while(s&&guard++<8){
+    var s=seg;
+    while(s){
       var nxt=matchFirst(s);
       if(nxt===null) break;
       if(nxt.trim()===s.trim()) break;
