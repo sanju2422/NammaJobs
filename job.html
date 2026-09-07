@@ -2170,16 +2170,27 @@ function njSalaryAmounts(raw){
   }
   return null;
 }
+function njRemoveJobPosting(){
+  var el=document.getElementById('nj-job-posting');
+  if(el&&el.parentNode) el.parentNode.removeChild(el);
+}
 function njUpsertJobPosting(j){
-  if(!j) return;
+  if(!j){ njRemoveJobPosting(); return; }
+  var qs=new URLSearchParams(location.search);
+  if(qs.get('preview')==='1'){ njRemoveJobPosting(); return; }
+  var jobId=j.id?String(j.id).trim():'';
+  if(!jobId){ njRemoveJobPosting(); return; }
+  if((j.status||'')!=='open'){ njRemoveJobPosting(); return; }
+  var dl=daysLeft(j.last_date);
+  if(dl!==null&&dl<0){ njRemoveJobPosting(); return; }
   var title=(njField(j.title_en,j.title_kn)||'').trim();
-  if(!title) return;
+  if(!title){ njRemoveJobPosting(); return; }
 
   var schema={
     '@context':'https://schema.org',
     '@type':'JobPosting',
     'title':title,
-    'url':window.location.href
+    'url':'https://www.nammajobs.co.in/job.html?job='+encodeURIComponent(jobId)
   };
 
   var posted=njSchemaDate(j.created_at);
@@ -2192,7 +2203,7 @@ function njUpsertJobPosting(j){
   if(org) schema.hiringOrganization={'@type':'Organization','name':org};
 
   var loc=(njField(j.loc,j.loc_kn)||'').trim();
-  if(loc) schema.jobLocation={'@type':'Place','address':{'@type':'PostalAddress','addressLocality':loc}};
+  if(loc) schema.jobLocation={'@type':'Place','address':{'@type':'PostalAddress','addressLocality':loc,'addressCountry':'IN'}};
 
   var vt=njSchemaDate(j.last_date);
   if(vt) schema.validThrough=vt;
@@ -2206,9 +2217,7 @@ function njUpsertJobPosting(j){
   var cat=njTitleCase(njField(j.cat,j.cat_kn));
   if(cat) schema.occupationalCategory=String(cat).trim();
 
-  if(j.id) schema.identifier={'@type':'PropertyValue','name':'NammaJobsJobId','value':String(j.id)};
-
-  if(j.apply_link) schema.directApply=true;
+  schema.identifier={'@type':'PropertyValue','name':'NammaJobsJobId','value':jobId};
 
   var amt=njSalaryAmounts(njField(j.salary,j.salary_kn));
   if(amt){
