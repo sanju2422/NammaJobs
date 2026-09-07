@@ -4,7 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Job Details – Namma Jobs</title>
-<link rel="canonical" href="https://www.nammajobs.co.in/job.html" id="nj-canonical">
+<script>
+(function(){
+  var p=new URLSearchParams(location.search);
+  var preview=p.get('preview')==='1';
+  var job=p.get('job');
+  if(preview||!job){
+    var robots=document.createElement('meta');
+    robots.name='robots';
+    robots.content='noindex,nofollow';
+    document.head.appendChild(robots);
+    return;
+  }
+  var link=document.createElement('link');
+  link.rel='canonical';
+  link.id='nj-canonical';
+  link.href='https://www.nammajobs.co.in/job.html?job='+encodeURIComponent(job);
+  document.head.appendChild(link);
+})();
+</script>
 <link rel="icon" type="image/png" href="NammaJobs.png">
 <!-- Open Graph / social share. Title/description/image are updated at runtime to the current job; the ENGLISH banner is used as the default preview image. -->
 <meta name="description" id="meta-description" content="Latest government & private job notifications in Karnataka.">
@@ -2237,8 +2255,22 @@ function renderJob(j){
   setMeta('og-title',ogTitle); setMeta('twitter-title',ogTitle);
   setMeta('og-description',ogDesc); setMeta('twitter-description',ogDesc); setMeta('meta-description',ogDesc);
   setMeta('og-url',window.location.href);
-  const njCanonical=document.getElementById('nj-canonical');
-  if(njCanonical&&window.location.search) njCanonical.setAttribute('href',window.location.href);
+  (function(){
+    var p=new URLSearchParams(location.search);
+    if(p.get('preview')==='1') return;
+    var jobId=p.get('job');
+    if(!jobId) return;
+    var href='https://www.nammajobs.co.in/job.html?job='+encodeURIComponent(jobId);
+    var njCanonical=document.getElementById('nj-canonical');
+    if(!njCanonical){
+      njCanonical=document.createElement('link');
+      njCanonical.rel='canonical';
+      njCanonical.id='nj-canonical';
+      document.head.appendChild(njCanonical);
+    }
+    njCanonical.setAttribute('href',href);
+    setMeta('og-url',href);
+  })();
   document.title=ogTitle+' \u2013 Namma Jobs';
 
   njUpsertJobPosting(j);
