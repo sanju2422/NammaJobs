@@ -502,7 +502,7 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
               <input type="checkbox" id="f-ld-tba" onchange="toggleTBA('f-ld',this.checked)">
               <span class="tba-label">⚠️ Last Date TBA</span>
             </label>
-            <!-- Additional optional dates (UI only — not yet wired to save/parser/database). -->
+            <!-- Additional optional dates stored in custom_dates (same structure as Fee Payment Last Date). -->
             <div class="fsec" style="margin-top:18px;">📅 Additional Dates (Optional)</div>
             <div class="row2">
               <div>
@@ -595,6 +595,8 @@ textarea{min-height:90px;resize:vertical;line-height:1.55;padding:12px 14px;}
             <div class="bi-card-hd"><span class="bi-ic">🏷️</span> Category-wise Vacancies <span class="bi-opt">(Optional)</span></div>
             <label>Category-wise Vacancies</label>
             <textarea id="f-cats" style="min-height:110px;" placeholder="One entry per line — Category:Vacancies:&#10;UR:120&#10;OBC:45&#10;SC:30"></textarea>
+            <label style="margin-top:12px;">Category-wise Vacancies (ಕನ್ನಡ)</label>
+            <textarea id="f-cats-kn" style="min-height:110px;font-family:var(--fkn);" placeholder="ಪ್ರತಿ ಸಾಲಿನಲ್ಲಿ ಒಂದು — ವರ್ಗ:ಹುದ್ದೆಗಳು:&#10;ಸಾಮಾನ್ಯ:120&#10;ಓಬಿಸಿ:45&#10;ಎಸ್‌ಸಿ:30"></textarea>
             <div class="url-hint">One entry per line, format: <strong>Category:Vacancies</strong>. Example: UR:120, OBC:45, SC:30. Any categories are allowed.</div>
           </div>
 
@@ -1182,10 +1184,21 @@ function getCustomDates(){
 function loadCustomDates(customDates){
   document.getElementById('custom-dates-list').innerHTML='';
   if(customDates && Array.isArray(customDates)){
-    customDates.forEach(d=>addCustomDateRow(d));
+    customDates.filter(function(d){return njManagedDateLabels().indexOf(d.label_en)<0;}).forEach(d=>addCustomDateRow(d));
   }
 }
 const FEE_DATE_LABEL='Fee Payment Last Date';
+const DEDICATED_DATES=[
+  {id:'f-exam-date',label_en:'Exam Date',label_kn:'ಪರೀಕ್ಷಾ ದಿನಾಂಕ'},
+  {id:'f-admit-card-date',label_en:'Admit Card Date',label_kn:'ಪ್ರವೇಶ ಪತ್ರ ದಿನಾಂಕ'},
+  {id:'f-result-date',label_en:'Result Date',label_kn:'ಫಲಿತಾಂಶ ದಿನಾಂಕ'},
+  {id:'f-doc-verify-date',label_en:'Document Verification Date',label_kn:'ದಾಖಲೆ ಪರಿಶೀಲನೆ ದಿನಾಂಕ'},
+  {id:'f-medical-date',label_en:'Medical Examination Date',label_kn:'ವೈದ್ಯಕೀಯ ಪರೀಕ್ಷೆ ದಿನಾಂಕ'},
+  {id:'f-interview-date',label_en:'Interview Date',label_kn:'ಸಂದರ್ಶನ ದಿನಾಂಕ'},
+];
+function njManagedDateLabels(){
+  return [FEE_DATE_LABEL].concat(DEDICATED_DATES.map(function(d){return d.label_en;}));
+}
 /* The dedicated "Fee Payment Last Date" input is folded into the existing
    custom_dates array (the only extra-date mechanism the job page renders).
    A matching entry is kept in sync so the field survives edit round-trips. */
@@ -1195,9 +1208,24 @@ function withFeeDate(customDates){
   if(feeDate) rest.push({label_en:FEE_DATE_LABEL,label_kn:'ಶುಲ್ಕ ಪಾವತಿ ಕೊನೆಯ ದಿನಾಂಕ',date:feeDate});
   return rest.length?rest:null;
 }
+function withDedicatedDates(customDates){
+  const labels=DEDICATED_DATES.map(function(d){return d.label_en;});
+  const rest=(customDates||[]).filter(function(d){return labels.indexOf(d.label_en)<0;});
+  DEDICATED_DATES.forEach(function(spec){
+    const el=document.getElementById(spec.id);
+    const date=el&&el.value?el.value:'';
+    if(date) rest.push({label_en:spec.label_en,label_kn:spec.label_kn,date:date});
+  });
+  return rest.length?rest:null;
+}
 function findFeeDate(customDates){
   if(!customDates||!Array.isArray(customDates)) return '';
   const hit=customDates.filter(d=>d.label_en===FEE_DATE_LABEL)[0];
+  return hit?hit.date:'';
+}
+function findDedicatedDate(customDates,labelEn){
+  if(!customDates||!Array.isArray(customDates)) return '';
+  const hit=customDates.filter(function(d){return d.label_en===labelEn;})[0];
   return hit?hit.date:'';
 }
 function toggleFeeTBA(checked){
@@ -1351,7 +1379,7 @@ function collectJob(){
     age:document.getElementById('f-age').value.trim()||null,
     age_kn:document.getElementById('f-age-kn')?document.getElementById('f-age-kn').value.trim()||null:null,
     last_date:document.getElementById('f-ld-tba').checked?null:(document.getElementById('f-ld').value||null),
-    custom_dates:withFeeDate(getCustomDates()),
+    custom_dates:withDedicatedDates(withFeeDate(getCustomDates())),
     start_date:document.getElementById('f-sd-tba').checked?null:(document.getElementById('f-sd-started').checked?new Date().toISOString().slice(0,10):(document.getElementById('f-sd').value||null)),
     start_status:document.getElementById('f-sd-started').checked?'started':(document.getElementById('f-sd-tba').checked?'tba':null),
     fee:document.getElementById('f-fee-tba').checked?'To Be Announced':(document.getElementById('f-fee').value.trim()||null),
@@ -1370,6 +1398,7 @@ function collectJob(){
       :(document.getElementById('f-banner-en')&&document.getElementById('f-banner-en').value.trim()
         ?document.getElementById('f-banner-en').value.trim():null),
     cats:document.getElementById('f-cats').value.trim()||null,
+    cats_kn:document.getElementById('f-cats-kn')?document.getElementById('f-cats-kn').value.trim()||null:null,
     post_wise:document.getElementById('f-post-wise')?document.getElementById('f-post-wise').value.trim()||null:null,
     state_wise:document.getElementById('f-state-wise')?document.getElementById('f-state-wise').value.trim()||null:null,
     district_wise:document.getElementById('f-district-wise')?document.getElementById('f-district-wise').value.trim()||null:null,
@@ -1517,8 +1546,12 @@ function editJob(id){
   document.getElementById('f-age').value=j.age||'';
   if(document.getElementById('f-age-kn'))document.getElementById('f-age-kn').value=j.age_kn||'';
   document.getElementById('f-ld').value=j.last_date||'';
-  loadCustomDates((j.custom_dates||[]).filter(d=>d.label_en!==FEE_DATE_LABEL));
+  loadCustomDates((j.custom_dates||[]).filter(function(d){return njManagedDateLabels().indexOf(d.label_en)<0;}));
   document.getElementById('f-fee-last-date').value=findFeeDate(j.custom_dates);
+  DEDICATED_DATES.forEach(function(spec){
+    var el=document.getElementById(spec.id);
+    if(el) el.value=findDedicatedDate(j.custom_dates,spec.label_en);
+  });
   document.getElementById('f-sd').value=j.start_date||'';
   document.getElementById('f-fee').value=j.fee||'';
   if(document.getElementById('f-fee-kn'))document.getElementById('f-fee-kn').value=j.fee_kn||'';
@@ -1530,6 +1563,7 @@ function editJob(id){
   if(document.getElementById('f-banner-en')){document.getElementById('f-banner-en').value=j.banner_en||'';showBannerPreview('f-banner-en');}
   if(document.getElementById('f-banner-kn')){document.getElementById('f-banner-kn').value=j.banner_kn||'';showBannerPreview('f-banner-kn');}
   document.getElementById('f-cats').value=j.cats||'';
+  if(document.getElementById('f-cats-kn'))document.getElementById('f-cats-kn').value=j.cats_kn||'';
   if(document.getElementById('f-post-wise'))document.getElementById('f-post-wise').value=j.post_wise||'';
   if(document.getElementById('f-state-wise'))document.getElementById('f-state-wise').value=j.state_wise||'';
   if(document.getElementById('f-district-wise'))document.getElementById('f-district-wise').value=j.district_wise||'';
@@ -1581,7 +1615,6 @@ function editJob(id){
 
   // Reset TBA checkboxes
   document.getElementById('f-ld-tba').checked=false;
-  document.getElementById('custom-dates-list').innerHTML='';
   document.getElementById('f-sd-tba').checked=(j.start_status==='tba');
   document.getElementById('f-sd-started').checked=(j.start_status==='started');
   document.getElementById('f-fee-tba').checked=(j.fee==='To Be Announced');
@@ -1623,9 +1656,10 @@ function delJob(id){
 // CLEAR
 function clearForm(){
   editId=null;
-  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-fee-last-date','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-post-wise','f-state-wise','f-district-wise','f-zone-wise','f-exp','f-exp-kn','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-notif-label-1','f-notif-url-1','f-notif-label-2','f-notif-url-2','f-exam-type','f-exam-type-kn','f-exam-mode','f-exam-mode-kn','f-exam-duration','f-exam-duration-kn','f-exam-lang','f-exam-lang-kn','f-total-questions','f-total-questions-kn','f-total-marks','f-total-marks-kn','f-neg-marking','f-neg-marking-kn','f-qual-marks','f-qual-marks-kn','f-subject-pattern','f-subject-pattern-kn','f-faq','f-faq-kn','f-tips','f-tips-kn','f-banner-en','f-banner-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-ten','f-tkn','f-dept','f-dept-kn','f-loc','f-seats','f-sal','f-age','f-ld','f-sd','f-fee','f-fee-last-date','f-exam-date','f-admit-card-date','f-result-date','f-doc-verify-date','f-medical-date','f-interview-date','f-url','f-apply-link','f-notif','f-icon','f-logo','f-cats','f-cats-kn','f-post-wise','f-state-wise','f-district-wise','f-zone-wise','f-exp','f-exp-kn','f-tags','f-desc','f-skills','f-hta','f-hta-kn','f-sel-process','f-sel-process-kn','f-req-docs','f-req-docs-kn','f-skills-kn','f-sal-kn','f-loc-kn','f-tags-kn','f-desc-kn','f-seats-kn','f-age-kn','f-syllabus','f-syllabus-kn','f-syllabus-url','f-notif-url','f-notif-label-1','f-notif-url-1','f-notif-label-2','f-notif-url-2','f-exam-type','f-exam-type-kn','f-exam-mode','f-exam-mode-kn','f-exam-duration','f-exam-duration-kn','f-exam-lang','f-exam-lang-kn','f-total-questions','f-total-questions-kn','f-total-marks','f-total-marks-kn','f-neg-marking','f-neg-marking-kn','f-qual-marks','f-qual-marks-kn','f-subject-pattern','f-subject-pattern-kn','f-faq','f-faq-kn','f-tips','f-tips-kn','f-banner-en','f-banner-kn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['f-banner-en','f-banner-kn'].forEach(id=>showBannerPreview(id));
   ['f-ld-tba','f-sd-tba','f-sd-started','f-fee-tba','f-seats-tba','f-sal-tba'].forEach(id=>{document.getElementById(id).checked=false;});
+  if(document.getElementById('custom-dates-list'))document.getElementById('custom-dates-list').innerHTML='';
   toggleTBA('f-ld',false);toggleTBA('f-sd',false);toggleStarted(false);toggleFeeTBA(false);toggleSeatsTBA(false);toggleSalTBA(false);
   selCat='karnataka';selStat='open';
   renderCatGrid();
